@@ -1,0 +1,16 @@
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.DAL.COM\bin\Debug\SDPCRL.DAL.COM.dll
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.DAL.COM\bin\Debug\SDPCRL.DAL.COM.pdb
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.DAL.COM\bin\Debug\SDPCRL.CORE.dll
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.DAL.COM\bin\Debug\SDPCRL.CORE.pdb
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.DAL.COM\obj\Debug\SDPCRL.DAL.COM.csprojResolveAssemblyReference.cache
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.DAL.COM\obj\Debug\SDPCRL.DAL.COM.dll
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.DAL.COM\obj\Debug\SDPCRL.DAL.COM.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.COM\bin\Debug\SDPCRL.DAL.COM.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.COM\bin\Debug\SDPCRL.DAL.COM.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.COM\bin\Debug\SDPCRL.CORE.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.COM\bin\Debug\SDPCRL.CORE.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.COM\obj\Debug\ResolveAssemblyReference.cache
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.COM\obj\Debug\SDPCRL.DAL.COM.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.COM\obj\Debug\SDPCRL.DAL.COM.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.COM\bin\Debug\BWYResFactory.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.COM\bin\Debug\BWYResFactory.pdb

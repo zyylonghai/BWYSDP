@@ -1,0 +1,10 @@
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.Services\bin\Debug\SDPCRL.Services.dll
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.Services\bin\Debug\SDPCRL.Services.pdb
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.Services\obj\Debug\SDPCRL.Services.csprojResolveAssemblyReference.cache
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.Services\obj\Debug\SDPCRL.Services.dll
+F:\zyyinfo\projects\BWYSDP\BWYSDP\SDPCRL.Services\obj\Debug\SDPCRL.Services.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.Services\bin\Debug\SDPCRL.Services.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.Services\bin\Debug\SDPCRL.Services.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.Services\obj\Debug\ResolveAssemblyReference.cache
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.Services\obj\Debug\SDPCRL.Services.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.Services\obj\Debug\SDPCRL.Services.pdb

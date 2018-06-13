@@ -1,0 +1,8 @@
+F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\bin\Debug\BWYResFactory.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\bin\Debug\BWYResFactory.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\obj\Debug\ResolveAssemblyReference.cache
+F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\obj\Debug\BWYResFactory.Res.resources
+F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\obj\Debug\GenerateResource.read.1.tlog
+F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\obj\Debug\GenerateResource.write.1.tlog
+F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\obj\Debug\BWYResFactory.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\obj\Debug\BWYResFactory.pdb

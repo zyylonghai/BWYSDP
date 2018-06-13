@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="GB2312"?>
+<Root>
+  <Class name="测试">
+    <Func name="func1" package="com">功能1</Func>
+    <Func name="func2" package="com">功能2</Func>
+  </Class>
+  <Func name="func3" package="com">功能3</Func>
+  <Func name="func4" package="com">功能4</Func>
+  <Class name="class2">
+    <Class name="class3">
+      <Func name="func5" package="com">功能5</Func>
+      <Class name="新建分类jks">
+        <Class name="新建分类1">
+        </Class>
+        <Class name="新建分类2">
+          <Class name="新建分类2" />
+          <Class name="新建分类3" />
+        </Class>
+        <Class name="新建分类1" />
+      </Class>
+    </Class>
+    <Func name="func6" package="com2">功能6</Func>
+  </Class>
+</Root>

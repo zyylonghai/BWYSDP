@@ -1,0 +1,5 @@
+F:\zyyinfo\projects\BWYSDP\BWYSDP\IDBHelp\bin\Debug\IDBHelp.dll
+F:\zyyinfo\projects\BWYSDP\BWYSDP\IDBHelp\bin\Debug\IDBHelp.pdb
+F:\zyyinfo\projects\BWYSDP\BWYSDP\IDBHelp\obj\Debug\IDBHelp.csprojResolveAssemblyReference.cache
+F:\zyyinfo\projects\BWYSDP\BWYSDP\IDBHelp\obj\Debug\IDBHelp.dll
+F:\zyyinfo\projects\BWYSDP\BWYSDP\IDBHelp\obj\Debug\IDBHelp.pdb
