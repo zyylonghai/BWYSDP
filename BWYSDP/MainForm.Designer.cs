@@ -54,6 +54,8 @@
             this.CreatClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CreateFuncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.添加功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.删除功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -272,28 +274,43 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.CreatClassToolStripMenuItem,
             this.CreateFuncToolStripMenuItem,
+            this.添加功能ToolStripMenuItem,
+            this.删除功能ToolStripMenuItem,
             this.RefreshToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 136);
             // 
             // CreatClassToolStripMenuItem
             // 
             this.CreatClassToolStripMenuItem.Name = "CreatClassToolStripMenuItem";
-            this.CreatClassToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.CreatClassToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.CreatClassToolStripMenuItem.Text = "新建分类";
             this.CreatClassToolStripMenuItem.Click += new System.EventHandler(this.CreatClassToolStripMenuItem_Click);
             // 
             // CreateFuncToolStripMenuItem
             // 
             this.CreateFuncToolStripMenuItem.Name = "CreateFuncToolStripMenuItem";
-            this.CreateFuncToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.CreateFuncToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.CreateFuncToolStripMenuItem.Text = "新建功能";
+            this.CreateFuncToolStripMenuItem.Click += new System.EventHandler(this.CreateFuncToolStripMenuItem_Click);
             // 
             // RefreshToolStripMenuItem
             // 
             this.RefreshToolStripMenuItem.Name = "RefreshToolStripMenuItem";
-            this.RefreshToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.RefreshToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.RefreshToolStripMenuItem.Text = "刷新";
+            // 
+            // 添加功能ToolStripMenuItem
+            // 
+            this.添加功能ToolStripMenuItem.Name = "添加功能ToolStripMenuItem";
+            this.添加功能ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.添加功能ToolStripMenuItem.Text = "添加功能";
+            // 
+            // 删除功能ToolStripMenuItem
+            // 
+            this.删除功能ToolStripMenuItem.Name = "删除功能ToolStripMenuItem";
+            this.删除功能ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.删除功能ToolStripMenuItem.Text = "删除功能";
             // 
             // MainForm
             // 
@@ -353,5 +370,7 @@
         private System.Windows.Forms.ToolStripMenuItem RefreshToolStripMenuItem;
         private System.Windows.Forms.TextBox txtClassNm;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ToolStripMenuItem 添加功能ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 删除功能ToolStripMenuItem;
     }
 }
