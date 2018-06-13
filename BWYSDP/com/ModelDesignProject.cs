@@ -327,7 +327,10 @@ namespace BWYSDP.com
                 xmlOperation.AddNode(nodeinfo, string.Format("/Root/{0}", express));
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="currentNode"></param>
         public static void UpdateXmlNode(LibTreeNode currentNode)
         {
             if (currentNode != null)
