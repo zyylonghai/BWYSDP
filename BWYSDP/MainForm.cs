@@ -109,5 +109,10 @@ namespace BWYSDP
                 }
             }
         }
+
+        private void CreateFuncToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

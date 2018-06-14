@@ -328,7 +328,7 @@ namespace BWYSDP.com
             }
         }
         /// <summary>
-        /// 
+        /// 修改ModelTreeTemp文件的xml节点
         /// </summary>
         /// <param name="currentNode"></param>
         public static void UpdateXmlNode(LibTreeNode currentNode)
@@ -368,7 +368,10 @@ namespace BWYSDP.com
                 LibXMLAttributCollection attributcollection = new LibXMLAttributCollection();
                 attributcollection.Add(SysConstManage.AtrrName, currentNode.Name);
                 nodeinfo.Attributions = attributcollection;
-                xmlOperation.UpdateNode(nodeinfo, string.Format("/Root/{0}", express));
+                if (xmlOperation.UpdateNode(nodeinfo, string.Format("/Root/{0}", express)))
+                {
+                    currentNode.OriginalName = currentNode.Name;
+                }
             }
         }
 
