@@ -529,6 +529,28 @@ namespace BWYSDP.com
 
         }
 
+        public void CopyTo(LibTreeNode newNode)
+        {
+            if (newNode != null)
+            {
+                PropertyInfo[] propertys = newNode.GetType().GetProperties();
+                foreach (PropertyInfo p in propertys)
+                {
+                    PropertyInfo info = this.GetType().GetProperty(p.Name);
+                    p.SetValue(newNode, info.GetValue(this, null), null);
+                }
+                //newNode.NodeType = this.NodeType;
+                //newNode.Name = this.Name;
+                //newNode.Text = this.Text;
+                //newNode.OriginalName = this.OriginalName;
+                //newNode.Package = this.Package;
+            }
+            else
+            {
+                throw new LibExceptionBase("参数newNode不允许为null"); 
+            }
+        }
+
         #region 公开属性
         /// <summary>原始名称</summary>
         public string OriginalName { get; set; }
@@ -556,6 +578,12 @@ namespace BWYSDP.com
         FormModel = 3,
         /// <summary>权限模型节点</summary>
         [LibReSource("权限模型节点")]
-        PermissionModel = 4
+        PermissionModel = 4,
+        /// <summary>特殊功能</summary>
+        [LibReSource("特殊功能节点")]
+        SpectFunc =5,
+        /// <summary>报表功能</summary>
+        [LibReSource("报表功能节点")]
+        ReportFunc =6
     }
 }

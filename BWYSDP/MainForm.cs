@@ -124,6 +124,7 @@ namespace BWYSDP
                     break;
                 case "CreateFuncToolStripMenuItem": //新建功能
                     //WakeUpForm<DSAdd>("DSAdd", 1, 2);
+                    WakeUpForm<CreateFunc>("CreateFunc",2,1);
                     break;
                 case "RefreshToolStripMenuItem"://刷新
                     ModelDesignProject.GetChildNode(currentnode);
@@ -144,5 +145,58 @@ namespace BWYSDP
                     break;
             }
         }
+
+        public override void DoFormAcceptMsg(string tag, Dictionary<object, object> agrs)
+        {
+            base.DoFormAcceptMsg(tag, agrs);
+            if (string.Compare(tag, "NewFunc") == 0)//新建功能
+            {
+                if (agrs != null && agrs.Count() > 0)
+                {
+                    LibTreeNode funcNode = agrs["funcNode"] as LibTreeNode;
+                    switch (funcNode.NodeType)
+                    {
+                        case NodeType.Func:
+                            #region 
+                            //数据源节点
+                            LibTreeNode ds = new LibTreeNode();
+                            funcNode.CopyTo(ds);
+                            ds.NodeType = NodeType.DataModel;
+                            funcNode.Nodes.Add(ds);
+                            //排版模型节点
+                            LibTreeNode form = new LibTreeNode();
+                            funcNode.CopyTo(form);
+                            form.NodeType = NodeType.FormModel;
+                            funcNode.Nodes.Add(form);
+                            //权限模型节点
+                            LibTreeNode permission = new LibTreeNode();
+                            funcNode.CopyTo(permission);
+                            permission.NodeType = NodeType.PermissionModel;
+                            funcNode.Nodes.Add(permission);
+
+                            this.treeView1.SelectedNode.Nodes.Add(funcNode);
+                            #endregion
+                            break;
+                        case NodeType.SpectFunc:
+                            break;
+                        case NodeType.ReportFunc:
+                            break;
+                        case NodeType.DataModel:
+                            break;
+                        case NodeType.FormModel:
+                            break;
+                        case NodeType.PermissionModel:
+                            break;
+                    }
+                }
+            }
+        }
+        //private LibTreeNode CreateNode(LibTreeNode nodeInfo, NodeType nodetype)
+        //{
+        //    LibTreeNode node = new LibTreeNode();
+        //    node.NodeType =
+        //    return node;
+        //}
+
     }
 }

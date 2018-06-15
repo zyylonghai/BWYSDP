@@ -7,7 +7,7 @@ using SDPCRL.CORE;
 
 namespace BWYSDP
 {
-    public class LibFormBase : Form,ILibEventListener
+    public class LibFormBase : Form, ILibEventListener
     {
         #region 
         private LibFormBase _caller;
@@ -31,49 +31,49 @@ namespace BWYSDP
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            DoSetParam(_paramContain .Tag,_paramContain .FormParam);
+            DoSetParam(_paramContain.Tag, _paramContain.FormParam);
         }
 
-        protected virtual void ReturnParam(ref string tag,  Dictionary <object ,object > param)
+        protected virtual void ReturnParam(ref string tag, Dictionary<object, object> param)
         {
-            
+
         }
 
-        protected virtual void DoSetParam(string tag,params object [] param)
+        protected virtual void DoSetParam(string tag, params object[] param)
         {
- 
+
         }
 
-        public void WakeUpForm<T>(string tag,params object [] param)
+        public void WakeUpForm<T>(string tag, params object[] param)
         {
 
             _paramContain.Tag = tag;
             _paramContain.FormParam = param;
-            T called=Activator.CreateInstance<T>();
+            T called = Activator.CreateInstance<T>();
             FormCommunicationLine communication = new FormCommunicationLine(this, called, _paramContain);
-            Form  entity = called as Form;
+            Form entity = called as Form;
             entity.Show();
         }
 
         #region LibEventListener 接口实现
         public virtual void DoFormAcceptMsg(string tag, Dictionary<object, object> agrs)
         {
-            
+
         }
         #endregion
 
     }
 
     /// <summary>窗体之间，呼叫者和被叫着的通讯类</summary>
-    public class FormCommunicationLine 
+    public class FormCommunicationLine
     {
         private LibFormBase _caller;
         private LibFormBase _called;
         private ParamContainer _paramContain;
-        public FormCommunicationLine(object   caller,object called,ParamContainer paramcontainer)
+        public FormCommunicationLine(object caller, object called, ParamContainer paramcontainer)
         {
             this._called = called as LibFormBase;
-            this._caller = caller as LibFormBase ;
+            this._caller = caller as LibFormBase;
             this._paramContain = paramcontainer;
             if (called != null)
             {
@@ -99,7 +99,7 @@ namespace BWYSDP
     public class ParamContainer
     {
         private static Dictionary<object, object> _formCommunitationAgrs;
-        private static  ParamContainer _paramContainer;
+        private static ParamContainer _paramContainer;
         private static readonly object locker = new object();
         public string RefTag = string.Empty;
         public string Tag
@@ -137,6 +137,6 @@ namespace BWYSDP
             }
             return _paramContainer;
         }
-      
+
     }
 }
