@@ -25,7 +25,7 @@ namespace BWYSDP.com
             //}
         }
     }
-    public class MessageHandel
+    public class MessageHandle
     {
         private static PromptForm _promPt;
         public static PromptForm PromPt

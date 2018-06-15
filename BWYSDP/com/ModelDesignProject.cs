@@ -375,6 +375,35 @@ namespace BWYSDP.com
             }
         }
 
+        /// <summary>删除ModelTreeTemp文件的xml节点</summary>
+        /// <param name="currentNode"></param>
+        public static void DeleteXmlNode(LibTreeNode currentNode)
+        {
+            if (currentNode != null)
+            {
+                LibTreeNode preParent = (LibTreeNode)currentNode.Parent;
+                string express = string.Empty;
+                #region 组织express的值
+                express = string.Format("{0}[@{1}='{2}']", SysConstManage.ClassNodeNm, SysConstManage.AtrrName, currentNode.OriginalName);
+                while (preParent != null)
+                {
+                    if (preParent.NodeType == NodeType.Class)
+                    {
+                        express = string.Format("{0}[@{1}='{2}']/{3}", SysConstManage.ClassNodeNm, SysConstManage.AtrrName, preParent.Name, express);
+                    }
+                    else if (preParent.NodeType == NodeType.Func)
+                    {
+                        express = string.Format("{0}[@{1}='{2}']/{3}", SysConstManage.FuncNodeNm, SysConstManage.AtrrName, preParent.Name, express);
+                    }
+
+                    preParent = (LibTreeNode)preParent.Parent;
+                }
+                #endregion
+                XMLOperation xmlOperation = new XMLOperation(SysConstManage.ModelTemp);
+                xmlOperation.DeletNode(string.Format("/Root/{0}", express));
+            }
+        }
+
         private static List<NodeInfo> DoReadNodes(string express)
         {
             XMLOperation xmlOperation = new XMLOperation(SysConstManage.ModelTemp);

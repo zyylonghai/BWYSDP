@@ -79,6 +79,12 @@
     <Compile Include="Controls\TBStructProperty.Designer.cs">
       <DependentUpon>TBStructProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="CreateFunc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateFunc.Designer.cs">
+      <DependentUpon>CreateFunc.cs</DependentUpon>
+    </Compile>
     <Compile Include="DAL\DBHelp.cs" />
     <Compile Include="DSAdd.cs">
       <SubType>Form</SubType>
@@ -135,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TBStructProperty.resx">
       <DependentUpon>TBStructProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateFunc.resx">
+      <DependentUpon>CreateFunc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DSAdd.resx">
       <DependentUpon>DSAdd.cs</DependentUpon>

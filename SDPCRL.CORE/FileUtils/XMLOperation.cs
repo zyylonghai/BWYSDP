@@ -68,25 +68,25 @@ namespace SDPCRL.CORE.FileUtils
         #region xml节点增加，删除，修改。
         public bool AddNode(NodeInfo node, string express)
         {
-           XmlNode parentNode= this._doc.SelectNodes(express)[0];
-           XmlElement child = _doc.CreateElement(node.NodeName);
-           if (string.Compare(node.NodeName, SysConstManage.ClassNodeNm) != 0) 
-               child.InnerText = node.InnerText;
-           if (node.Attributions.DefindAttr != null)
-           {
-               foreach (KeyValuePair<string, object> keyvalu in node.Attributions.DefindAttr)
-               {
-                   child.SetAttribute(keyvalu.Key, keyvalu.Value.ToString ());
-               }
-           }
-           parentNode.AppendChild(child);
-           this._doc.Save(this._xmlFilePath);
+            XmlNode parentNode = SelectNode(express);
+            XmlElement child = _doc.CreateElement(node.NodeName);
+            if (string.Compare(node.NodeName, SysConstManage.ClassNodeNm) != 0)
+                child.InnerText = node.InnerText;
+            if (node.Attributions.DefindAttr != null)
+            {
+                foreach (KeyValuePair<string, object> keyvalu in node.Attributions.DefindAttr)
+                {
+                    child.SetAttribute(keyvalu.Key, keyvalu.Value.ToString());
+                }
+            }
+            parentNode.AppendChild(child);
+            this._doc.Save(this._xmlFilePath);
             return true;
         }
 
         public bool UpdateNode(NodeInfo node, string express)
         {
-            XmlNode currentNode = this._doc.SelectSingleNode(express);
+            XmlNode currentNode = SelectNode(express);
             if (string.Compare(node.NodeName, SysConstManage.ClassNodeNm) != 0)
                 currentNode.InnerText = node.InnerText;
             if (node.Attributions.DefindAttr != null)
@@ -94,12 +94,35 @@ namespace SDPCRL.CORE.FileUtils
                 XmlElement ele = (XmlElement)currentNode;
                 foreach (KeyValuePair<string, object> keyvalu in node.Attributions.DefindAttr)
                 {
-                    ele.SetAttribute(keyvalu.Key, keyvalu.Value.ToString());   
+                    ele.SetAttribute(keyvalu.Key, keyvalu.Value.ToString());
                 }
             }
             this._doc.Save(this._xmlFilePath);
             return true;
 
+        }
+
+        public bool DeletNode(string express)
+        {
+            XmlNode currentNode = SelectNode(express);
+            currentNode.ParentNode.RemoveChild(currentNode);
+            this._doc.Save(this._xmlFilePath);
+            return true;
+        }
+
+        private XmlNode SelectNode(string express)
+        {
+            XmlNode result = null;
+            try
+            {
+                result = this._doc.SelectSingleNode(express);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if(result ==null ) throw new LibExceptionBase("查找ModelTreeTemp文件的节点时出错：找不到节点");
+            return result;
         }
         #endregion
 
@@ -216,7 +239,7 @@ namespace SDPCRL.CORE.FileUtils
             get { return _attrCollection[name].Value; }
         }
 
-        public Dictionary<string, object> DefindAttr 
+        public Dictionary<string, object> DefindAttr
         {
             get { return this._defindAttr; }
         }
@@ -224,7 +247,7 @@ namespace SDPCRL.CORE.FileUtils
         {
             if (_defindAttr == null) _defindAttr = new Dictionary<string, object>();
             _defindAttr.Add(attrNm, attrValu);
-             
+
         }
         #region 构造函数
         public LibXMLAttributCollection(XmlAttributeCollection attrCollection)
@@ -277,7 +300,7 @@ namespace SDPCRL.CORE.FileUtils
         void ReadNext();
     }
 
-    
+
     public class NodeInfo
     {
         XmlNode _node;
@@ -293,7 +316,8 @@ namespace SDPCRL.CORE.FileUtils
         /// <summary>当前节点名称</summary>
         public string NodeName
         {
-            get {
+            get
+            {
                 if (_node != null)
                     return _node.Name;
                 return _nodeNm;
@@ -303,7 +327,8 @@ namespace SDPCRL.CORE.FileUtils
         /// <summary>获取该节点及其 所有子节点的串联值</summary>
         public string InnerText
         {
-            get {
+            get
+            {
                 if (this._node != null)
                     return _node.InnerText;
                 return _innerText;
@@ -313,7 +338,8 @@ namespace SDPCRL.CORE.FileUtils
         /// <summary>节点属性集</summary>
         public LibXMLAttributCollection Attributions
         {
-            get {
+            get
+            {
                 if (_node != null)
                     return new LibXMLAttributCollection(_node.Attributes);
                 return _attributcollection;

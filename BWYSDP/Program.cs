@@ -85,7 +85,7 @@ namespace BWYSDP
 
         static void ShowMessage(string message, bool clear)
         {
-            MessageHandel.ShowMessage(message, clear);
+            MessageHandle.ShowMessage(message, clear);
         }
         /// <summary>    /// 写文件    /// </summary>    
         /// <param name="str"></param>    

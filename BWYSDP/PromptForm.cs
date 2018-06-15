@@ -37,7 +37,7 @@ namespace BWYSDP
 
         private void PromptForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MessageHandel.DisposePromptForm();
+            MessageHandle.DisposePromptForm();
         }
     }
 }

@@ -10,7 +10,7 @@ using BWYSDP.com;
 
 namespace BWYSDP
 {
-    public partial class MainForm : Form
+    public partial class MainForm : LibFormBase
     {
         public static int index = 1;
         public MainForm()
@@ -30,29 +30,15 @@ namespace BWYSDP
             {
                 LibTreeNode libnode = (LibTreeNode)e.Node;
                 if (libnode.NodeType == NodeType.Class)
+                {
                     libnode.ContextMenuStrip = this.contextMenuStrip1;
+                }
+                this.treeView1.SelectedNode = libnode;
             }
             else
             {
- 
-            }
-        }
-        /// <summary>
-        /// 快捷菜单 新建分类 事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CreatClassToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LibTreeNode node = new LibTreeNode(string.Format("新建分类{0}",index++));
-            node.NodeType = NodeType.Class;
-            node.Name = node.Text;
-            node.OriginalName = node.Text;
-            this.treeView1.SelectedNode.Nodes.Add(node);
-            this.treeView1.SelectedNode = node;
 
-            ModelDesignProject.AddXmlNode(node);
-           
+            }
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -109,10 +95,54 @@ namespace BWYSDP
                 }
             }
         }
-
-        private void CreateFuncToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 快捷菜单contextMenuStrip1 项点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            LibTreeNode currentnode = (LibTreeNode)this.treeView1.SelectedNode;
+            switch (e.ClickedItem.Name)
+            {
+                case "CreatClassToolStripMenuItem": //新建分类
+                    if (currentnode != null)
+                    {
+                        LibTreeNode node = new LibTreeNode(string.Format("新建分类{0}", index++));
+                        node.NodeType = NodeType.Class;
+                        node.Name = node.Text;
+                        node.OriginalName = node.Text;
+                        this.treeView1.SelectedNode.Nodes.Add(node);
+                        this.treeView1.SelectedNode = node;
 
+                        ModelDesignProject.AddXmlNode(node);
+                    }
+                    else
+                    {
+                        MessageHandle.ShowMessage("未选中节点", true); 
+                    }
+                    break;
+                case "CreateFuncToolStripMenuItem": //新建功能
+                    //WakeUpForm<DSAdd>("DSAdd", 1, 2);
+                    break;
+                case "RefreshToolStripMenuItem"://刷新
+                    ModelDesignProject.GetChildNode(currentnode);
+                    this.treeView1.Refresh();
+                    break;
+                case "addfuncToolStripMenuItem"://添加功能
+                    break;
+                case "deleteToolStripMenuItem"://删除节点
+                    if (currentnode != null)
+                    {
+                        ModelDesignProject.DeleteXmlNode(currentnode);
+                        currentnode.Remove();
+                    }
+                    else
+                    {
+                        MessageHandle.ShowMessage("未选要删除的节点", true);
+                    }
+                    break;
+            }
         }
     }
 }
