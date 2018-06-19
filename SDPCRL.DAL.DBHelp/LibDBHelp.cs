@@ -446,7 +446,7 @@ namespace SDPCRL.DAL.DBHelp
         }
         private string GetAccoutKey()
         {
-            object result=ExecuteScalar("select [key] from Accout where ID='"+_guid+"'");
+            object result=ExecuteScalar("select [key] from Account where ID='"+_guid+"'");
             if(result !=null )
                 return result .ToString ();
             return string.Empty;

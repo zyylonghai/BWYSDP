@@ -12,6 +12,7 @@ namespace BWYSDP
 {
     public partial class CreateFunc : LibFormBase
     {
+        private bool isok = false;
         public CreateFunc()
         {
             InitializeComponent();
@@ -28,21 +29,30 @@ namespace BWYSDP
         protected override void ReturnParam(ref string tag, Dictionary<object, object> param)
         {
             base.ReturnParam(ref tag, param);
-            tag = "NewFunc";
-            LibTreeNode node = new LibTreeNode();
-            foreach (Control ctr in this.panel1.Controls)
+            if (isok)
             {
-                RadioButton radiobt = (RadioButton)ctr;
-                if (radiobt != null && radiobt.Checked)
+                tag = "NewFunc";
+                LibTreeNode node = new LibTreeNode();
+                foreach (Control ctr in this.panel1.Controls)
                 {
-                    node.NodeType = (NodeType)((int)radiobt.Tag);
+                    RadioButton radiobt = (RadioButton)ctr;
+                    if (radiobt != null && radiobt.Checked)
+                    {
+                        node.NodeType = (NodeType)(Convert.ToInt16(radiobt.Tag));
+                    }
                 }
+                node.Name = this.txtbFuncID.Text.Trim();
+                node.OriginalName = node.Name;
+                node.Text = this.txtbFuncNm.Text.Trim();
+                node.Package = this.txtbPackage.Text.Trim();
+                param.Add("funcNode", node);
             }
-            node.Name = this.txtbFuncID.Text.Trim();
-            node.OriginalName = node.Name;
-            node.Text = this.txtbFuncNm.Text.Trim();
-            node.Package = this.txtbPackage.Text.Trim();
-            param.Add("funcNode", node);
+        }
+
+        private void btnsure_Click(object sender, EventArgs e)
+        {
+            isok = true;
+            this.Close();
         }
     }
 }

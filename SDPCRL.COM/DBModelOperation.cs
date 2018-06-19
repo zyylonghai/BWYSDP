@@ -70,7 +70,7 @@ namespace SDPCRL.COM
              if (dataSource != null)
              {
                  context.Append(Environment.NewLine);
-                 AppendDS(context, dataSource.DataSourceName, dataSource.DSDisplayText);
+                 //AppendDS(context, dataSource.DataSourceName, dataSource.DSDisplayText);
                  foreach (DefineTable defTB in dataSource.DefTables)
                  {
                      AppendTB(context, defTB.TableName, defTB.DisplayName);

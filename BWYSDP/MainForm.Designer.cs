@@ -56,6 +56,8 @@
             this.addfuncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtbNodeType = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -155,6 +157,7 @@
             this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeExpand);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
+            this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
             // 
             // panel3
             // 
@@ -163,8 +166,10 @@
             this.panel3.Controls.Add(this.txtDSPackage);
             this.panel3.Controls.Add(this.txtFuncId);
             this.panel3.Controls.Add(this.FuncName);
+            this.panel3.Controls.Add(this.txtbNodeType);
             this.panel3.Controls.Add(this.txtFuncNm);
             this.panel3.Controls.Add(this.label2);
+            this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.FuncNm);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(0, 313);
@@ -192,7 +197,7 @@
             // 
             // txtDSPackage
             // 
-            this.txtDSPackage.Location = new System.Drawing.Point(110, 106);
+            this.txtDSPackage.Location = new System.Drawing.Point(110, 146);
             this.txtDSPackage.Name = "txtDSPackage";
             this.txtDSPackage.ReadOnly = true;
             this.txtDSPackage.Size = new System.Drawing.Size(142, 21);
@@ -226,7 +231,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 109);
+            this.label2.Location = new System.Drawing.Point(30, 149);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 13;
@@ -311,6 +316,23 @@
             this.RefreshToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.RefreshToolStripMenuItem.Text = "刷新";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 115);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "功能类型";
+            // 
+            // txtbNodeType
+            // 
+            this.txtbNodeType.Location = new System.Drawing.Point(110, 111);
+            this.txtbNodeType.Name = "txtbNodeType";
+            this.txtbNodeType.ReadOnly = true;
+            this.txtbNodeType.Size = new System.Drawing.Size(142, 21);
+            this.txtbNodeType.TabIndex = 16;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -371,5 +393,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripMenuItem addfuncToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.TextBox txtbNodeType;
+        private System.Windows.Forms.Label label1;
     }
 }

@@ -36,13 +36,13 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnsure = new System.Windows.Forms.Button();
             this.txtbPackage = new System.Windows.Forms.TextBox();
             this.txtbFuncNm = new System.Windows.Forms.TextBox();
             this.txtbFuncID = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnsure = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -148,6 +148,16 @@
             this.panel2.Size = new System.Drawing.Size(323, 208);
             this.panel2.TabIndex = 1;
             // 
+            // btnsure
+            // 
+            this.btnsure.Location = new System.Drawing.Point(22, 159);
+            this.btnsure.Name = "btnsure";
+            this.btnsure.Size = new System.Drawing.Size(75, 23);
+            this.btnsure.TabIndex = 2;
+            this.btnsure.Text = "确定";
+            this.btnsure.UseVisualStyleBackColor = true;
+            this.btnsure.Click += new System.EventHandler(this.btnsure_Click);
+            // 
             // txtbPackage
             // 
             this.txtbPackage.Location = new System.Drawing.Point(93, 102);
@@ -195,15 +205,6 @@
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "功能ID：";
-            // 
-            // btnsure
-            // 
-            this.btnsure.Location = new System.Drawing.Point(22, 159);
-            this.btnsure.Name = "btnsure";
-            this.btnsure.Size = new System.Drawing.Size(75, 23);
-            this.btnsure.TabIndex = 2;
-            this.btnsure.Text = "确定";
-            this.btnsure.UseVisualStyleBackColor = true;
             // 
             // CreateFunc
             // 

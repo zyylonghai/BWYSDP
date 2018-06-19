@@ -148,7 +148,7 @@ namespace BWYSDP
                 DataSource ds = new DataSource();
                 ds.DSID = dsId;
                 ds.DataSourceName = args["DSName"].ToString();
-                ds.DSDisplayText = args["DSDisplayText"].ToString();
+                //ds.DSDisplayText = args["DSDisplayText"].ToString();
                 ds.Package = args["DSPackage"].ToString();
                 ModelDesignProject.CreateDS(ds);
             }
@@ -211,7 +211,7 @@ namespace BWYSDP
             {
                 dsNode = new TreeNode();
                 dsNode.Name = item.DataSourceName;
-                dsNode.Text = item.DSDisplayText;
+                //dsNode.Text = item.DSDisplayText;
                 this.tableStructTree.Nodes[0].Nodes.Add(dsNode);
             }
         }
@@ -220,7 +220,7 @@ namespace BWYSDP
         {
             this.txtDSId.Text = ds.DSID.ToString();
             this.txtDSName.Text = ds.DataSourceName;
-            this.txtDSdisplaytext.Text = ds.DSDisplayText;
+            //this.txtDSdisplaytext.Text = ds.DSDisplayText;
             this.txtDSPackage.Text = ds.Package;
         }
 

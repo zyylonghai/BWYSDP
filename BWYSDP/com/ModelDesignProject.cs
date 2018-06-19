@@ -17,7 +17,6 @@ namespace BWYSDP.com
     {
         private static Hashtable _dataSourceContain = new Hashtable();
         private static DSList _dsList = new DSList();
-        //private string DSListFile = string.Format(@"{0}\Models\DataSource\DSList.xml", Environment.CurrentDirectory);
 
         #region 公开函数
         /// <summary>创建数据源</summary>
@@ -77,9 +76,9 @@ namespace BWYSDP.com
 
         /// <summary>获取数据源信息列表</summary>
         /// <returns></returns>
-        public static List<DataSource > GetDataSourceList()
+        public static List<DataSource> GetDataSourceList()
         {
-           return  DoGetDataSourceList();
+            return DoGetDataSourceList();
         }
 
         /// <summary>根据DSID获取数据源</summary>
@@ -128,7 +127,7 @@ namespace BWYSDP.com
         /// <param name="dsId"></param>
         public static void CreateTableObj(int dsId)
         {
- 
+
         }
 
         /// <summary>根据控件类型，设置控件的值</summary>
@@ -148,7 +147,7 @@ namespace BWYSDP.com
                         LibXmlAttributeAttribute attr = attrArray[0] as LibXmlAttributeAttribute;
                         if (string.Compare(attr.ControlNm, item.Name, false) == 0)
                         {
-                            if (CheckEnumFields(item ,info,valueType)) //dropdownlist控件
+                            if (CheckEnumFields(item, info, valueType)) //dropdownlist控件
                             {
                             }
                             else if (string.Compare(info.PropertyType.Name, "Boolean", true) == 0)
@@ -189,7 +188,7 @@ namespace BWYSDP.com
                 {
                     node.Text = item.InnerText;
                     node.Name = item.Attributions[SysConstManage.AtrrName];
-                    node.NodeType  = NodeType.Func;
+                    node.NodeType = NodeType.Func;
                     node.Package = item.Attributions[SysConstManage.AtrrPackage];
                 }
                 node.OriginalName = node.Name;
@@ -210,11 +209,11 @@ namespace BWYSDP.com
             {
                 List<NodeInfo> childs = null;
                 LibTreeNode node;
-                LibTreeNode preParent =(LibTreeNode)parent.Parent;
+                LibTreeNode preParent = (LibTreeNode)parent.Parent;
                 parent.Nodes.RemoveByKey("-1");
                 if (parent.NodeType == NodeType.Class)
                 {
-                    express = string.Format("{0}[@{1}='{2}']", SysConstManage.ClassNodeNm,SysConstManage.AtrrName , parent.Name);
+                    express = string.Format("{0}[@{1}='{2}']", SysConstManage.ClassNodeNm, SysConstManage.AtrrName, parent.Name);
                     //else if((int)parent.Tag == 1)
                     //    express = string.Format("{0}[@name='{1}']", SysConstManage.FuncNodeNm, parent.Name);
                     #region 组织express的值
@@ -222,11 +221,11 @@ namespace BWYSDP.com
                     {
                         if (preParent.NodeType == NodeType.Class)
                         {
-                            express = string.Format("{0}[@{1}='{2}']/{3}", SysConstManage.ClassNodeNm,SysConstManage.AtrrName , preParent.Name, express);
+                            express = string.Format("{0}[@{1}='{2}']/{3}", SysConstManage.ClassNodeNm, SysConstManage.AtrrName, preParent.Name, express);
                         }
-                        else if (preParent.NodeType  == NodeType.Func)
+                        else if (preParent.NodeType == NodeType.Func)
                         {
-                            express = string.Format("{0}[@{1}='{2}']/{3}", SysConstManage.FuncNodeNm,SysConstManage .AtrrName , preParent.Name, express);
+                            express = string.Format("{0}[@{1}='{2}']/{3}", SysConstManage.FuncNodeNm, SysConstManage.AtrrName, preParent.Name, express);
                         }
 
                         preParent = (LibTreeNode)preParent.Parent;
@@ -264,17 +263,17 @@ namespace BWYSDP.com
                 else
                 {
                     FileOperation fileoperation = new FileOperation();
-                    fileoperation.FilePath = string.Format(@"{0}\{1}\{2}.xml", SysConstManage.ModelPath, SysConstManage.DataSourceNm, parent.Name);
+                    fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.DataSourceNm, parent.Package, parent.Name);
                     if (fileoperation.ExistsFile())
                     {
                         AddFuncNode(parent, NodeType.DataModel);
                     }
-                    fileoperation.FilePath = string.Format(@"{0}\{1}\{2}.xml", SysConstManage.ModelPath, SysConstManage.FormSourceNm, parent.Name);
+                    fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.FormSourceNm, parent.Package, parent.Name);
                     if (fileoperation.ExistsFile())
                     {
                         AddFuncNode(parent, NodeType.FormModel);
                     }
-                    fileoperation.FilePath = string.Format(@"{0}\{1}\{2}.xml", SysConstManage.ModelPath, SysConstManage.PermissionSourceNm, parent.Name);
+                    fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.PermissionSourceNm, parent.Package, parent.Name);
                     if (fileoperation.ExistsFile())
                     {
                         AddFuncNode(parent, NodeType.PermissionModel);
@@ -310,6 +309,7 @@ namespace BWYSDP.com
 
                 XMLOperation xmlOperation = new XMLOperation(SysConstManage.ModelTemp);
                 NodeInfo nodeinfo = new NodeInfo();
+                LibXMLAttributCollection attributcollection = new LibXMLAttributCollection();
                 switch (newNode.NodeType)
                 {
                     case NodeType.Class:
@@ -317,11 +317,11 @@ namespace BWYSDP.com
                         break;
                     case NodeType.Func:
                         nodeinfo.NodeName = SysConstManage.FuncNodeNm;
+                        attributcollection.Add(SysConstManage.AtrrPackage, newNode.Package);
                         break;
                 }
                 //nodeinfo.NodeName =newNode.NodeType==NodeType.Class SysConstManage.ClassNodeNm;
                 nodeinfo.InnerText = newNode.Text;
-                LibXMLAttributCollection attributcollection = new LibXMLAttributCollection();
                 attributcollection.Add(SysConstManage.AtrrName, newNode.Name);
                 nodeinfo.Attributions = attributcollection;
                 xmlOperation.AddNode(nodeinfo, string.Format("/Root/{0}", express));
@@ -355,6 +355,7 @@ namespace BWYSDP.com
                 #endregion
                 XMLOperation xmlOperation = new XMLOperation(SysConstManage.ModelTemp);
                 NodeInfo nodeinfo = new NodeInfo();
+                LibXMLAttributCollection attributcollection = new LibXMLAttributCollection();
                 switch (currentNode.NodeType)
                 {
                     case NodeType.Class:
@@ -362,10 +363,10 @@ namespace BWYSDP.com
                         break;
                     case NodeType.Func:
                         nodeinfo.NodeName = SysConstManage.FuncNodeNm;
+                        attributcollection.Add(SysConstManage.AtrrPackage, currentNode.Package);
                         break;
                 }
                 nodeinfo.InnerText = currentNode.Text;
-                LibXMLAttributCollection attributcollection = new LibXMLAttributCollection();
                 attributcollection.Add(SysConstManage.AtrrName, currentNode.Name);
                 nodeinfo.Attributions = attributcollection;
                 if (xmlOperation.UpdateNode(nodeinfo, string.Format("/Root/{0}", express)))
@@ -436,6 +437,7 @@ namespace BWYSDP.com
         }
 
         #endregion
+
         #endregion
 
         #region 私有函数
@@ -445,7 +447,7 @@ namespace BWYSDP.com
             DSInfo dsinfo = new DSInfo();
             dsinfo.DSID = ds.DSID;
             dsinfo.Name = ds.DataSourceName;
-            dsinfo.DISPLAYTEXT = ds.DSDisplayText;
+            //dsinfo.DISPLAYTEXT = ds.DSDisplayText;
             dsinfo.PACKAGE = ds.Package;
             if (_dsList.DSInfoCollection == null)
                 _dsList.DSInfoCollection = new LibCollection<DSInfo>();
@@ -502,7 +504,7 @@ namespace BWYSDP.com
         /// <param name="control"></param>
         /// <param name="info"></param>
         /// <returns></returns>
-        private static bool CheckEnumFields(Control control,PropertyInfo info,object valueType)
+        private static bool CheckEnumFields(Control control, PropertyInfo info, object valueType)
         {
             bool result = false;
             if (string.Compare(control.Name, "fd_combFieldType", true) == 0)
@@ -519,9 +521,9 @@ namespace BWYSDP.com
     public class LibTreeNode : TreeNode
     {
         public LibTreeNode()
-            :base()
+            : base()
         {
- 
+
         }
         public LibTreeNode(string text)
             : base(text)
@@ -537,7 +539,8 @@ namespace BWYSDP.com
                 foreach (PropertyInfo p in propertys)
                 {
                     PropertyInfo info = this.GetType().GetProperty(p.Name);
-                    p.SetValue(newNode, info.GetValue(this, null), null);
+                    if (info.GetSetMethod() != null)
+                        p.SetValue(newNode, info.GetValue(this, null), null);
                 }
                 //newNode.NodeType = this.NodeType;
                 //newNode.Name = this.Name;
@@ -547,7 +550,7 @@ namespace BWYSDP.com
             }
             else
             {
-                throw new LibExceptionBase("参数newNode不允许为null"); 
+                throw new LibExceptionBase("参数newNode不允许为null");
             }
         }
 
@@ -581,9 +584,9 @@ namespace BWYSDP.com
         PermissionModel = 4,
         /// <summary>特殊功能</summary>
         [LibReSource("特殊功能节点")]
-        SpectFunc =5,
+        SpectFunc = 5,
         /// <summary>报表功能</summary>
         [LibReSource("报表功能节点")]
-        ReportFunc =6
+        ReportFunc = 6
     }
 }

@@ -25,7 +25,7 @@ namespace ServiceTest
         {
             TcpChannel channel = new TcpChannel();
             ChannelServices.RegisterChannel(channel, false);
-            dbHelpFactory = (IDBHelpFactory)Activator.GetObject(typeof(IDBHelpFactory), "tcp://localhost:8085/DBService");
+            dbHelpFactory = (IDBHelpFactory)Activator.GetObject(typeof(IDBHelpFactory), "tcp://192.168.20.126:8085/DBService");
 
         }
 
@@ -33,8 +33,8 @@ namespace ServiceTest
         {
             if (dbHelpFactory != null)
             {
-                ILibDBHelp dbhelp = dbHelpFactory.GetDBHelp("b32d655e-161c-477e-b892-a5eba98cc28b");
-                object obj = dbhelp.ExecuteScalar("select nickname from ACCOUNT");
+                ILibDBHelp dbhelp = dbHelpFactory.GetDBHelp();
+                object obj = dbhelp.ExecuteScalar("select AccoutNm from ACCOUNT");
                 DataTable dt = dbhelp.GetDataTable("select * from ACCOUNT");
             }
         }

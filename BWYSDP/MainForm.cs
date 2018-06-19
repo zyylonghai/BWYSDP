@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using BWYSDP.com;
+using SDPCRL.CORE;
 
 namespace BWYSDP
 {
@@ -41,6 +42,12 @@ namespace BWYSDP
             }
         }
 
+
+        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+
+        }
+
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             LibTreeNode libnode = (LibTreeNode)e.Node;
@@ -51,6 +58,7 @@ namespace BWYSDP
                 this.txtFuncId.Text = string.Empty;
                 this.txtFuncNm.Text = string.Empty;
                 this.txtDSPackage.Text = string.Empty;
+                this.txtbNodeType.Text = string.Empty;
             }
             else
             {
@@ -58,6 +66,7 @@ namespace BWYSDP
                 this.txtFuncId.Text = libnode.Name;
                 this.txtFuncNm.Text = libnode.Text;
                 this.txtDSPackage.Text = libnode.Package;
+                this.txtbNodeType.Text = ReSourceManage.GetResource(libnode.NodeType);
             }
         }
         /// <summary>
@@ -162,6 +171,7 @@ namespace BWYSDP
                             LibTreeNode ds = new LibTreeNode();
                             funcNode.CopyTo(ds);
                             ds.NodeType = NodeType.DataModel;
+                            
                             funcNode.Nodes.Add(ds);
                             //排版模型节点
                             LibTreeNode form = new LibTreeNode();
@@ -175,6 +185,7 @@ namespace BWYSDP
                             funcNode.Nodes.Add(permission);
 
                             this.treeView1.SelectedNode.Nodes.Add(funcNode);
+                            ModelDesignProject.AddXmlNode(funcNode);
                             #endregion
                             break;
                         case NodeType.SpectFunc:

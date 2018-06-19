@@ -132,7 +132,7 @@ namespace SDPCRL.COM.ModelManager
                     ds = new DataSource();
                     ds.DSID = info.DSID;
                     ds.DataSourceName = info.Name;
-                    ds.DSDisplayText = info.DISPLAYTEXT;
+                    //ds.DSDisplayText = info.DISPLAYTEXT;
                     ds.Package = info.PACKAGE;
                     dsList.Add(ds);
                 }

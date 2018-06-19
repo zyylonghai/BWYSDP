@@ -29,11 +29,11 @@ namespace SDPCRL.COM.ModelManager
             set { _datasourceName = value; }
         }
         /// <summary>数据源显示名称</summary>
-        public string DSDisplayText
-        {
-            get;
-            set;
-        }
+        //public string DSDisplayText
+        //{
+        //    get;
+        //    set;
+        //}
         /// <summary>所属包</summary>
         public string Package
         {
