@@ -93,7 +93,7 @@ namespace SDPCRL.COM.ModelManager
         #region 构造函数，公开属性
         public DefineTable this[string name]
         {
-            get 
+            get
             {
                 foreach (DefineTable item in _defTBList)
                 {
@@ -124,7 +124,7 @@ namespace SDPCRL.COM.ModelManager
         /// <returns></returns>
         public void Add(DefineTable defTable)
         {
-            
+
         }
 
         #endregion

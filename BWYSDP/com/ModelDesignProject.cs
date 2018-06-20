@@ -16,9 +16,13 @@ namespace BWYSDP.com
     public class ModelDesignProject
     {
         private static Hashtable _dataSourceContain = new Hashtable();
+        private static Hashtable _formSourceContain = new Hashtable();
+        private static Hashtable _permissionSourceContain = new Hashtable();
         private static DSList _dsList = new DSList();
 
         #region 公开函数
+
+        #region 旧代码
         /// <summary>创建数据源</summary>
         /// <param name="dsId"></param>
         public static void CreateDS(DataSource dataSource)
@@ -161,7 +165,7 @@ namespace BWYSDP.com
                 }
             }
         }
-
+        #endregion
 
         #region 2018.5.24
 
@@ -428,13 +432,17 @@ namespace BWYSDP.com
         private static void AddFuncNode(LibTreeNode parent, NodeType type)
         {
             LibTreeNode node = new LibTreeNode();
-            node.Text = parent.Name;
+            node.Text = parent.Text;
             node.Name = parent.Name;
             node.OriginalName = node.Name;
             node.NodeType = type;
             node.Package = parent.Package;
             parent.Nodes.Add(node);
         }
+
+        #region 模型对象操作
+        public 
+        #endregion
 
         #endregion
 

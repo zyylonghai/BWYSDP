@@ -45,7 +45,21 @@ namespace BWYSDP
 
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-
+            LibTreeNode node = (LibTreeNode)e.Node;
+            TabPage page = new TabPage(node.Text);
+            page.Name = string.Format("{0}{1}", node.Name, node.NodeType.ToString());
+            this.tabControl1.TabPages.Add(page);
+            this.tabControl1.SelectedTab = page;
+            switch (node.NodeType)
+            {
+                case NodeType.DataModel:
+                    break;
+                case NodeType.FormModel:
+                    break;
+                case NodeType.PermissionModel:
+                    break;
+            }
+            
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
