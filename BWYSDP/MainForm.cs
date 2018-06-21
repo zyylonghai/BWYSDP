@@ -185,21 +185,27 @@ namespace BWYSDP
                             LibTreeNode ds = new LibTreeNode();
                             funcNode.CopyTo(ds);
                             ds.NodeType = NodeType.DataModel;
-                            
-                            funcNode.Nodes.Add(ds);
+                            ModelDesignProject.CreatModelFile(ds);
+
+                            //funcNode.Nodes.Add(ds);
                             //排版模型节点
                             LibTreeNode form = new LibTreeNode();
                             funcNode.CopyTo(form);
                             form.NodeType = NodeType.FormModel;
-                            funcNode.Nodes.Add(form);
+                            ModelDesignProject.CreatModelFile(form);
+                            //funcNode.Nodes.Add(form);
                             //权限模型节点
                             LibTreeNode permission = new LibTreeNode();
                             funcNode.CopyTo(permission);
                             permission.NodeType = NodeType.PermissionModel;
-                            funcNode.Nodes.Add(permission);
-
+                            ModelDesignProject.CreatModelFile(permission);
+                            //funcNode.Nodes.Add(permission);
+                            LibTreeNode child = new LibTreeNode(string.Empty);
+                            child.Name = "-1";
+                            funcNode.Nodes.Add(child);
                             this.treeView1.SelectedNode.Nodes.Add(funcNode);
                             ModelDesignProject.AddXmlNode(funcNode);
+                            this.treeView1.SelectedNode = funcNode;
                             #endregion
                             break;
                         case NodeType.SpectFunc:

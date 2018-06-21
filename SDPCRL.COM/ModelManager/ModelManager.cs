@@ -19,7 +19,7 @@ namespace SDPCRL.COM.ModelManager
         }
 
         #region 公开函数
-
+        #region 旧代码
         public static DataSource DoGetDataSource(int dsId)
         {
             return DoGetDataSourceEx(dsId, Mode.ByDSID);
@@ -42,11 +42,18 @@ namespace SDPCRL.COM.ModelManager
         {
             return DoGetDataSourceList(ref dsinfolist);
         }
+        #endregion
+
+        public static DataSource GetDataSource(string dsId)
+        {
+            return InternalInstanceDataSource(dsId);
+        }
 
         #endregion
 
         #region 私有函数
 
+        #region 旧代码
         private static DataSource DoGetDataSourceEx(object dsNmOrId, Mode mode)
         {
             DataSource datasource = null;
@@ -153,7 +160,20 @@ namespace SDPCRL.COM.ModelManager
             #endregion
             return dsList;
         }
+        #endregion
 
+        private static DataSource InternalInstanceDataSource(string dataSourceId)
+        {
+            FileOperation fileOperation = new FileOperation();
+            fileOperation.FilePath = string.Format(@"{0}\{1}", SysConstManage.ModelPath, SysConstManage.DataSourceNm);
+            fileOperation.Encoding = LibEncoding.UTF8;
+            string dsxml = fileOperation.SearchAndRead(string.Format("{0}.xml", dataSourceId));
+            if (string.IsNullOrEmpty(dsxml))
+            {
+                return new DataSource();
+            }
+            return SerializerUtils.XMLDeSerialize<DataSource>(dsxml);
+        }
         #endregion
     }
 }

@@ -39,17 +39,18 @@ namespace SDPCRL.CORE.FileUtils
         /// <returns></returns>
         public string ReadFile()
         {
-            string _context = string.Empty;
+            //string _context = string.Empty;
 
-            try
-            {
-                _context = File.ReadAllText(_filePath, getEncoding());
-            }
-            catch (Exception ex)
-            {
-                ExceptionMessage = ex.Message;
-            }
-            return _context;
+            //try
+            //{
+            //    _context = File.ReadAllText(_filePath, getEncoding());
+            //}
+            //catch (Exception ex)
+            //{
+            //    ExceptionMessage = ex.Message;
+            //}
+            //return _context;
+            return DoRead(_filePath);
         }
 
         public bool WritText(string context)
@@ -69,6 +70,57 @@ namespace SDPCRL.CORE.FileUtils
         {
             return File.Exists(_filePath);
         }
+
+        public bool IsDirectory
+        {
+            get 
+            {
+              return  Directory.Exists(_filePath);
+            }
+        }
+
+        public string SearchAndRead(string filename)
+        {
+            string filepath = string.Empty;
+            string fileContent=string.Empty ;
+            if (IsDirectory)
+            {
+
+                string[] dirpath = Directory.GetDirectories(_filePath);
+                foreach (string path in dirpath)
+                {
+                    filepath = string.Format(@"{0}\{1}", path, filename);
+                    if (File.Exists(filepath))
+                    {
+                        fileContent = DoRead(filepath);
+                        break;
+                    }
+                }
+                return fileContent;
+                 
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+        public void CreateFile(bool cover)
+        {
+            if (cover)
+                File.Create(_filePath);
+            else
+            {
+                if (ExistsFile())
+                {
+                    throw new LibExceptionBase("文件已经存在");
+                }
+                else
+                {
+                    File.Create(_filePath);
+                }
+            }
+        }
+        //public string 
         #endregion
 
         #region 私有方法
@@ -99,6 +151,20 @@ namespace SDPCRL.CORE.FileUtils
             return encode;
         }
 
+        private string DoRead(string filePath)
+        {
+            string _context = string.Empty;
+
+            try
+            {
+                _context = File.ReadAllText(filePath, getEncoding());
+            }
+            catch (Exception ex)
+            {
+                ExceptionMessage = ex.Message;
+            }
+            return _context;
+        }
         #endregion
 
     }

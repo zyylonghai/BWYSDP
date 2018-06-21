@@ -45,7 +45,8 @@ namespace BWYSDP
                 node.OriginalName = node.Name;
                 node.Text = this.txtbFuncNm.Text.Trim();
                 node.Package = this.txtbPackage.Text.Trim();
-                param.Add("funcNode", node);
+                if (!param.ContainsKey("funcNode"))
+                    param.Add("funcNode", node);
             }
         }
 

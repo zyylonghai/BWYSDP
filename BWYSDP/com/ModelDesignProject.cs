@@ -15,7 +15,7 @@ namespace BWYSDP.com
     /// <summary>模型设计工厂类</summary>
     public class ModelDesignProject
     {
-        private static Hashtable _dataSourceContain = new Hashtable();
+        private static Hashtable _dataSourceContain = Hashtable.Synchronized(new Hashtable());
         private static Hashtable _formSourceContain = new Hashtable();
         private static Hashtable _permissionSourceContain = new Hashtable();
         private static DSList _dsList = new DSList();
@@ -409,6 +409,31 @@ namespace BWYSDP.com
             }
         }
 
+        public static void CreatModelFile(LibTreeNode treeNode)
+        {
+            FileOperation fileoperation = new FileOperation();
+            string dir = string.Empty;
+            switch (treeNode.NodeType)
+            {
+                case NodeType.DataModel :
+                    dir = SysConstManage.DataSourceNm;
+                    break;
+                case NodeType.FormModel :
+                    dir = SysConstManage.FormSourceNm;
+                    break;
+                case NodeType.PermissionModel:
+                    dir = SysConstManage.PermissionSourceNm;
+                    break;
+            }
+            fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, dir, treeNode.Package, treeNode.Name);
+            fileoperation.CreateFile(true);
+        }
+
+        public static void DeleteModelFile(LibTreeNode treeNode)
+        {
+ 
+        }
+
         private static List<NodeInfo> DoReadNodes(string express)
         {
             XMLOperation xmlOperation = new XMLOperation(SysConstManage.ModelTemp);
@@ -441,7 +466,20 @@ namespace BWYSDP.com
         }
 
         #region 模型对象操作
-        public 
+        public static DataSource GetDataSourceById(string dataSourceId)
+        {
+            if (_dataSourceContain.ContainsKey(dataSourceId))
+            {
+                return (DataSource)_dataSourceContain[dataSourceId];
+            }
+            else
+            {
+                DataSource ds=ModelManager.GetDataSource(dataSourceId);
+                _dataSourceContain.Add(dataSourceId, ds);
+                return ds;
+            }
+            
+        }
         #endregion
 
         #endregion
@@ -450,6 +488,7 @@ namespace BWYSDP.com
 
         #region 私有函数
 
+        #region 旧代码
         private static void SaveDataSource(DataSource ds)
         {
             DSInfo dsinfo = new DSInfo();
@@ -522,6 +561,7 @@ namespace BWYSDP.com
             }
             return result;
         }
+        #endregion
         #endregion
 
     }
