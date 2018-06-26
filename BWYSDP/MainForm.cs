@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using BWYSDP.com;
 using SDPCRL.CORE;
+using BWYSDP.Controls;
 
 namespace BWYSDP
 {
@@ -46,18 +47,31 @@ namespace BWYSDP
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             LibTreeNode node = (LibTreeNode)e.Node;
-            TabPage page = new TabPage(node.Text);
-            page.Name = string.Format("{0}{1}", node.Name, node.NodeType.ToString());
-            this.tabControl1.TabPages.Add(page);
-            this.tabControl1.SelectedTab = page;
-            switch (node.NodeType)
+            if (node.NodeType != NodeType.Class && node.NodeType !=NodeType.Func)
             {
-                case NodeType.DataModel:
-                    break;
-                case NodeType.FormModel:
-                    break;
-                case NodeType.PermissionModel:
-                    break;
+                string tabNm=string.Format("{0}{1}", node.Name, node.NodeType.ToString());
+                if (this.libTabControl1.TabPages.ContainsKey(tabNm))
+                {
+                    this.libTabControl1.SelectedTab = this.libTabControl1.TabPages[tabNm];
+                    return;
+                }
+                TabPage page = new TabPage(node.Text);
+                page.Name = string.Format("{0}{1}", node.Name, node.NodeType.ToString());
+
+                this.libTabControl1.TabPages.Add(page);
+                this.libTabControl1.SelectedTab = page;
+                switch (node.NodeType)
+                {
+                    case NodeType.DataModel:
+                        DataSourceControl dsControl = new DataSourceControl(node);
+                        dsControl.Dock = DockStyle.Fill;
+                        page.Controls.Add(dsControl);
+                        break;
+                    case NodeType.FormModel:
+                        break;
+                    case NodeType.PermissionModel:
+                        break;
+                }
             }
             
         }
@@ -187,22 +201,20 @@ namespace BWYSDP
                             ds.NodeType = NodeType.DataModel;
                             ModelDesignProject.CreatModelFile(ds);
 
-                            //funcNode.Nodes.Add(ds);
+                            funcNode.Nodes.Add(ds);
                             //排版模型节点
                             LibTreeNode form = new LibTreeNode();
                             funcNode.CopyTo(form);
                             form.NodeType = NodeType.FormModel;
                             ModelDesignProject.CreatModelFile(form);
-                            //funcNode.Nodes.Add(form);
+                            funcNode.Nodes.Add(form);
                             //权限模型节点
                             LibTreeNode permission = new LibTreeNode();
                             funcNode.CopyTo(permission);
                             permission.NodeType = NodeType.PermissionModel;
                             ModelDesignProject.CreatModelFile(permission);
-                            //funcNode.Nodes.Add(permission);
-                            LibTreeNode child = new LibTreeNode(string.Empty);
-                            child.Name = "-1";
-                            funcNode.Nodes.Add(child);
+                            funcNode.Nodes.Add(permission);
+
                             this.treeView1.SelectedNode.Nodes.Add(funcNode);
                             ModelDesignProject.AddXmlNode(funcNode);
                             this.treeView1.SelectedNode = funcNode;

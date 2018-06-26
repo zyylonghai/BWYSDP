@@ -36,7 +36,7 @@
             this.tbStruct_txtTableDisplayName = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.btselect = new System.Windows.Forms.Button();
-            this.comb_createTBStruct = new System.Windows.Forms.ComboBox();
+            this.tbStruct_combcreateTBStruct = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -105,24 +105,24 @@
             this.btselect.Text = "选择";
             this.btselect.UseVisualStyleBackColor = true;
             // 
-            // comb_createTBStruct
+            // tbStruct_combcreateTBStruct
             // 
-            this.comb_createTBStruct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comb_createTBStruct.FormattingEnabled = true;
-            this.comb_createTBStruct.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.comb_createTBStruct.Items.AddRange(new object[] {
+            this.tbStruct_combcreateTBStruct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tbStruct_combcreateTBStruct.FormattingEnabled = true;
+            this.tbStruct_combcreateTBStruct.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.tbStruct_combcreateTBStruct.Items.AddRange(new object[] {
             "是",
             "否"});
-            this.comb_createTBStruct.Location = new System.Drawing.Point(90, 92);
-            this.comb_createTBStruct.Name = "comb_createTBStruct";
-            this.comb_createTBStruct.Size = new System.Drawing.Size(161, 20);
-            this.comb_createTBStruct.TabIndex = 3;
+            this.tbStruct_combcreateTBStruct.Location = new System.Drawing.Point(90, 92);
+            this.tbStruct_combcreateTBStruct.Name = "tbStruct_combcreateTBStruct";
+            this.tbStruct_combcreateTBStruct.Size = new System.Drawing.Size(161, 20);
+            this.tbStruct_combcreateTBStruct.TabIndex = 3;
             // 
             // TBStructProperty
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.comb_createTBStruct);
+            this.Controls.Add(this.tbStruct_combcreateTBStruct);
             this.Controls.Add(this.btselect);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.tbStruct_txtTableDisplayName);
@@ -148,6 +148,6 @@
         private System.Windows.Forms.TextBox tbStruct_txtTableDisplayName;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Button btselect;
-        private System.Windows.Forms.ComboBox comb_createTBStruct;
+        private System.Windows.Forms.ComboBox tbStruct_combcreateTBStruct;
     }
 }

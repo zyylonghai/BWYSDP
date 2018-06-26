@@ -44,20 +44,20 @@
             this.txtDSPackage = new System.Windows.Forms.TextBox();
             this.txtFuncId = new System.Windows.Forms.TextBox();
             this.FuncName = new System.Windows.Forms.Label();
+            this.txtbNodeType = new System.Windows.Forms.TextBox();
             this.txtFuncNm = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.FuncNm = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.libTabControl1 = new BWYSDP.Controls.LibTabControl();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CreatClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CreateFuncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addfuncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtbNodeType = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -220,6 +220,14 @@
             this.FuncName.TabIndex = 17;
             this.FuncName.Text = "功能ID";
             // 
+            // txtbNodeType
+            // 
+            this.txtbNodeType.Location = new System.Drawing.Point(110, 111);
+            this.txtbNodeType.Name = "txtbNodeType";
+            this.txtbNodeType.ReadOnly = true;
+            this.txtbNodeType.Size = new System.Drawing.Size(142, 21);
+            this.txtbNodeType.TabIndex = 16;
+            // 
             // txtFuncNm
             // 
             this.txtFuncNm.Location = new System.Drawing.Point(110, 75);
@@ -236,6 +244,15 @@
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 13;
             this.label2.Text = "所 属 包：";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 115);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "功能类型";
             // 
             // FuncNm
             // 
@@ -258,21 +275,24 @@
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.tabControl1);
+            this.panel5.Controls.Add(this.libTabControl1);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(671, 530);
             this.panel5.TabIndex = 1;
             // 
-            // tabControl1
+            // libTabControl1
             // 
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(671, 530);
-            this.tabControl1.TabIndex = 0;
+            this.libTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.libTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.libTabControl1.ItemSize = new System.Drawing.Size(250, 25);
+            this.libTabControl1.Location = new System.Drawing.Point(0, 0);
+            this.libTabControl1.Name = "libTabControl1";
+            this.libTabControl1.Padding = new System.Drawing.Point(22, 11);
+            this.libTabControl1.SelectedIndex = 0;
+            this.libTabControl1.Size = new System.Drawing.Size(671, 530);
+            this.libTabControl1.TabIndex = 0;
             // 
             // contextMenuStrip1
             // 
@@ -315,23 +335,6 @@
             this.RefreshToolStripMenuItem.Name = "RefreshToolStripMenuItem";
             this.RefreshToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.RefreshToolStripMenuItem.Text = "刷新";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 115);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "功能类型";
-            // 
-            // txtbNodeType
-            // 
-            this.txtbNodeType.Location = new System.Drawing.Point(110, 111);
-            this.txtbNodeType.Name = "txtbNodeType";
-            this.txtbNodeType.ReadOnly = true;
-            this.txtbNodeType.Size = new System.Drawing.Size(142, 21);
-            this.txtbNodeType.TabIndex = 16;
             // 
             // MainForm
             // 
@@ -384,7 +387,6 @@
         private System.Windows.Forms.TextBox txtFuncNm;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label FuncNm;
-        private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem CreatClassToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CreateFuncToolStripMenuItem;
@@ -395,5 +397,6 @@
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.TextBox txtbNodeType;
         private System.Windows.Forms.Label label1;
+        private Controls.LibTabControl libTabControl1;
     }
 }

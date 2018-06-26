@@ -68,6 +68,18 @@ namespace SDPCRL.CORE
             return ReSourceManage.GetResource(BooleanValue.False);
         }
 
+        public static string ToString(object obj)
+        {
+            if (obj == null)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return obj.ToString();
+            }
+        }
+
         private enum BooleanValue
         {
             [LibReSource("是")]

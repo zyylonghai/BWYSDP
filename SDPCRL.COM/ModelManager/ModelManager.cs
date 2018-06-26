@@ -44,7 +44,7 @@ namespace SDPCRL.COM.ModelManager
         }
         #endregion
 
-        public static DataSource GetDataSource(string dsId)
+        public static LibDataSource GetDataSource(string dsId)
         {
             return InternalInstanceDataSource(dsId);
         }
@@ -162,7 +162,7 @@ namespace SDPCRL.COM.ModelManager
         }
         #endregion
 
-        private static DataSource InternalInstanceDataSource(string dataSourceId)
+        private static LibDataSource InternalInstanceDataSource(string dataSourceId)
         {
             FileOperation fileOperation = new FileOperation();
             fileOperation.FilePath = string.Format(@"{0}\{1}", SysConstManage.ModelPath, SysConstManage.DataSourceNm);
@@ -170,9 +170,10 @@ namespace SDPCRL.COM.ModelManager
             string dsxml = fileOperation.SearchAndRead(string.Format("{0}.xml", dataSourceId));
             if (string.IsNullOrEmpty(dsxml))
             {
-                return new DataSource();
+
+                return new LibDataSource {DSID=dataSourceId };
             }
-            return SerializerUtils.XMLDeSerialize<DataSource>(dsxml);
+            return SerializerUtils.XMLDeSerialize<LibDataSource>(dsxml);
         }
         #endregion
     }

@@ -47,6 +47,47 @@ namespace SDPCRL.COM.ModelManager
         
     }
 
+    /// <summary>自定义数据表</summary>
+    [Serializable]
+    public class LibDefineTable
+    {
+        #region 私有属性
+        private string _tableName;
+        #endregion
+
+        #region 公开属性
+        /// <summary>名称</summary>
+        [LibXmlAttribute("DefTB_txtTableName")]
+        public string TableName
+        {
+            get { return _tableName; }
+            set { _tableName = value; }
+        }
+        /// <summary>编号 </summary>
+        [LibXmlAttribute("DefTB_txtID")]
+        public int ID
+        {
+            get;
+            set;
+        }
+        ///<summary>显示名称</summary>
+        [LibXmlAttribute("DefTB_txtDisplayName")]
+        public string DisplayName
+        {
+            get;
+            set;
+        }
+        /// <summary>表结构集合</summary>
+        public LibCollection<LibDataTableStruct> TableStruct
+        {
+            get;
+            set;
+        }
+        #endregion
+
+
+    }
+
     /// <summary>数据表结构</summary>
     [Serializable]
     public class DataTableStruct
@@ -67,7 +108,7 @@ namespace SDPCRL.COM.ModelManager
             set;
         }
         ///<summary>忽略创建表结构</summary>
-        [LibXmlAttribute("comb_createTBStruct")]
+        [LibXmlAttribute("tbStruct_combcreateTBStruct")]
         public bool Ignore
         {
             get;
@@ -81,6 +122,42 @@ namespace SDPCRL.COM.ModelManager
         }
 
         
+    }
+
+    /// <summary>数据表结构</summary>
+    [Serializable]
+    public class LibDataTableStruct
+    {
+
+        ///<summary>名称</summary>
+        [LibXmlAttribute("tbStruct_txtTableName")]
+        public string Name
+        {
+            get;
+            set;
+        }
+        ///<summary>显示名称</summary>
+        [LibXmlAttribute("tbStruct_txtTableDisplayName")]
+        public string DisplayName
+        {
+            get;
+            set;
+        }
+        ///<summary>忽略创建表结构</summary>
+        [LibXmlAttribute("tbStruct_combcreateTBStruct")]
+        public bool Ignore
+        {
+            get;
+            set;
+        }
+        ///<summary>字段集 </summary>
+        public LibCollection<LibField> Fields
+        {
+            get;
+            set;
+        }
+
+
     }
 
     public class DefTableCollection

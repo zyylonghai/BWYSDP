@@ -49,6 +49,18 @@
     <Compile Include="BLL\DataSourceInfoBLL.cs" />
     <Compile Include="com\ExceptionManager.cs" />
     <Compile Include="com\ModelDesignProject.cs" />
+    <Compile Include="Controls\DataSourceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataSourceControl.Designer.cs">
+      <DependentUpon>DataSourceControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataSourceProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataSourceProperty.Designer.cs">
+      <DependentUpon>DataSourceProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DefFieldProperty.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -72,6 +84,9 @@
     </Compile>
     <Compile Include="Controls\DropDownList.Designer.cs">
       <DependentUpon>DropDownList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LibTabControl.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\TBStructProperty.cs">
       <SubType>UserControl</SubType>
@@ -127,6 +142,12 @@
       <DependentUpon>PromptForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\DataSourceControl.resx">
+      <DependentUpon>DataSourceControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataSourceProperty.resx">
+      <DependentUpon>DataSourceProperty.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\DefFieldProperty.resx">
       <DependentUpon>DefFieldProperty.cs</DependentUpon>
     </EmbeddedResource>
@@ -168,6 +189,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -190,6 +212,9 @@
       <Name>SDPCRL.CORE</Name>
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

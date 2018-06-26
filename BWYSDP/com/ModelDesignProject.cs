@@ -133,6 +133,7 @@ namespace BWYSDP.com
         {
 
         }
+        #endregion
 
         /// <summary>根据控件类型，设置控件的值</summary>
         /// <typeparam name="T"></typeparam>
@@ -159,13 +160,14 @@ namespace BWYSDP.com
                                 item.Text = LibSysUtils.BooleanToText((bool)info.GetValue(valueType, null));
                             }
                             else
-                                item.Text = info.GetValue(valueType, null).ToString();
+                            {
+                                item.Text = LibSysUtils.ToString(info.GetValue(valueType, null));
+                            }
                         }
                     }
                 }
             }
         }
-        #endregion
 
         #region 2018.5.24
 
@@ -409,6 +411,8 @@ namespace BWYSDP.com
             }
         }
 
+        /// <summary> 创建模型文件</summary>
+        /// <param name="treeNode"></param>
         public static void CreatModelFile(LibTreeNode treeNode)
         {
             FileOperation fileoperation = new FileOperation();
@@ -456,6 +460,13 @@ namespace BWYSDP.com
 
         private static void AddFuncNode(LibTreeNode parent, NodeType type)
         {
+            foreach (LibTreeNode item in parent.Nodes)
+            {
+                if (string.Compare(item.Name, parent.Name) == 0&&item.NodeType==type)
+                {
+                    return;
+                }
+            }
             LibTreeNode node = new LibTreeNode();
             node.Text = parent.Text;
             node.Name = parent.Name;
@@ -466,15 +477,15 @@ namespace BWYSDP.com
         }
 
         #region 模型对象操作
-        public static DataSource GetDataSourceById(string dataSourceId)
+        public static LibDataSource GetDataSourceById(string dataSourceId)
         {
             if (_dataSourceContain.ContainsKey(dataSourceId))
             {
-                return (DataSource)_dataSourceContain[dataSourceId];
+                return (LibDataSource)_dataSourceContain[dataSourceId];
             }
             else
             {
-                DataSource ds=ModelManager.GetDataSource(dataSourceId);
+                LibDataSource ds = ModelManager.GetDataSource(dataSourceId);
                 _dataSourceContain.Add(dataSourceId, ds);
                 return ds;
             }
@@ -635,6 +646,20 @@ namespace BWYSDP.com
         SpectFunc = 5,
         /// <summary>报表功能</summary>
         [LibReSource("报表功能节点")]
-        ReportFunc = 6
+        ReportFunc = 6,
+
+        /// <summary>数据集</summary>
+        [LibReSource("数据集")]
+        DefDataSet=7,
+        /// <summary>自定义表</summary>
+         [LibReSource("自定义表")]
+        DefindTable=8,
+        /// <summary>数据结构表</summary>
+         [LibReSource("数据结构表")]
+        TableStruct=9,
+        /// <summary>字段</summary>
+        [LibReSource("字段")]
+        Field=10
+
     }
 }

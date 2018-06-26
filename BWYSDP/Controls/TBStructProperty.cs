@@ -23,7 +23,7 @@ namespace BWYSDP.Controls
             InitializeComponent();
             this.tbStruct_txtTableName.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
             this.tbStruct_txtTableDisplayName.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
-            this.comb_createTBStruct.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
+            this.tbStruct_combcreateTBStruct.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
 
         }
 
