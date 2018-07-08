@@ -19,7 +19,7 @@ namespace BWYSDP.Controls
            : base()  
        {  
            //this.axDrawingControl1 = axDrawingControl;  
-           this.ItemSize = new Size(250, 25); //设置选项卡标签的大小,可改变高不可改变宽    
+           this.ItemSize = new Size(300, 25); //设置选项卡标签的大小,可改变高不可改变宽    
            this.Appearance = TabAppearance.Normal; //选项卡的显示模式   
            this.DrawMode = TabDrawMode.OwnerDrawFixed;
            icon = Properties.Resources.close;  

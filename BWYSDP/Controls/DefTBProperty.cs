@@ -13,69 +13,82 @@ using BWYSDP.com;
 
 namespace BWYSDP.Controls
 {
+    /// <summary>自定义表属性控件对象</summary>
     public partial class DefTBProperty : UserControl
     {
-        private int _dsId;
-        private DefineTable _defineTable;
-        private TreeNode _defTBNode;
+        //private int _dsId;
+        private LibDefineTable _defineTable;
+        private LibTreeNode _defTBNode;
         public DefTBProperty()
         {
             InitializeComponent();
-            this.DefTB_txtTableName.LostFocus += new EventHandler(DefTB_PropertyTextBox_LostFocus);
-            this.DefTB_txtDisplayName.LostFocus += new EventHandler(DefTB_PropertyTextBox_LostFocus);
+            InitializeControls();
+            //this.DefTB_txtTableName.LostFocus += new EventHandler(DefTB_PropertyTextBox_LostFocus);
+            //this.DefTB_txtDisplayName.LostFocus += new EventHandler(DefTB_PropertyTextBox_LostFocus);
         }
-
-        void DefTB_PropertyTextBox_LostFocus(object sender, EventArgs e)
+        public DefTBProperty(string name)
+            : this()
         {
-            SetPropertyValue(sender);
-
+            this.Name = name;
         }
-        public DefTBProperty(int dsId)
-            :this()
+
+        private void InitializeControls()
         {
-            this._dsId = dsId;
+            ModelDesignProject.InternalBindControls<LibDefineTable>(this);
         }
 
-        public void SetPropertyValue(DefineTable defTB,TreeNode defTBNode)
+        //void DefTB_PropertyTextBox_LostFocus(object sender, EventArgs e)
+        //{
+        //    //SetPropertyValue(sender);
+
+        //}
+
+
+        public void SetPropertyValue(LibDefineTable defTB, LibTreeNode defTBNode)
         {
             _defineTable = defTB;
             _defTBNode = defTBNode;
-            ModelDesignProject.DoSetPropertyValue<DefineTable>(this.Controls, defTB);
+            ModelDesignProject.DoSetPropertyValue<LibDefineTable>(this.Controls, defTB);
         }
 
-        private void SetPropertyValue(object valueObj)
+        public void GetControlsValue()
         {
-            string propertyName = string.Empty;
-            object propertyValue=null ;
-            switch (valueObj.GetType().Name)
-            {
-                case "TextBox":
-                    TextBox obj = (TextBox)valueObj;
-                    propertyName = obj.Name;
-                    propertyValue=obj .Text;
-                    break;
-            }
-            if (_defineTable != null)
-            {
-                PropertyInfo[] propertis = _defineTable.GetType().GetProperties();
-                foreach (PropertyInfo p in propertis)
-                {
-                    object[] attrArray = p.GetCustomAttributes(typeof(LibXmlAttributeAttribute), true);
-                    if (attrArray.Length > 0)
-                    {
-                        LibXmlAttributeAttribute attr = attrArray[0] as LibXmlAttributeAttribute;
-                        if (string.Compare(attr.ControlNm, propertyName, false) == 0)
-                        {
-                            p.SetValue(_defineTable, propertyValue, null);
-                            if (string.Compare(propertyName, "DefTB_txtTableName", true) == 0)
-                                _defTBNode.Name = propertyValue.ToString();//更新数节点的名称
-                            else if (string.Compare(propertyName, "DefTB_txtDisplayName", true) == 0)
-                                _defTBNode.Text = propertyValue.ToString(); //更新数节点的显示名称
-                            break;
-                        }
-                    }
-                }
-            }
+            ModelDesignProject.DoGetControlsValue(this.Controls, _defineTable);
         }
+
+        //private void SetPropertyValue(object valueObj)
+        //{
+        //    string propertyName = string.Empty;
+        //    object propertyValue=null ;
+        //    switch (valueObj.GetType().Name)
+        //    {
+        //        case "TextBox":
+        //            TextBox obj = (TextBox)valueObj;
+        //            propertyName = obj.Name;
+        //            propertyValue=obj .Text;
+        //            break;
+        //    }
+        //    if (_defineTable != null)
+        //    {
+        //        PropertyInfo[] propertis = _defineTable.GetType().GetProperties();
+        //        foreach (PropertyInfo p in propertis)
+        //        {
+        //            object[] attrArray = p.GetCustomAttributes(typeof(LibXmlAttributeAttribute), true);
+        //            if (attrArray.Length > 0)
+        //            {
+        //                LibXmlAttributeAttribute attr = attrArray[0] as LibXmlAttributeAttribute;
+        //                if (string.Compare(attr.ControlNm, propertyName, false) == 0)
+        //                {
+        //                    p.SetValue(_defineTable, propertyValue, null);
+        //                    if (string.Compare(propertyName, "DefTB_txtTableName", true) == 0)
+        //                        _defTBNode.Name = propertyValue.ToString();//更新数节点的名称
+        //                    else if (string.Compare(propertyName, "DefTB_txtDisplayName", true) == 0)
+        //                        _defTBNode.Text = propertyValue.ToString(); //更新数节点的显示名称
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

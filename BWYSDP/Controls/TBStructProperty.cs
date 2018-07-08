@@ -13,83 +13,96 @@ using SDPCRL.CORE;
 
 namespace BWYSDP.Controls
 {
+    /// <summary>表数据结构控件对象</summary>
     public partial class TBStructProperty : UserControl
     {
-        private int _dsId;
-        private DataTableStruct _tableStruct;
+        //private int _dsId;
+        private LibDataTableStruct _tableStruct;
         private TreeNode _tableStructNode;
         public TBStructProperty()
         {
             InitializeComponent();
-            this.tbStruct_txtTableName.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
-            this.tbStruct_txtTableDisplayName.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
-            this.tbStruct_combcreateTBStruct.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
+            InitializeControls();
+            //this.tbStruct_txtTableName.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
+            //this.tbStruct_txtTableDisplayName.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
+            //this.tbStruct_combcreateTBStruct.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
 
         }
+        public TBStructProperty(string  name)
+            : this()
+        {
+            this.Name = name;
+            //this._dsId = dsId;
+        }
 
-        void tbStruct_PropertyTextBox_LostFocus(object sender, EventArgs e)
+        private void InitializeControls()
         {
-            SetPropertyValue(sender);
+            ModelDesignProject.InternalBindControls<LibDataTableStruct>(this);
         }
-        public TBStructProperty(int dsId)
-            :this()
-        {
-            this._dsId = dsId;
-        }
+
+        //void tbStruct_PropertyTextBox_LostFocus(object sender, EventArgs e)
+        //{
+        //    SetPropertyValue(sender);
+        //}
 
         /// <summary>设置属性值</summary>
         /// <param name="tableStruct"></param>
-        public void SetPropertyValue(DataTableStruct tableStruct,TreeNode tableStructNode)
+        public void SetPropertyValue(LibDataTableStruct tableStruct, TreeNode tableStructNode)
         {
             _tableStruct = tableStruct;
             _tableStructNode = tableStructNode;
-            ModelDesignProject.DoSetPropertyValue<DataTableStruct>(this.Controls, tableStruct);
+            ModelDesignProject.DoSetPropertyValue<LibDataTableStruct>(this.Controls, tableStruct);
         }
 
-        /// <summary></summary>
-        /// <param name="valueObj"></param>
-        private void SetPropertyValue(object valueObj)
+        public void GetControlsValue()
         {
-            string propertyName = string.Empty;
-            object propertyValue = null;
-            switch (valueObj.GetType().Name)
-            {
-                case "TextBox":
-                    TextBox obj = (TextBox)valueObj;
-                    propertyName = obj.Name;
-                    propertyValue = obj.Text;
-                    break;
-                case "ComboBox":
-                    ComboBox combobj = (ComboBox)valueObj;
-                    if (string.Compare(combobj.Name, "comb_createTBStruct", true) == 0)
-                    {
-                        propertyName = combobj.Name;
-                        //if(combobj.SelectedText
-                        propertyValue = LibSysUtils .ToBooLean(combobj.Text);
-                    }
-                    break;
-            }
-            if (_tableStruct != null)
-            {
-                PropertyInfo[] propertis = _tableStruct.GetType().GetProperties();
-                foreach (PropertyInfo p in propertis)
-                {
-                    object[] attrArray = p.GetCustomAttributes(typeof(LibXmlAttributeAttribute), true);
-                    if (attrArray.Length > 0)
-                    {
-                        LibXmlAttributeAttribute attr = attrArray[0] as LibXmlAttributeAttribute;
-                        if (string.Compare(attr.ControlNm, propertyName, false) == 0)
-                        {
-                            p.SetValue(_tableStruct, propertyValue, null);
-                            if (string.Compare(propertyName, "tbStruct_txtTableName", true) == 0)
-                                _tableStructNode.Name = propertyValue.ToString();//更新数节点的名称
-                            else if (string.Compare(propertyName, "tbStruct_txtTableDisplayName", true) == 0)
-                                _tableStructNode.Text = propertyValue.ToString(); //更新数节点的显示名称
-                            break;
-                        }
-                    }
-                }
-            }
+            ModelDesignProject.DoGetControlsValue(this.Controls, _tableStruct);
         }
+
+        ///// <summary></summary>
+        ///// <param name="valueObj"></param>
+        //private void SetPropertyValue(object valueObj)
+        //{
+        //    string propertyName = string.Empty;
+        //    object propertyValue = null;
+        //    switch (valueObj.GetType().Name)
+        //    {
+        //        case "TextBox":
+        //            TextBox obj = (TextBox)valueObj;
+        //            propertyName = obj.Name;
+        //            propertyValue = obj.Text;
+        //            break;
+        //        case "ComboBox":
+        //            ComboBox combobj = (ComboBox)valueObj;
+        //            if (string.Compare(combobj.Name, "comb_createTBStruct", true) == 0)
+        //            {
+        //                propertyName = combobj.Name;
+        //                //if(combobj.SelectedText
+        //                propertyValue = LibSysUtils .ToBooLean(combobj.Text);
+        //            }
+        //            break;
+        //    }
+        //    if (_tableStruct != null)
+        //    {
+        //        PropertyInfo[] propertis = _tableStruct.GetType().GetProperties();
+        //        foreach (PropertyInfo p in propertis)
+        //        {
+        //            object[] attrArray = p.GetCustomAttributes(typeof(LibXmlAttributeAttribute), true);
+        //            if (attrArray.Length > 0)
+        //            {
+        //                LibXmlAttributeAttribute attr = attrArray[0] as LibXmlAttributeAttribute;
+        //                if (string.Compare(attr.ControlNm, propertyName, false) == 0)
+        //                {
+        //                    p.SetValue(_tableStruct, propertyValue, null);
+        //                    if (string.Compare(propertyName, "tbStruct_txtTableName", true) == 0)
+        //                        _tableStructNode.Name = propertyValue.ToString();//更新数节点的名称
+        //                    else if (string.Compare(propertyName, "tbStruct_txtTableDisplayName", true) == 0)
+        //                        _tableStructNode.Text = propertyValue.ToString(); //更新数节点的显示名称
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

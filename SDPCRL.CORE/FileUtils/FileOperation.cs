@@ -106,8 +106,9 @@ namespace SDPCRL.CORE.FileUtils
         }
         public void CreateFile(bool cover)
         {
+            FileStream stream=null;
             if (cover)
-                File.Create(_filePath);
+               stream = File.Create(_filePath);
             else
             {
                 if (ExistsFile())
@@ -116,9 +117,11 @@ namespace SDPCRL.CORE.FileUtils
                 }
                 else
                 {
-                    File.Create(_filePath);
+                   stream = File.Create(_filePath);
                 }
             }
+            if (stream != null)
+                stream.Close();
         }
         //public string 
         #endregion

@@ -222,14 +222,14 @@ namespace BWYSDP
                 this.tbStructProperty1.Visible = false;
                 this.defFieldProperty1.Visible = false;
                 this.defTBProperty1.Visible = true;
-                this.defTBProperty1.SetPropertyValue(GetDefTabale(node.Name), node);
+                //this.defTBProperty1.SetPropertyValue(GetDefTabale(node.Name), node);
             }
             else if (node.Level == 2) //第二级节点 即表结构 节点
             {
                 this.defTBProperty1.Visible = false;
                 this.defFieldProperty1.Visible = false;
                 this.tbStructProperty1.Visible = true;
-                this.tbStructProperty1.SetPropertyValue(GetDTStruct(node.Name), node);
+                //this.tbStructProperty1.SetPropertyValue(GetDTStruct(node.Name), node);
 
             }
             else if (node.Level == 3)//第三级节点，即字段属性

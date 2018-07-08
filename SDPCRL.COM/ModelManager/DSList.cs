@@ -15,13 +15,13 @@ namespace SDPCRL.COM.ModelManager
     [Serializable]
     public class DSInfo
     {
-        [LibXmlAttribute("DSID")]
+        [LibAttribute("DSID")]
         public int DSID { get; set; }
-        [LibXmlAttribute("DSName")]
+        [LibAttribute("DSName")]
         public string Name { get; set; }
-        [LibXmlAttribute("DSDisplay")]
+        [LibAttribute("DSDisplay")]
         public string DISPLAYTEXT { get; set; }
-        [LibXmlAttribute("DSPackage")]
+        [LibAttribute("DSPackage")]
         public string PACKAGE { get; set; }
     }
 }

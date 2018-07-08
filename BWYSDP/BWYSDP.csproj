@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="BLL\DataSourceInfoBLL.cs" />
     <Compile Include="com\ExceptionManager.cs" />
+    <Compile Include="com\LibItem.cs" />
+    <Compile Include="com\LibTreeNode.cs" />
     <Compile Include="com\ModelDesignProject.cs" />
     <Compile Include="Controls\DataSourceControl.cs">
       <SubType>UserControl</SubType>

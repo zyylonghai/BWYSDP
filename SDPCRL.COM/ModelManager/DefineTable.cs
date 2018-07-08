@@ -17,21 +17,21 @@ namespace SDPCRL.COM.ModelManager
 
         #region 公开属性
         /// <summary>名称</summary>
-        [LibXmlAttribute("DefTB_txtTableName")]
+        [LibAttribute("DefTB_txtTableName")]
         public string TableName
         {
             get { return _tableName; }
             set { _tableName = value; }
         }
         /// <summary>编号 </summary>
-        [LibXmlAttribute("DefTB_txtID")]
+        [LibAttribute("DefTB_txtID")]
         public int ID
         {
             get;
             set;
         }
         ///<summary>显示名称</summary>
-        [LibXmlAttribute("DefTB_txtDisplayName")]
+        [LibAttribute("DefTB_txtDisplayName")]
         public string DisplayName
         {
             get;set;
@@ -56,22 +56,25 @@ namespace SDPCRL.COM.ModelManager
         #endregion
 
         #region 公开属性
+        /// <summary>编号 </summary>
+        [LibAttribute("DefTB_txtID", LibControlType.TextBox, "编号", true)]
+        [XmlAttribute]
+        public string ID
+        {
+            get;
+            set;
+        }
         /// <summary>名称</summary>
-        [LibXmlAttribute("DefTB_txtTableName")]
+        [LibAttribute("DefTB_txtTableName",LibControlType.TextBox ,"表名")]
+        [XmlAttribute]
         public string TableName
         {
             get { return _tableName; }
             set { _tableName = value; }
         }
-        /// <summary>编号 </summary>
-        [LibXmlAttribute("DefTB_txtID")]
-        public int ID
-        {
-            get;
-            set;
-        }
         ///<summary>显示名称</summary>
-        [LibXmlAttribute("DefTB_txtDisplayName")]
+        [LibAttribute("DefTB_txtDisplayName", LibControlType.TextBox, "显示名称")]
+        [XmlAttribute]
         public string DisplayName
         {
             get;
@@ -94,21 +97,21 @@ namespace SDPCRL.COM.ModelManager
     {
         
         ///<summary>名称</summary>
-        [LibXmlAttribute("tbStruct_txtTableName")]
+        [LibAttribute("tbStruct_txtTableName")]
         public string Name
         {
             get;
             set;
         }
         ///<summary>显示名称</summary>
-        [LibXmlAttribute("tbStruct_txtTableDisplayName")]
+        [LibAttribute("tbStruct_txtTableDisplayName")]
         public string DisplayName
         {
             get;
             set;
         }
         ///<summary>忽略创建表结构</summary>
-        [LibXmlAttribute("tbStruct_combcreateTBStruct")]
+        [LibAttribute("tbStruct_combcreateTBStruct")]
         public bool Ignore
         {
             get;
@@ -128,28 +131,41 @@ namespace SDPCRL.COM.ModelManager
     [Serializable]
     public class LibDataTableStruct
     {
-
+        /// <summary>编号 </summary>
+        [LibAttribute("tbStruct_txtID", LibControlType.TextBox, "编号", true)]
+        [XmlAttribute]
+        public string ID
+        {
+            get;
+            set;
+        }
         ///<summary>名称</summary>
-        [LibXmlAttribute("tbStruct_txtTableName")]
+        [LibAttribute("tbStruct_txtTableName", LibControlType.TextBox, "名称")]
         public string Name
         {
             get;
             set;
         }
         ///<summary>显示名称</summary>
-        [LibXmlAttribute("tbStruct_txtTableDisplayName")]
+        [LibAttribute("tbStruct_txtTableDisplayName", LibControlType.TextBox, "显示名称")]
         public string DisplayName
         {
             get;
             set;
         }
         ///<summary>忽略创建表结构</summary>
-        [LibXmlAttribute("tbStruct_combcreateTBStruct")]
+        [LibAttribute("tbStruct_combcreateTBStruct",LibControlType .Combox ,"创建结构")]
         public bool Ignore
         {
             get;
             set;
         }
+        /// <summary>
+        /// 主键集
+        /// </summary>
+        [LibAttribute("tbStruct_txtPrimarykey", LibControlType.TextAndBotton, "主键")]
+        public List <string > PrimaryKey { get; set; }
+
         ///<summary>字段集 </summary>
         public LibCollection<LibField> Fields
         {

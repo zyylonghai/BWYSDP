@@ -80,6 +80,18 @@ namespace SDPCRL.CORE
             }
         }
 
+        public static T ConvertToEnumType<T>(string enumNm)
+        {
+            foreach (T item in Enum.GetValues(typeof(T)))
+            {
+                if (string.Compare(item.ToString(), enumNm)==0)
+                {
+                    return  item;
+                }
+            }
+            return default(T);
+        }
+
         private enum BooleanValue
         {
             [LibReSource("是")]

@@ -44,9 +44,9 @@ namespace SDPCRL.COM.ModelManager
         }
         #endregion
 
-        public static LibDataSource GetDataSource(string dsId)
+        public static LibDataSource GetDataSource(string dsNm)
         {
-            return InternalInstanceDataSource(dsId);
+            return InternalInstanceDataSource(dsNm);
         }
 
         #endregion

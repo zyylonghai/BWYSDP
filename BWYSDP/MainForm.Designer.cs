@@ -30,10 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.CreatClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CreateFuncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addfuncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -52,14 +54,13 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.libTabControl1 = new BWYSDP.Controls.LibTabControl();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.CreatClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CreateFuncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addfuncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.RefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.SaveBtn = new System.Windows.Forms.ToolStripButton();
+            this.CreateTableStructBtn = new System.Windows.Forms.ToolStripButton();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveAllBtn = new System.Windows.Forms.ToolStripButton();
+            this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -69,43 +70,51 @@
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel5.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // contextMenuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件ToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(960, 25);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CreatClassToolStripMenuItem,
+            this.CreateFuncToolStripMenuItem,
+            this.addfuncToolStripMenuItem,
+            this.deleteToolStripMenuItem,
+            this.RefreshToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 114);
+            this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
             // 
-            // 文件ToolStripMenuItem
+            // CreatClassToolStripMenuItem
             // 
-            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.文件ToolStripMenuItem.Text = "文件";
+            this.CreatClassToolStripMenuItem.Name = "CreatClassToolStripMenuItem";
+            this.CreatClassToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.CreatClassToolStripMenuItem.Text = "新建分类";
             // 
-            // toolStrip1
+            // CreateFuncToolStripMenuItem
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 25);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(960, 40);
-            this.toolStrip1.TabIndex = 1;
-            this.toolStrip1.Text = "toolStrip1";
+            this.CreateFuncToolStripMenuItem.Name = "CreateFuncToolStripMenuItem";
+            this.CreateFuncToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.CreateFuncToolStripMenuItem.Text = "新建功能";
             // 
-            // toolStripButton1
+            // addfuncToolStripMenuItem
             // 
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(36, 37);
-            this.toolStripButton1.Text = "测试";
-            this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.addfuncToolStripMenuItem.Name = "addfuncToolStripMenuItem";
+            this.addfuncToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.addfuncToolStripMenuItem.Text = "添加功能";
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.deleteToolStripMenuItem.Text = "删除";
+            // 
+            // RefreshToolStripMenuItem
+            // 
+            this.RefreshToolStripMenuItem.Name = "RefreshToolStripMenuItem";
+            this.RefreshToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.RefreshToolStripMenuItem.Text = "刷新";
             // 
             // splitContainer1
             // 
@@ -294,47 +303,61 @@
             this.libTabControl1.Size = new System.Drawing.Size(671, 530);
             this.libTabControl1.TabIndex = 0;
             // 
-            // contextMenuStrip1
+            // toolStrip1
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CreatClassToolStripMenuItem,
-            this.CreateFuncToolStripMenuItem,
-            this.addfuncToolStripMenuItem,
-            this.deleteToolStripMenuItem,
-            this.RefreshToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 114);
-            this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SaveBtn,
+            this.SaveAllBtn,
+            this.CreateTableStructBtn});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 25);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(960, 40);
+            this.toolStrip1.TabIndex = 1;
+            this.toolStrip1.Text = "toolStrip1";
             // 
-            // CreatClassToolStripMenuItem
+            // SaveBtn
             // 
-            this.CreatClassToolStripMenuItem.Name = "CreatClassToolStripMenuItem";
-            this.CreatClassToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.CreatClassToolStripMenuItem.Text = "新建分类";
+            this.SaveBtn.Image = ((System.Drawing.Image)(resources.GetObject("SaveBtn.Image")));
+            this.SaveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveBtn.Name = "SaveBtn";
+            this.SaveBtn.Size = new System.Drawing.Size(36, 37);
+            this.SaveBtn.Text = "保存";
+            this.SaveBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
-            // CreateFuncToolStripMenuItem
+            // CreateTableStructBtn
             // 
-            this.CreateFuncToolStripMenuItem.Name = "CreateFuncToolStripMenuItem";
-            this.CreateFuncToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.CreateFuncToolStripMenuItem.Text = "新建功能";
+            this.CreateTableStructBtn.Image = ((System.Drawing.Image)(resources.GetObject("CreateTableStructBtn.Image")));
+            this.CreateTableStructBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.CreateTableStructBtn.Name = "CreateTableStructBtn";
+            this.CreateTableStructBtn.Size = new System.Drawing.Size(72, 37);
+            this.CreateTableStructBtn.Text = "创建表结构";
+            this.CreateTableStructBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
-            // addfuncToolStripMenuItem
+            // menuStrip1
             // 
-            this.addfuncToolStripMenuItem.Name = "addfuncToolStripMenuItem";
-            this.addfuncToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.addfuncToolStripMenuItem.Text = "添加功能";
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.文件ToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(960, 25);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // deleteToolStripMenuItem
+            // 文件ToolStripMenuItem
             // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.deleteToolStripMenuItem.Text = "删除";
+            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.文件ToolStripMenuItem.Text = "文件";
             // 
-            // RefreshToolStripMenuItem
+            // SaveAllBtn
             // 
-            this.RefreshToolStripMenuItem.Name = "RefreshToolStripMenuItem";
-            this.RefreshToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.RefreshToolStripMenuItem.Text = "刷新";
+            this.SaveAllBtn.Image = ((System.Drawing.Image)(resources.GetObject("SaveAllBtn.Image")));
+            this.SaveAllBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveAllBtn.Name = "SaveAllBtn";
+            this.SaveAllBtn.Size = new System.Drawing.Size(60, 37);
+            this.SaveAllBtn.Text = "全部保存";
+            this.SaveAllBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
             // MainForm
             // 
@@ -348,10 +371,7 @@
             this.Name = "MainForm";
             this.Text = "MainForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -362,7 +382,10 @@
             this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -373,7 +396,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton SaveBtn;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
@@ -398,5 +421,7 @@
         private System.Windows.Forms.TextBox txtbNodeType;
         private System.Windows.Forms.Label label1;
         private Controls.LibTabControl libTabControl1;
+        private System.Windows.Forms.ToolStripButton CreateTableStructBtn;
+        private System.Windows.Forms.ToolStripButton SaveAllBtn;
     }
 }

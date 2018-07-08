@@ -78,12 +78,12 @@ namespace SDPCRL.COM
                      {
                          foreach (LibField field in dt.Fields)
                          {
-                             if (!LibSysUtils.IsNULLOrEmpty(field.AliasName))
-                             {
-                                 AppendField(context, field.AliasName, field.DisplayName,dt.Name,field.FieldType);
-                             }
-                             else
-                                 AppendField(context, field.Name, field.DisplayName,dt.Name ,field.FieldType);
+                             //if (!LibSysUtils.IsNULLOrEmpty(field.AliasName))
+                             //{
+                             //    AppendField(context, field.AliasName, field.DisplayName, dt.Name, field.FieldType);
+                             //}
+                             //else
+                             //    AppendField(context, field.Name, field.DisplayName, dt.Name, field.FieldType);
                          }
                      }
                  }

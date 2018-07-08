@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SDPCRL.CORE;
+using System.Xml.Serialization;
 
 namespace SDPCRL.COM.ModelManager
 {
@@ -17,14 +18,14 @@ namespace SDPCRL.COM.ModelManager
 
         #region 公开属性
         /// <summary>数据源ID</summary>
-        [LibXmlAttribute("ds_txtDSID")]
+        [LibAttribute("ds_txtDSID")]
         public int DSID
         {
             get { return _dsid; }
             set { _dsid = value; }
         }
         /// <summary>数据源名称</summary>
-        [LibXmlAttribute("ds_txtDSNm")]
+        [LibAttribute("ds_txtDSNm")]
         public string DataSourceName
         {
             get { return _datasourceName; }
@@ -37,7 +38,7 @@ namespace SDPCRL.COM.ModelManager
         //    set;
         //}
         /// <summary>所属包</summary>
-        [LibXmlAttribute("ds_txtPackage")]
+        [LibAttribute("ds_txtPackage")]
         public string Package
         {
             get;
@@ -54,6 +55,7 @@ namespace SDPCRL.COM.ModelManager
 
     }
 
+    /// <summary>数据源模型对象</summary>
     [Serializable]
     public class LibDataSource
     {
@@ -64,22 +66,25 @@ namespace SDPCRL.COM.ModelManager
         #endregion
 
         #region 公开属性
-        /// <summary>数据源ID</summary>
-        [LibXmlAttribute("ds_txtDSID")]
+        /// <summary>数据源ID（唯一）</summary>
+        [LibAttribute("ds_txtDSID", LibControlType.TextBox, "数据源ID")]
+        [XmlAttribute]
         public string DSID
         {
             get { return _dsid; }
             set { _dsid = value; }
         }
-        /// <summary>数据源名称</summary>
-        [LibXmlAttribute("ds_txtDSNm")]
+        /// <summary>数据源名称(显示名)</summary>
+        [LibAttribute("ds_txtDSNm", LibControlType.TextBox, "数据源名称")]
+        [XmlAttribute]
         public string DataSourceName
         {
             get { return _datasourceName; }
             set { _datasourceName = value; }
         }
         /// <summary>所属包</summary>
-        [LibXmlAttribute("ds_txtPackage")]
+        [LibAttribute("ds_txtPackage", LibControlType.TextBox, "所属包")]
+        [XmlAttribute]
         public string Package
         {
             get;

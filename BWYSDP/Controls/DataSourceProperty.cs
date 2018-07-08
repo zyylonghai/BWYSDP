@@ -18,6 +18,7 @@ namespace BWYSDP.Controls
         public DataSourceProperty()
         {
             InitializeComponent();
+            InitializeControls();
         }
         /// <summary>设置属性值</summary>
         /// <param name="Field"></param>
@@ -28,6 +29,11 @@ namespace BWYSDP.Controls
             //this._fieldNode = node;
             ModelDesignProject.DoSetPropertyValue<LibDataSource>(this.Controls, datasource);
 
+        }
+
+        private void InitializeControls()
+        {
+            ModelDesignProject.InternalBindControls<LibDataSource>(this);
         }
     }
 }

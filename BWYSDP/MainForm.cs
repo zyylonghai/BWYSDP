@@ -49,14 +49,14 @@ namespace BWYSDP
             LibTreeNode node = (LibTreeNode)e.Node;
             if (node.NodeType != NodeType.Class && node.NodeType !=NodeType.Func)
             {
-                string tabNm=string.Format("{0}{1}", node.Name, node.NodeType.ToString());
+                string tabNm = string.Format("{0}{2}{1}", node.Name, node.NodeType.ToString(), SysConstManage.Underline);
                 if (this.libTabControl1.TabPages.ContainsKey(tabNm))
                 {
                     this.libTabControl1.SelectedTab = this.libTabControl1.TabPages[tabNm];
                     return;
                 }
-                TabPage page = new TabPage(node.Text);
-                page.Name = string.Format("{0}{1}", node.Name, node.NodeType.ToString());
+                TabPage page = new TabPage(string.Format("{0}({1})", node.Text, node.NodeType.ToString()));
+                page.Name = tabNm;
 
                 this.libTabControl1.TabPages.Add(page);
                 this.libTabControl1.SelectedTab = page;
@@ -233,6 +233,23 @@ namespace BWYSDP
                     }
                 }
             }
+        }
+
+        /// <summary>保存</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveBtn_Click(object sender, EventArgs e)
+        {
+            TabPage page=this.libTabControl1.SelectedTab;
+            string[] nameAndtype = page.Name.Split(SysConstManage.Underline);
+            NodeType ntype=LibSysUtils.ConvertToEnumType<NodeType>(nameAndtype[1]);
+            switch (ntype)
+            {
+                case NodeType.DataModel :
+                    ((DataSourceControl)page.Controls[0]).GetControlValueBindToDS();
+                    break;
+            }
+            ModelDesignProject.SaveModel(nameAndtype[0], ntype);
         }
         //private LibTreeNode CreateNode(LibTreeNode nodeInfo, NodeType nodetype)
         //{

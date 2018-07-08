@@ -12,8 +12,16 @@ namespace SDPCRL.COM.ModelManager
     public class LibField
     {
         #region 公开的属性
+        /// <summary>编号 </summary>
+        [LibAttribute("fd_txtID", LibControlType.TextBox, "编号", true)]
+        public string ID
+        {
+            get;
+            set;
+        }
+
         /// <summary>字段名称</summary>
-        [LibXmlAttribute("fd_txtFieldName")]
+        [LibAttribute("fd_txtFieldName", LibControlType.TextBox, "字段名称")]
         public string Name
         {
             get;
@@ -21,7 +29,7 @@ namespace SDPCRL.COM.ModelManager
         }
 
         /// <summary>字段别名</summary>
-        [LibXmlAttribute("fd_txtAliasName")]
+        [LibAttribute("fd_txtAliasName", LibControlType.TextBox, "字段别名")]
         public string AliasName
         {
             get;
@@ -29,7 +37,7 @@ namespace SDPCRL.COM.ModelManager
         }
 
         /// <summary>显示名称</summary>
-        [LibXmlAttribute("fd_txtDisplayText")]
+        [LibAttribute("fd_txtDisplayText", LibControlType.TextBox, "显示名称")]
         public string DisplayName
         {
             get;
@@ -37,21 +45,21 @@ namespace SDPCRL.COM.ModelManager
         }
 
         /// <summary>字段类型</summary>
-        [LibXmlAttribute("fd_combFieldType")]
-        public int FieldType
+        [LibAttribute("fd_combFieldType", LibControlType.Combox, "字段类型")]
+        public LibFieldType FieldType
         {
             set;
             get;
         }
         /// <summary>是否允许为null</summary>
-        [LibXmlAttribute("fd_combAllowNull")]
+        [LibAttribute("fd_combAllowNull", LibControlType.Combox, "允许为null")]
         public bool AllowNull
         {
             get;
             set;
         }
         /// <summary>是否实字段</summary>
-        [LibXmlAttribute("fd_combActive")]
+        [LibAttribute("fd_combActive", LibControlType.Combox, "实字段")]
         public bool IsActive
         {
             get;

@@ -135,21 +135,22 @@ namespace BWYSDP.com
         }
         #endregion
 
+
         /// <summary>根据控件类型，设置控件的值</summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="controls"></param>
         /// <param name="valueType"></param>
         public static void DoSetPropertyValue<T>(Control.ControlCollection controls, T valueType)
         {
+            PropertyInfo[] propertis = valueType.GetType().GetProperties();
             foreach (Control item in controls)
             {
-                PropertyInfo[] propertis = valueType.GetType().GetProperties();
                 foreach (PropertyInfo info in propertis)
                 {
-                    object[] attrArray = info.GetCustomAttributes(typeof(LibXmlAttributeAttribute), true);
+                    object[] attrArray = info.GetCustomAttributes(typeof(LibAttributeAttribute), true);
                     if (attrArray.Length > 0)
                     {
-                        LibXmlAttributeAttribute attr = attrArray[0] as LibXmlAttributeAttribute;
+                        LibAttributeAttribute attr = attrArray[0] as LibAttributeAttribute;
                         if (string.Compare(attr.ControlNm, item.Name, false) == 0)
                         {
                             if (CheckEnumFields(item, info, valueType)) //dropdownlist控件
@@ -164,6 +165,142 @@ namespace BWYSDP.com
                                 item.Text = LibSysUtils.ToString(info.GetValue(valueType, null));
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        /// <summary>获取控件值，并赋值到相应对象（T）</summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="controls"></param>
+        /// <param name="obj"></param>
+        public static void DoGetControlsValue<T>(Control.ControlCollection controls, T obj)
+        {
+            PropertyInfo[] propertis = obj.GetType().GetProperties();
+            Control ctrl;
+            foreach (PropertyInfo p in propertis)
+            {
+                object[] attrArray = p.GetCustomAttributes(typeof(LibAttributeAttribute), true);
+                if (attrArray.Length > 0) 
+                {
+                    LibAttributeAttribute attr = attrArray[0] as LibAttributeAttribute;
+                    if (controls.ContainsKey(attr.ControlNm))
+                    {
+                        ctrl = controls[attr.ControlNm];
+                        switch (attr.ControlType)
+                        {
+                            case LibControlType.TextBox:
+                                if (p.GetSetMethod() != null)
+                                {
+                                    p.SetValue(obj, ctrl.Text.Trim(), null);
+                                }
+                                break;
+                            case LibControlType.Combox :
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 根据T的属性 创建相应控件并绑定控件到容器
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="UCtr"></param>
+        public static void InternalBindControls<T>(UserControl UCtr)
+        {
+            PropertyInfo[] propertis = typeof(T).GetProperties();
+            Label lb;
+            TextBox tb;
+            ComboBox comb;
+            Button btn;
+            int x = 25;
+            int y = 25;
+            int interval = 30;
+            int index = 0;
+            int w = 158;
+            int h = 21;
+            int btnW = 35;
+            System.Drawing.Font font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            foreach (PropertyInfo p in propertis)
+            {
+                object[] attrArray = p.GetCustomAttributes(typeof(LibAttributeAttribute), true);
+                if (attrArray.Length > 0)
+                {
+                    LibAttributeAttribute attr = attrArray[0] as LibAttributeAttribute;
+                    if (!attr.IsHidden)
+                    {
+                        lb = new Label();
+                        lb.Font = font;
+                        lb.Name = string.Format("lb_{0}", attr.ControlNm);
+                        lb.Size = new System.Drawing.Size(75, 12);
+                        lb.Text = string.Format("{0}:", attr.DisplayText);
+                        lb.Location = new System.Drawing.Point(x, y + index * (interval + lb.Height));
+                        UCtr.Controls.Add(lb);
+                        switch (attr.ControlType)
+                        {
+                            case LibControlType.TextBox:
+                                #region
+                                tb = new TextBox();
+                                tb.Multiline = true;
+                                tb.Font = font;
+                                tb.Name = attr.ControlNm;
+                                tb.ReadOnly = attr.IsReadOnly;
+                                tb.Size = new System.Drawing.Size(w, h);
+                                tb.Location = new System.Drawing.Point(lb.Location.X + lb.Width, y + index * (interval + lb.Height));
+                                UCtr.Controls.Add(tb);
+                                break;
+                                #endregion
+                            case LibControlType.Combox:
+                                #region
+                                comb = new ComboBox();
+                                comb.Font = font;
+                                comb.Name = attr.ControlNm;
+                                comb.DropDownStyle = ComboBoxStyle.DropDownList;
+                                comb.Size = new System.Drawing.Size(w, h);
+
+                                comb.Location = new System.Drawing.Point(lb.Location.X + lb.Width, y + index * (interval + lb.Height));
+                                if (p.PropertyType.Equals(typeof(bool)))
+                                {
+                                    comb.Items.Add(new LibItem(1, LibSysUtils.BooleanToText(true)));
+                                    comb.Items.Add(new LibItem(0, LibSysUtils.BooleanToText(false)));
+                                    //comb.Items.Add(LibSysUtils.BooleanToText(true));
+                                    //comb.Items.Add(LibSysUtils.BooleanToText(false));
+                                }
+                                else
+                                {
+                                    foreach (var item in Enum.GetValues(p.PropertyType))
+                                    {
+                                        comb.Items.Add(new LibItem((int)item, ReSourceManage.GetResource(item)));
+                                    }
+                                }
+                                UCtr.Controls.Add(comb);
+                                break;
+                                #endregion
+                            case LibControlType.TextAndBotton:
+                                #region
+                                tb = new TextBox();
+                                tb.Multiline = true;
+                                tb.Font = font;
+                                tb.Name = attr.ControlNm;
+                                tb.ReadOnly = attr.IsReadOnly;
+                                tb.Size = new System.Drawing.Size(w, h);
+                                tb.Location = new System.Drawing.Point(lb.Location.X + lb.Width, y + index * (interval + lb.Height));
+
+                                btn = new Button();
+                                btn.Font = font;
+                                btn.Name = string.Format("{0}{1}", SysConstManage.BtnCtrlNmPrefix, attr.ControlNm);
+                                btn.Text = SysConstManage.BtnCtrlDefaultText;
+                                btn.Size = new System.Drawing.Size(btnW, h);
+                                btn.Location = new System.Drawing.Point(lb.Location.X + lb.Width + tb.Width, y + index * (interval + lb.Height));
+
+                                UCtr.Controls.Add(tb);
+                                UCtr.Controls.Add(btn);
+                                break;
+                                #endregion
+                        }
+                        index++;
                     }
                 }
             }
@@ -419,10 +556,10 @@ namespace BWYSDP.com
             string dir = string.Empty;
             switch (treeNode.NodeType)
             {
-                case NodeType.DataModel :
+                case NodeType.DataModel:
                     dir = SysConstManage.DataSourceNm;
                     break;
-                case NodeType.FormModel :
+                case NodeType.FormModel:
                     dir = SysConstManage.FormSourceNm;
                     break;
                 case NodeType.PermissionModel:
@@ -435,7 +572,7 @@ namespace BWYSDP.com
 
         public static void DeleteModelFile(LibTreeNode treeNode)
         {
- 
+
         }
 
         private static List<NodeInfo> DoReadNodes(string express)
@@ -462,7 +599,7 @@ namespace BWYSDP.com
         {
             foreach (LibTreeNode item in parent.Nodes)
             {
-                if (string.Compare(item.Name, parent.Name) == 0&&item.NodeType==type)
+                if (string.Compare(item.Name, parent.Name) == 0 && item.NodeType == type)
                 {
                     return;
                 }
@@ -477,19 +614,63 @@ namespace BWYSDP.com
         }
 
         #region 模型对象操作
-        public static LibDataSource GetDataSourceById(string dataSourceId)
+        public static LibDataSource GetDataSourceById(string dataSourceNm)
         {
-            if (_dataSourceContain.ContainsKey(dataSourceId))
+            if (_dataSourceContain.ContainsKey(dataSourceNm))
             {
-                return (LibDataSource)_dataSourceContain[dataSourceId];
+                return (LibDataSource)_dataSourceContain[dataSourceNm];
             }
             else
             {
-                LibDataSource ds = ModelManager.GetDataSource(dataSourceId);
-                _dataSourceContain.Add(dataSourceId, ds);
+                LibDataSource ds = ModelManager.GetDataSource(dataSourceNm);
+                _dataSourceContain.Add(dataSourceNm, ds);
                 return ds;
             }
-            
+
+        }
+        /// <summary>保存模型设计</summary>
+        /// <param name="modelNm"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool SaveModel(string modelNm,NodeType type)
+        {
+            string path = string.Empty;
+            switch (type)
+            {
+                case NodeType.DataModel:
+                    if (_dataSourceContain.ContainsKey(modelNm))
+                    {
+                       LibDataSource ds=(LibDataSource)_dataSourceContain[modelNm];
+                       path = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.DataSourceNm, ds.Package, ds.DSID);
+                        return InternalSaveModel(ds,path);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                case NodeType.FormModel:
+                    if (_formSourceContain.ContainsKey(modelNm))
+                    {
+                        LibFormSource fm = (LibFormSource)_dataSourceContain[modelNm];
+                        return InternalSaveModel(fm, path);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                case NodeType.PermissionModel :
+                    if (_permissionSourceContain.ContainsKey(modelNm))
+                    {
+                        LibPermissionSource pm=(LibPermissionSource)_permissionSourceContain[modelNm];
+                        return InternalSaveModel(pm,path);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                default :
+                    return false;
+            }
         }
         #endregion
 
@@ -573,55 +754,14 @@ namespace BWYSDP.com
             return result;
         }
         #endregion
+
+        private static bool InternalSaveModel<T>(T entity,string path)
+        {
+            SerializerUtils.xmlserialzaition(entity, path);
+            return true;
+        }
         #endregion
 
-    }
-
-    public class LibTreeNode : TreeNode
-    {
-        public LibTreeNode()
-            : base()
-        {
-
-        }
-        public LibTreeNode(string text)
-            : base(text)
-        {
-
-        }
-
-        public void CopyTo(LibTreeNode newNode)
-        {
-            if (newNode != null)
-            {
-                PropertyInfo[] propertys = newNode.GetType().GetProperties();
-                foreach (PropertyInfo p in propertys)
-                {
-                    PropertyInfo info = this.GetType().GetProperty(p.Name);
-                    if (info.GetSetMethod() != null)
-                        p.SetValue(newNode, info.GetValue(this, null), null);
-                }
-                //newNode.NodeType = this.NodeType;
-                //newNode.Name = this.Name;
-                //newNode.Text = this.Text;
-                //newNode.OriginalName = this.OriginalName;
-                //newNode.Package = this.Package;
-            }
-            else
-            {
-                throw new LibExceptionBase("参数newNode不允许为null");
-            }
-        }
-
-        #region 公开属性
-        /// <summary>原始名称</summary>
-        public string OriginalName { get; set; }
-        /// <summary>所属包</summary>
-        public string Package { get; set; }
-
-        /// <summary>节点类型</summary>
-        public NodeType NodeType { get; set; }
-        #endregion
     }
     /// <summary>节点类型</summary>
     public enum NodeType
@@ -650,16 +790,16 @@ namespace BWYSDP.com
 
         /// <summary>数据集</summary>
         [LibReSource("数据集")]
-        DefDataSet=7,
+        DefDataSet = 7,
         /// <summary>自定义表</summary>
-         [LibReSource("自定义表")]
-        DefindTable=8,
+        [LibReSource("自定义表")]
+        DefindTable = 8,
         /// <summary>数据结构表</summary>
-         [LibReSource("数据结构表")]
-        TableStruct=9,
+        [LibReSource("数据结构表")]
+        TableStruct = 9,
         /// <summary>字段</summary>
         [LibReSource("字段")]
-        Field=10
+        Field = 10
 
     }
 }

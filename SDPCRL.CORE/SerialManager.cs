@@ -25,11 +25,14 @@ namespace SDPCRL.CORE
         public static readonly string ModelTemp = string.Format(@"{0}\Runtime\ModelTreeTemp.xml", Environment.CurrentDirectory);
         public static readonly string ModelPath = string.Format(@"{0}\Models", Environment.CurrentDirectory);
 
+        #region 特殊字符
         public const string  DBInfoSeparator = "&&";
         public const string DBInfovalSeparator = "::";
         public const char DBInfoArraySeparator = '[';
         public const char DBInfoArraySeparator2 = ']';
         public const char ColonChar=':';
+        public const char Underline = '_';
+        #endregion
 
         public const string SQLConnect = "SQLSERVERCONN";
         public const string OracleConnect = "ORACLECONN";
@@ -42,9 +45,14 @@ namespace SDPCRL.CORE
         public const string AtrrPackage = "package";
         #endregion
 
+        #region 模型存储 所在路径的 文件夹名
         public const string DataSourceNm = "DataSource";
         public const string FormSourceNm = "FormSource";
         public const string PermissionSourceNm = "PermissionSource";
+        #endregion
+
+        public const string BtnCtrlNmPrefix = "btn_";
+        public const string BtnCtrlDefaultText = "...";
     }
 
     /// <summary>编码管理类接口</summary>
