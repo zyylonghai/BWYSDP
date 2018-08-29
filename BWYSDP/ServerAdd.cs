@@ -22,10 +22,8 @@ namespace BWYSDP
         protected override void DoSetParam(string tag, params object[] param)
         {
             base.DoSetParam(tag, param);
-            //if (string.Compare(tag, "SetServer") == 0)
-            //{
-                
-            //}
+            this.txtIPAddress.Text = "192.168.1.3";
+            this.txtpoint.Text = "8085";
         }
 
         private void btnsave_Click(object sender, EventArgs e)
@@ -37,7 +35,7 @@ namespace BWYSDP
             info.ipAddress = this.txtIPAddress.Text.Trim();
             info.point = Convert.ToInt32(this.txtpoint.Text.Trim());
             info.serverNm = this.txtServerName.Text.Trim();
-            info.IsCurrentServer = false;
+            info.IsCurrentServer = true;
             SQLite sqlite = new SQLite();
             sqlite.Insert(info);
             this.Close();
@@ -52,10 +50,18 @@ namespace BWYSDP
 
         private void combaccountId_Click(object sender, EventArgs e)
         {
-            //this.combaccountId.Items.Clear();
-            //ServerInfo info = new ServerInfo();
-            //info.accountid = "test1";
-            //info.accountname = "测试账套";
+            if (!string.IsNullOrEmpty(this.txtIPAddress.Text))
+            {
+                SDPCRL.BLL.BUS.ServerInfo.IPAddress = this.txtIPAddress.Text.Trim();
+            }
+            if (!string.IsNullOrEmpty(this.combConnType.Text))
+            {
+                SDPCRL.BLL.BUS.ServerInfo.ConnectType = this.combConnType.Text.Trim();
+            }
+            if (!string.IsNullOrEmpty(this.txtpoint.Text))
+            {
+                SDPCRL.BLL.BUS.ServerInfo.Point = Convert.ToInt32(this.txtpoint.Text.Trim());
+            }
             this.combaccountId.DataSource = GetData();
             this.combaccountId.ValueMember = "accountid";
             this.combaccountId.DisplayMember = "accountname";
@@ -70,14 +76,16 @@ namespace BWYSDP
         private List<ServerInfo> GetData()
         {
             List<ServerInfo> data = new List<ServerInfo>();
-            for (int i = 1; i < 3; i++)
+            Dictionary <string ,string > dic= this.BllData.GetAccount();
+            ServerInfo info=null ;
+            foreach (KeyValuePair<string, string> item in dic)
             {
-                ServerInfo info = new ServerInfo();
-                info.accountid = "test"+i.ToString ();
-                info.accountname = "测试账套" + i.ToString();
-
+                info = new ServerInfo();
+                info.accountid = item.Key;
+                info.accountname = item.Value;
                 data.Add(info);
             }
+
             return data;
         }
     }

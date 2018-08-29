@@ -4,23 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using SDPCRL.CORE;
+using BWYSDP.BLL;
 
 namespace BWYSDP
 {
     public class LibFormBase : Form, ILibEventListener
     {
-        #region 
+        #region 私有属性
         private LibFormBase _caller;
         private ParamContainer _paramContain
         {
             get { return ParamContainer.GetInstance(); }
         }
+        private BllDataBase _database=null;
 
         #endregion
+
+        #region 公开属性
+
+        public BllDataBase BllData {
+            get { 
+                if (_database == null) { _database = new BllDataBase(); }
+                return _database;
+            }
+        }
+
+        #endregion
+
+        #region 构造函数
         public LibFormBase()
         {
 
         }
+        #endregion
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {

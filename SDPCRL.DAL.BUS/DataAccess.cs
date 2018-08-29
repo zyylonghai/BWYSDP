@@ -37,5 +37,11 @@ namespace SDPCRL.DAL.BUS
         {
             return _dbHelp.GetDataRow(commandText);
         }
+
+
+        public DataTable GetDataTable(string commandText)
+        {
+            return _dbHelp.GetDataTable(commandText);
+        }
     }
 }

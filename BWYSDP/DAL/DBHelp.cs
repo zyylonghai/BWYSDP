@@ -6,8 +6,8 @@ using System.Text;
 
 namespace BWYSDP.DAL
 {
-    public  class DBHelp
+    public class DBHelp
     {
-          
+
     }
 }

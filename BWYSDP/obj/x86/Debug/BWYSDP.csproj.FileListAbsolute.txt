@@ -115,3 +115,9 @@ F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\System.Data.SQLite.dll
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\System.Data.SQLite.pdb
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\obj\x86\Debug\BWYSDP.ServerAdd.resources
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\obj\x86\Debug\BWYSDP.ServerConfig.resources
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\SDPCRL.BLL.BUS.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\SDPCRL.IBussiness.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\BWYResFactory.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\SDPCRL.BLL.BUS.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\SDPCRL.IBussiness.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\BWYResFactory.pdb

@@ -18,7 +18,7 @@ namespace SDPCRL.DAL.BUS
             ReflectionOperate reflect = new ReflectionOperate(funcId);
             object obj=reflect.InstanceTarget();
             Type t = obj.GetType();
-            MethodInfo method= t.GetMethod("Func1");
+            MethodInfo method = t.GetMethod("GetAccount");
             object[] param ={
              };
             return  method.Invoke(obj,null);
@@ -27,7 +27,11 @@ namespace SDPCRL.DAL.BUS
 
         public object ExecuteDalMethod(string funcId, string method, params object[] param)
         {
-            throw new NotImplementedException();
+            ReflectionOperate reflect = new ReflectionOperate(funcId);
+            object obj = reflect.InstanceTarget();
+            Type t = obj.GetType();
+            MethodInfo func = t.GetMethod(method);
+            return func.Invoke(obj, param);
         }
 
         public object ExecuteDalMethod(string method, params object[] param)
