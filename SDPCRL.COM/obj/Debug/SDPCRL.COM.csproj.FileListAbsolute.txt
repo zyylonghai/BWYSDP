@@ -30,3 +30,10 @@ D:\work\zyyinfo\BWYSDP(2)\BWYSDP\Code\Code\SDPCRL.COM\bin\Debug\Runtime\SDPCRL.C
 D:\work\zyyinfo\BWYSDP(2)\BWYSDP\Code\Code\SDPCRL.COM\obj\Debug\SDPCRL.COM.csprojResolveAssemblyReference.cache
 D:\work\zyyinfo\BWYSDP(2)\BWYSDP\Code\Code\SDPCRL.COM\obj\Debug\SDPCRL.COM.dll
 D:\work\zyyinfo\BWYSDP(2)\BWYSDP\Code\Code\SDPCRL.COM\obj\Debug\SDPCRL.COM.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.COM\bin\Debug\Runtime\SDPCRL.COM.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.COM\bin\Debug\Runtime\SDPCRL.COM.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.COM\bin\Debug\Runtime\SDPCRL.CORE.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.COM\bin\Debug\Runtime\SDPCRL.CORE.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.COM\obj\Debug\SDPCRL.COM.csprojResolveAssemblyReference.cache
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.COM\obj\Debug\SDPCRL.COM.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.COM\obj\Debug\SDPCRL.COM.pdb

@@ -6,3 +6,10 @@ F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\obj\Debug\GenerateResource.read.1.tl
 F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\obj\Debug\GenerateResource.write.1.tlog
 F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\obj\Debug\BWYResFactory.dll
 F:\vsproject\BWYSDP(2)\BWYSDP\BWYResFactory\obj\Debug\BWYResFactory.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYResFactory\bin\Debug\BWYResFactory.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYResFactory\bin\Debug\BWYResFactory.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYResFactory\obj\Debug\BWYResFactory.Res.resources
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYResFactory\obj\Debug\BWYResFactory.csproj.GenerateResource.Cache
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYResFactory\obj\Debug\BWYResFactory.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYResFactory\obj\Debug\BWYResFactory.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYResFactory\obj\Debug\BWYResFactory.csprojResolveAssemblyReference.cache

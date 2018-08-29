@@ -37,6 +37,7 @@ namespace InitialTool
         private void btnServerStar_Click(object sender, EventArgs e)
         {
             ServiceFactory.DBService.Star();
+            //ServiceFactory.DALServer.Star();
             this.listBox1.Items.Add("数据服务已经启动。");
         }
     }

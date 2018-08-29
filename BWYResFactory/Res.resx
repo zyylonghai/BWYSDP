@@ -129,4 +129,28 @@
   <data name="SysDBNm" xml:space="preserve">
     <value>BWYDB_SYS</value>
   </data>
+  <data name="SQLAnd" xml:space="preserve">
+    <value>And</value>
+  </data>
+  <data name="SQLFrom" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="SQLGroup" xml:space="preserve">
+    <value>Group By</value>
+  </data>
+  <data name="SQLLeftJoin" xml:space="preserve">
+    <value>Left Join</value>
+  </data>
+  <data name="SQLOn" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SQLSelect" xml:space="preserve">
+    <value>SELECT</value>
+  </data>
+  <data name="SQLWhere" xml:space="preserve">
+    <value>Where</value>
+  </data>
+  <data name="DALServerName" xml:space="preserve">
+    <value>DALServer</value>
+  </data>
 </root>

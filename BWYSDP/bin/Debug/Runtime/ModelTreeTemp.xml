@@ -20,5 +20,13 @@
       </Class>
     </Class>
     <Func name="func6" package="com2">功能6</Func>
+    <Func package="com" name="saleorder">销售订单</Func>
+    <Func package="com" name="purchase">采购订单</Func>
+    <Func package="com" name="shipment">发货单</Func>
+    <Func package="com" name="testbill">测试单据</Func>
+    <Func package="com" name="testbillno2">测试单据2</Func>
+    <Func package="com" name="zyylonghai">资源</Func>
+    <Func package="com" name="stockin">收货单</Func>
+    <Func package="com" name="jkkjkj">测试3</Func>
   </Class>
 </Root>

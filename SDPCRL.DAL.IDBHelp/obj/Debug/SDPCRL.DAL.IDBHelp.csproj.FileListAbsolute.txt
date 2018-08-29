@@ -16,3 +16,14 @@ F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.IDBHelp\obj\Debug\IDBHelp.dll
 F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.IDBHelp\obj\Debug\IDBHelp.pdb
 F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.IDBHelp\bin\Debug\BWYResFactory.dll
 F:\vsproject\BWYSDP(2)\BWYSDP\SDPCRL.DAL.IDBHelp\bin\Debug\BWYResFactory.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\obj\Debug\SDPCRL.DAL.IDBHelp.csprojResolveAssemblyReference.cache
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\obj\Debug\IDBHelp.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\obj\Debug\IDBHelp.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\bin\Debug\IDBHelp.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\bin\Debug\IDBHelp.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\bin\Debug\SDPCRL.DAL.COM.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\bin\Debug\SDPCRL.CORE.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\bin\Debug\BWYResFactory.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\bin\Debug\SDPCRL.DAL.COM.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\bin\Debug\SDPCRL.CORE.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.DAL.IDBHelp\bin\Debug\BWYResFactory.pdb

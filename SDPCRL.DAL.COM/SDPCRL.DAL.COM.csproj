@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="DBInfoHelp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BWYResFactory\BWYResFactory.csproj">

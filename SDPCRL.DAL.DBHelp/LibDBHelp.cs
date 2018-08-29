@@ -351,37 +351,6 @@ namespace SDPCRL.DAL.DBHelp
             }
         }
 
-        public  bool TestConnect(string connectStr, out string ex)
-        {
-            try
-            {
-                _dbConnect = _dbProvierFactory.CreateConnection();
-                _dbConnect.ConnectionString = connectStr;
-                _dbConnect.Open();
-                //Connect.Open();
-                ex = "success";
-                return true;
-            }
-            catch (Exception excep)
-            {
-                ex = excep.Message;
-                return false;
-            }
-            finally
-            {
-                CloseConnect();
-            }
-        }
-
-        public bool SaveAccout(DBInfo info)
-        {
-            string commandText = string.Format("Insert Into Accout(ID,AccoutNm,IPAddress,CreateTime,Creater,[Key]) values('{0}','{1}','{2}','{3}','{4}','{5}')",
-                                               info.Guid ,info.DataBase,info.ServerAddr,DateTime.Now.ToString(),"admin",info.Key);
-            if (ExecuteNonQuery(commandText) != -1)
-                return true;
-            return false;
-        }
-
         /// <summary>
         /// 执行sql语法返回结果集中的第一行第一列
         /// </summary>
@@ -416,11 +385,17 @@ namespace SDPCRL.DAL.DBHelp
             {
                 if (reader.Read())
                 {
-                   DataTable dt= reader.GetSchemaTable(); 
-                    row = dt.NewRow();
-                    foreach (DataColumn col in dt.Columns)
+                   DataTable dt= reader.GetSchemaTable();
+                   DataTable resuldt = new DataTable();
+                    foreach (DataRow dr in dt.Rows)
                     {
+                        resuldt.Columns.Add(dr[0].ToString ());
                         //row[col] = reader[col .ColumnName];
+                    }
+                    row = resuldt.NewRow();
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        row[dr[0].ToString()] = reader[dr[0].ToString()];
                     }
                 }
             }
@@ -436,6 +411,42 @@ namespace SDPCRL.DAL.DBHelp
             CloseConnect();
             return dt;
         }
+
+        //public object DoExecuteProcedure(string procedure)
+        //{
+ 
+        //}
+
+        public bool TestConnect(string connectStr, out string ex)
+        {
+            try
+            {
+                _dbConnect = _dbProvierFactory.CreateConnection();
+                _dbConnect.ConnectionString = connectStr;
+                _dbConnect.Open();
+                //Connect.Open();
+                ex = "success";
+                return true;
+            }
+            catch (Exception excep)
+            {
+                ex = excep.Message;
+                return false;
+            }
+            finally
+            {
+                CloseConnect();
+            }
+        }
+
+        public bool SaveAccout(DBInfo info)
+        {
+            string commandText = string.Format("Insert Into Accout(ID,AccoutNm,IPAddress,CreateTime,Creater,[Key]) values('{0}','{1}','{2}','{3}','{4}','{5}')",
+                                               info.Guid, info.DataBase, info.ServerAddr, DateTime.Now.ToString(), "admin", info.Key);
+            if (ExecuteNonQuery(commandText) != -1)
+                return true;
+            return false;
+        }
         #endregion
 
         #region 私有函数
@@ -446,7 +457,7 @@ namespace SDPCRL.DAL.DBHelp
         }
         private string GetAccoutKey()
         {
-            object result=ExecuteScalar("select [key] from Account where ID='"+_guid+"'");
+            object result = ExecuteScalar("select [key] from Accout where ID='" + _guid + "'");
             if(result !=null )
                 return result .ToString ();
             return string.Empty;

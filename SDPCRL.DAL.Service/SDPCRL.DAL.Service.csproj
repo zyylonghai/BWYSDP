@@ -41,11 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DALServer.cs" />
     <Compile Include="DBService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SDPCRL.DAL.BUS\SDPCRL.DAL.BUS.csproj">
+      <Project>{33D0D0E5-25C7-4E54-850D-C04CF586B120}</Project>
+      <Name>SDPCRL.DAL.BUS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDPCRL.DAL.DBHelp\SDPCRL.DAL.DBHelp.csproj">
       <Project>{F1DE2302-9D27-449D-B50C-1640D37E34B5}</Project>
       <Name>SDPCRL.DAL.DBHelp</Name>
@@ -53,6 +58,10 @@
     <ProjectReference Include="..\SDPCRL.DAL.IDBHelp\SDPCRL.DAL.IDBHelp.csproj">
       <Project>{2EFD1E01-3058-4671-ABDD-61FC1A440F91}</Project>
       <Name>SDPCRL.DAL.IDBHelp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SDPCRL.IBussiness\SDPCRL.IBussiness.csproj">
+      <Project>{CA14898F-89A2-4DE8-A369-464954C7BA75}</Project>
+      <Name>SDPCRL.IBussiness</Name>
     </ProjectReference>
     <ProjectReference Include="..\SDPCRL.Services\SDPCRL.Services.csproj">
       <Project>{2a00aa45-0225-4f35-afc5-fc2bf228a1a8}</Project>

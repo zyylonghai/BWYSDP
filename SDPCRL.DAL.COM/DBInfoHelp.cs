@@ -90,6 +90,19 @@ namespace SDPCRL.DAL.COM
             return DoGetConnect(connStr);
         }
 
+        public List<DBInfo> GetAccoutSetting()
+        {
+            List<DBInfo> list = new List<DBInfo>();
+            DBInfo info;
+            foreach (KeyValuePair<string,string> item in ConnectDic)
+            {
+                info = new DBInfo();
+                info.Guid = item.Key;
+                //info.DataBase =
+            }
+            return list;
+        }
+
         /// <summary>
         /// 二进制读取数据库链接字符串
         /// </summary>
@@ -150,9 +163,9 @@ namespace SDPCRL.DAL.COM
                     connectStr = string.Format(ResFactory.ResManager.GetResByKey(SysConstManage.OracleConnect), dbinfo.UserId, dbinfo.Password, dbinfo.ServerAddr, dbinfo.DataBase);
                     break;
             }
-            string info = string.Format(ResFactory.ResManager.GetResByKey(SysConstManage.SaveStr), SysConstManage.DBInfovalSeparator, (int)dbinfo.ProviderType, SysConstManage.DBInfoSeparator, connectStr, (int)dbinfo.ConnectType);
+            string connectstr = string.Format(ResFactory.ResManager.GetResByKey(SysConstManage.SaveStr), SysConstManage.DBInfovalSeparator, (int)dbinfo.ProviderType, SysConstManage.DBInfoSeparator, connectStr, (int)dbinfo.ConnectType);
             //BinaryWriteInfo(info);
-            EncryptWriteInfo(info, dbinfo.Guid, dbinfo.Key, dbinfo.DataBase.Equals(ResFactory.ResManager.SysDBNm));
+            EncryptWriteInfo(connectstr, dbinfo.Guid, dbinfo.Key, dbinfo.DataBase.Equals(ResFactory.ResManager.SysDBNm));
         }
 
         #region 私有函数

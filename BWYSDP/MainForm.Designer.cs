@@ -56,10 +56,15 @@
             this.libTabControl1 = new BWYSDP.Controls.LibTabControl();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.SaveBtn = new System.Windows.Forms.ToolStripButton();
+            this.SaveAllBtn = new System.Windows.Forms.ToolStripButton();
             this.CreateTableStructBtn = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveAllBtn = new System.Windows.Forms.ToolStripButton();
+            this.配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ServerConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -72,6 +77,7 @@
             this.panel5.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -325,6 +331,15 @@
             this.SaveBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
+            // SaveAllBtn
+            // 
+            this.SaveAllBtn.Image = ((System.Drawing.Image)(resources.GetObject("SaveAllBtn.Image")));
+            this.SaveAllBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveAllBtn.Name = "SaveAllBtn";
+            this.SaveAllBtn.Size = new System.Drawing.Size(60, 37);
+            this.SaveAllBtn.Text = "全部保存";
+            this.SaveAllBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
             // CreateTableStructBtn
             // 
             this.CreateTableStructBtn.Image = ((System.Drawing.Image)(resources.GetObject("CreateTableStructBtn.Image")));
@@ -337,7 +352,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件ToolStripMenuItem});
+            this.文件ToolStripMenuItem,
+            this.配置ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(960, 25);
@@ -350,20 +366,49 @@
             this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.文件ToolStripMenuItem.Text = "文件";
             // 
-            // SaveAllBtn
+            // 配置ToolStripMenuItem
             // 
-            this.SaveAllBtn.Image = ((System.Drawing.Image)(resources.GetObject("SaveAllBtn.Image")));
-            this.SaveAllBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SaveAllBtn.Name = "SaveAllBtn";
-            this.SaveAllBtn.Size = new System.Drawing.Size(60, 37);
-            this.SaveAllBtn.Text = "全部保存";
-            this.SaveAllBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.配置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ServerConfigToolStripMenuItem});
+            this.配置ToolStripMenuItem.Name = "配置ToolStripMenuItem";
+            this.配置ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.配置ToolStripMenuItem.Text = "配置";
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1,
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 573);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(960, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(131, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
+            // ServerConfigToolStripMenuItem
+            // 
+            this.ServerConfigToolStripMenuItem.Name = "ServerConfigToolStripMenuItem";
+            this.ServerConfigToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ServerConfigToolStripMenuItem.Text = "服务配置";
+            this.ServerConfigToolStripMenuItem.Click += new System.EventHandler(this.ServerConfigToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(960, 595);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -386,6 +431,8 @@
             this.toolStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -423,5 +470,10 @@
         private Controls.LibTabControl libTabControl1;
         private System.Windows.Forms.ToolStripButton CreateTableStructBtn;
         private System.Windows.Forms.ToolStripButton SaveAllBtn;
+        private System.Windows.Forms.ToolStripMenuItem 配置ToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripMenuItem ServerConfigToolStripMenuItem;
     }
 }

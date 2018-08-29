@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{33D0D0E5-25C7-4E54-850D-C04CF586B120}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SDPCRL.DAL.BUS</RootNamespace>
+    <AssemblyName>SDPCRL.DAL.BUS</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DALBase.cs" />
+    <Compile Include="DALBus.cs" />
+    <Compile Include="DataAccess.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SDPCRL.CORE\SDPCRL.CORE.csproj">
+      <Project>{6737331B-873F-432B-BF3B-97B64C8E0C5F}</Project>
+      <Name>SDPCRL.CORE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SDPCRL.DAL.COM\SDPCRL.DAL.COM.csproj">
+      <Project>{AAD6A3CA-176E-46F6-A06B-3878E3434F23}</Project>
+      <Name>SDPCRL.DAL.COM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SDPCRL.DAL.DBHelp\SDPCRL.DAL.DBHelp.csproj">
+      <Project>{F1DE2302-9D27-449D-B50C-1640D37E34B5}</Project>
+      <Name>SDPCRL.DAL.DBHelp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SDPCRL.DAL.IDBHelp\SDPCRL.DAL.IDBHelp.csproj">
+      <Project>{2EFD1E01-3058-4671-ABDD-61FC1A440F91}</Project>
+      <Name>SDPCRL.DAL.IDBHelp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SDPCRL.IBussiness\SDPCRL.IBussiness.csproj">
+      <Project>{CA14898F-89A2-4DE8-A369-464954C7BA75}</Project>
+      <Name>SDPCRL.IBussiness</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

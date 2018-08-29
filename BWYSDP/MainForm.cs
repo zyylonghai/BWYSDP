@@ -251,6 +251,11 @@ namespace BWYSDP
             }
             ModelDesignProject.SaveModel(nameAndtype[0], ntype);
         }
+        //服务配置
+        private void ServerConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WakeUpForm<ServerConfig>("SetServer");
+        }
         //private LibTreeNode CreateNode(LibTreeNode nodeInfo, NodeType nodetype)
         //{
         //    LibTreeNode node = new LibTreeNode();

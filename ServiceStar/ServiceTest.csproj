@@ -87,6 +87,10 @@
       <Project>{2efd1e01-3058-4671-abdd-61fc1a440f91}</Project>
       <Name>SDPCRL.DAL.IDBHelp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SDPCRL.IBussiness\SDPCRL.IBussiness.csproj">
+      <Project>{CA14898F-89A2-4DE8-A369-464954C7BA75}</Project>
+      <Name>SDPCRL.IBussiness</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

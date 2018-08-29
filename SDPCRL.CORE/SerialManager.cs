@@ -19,12 +19,15 @@ namespace SDPCRL.CORE
         /// <summary>数据源文件根目录</summary>
         public static readonly string DSFileRootPath = string.Format(@"{0}\Models\DataSource", Environment.CurrentDirectory);
         /// <summary>账套信息文件</summary>
-        public static readonly string DBInfoFilePath = string.Format(@"{0}\Runtime\DBInfo.xml", Environment.CurrentDirectory);
+        //public static readonly string DBInfoFilePath = string.Format(@"{0}\Runtime\DBInfo.xml", Environment.CurrentDirectory);
         public static readonly string DBFilePath = string.Format(@"{0}\Runtime\DBInfo.bin", Environment.CurrentDirectory);
         /// <summary>模型列表文件</summary>
         public static readonly string ModelTemp = string.Format(@"{0}\Runtime\ModelTreeTemp.xml", Environment.CurrentDirectory);
         public static readonly string ModelPath = string.Format(@"{0}\Models", Environment.CurrentDirectory);
-
+        //DAL程序集所在路径
+        public static readonly string DALAssemblyPath = string.Format(@"{0}\Runtime\DAL", Environment.CurrentDirectory);
+        //客户端存储的服务端信息文件路径
+        public static readonly string ServerConfigPath = string.Format(@"{0}\Runtime\ServerInfo.bin", Environment.CurrentDirectory);
         #region 特殊字符
         public const string  DBInfoSeparator = "&&";
         public const string DBInfovalSeparator = "::";
@@ -32,6 +35,7 @@ namespace SDPCRL.CORE
         public const char DBInfoArraySeparator2 = ']';
         public const char ColonChar=':';
         public const char Underline = '_';
+        public const char Comma = ',';
         #endregion
 
         public const string SQLConnect = "SQLSERVERCONN";

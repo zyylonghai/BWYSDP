@@ -20,3 +20,8 @@ D:\work\zyyinfo\BWYSDP(2)\BWYSDP\Code\Code\SDPCRL.CORE\bin\Debug\Runtime\SDPCRL.
 D:\work\zyyinfo\BWYSDP(2)\BWYSDP\Code\Code\SDPCRL.CORE\obj\Debug\SDPCRL.CORE.csprojResolveAssemblyReference.cache
 D:\work\zyyinfo\BWYSDP(2)\BWYSDP\Code\Code\SDPCRL.CORE\obj\Debug\SDPCRL.CORE.dll
 D:\work\zyyinfo\BWYSDP(2)\BWYSDP\Code\Code\SDPCRL.CORE\obj\Debug\SDPCRL.CORE.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\bin\Debug\Runtime\SDPCRL.CORE.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\bin\Debug\Runtime\SDPCRL.CORE.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\obj\Debug\SDPCRL.CORE.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\obj\Debug\SDPCRL.CORE.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\obj\Debug\SDPCRL.CORE.csprojResolveAssemblyReference.cache

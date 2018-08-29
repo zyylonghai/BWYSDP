@@ -9,6 +9,7 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting;
 using SDPCRL.DAL.DBHelp;
 using SDPCRL.Services;
+using SDPCRL.DAL.BUS;
 
 namespace SDPCRL.DAL.Service
 {
@@ -20,6 +21,7 @@ namespace SDPCRL.DAL.Service
             channel = new TcpChannel(8085);
             ChannelServices.RegisterChannel(channel, false);
             RemotingConfiguration.RegisterWellKnownServiceType(typeof(DBHelpFactory), "DBService", WellKnownObjectMode.SingleCall);
+            RemotingConfiguration.RegisterWellKnownServiceType(typeof(DALBus), "DALServer", WellKnownObjectMode.SingleCall);
         }
 
         public void Stop()

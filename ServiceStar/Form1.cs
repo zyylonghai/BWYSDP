@@ -10,12 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SDPCRL.DAL.IDBHelp;
+using SDPCRL.IBussiness;
 
 namespace ServiceTest
 {
     public partial class Form1 : Form
     {
         IDBHelpFactory dbHelpFactory;
+        IDALBus DALBus;
         public Form1()
         {
             InitializeComponent();
@@ -25,7 +27,8 @@ namespace ServiceTest
         {
             TcpChannel channel = new TcpChannel();
             ChannelServices.RegisterChannel(channel, false);
-            dbHelpFactory = (IDBHelpFactory)Activator.GetObject(typeof(IDBHelpFactory), "tcp://192.168.20.126:8085/DBService");
+            dbHelpFactory = (IDBHelpFactory)Activator.GetObject(typeof(IDBHelpFactory), "tcp://192.168.1.7:8085/DBService");
+            DALBus = (IDALBus)Activator.GetObject(typeof(IDALBus), "tcp://192.168.1.7:8085/DALServer");
 
         }
 
@@ -34,8 +37,13 @@ namespace ServiceTest
             if (dbHelpFactory != null)
             {
                 ILibDBHelp dbhelp = dbHelpFactory.GetDBHelp();
-                object obj = dbhelp.ExecuteScalar("select AccoutNm from ACCOUNT");
-                DataTable dt = dbhelp.GetDataTable("select * from ACCOUNT");
+                object obj = dbhelp.ExecuteScalar("declare @id varchar(10);set @id=1; select AccoutNm,@id from ACCOUT");
+                ILibDBHelp dbhelp2 = dbHelpFactory.GetDBHelp("14f5d469-a774-484e-b467-2f80db09a5d3");
+                DataTable dt = dbhelp2.GetDataTable("EXEC sp_executesql N'select * from INFO_lanmu where lanmu_ID=@id and lanmu_categorie_ID=@cid',N'@id nchar(3),@cid nchar(3)',@id='001',@cid='001'");
+            }
+            if (DALBus != null)
+            {
+                object obj = DALBus.ExecuteDalUpdate("TestFunc");
             }
         }
     }

@@ -36,6 +36,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>C:\Program Files\System.Data.SQLite\2010\bin\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -103,6 +106,7 @@
       <DependentUpon>CreateFunc.cs</DependentUpon>
     </Compile>
     <Compile Include="DAL\DBHelp.cs" />
+    <Compile Include="DAL\SQLite.cs" />
     <Compile Include="DSAdd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +148,18 @@
       <DependentUpon>PromptForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerAdd.Designer.cs">
+      <DependentUpon>ServerAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerConfig.Designer.cs">
+      <DependentUpon>ServerConfig.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Controls\DataSourceControl.resx">
       <DependentUpon>DataSourceControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -193,6 +209,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ServerAdd.resx">
+      <DependentUpon>ServerAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerConfig.resx">
+      <DependentUpon>ServerConfig.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -206,7 +228,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SDPCRL.COM\SDPCRL.COM.csproj">
       <Project>{A6DD1483-D68F-401B-B7F8-F3B977AC7500}</Project>
-      <Name>SDPCRL.COM</Name>
+      <Name>SDPCRL.COM %28SDPCRL\SDPCRL.BLL\SDPCRL.COM%29</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\SDPCRL.CORE\SDPCRL.CORE.csproj">

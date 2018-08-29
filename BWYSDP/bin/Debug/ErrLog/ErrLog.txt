@@ -2809,3 +2809,207 @@
    在 System.Windows.Forms.ContainerControl.UpdateFocusedControl()
 
 ---------------------------------------------------------
+出现应用程序未处理的异常：2018/6/21 21:57:05
+异常类型：LibExceptionBase
+异常消息：文件已经存在
+异常信息：   在 SDPCRL.CORE.FileUtils.FileOperation.CreateFile(Boolean cover) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\FileUtils\FileOperation.cs:行号 115
+   在 BWYSDP.com.ModelDesignProject.CreatModelFile(LibTreeNode treeNode) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\com\ModelDesignProject.cs:行号 429
+   在 BWYSDP.MainForm.DoFormAcceptMsg(String tag, Dictionary`2 agrs) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\MainForm.cs:行号 195
+   在 SDPCRL.CORE.LibEventManager.LibEventListener.eventSource_DoFormAcceptMsg(String tag, Dictionary`2 agrs) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\LibEventSource.cs:行号 139
+   在 SDPCRL.CORE.LibEventManager.LibEventSource.OnFormAcceptMsg(String tag, Dictionary`2 param) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\LibEventSource.cs:行号 79
+   在 SDPCRL.CORE.LibEventManager.TouchEvent(Object sender, LibEventType eventType, Object[] avgs) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\LibEventSource.cs:行号 57
+   在 BWYSDP.FormCommunicationLine.called_FormClosing(Object sender, FormClosingEventArgs e) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\LibFormBase.cs:行号 92
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+
+---------------------------------------------------------
+出现应用程序未处理的异常：2018/6/21 22:04:14
+异常类型：LibExceptionBase
+异常消息：文件已经存在
+异常信息：   在 SDPCRL.CORE.FileUtils.FileOperation.CreateFile(Boolean cover) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\FileUtils\FileOperation.cs:行号 115
+   在 BWYSDP.com.ModelDesignProject.CreatModelFile(LibTreeNode treeNode) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\com\ModelDesignProject.cs:行号 429
+   在 BWYSDP.MainForm.DoFormAcceptMsg(String tag, Dictionary`2 agrs) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\MainForm.cs:行号 188
+   在 SDPCRL.CORE.LibEventManager.LibEventListener.eventSource_DoFormAcceptMsg(String tag, Dictionary`2 agrs) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\LibEventSource.cs:行号 139
+   在 SDPCRL.CORE.LibEventManager.LibEventSource.OnFormAcceptMsg(String tag, Dictionary`2 param) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\LibEventSource.cs:行号 79
+   在 SDPCRL.CORE.LibEventManager.TouchEvent(Object sender, LibEventType eventType, Object[] avgs) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\LibEventSource.cs:行号 57
+   在 BWYSDP.FormCommunicationLine.called_FormClosing(Object sender, FormClosingEventArgs e) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\LibFormBase.cs:行号 92
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+
+---------------------------------------------------------
+出现应用程序未处理的异常：2018/7/7 16:59:06
+异常类型：LibExceptionBase
+异常消息：属性ID2不存在
+异常信息：   在 SDPCRL.CORE.LibCollection`1.DoFind(String propertyNm, Object value) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\LibCollection.cs:行号 87
+   在 SDPCRL.CORE.LibCollection`1.FindFirst(String propertyNm, Object value) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\LibCollection.cs:行号 44
+   在 BWYSDP.Controls.DataSourceControl.contextMenuStrip2_ItemClicked(Object sender, ToolStripItemClickedEventArgs e) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\Controls\DataSourceControl.cs:行号 238
+   在 System.Windows.Forms.ToolStrip.OnItemClicked(ToolStripItemClickedEventArgs e)
+   在 System.Windows.Forms.ToolStripDropDown.OnItemClicked(ToolStripItemClickedEventArgs e)
+   在 System.Windows.Forms.ToolStrip.HandleItemClick(ToolStripItem dismissingItem)
+   在 System.Windows.Forms.ToolStripItem.HandleClick(EventArgs e)
+   在 System.Windows.Forms.ToolStripItem.HandleMouseUp(MouseEventArgs e)
+   在 System.Windows.Forms.ToolStripItem.FireEventInteractive(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStripItem.FireEvent(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStrip.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.ToolStripDropDown.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStrip.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStripDropDown.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+
+---------------------------------------------------------
+出现应用程序未处理的异常：2018/7/7 16:59:30
+异常类型：LibExceptionBase
+异常消息：属性ID2不存在
+异常信息：   在 SDPCRL.CORE.LibCollection`1.DoFind(String propertyNm, Object value) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\LibCollection.cs:行号 87
+   在 SDPCRL.CORE.LibCollection`1.FindFirst(String propertyNm, Object value) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\LibCollection.cs:行号 44
+   在 BWYSDP.Controls.DataSourceControl.contextMenuStrip2_ItemClicked(Object sender, ToolStripItemClickedEventArgs e) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\Controls\DataSourceControl.cs:行号 238
+   在 System.Windows.Forms.ToolStrip.OnItemClicked(ToolStripItemClickedEventArgs e)
+   在 System.Windows.Forms.ToolStripDropDown.OnItemClicked(ToolStripItemClickedEventArgs e)
+   在 System.Windows.Forms.ToolStrip.HandleItemClick(ToolStripItem dismissingItem)
+   在 System.Windows.Forms.ToolStripItem.HandleClick(EventArgs e)
+   在 System.Windows.Forms.ToolStripItem.HandleMouseUp(MouseEventArgs e)
+   在 System.Windows.Forms.ToolStripItem.FireEventInteractive(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStripItem.FireEvent(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStrip.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.ToolStripDropDown.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStrip.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStripDropDown.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+
+---------------------------------------------------------
+出现应用程序未处理的异常：2018/7/8 14:35:33
+异常类型：InvalidOperationException
+异常消息：反射类型“SDPCRL.COM.ModelManager.LibDataSource”时出错。
+异常信息：   在 System.Xml.Serialization.XmlReflectionImporter.ImportTypeMapping(TypeModel model, String ns, ImportContext context, String dataType, XmlAttributes a, Boolean repeats, Boolean openModel, RecursionLimiter limiter)
+   在 System.Xml.Serialization.XmlReflectionImporter.ImportElement(TypeModel model, XmlRootAttribute root, String defaultNamespace, RecursionLimiter limiter)
+   在 System.Xml.Serialization.XmlReflectionImporter.ImportTypeMapping(Type type, XmlRootAttribute root, String defaultNamespace)
+   在 System.Xml.Serialization.XmlSerializer..ctor(Type type, String defaultNamespace)
+   在 System.Xml.Serialization.XmlSerializer..ctor(Type type)
+   在 SDPCRL.CORE.SerializerUtils.xmlserialzaition[T](T entity, String filepath) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\SerializerUtils.cs:行号 19
+   在 BWYSDP.com.ModelDesignProject.InternalSaveModel[T](T entity, String path) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\com\ModelDesignProject.cs:行号 760
+   在 BWYSDP.com.ModelDesignProject.SaveModel(String modelNm, NodeType type) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\com\ModelDesignProject.cs:行号 645
+   在 BWYSDP.MainForm.SaveBtn_Click(Object sender, EventArgs e) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\MainForm.cs:行号 252
+   在 System.Windows.Forms.ToolStripItem.RaiseEvent(Object key, EventArgs e)
+   在 System.Windows.Forms.ToolStripButton.OnClick(EventArgs e)
+   在 System.Windows.Forms.ToolStripItem.HandleClick(EventArgs e)
+   在 System.Windows.Forms.ToolStripItem.HandleMouseUp(MouseEventArgs e)
+   在 System.Windows.Forms.ToolStripItem.FireEventInteractive(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStripItem.FireEvent(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStrip.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStrip.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+
+---------------------------------------------------------
+出现应用程序未处理的异常：2018/7/8 14:39:31
+异常类型：NullReferenceException
+异常消息：未将对象引用设置到对象的实例。
+异常信息：   在 BWYSDP.Controls.DataSourceControl.contextMenuStrip3_ItemClicked(Object sender, ToolStripItemClickedEventArgs e) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\Controls\DataSourceControl.cs:行号 333
+   在 System.Windows.Forms.ToolStrip.OnItemClicked(ToolStripItemClickedEventArgs e)
+   在 System.Windows.Forms.ToolStripDropDown.OnItemClicked(ToolStripItemClickedEventArgs e)
+   在 System.Windows.Forms.ToolStrip.HandleItemClick(ToolStripItem dismissingItem)
+   在 System.Windows.Forms.ToolStripItem.HandleClick(EventArgs e)
+   在 System.Windows.Forms.ToolStripItem.HandleMouseUp(MouseEventArgs e)
+   在 System.Windows.Forms.ToolStripItem.FireEventInteractive(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStripItem.FireEvent(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStrip.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.ToolStripDropDown.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStrip.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStripDropDown.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+
+---------------------------------------------------------
+出现应用程序未处理的异常：2018/7/8 14:40:05
+异常类型：NullReferenceException
+异常消息：未将对象引用设置到对象的实例。
+异常信息：   在 BWYSDP.Controls.DataSourceControl.contextMenuStrip3_ItemClicked(Object sender, ToolStripItemClickedEventArgs e) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\Controls\DataSourceControl.cs:行号 333
+   在 System.Windows.Forms.ToolStrip.OnItemClicked(ToolStripItemClickedEventArgs e)
+   在 System.Windows.Forms.ToolStripDropDown.OnItemClicked(ToolStripItemClickedEventArgs e)
+   在 System.Windows.Forms.ToolStrip.HandleItemClick(ToolStripItem dismissingItem)
+   在 System.Windows.Forms.ToolStripItem.HandleClick(EventArgs e)
+   在 System.Windows.Forms.ToolStripItem.HandleMouseUp(MouseEventArgs e)
+   在 System.Windows.Forms.ToolStripItem.FireEventInteractive(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStripItem.FireEvent(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStrip.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.ToolStripDropDown.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStrip.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStripDropDown.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+
+---------------------------------------------------------
+出现应用程序未处理的异常：2018/7/8 14:44:29
+异常类型：InvalidOperationException
+异常消息：反射类型“SDPCRL.COM.ModelManager.LibDataSource”时出错。
+异常信息：   在 System.Xml.Serialization.XmlReflectionImporter.ImportTypeMapping(TypeModel model, String ns, ImportContext context, String dataType, XmlAttributes a, Boolean repeats, Boolean openModel, RecursionLimiter limiter)
+   在 System.Xml.Serialization.XmlReflectionImporter.ImportElement(TypeModel model, XmlRootAttribute root, String defaultNamespace, RecursionLimiter limiter)
+   在 System.Xml.Serialization.XmlReflectionImporter.ImportTypeMapping(Type type, XmlRootAttribute root, String defaultNamespace)
+   在 System.Xml.Serialization.XmlSerializer..ctor(Type type, String defaultNamespace)
+   在 System.Xml.Serialization.XmlSerializer..ctor(Type type)
+   在 SDPCRL.CORE.SerializerUtils.xmlserialzaition[T](T entity, String filepath) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\SDPCRL.CORE\SerializerUtils.cs:行号 19
+   在 BWYSDP.com.ModelDesignProject.InternalSaveModel[T](T entity, String path) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\com\ModelDesignProject.cs:行号 760
+   在 BWYSDP.com.ModelDesignProject.SaveModel(String modelNm, NodeType type) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\com\ModelDesignProject.cs:行号 645
+   在 BWYSDP.MainForm.SaveBtn_Click(Object sender, EventArgs e) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\MainForm.cs:行号 252
+   在 System.Windows.Forms.ToolStripItem.RaiseEvent(Object key, EventArgs e)
+   在 System.Windows.Forms.ToolStripButton.OnClick(EventArgs e)
+   在 System.Windows.Forms.ToolStripItem.HandleClick(EventArgs e)
+   在 System.Windows.Forms.ToolStripItem.HandleMouseUp(MouseEventArgs e)
+   在 System.Windows.Forms.ToolStripItem.FireEventInteractive(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStripItem.FireEvent(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStrip.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStrip.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+
+---------------------------------------------------------
+出现应用程序未处理的异常：2018/8/15 21:05:16
+异常类型：NullReferenceException
+异常消息：未将对象引用设置到对象的实例。
+异常信息：   在 BWYSDP.ServerAdd.btnsave_Click(Object sender, EventArgs e) 位置 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\ServerAdd.cs:行号 34
+   在 System.Windows.Forms.Control.OnClick(EventArgs e)
+   在 System.Windows.Forms.Button.OnClick(EventArgs e)
+   在 System.Windows.Forms.Button.OnMouseUp(MouseEventArgs mevent)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ButtonBase.WndProc(Message& m)
+   在 System.Windows.Forms.Button.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+
+---------------------------------------------------------
