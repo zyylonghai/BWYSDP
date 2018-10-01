@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BWYSDP.DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -44,6 +45,18 @@ namespace BWYSDP
                     }
 
                 }
+            }
+        }
+
+        private void ServerConfig_Load(object sender, EventArgs e)
+        {
+            SQLite sqlite = new SQLite();
+            List<ServerInfo > servers= sqlite.SelectAllServer();
+            foreach (ServerInfo item in servers)
+            {
+                this.listBox1.Items.Add(item);
+                if (item.IsCurrentServer)
+                    this.listBox1.SelectedItem = item;
             }
         }
     }

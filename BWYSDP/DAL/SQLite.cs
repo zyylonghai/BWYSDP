@@ -70,10 +70,41 @@ namespace BWYSDP.DAL
             }
         }
 
-        public List<ServerInfo> Select()
+        public List<ServerInfo> SelectAllServer()
         {
             List<ServerInfo> result = new List<ServerInfo>();
+            using (SQLiteConnection cn = new SQLiteConnection("Data Source=ServerInfo.db;Pooling=true;FailIfMissing=false"))
+            {
+                cn.Open();
+                ServerInfo info = null;
+                using (SQLiteCommand cmd = new SQLiteCommand())
+                {
+                    cmd.Connection = cn;
+                    try
+                    {
+                        cmd.CommandText = string.Format("Select *from ServerInfo");
+                        using (SQLiteDataReader read = cmd.ExecuteReader())
+                        {
+                            while (read.Read())
+                            {
+                                info = new ServerInfo();
+                                info.accountid = read["accountid"].ToString();
+                                info.accountname = read["accountname"].ToString();
+                                info.connectype = read["connectype"].ToString();
+                                info.ipAddress = read["ipAddress"].ToString();
+                                info.serverNm = read["serverNm"].ToString();
+                                info.IsCurrentServer = (bool)read["IsCurrentServer"];
+                                info.point = Convert.ToInt32(read["point"]);
+                                result.Add(info);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
 
+                    }
+                }
+            }
 
             return result;
         }
@@ -261,7 +292,7 @@ namespace BWYSDP.DAL
 
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3}",serverNm ,ipAddress ,point,accountname);
+            return string.Format("服务名：{0} IP地址：{1} 端口：{2} 账套：{3}",serverNm ,ipAddress ,point,accountname);
         }
     }
 }
