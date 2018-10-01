@@ -22,7 +22,7 @@ namespace BWYSDP
         protected override void DoSetParam(string tag, params object[] param)
         {
             base.DoSetParam(tag, param);
-            this.txtIPAddress.Text = "192.168.1.4";
+            this.txtIPAddress.Text = "192.168.1.3";
             this.txtpoint.Text = "8085";
         }
 

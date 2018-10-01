@@ -21,16 +21,22 @@ namespace BWYSDP.DAL
                     cmd.Connection = cn;
                     try
                     {
-                        //建立表，如果表已经存在，则报错 
-                        cmd.CommandText = "CREATE TABLE [ServerInfo] (" +
-                            " ipAddress nvarchar(50)," +
-                            "connectype nvarchar(15)," +
-                            "serverNm nvarchar(50)," +
-                            "point int," +
-                            "accountid nvarchar(36)," +
-                            "accountname nvarchar(30)," +
-                            "IsCurrentServer bit)";
-                        cmd.ExecuteNonQuery();
+                        //判断表是否存在
+                        cmd.CommandText = "select * from sqlite_master where type = 'table' and name = 'ServerInfo'";
+                       object exits= cmd.ExecuteScalar();
+                        if (exits == null)
+                        {
+                            //建立表，如果表已经存在，则报错 
+                            cmd.CommandText = "CREATE TABLE [ServerInfo] (" +
+                                " ipAddress nvarchar(50)," +
+                                "connectype nvarchar(15)," +
+                                "serverNm nvarchar(50)," +
+                                "point int," +
+                                "accountid nvarchar(36)," +
+                                "accountname nvarchar(30)," +
+                                "IsCurrentServer bit)";
+                            cmd.ExecuteNonQuery();
+                        }
                     }
                     catch (Exception ex)
                     {
