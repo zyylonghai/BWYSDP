@@ -27,8 +27,8 @@ namespace ServiceTest
         {
             TcpChannel channel = new TcpChannel();
             ChannelServices.RegisterChannel(channel, false);
-            dbHelpFactory = (IDBHelpFactory)Activator.GetObject(typeof(IDBHelpFactory), "tcp://192.168.1.7:8085/DBService");
-            DALBus = (IDALBus)Activator.GetObject(typeof(IDALBus), "tcp://192.168.1.7:8085/DALServer");
+            dbHelpFactory = (IDBHelpFactory)Activator.GetObject(typeof(IDBHelpFactory), "tcp://192.168.1.3:8085/DBService");
+            DALBus = (IDALBus)Activator.GetObject(typeof(IDALBus), "tcp://192.168.1.3:8085/DALServer");
 
         }
 

@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\BllDataBase.cs" />
     <Compile Include="BLL\DataSourceInfoBLL.cs" />
     <Compile Include="com\ExceptionManager.cs" />
     <Compile Include="com\LibItem.cs" />
@@ -226,6 +227,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SDPCRL.BLL.BUS\SDPCRL.BLL.BUS.csproj">
+      <Project>{93471069-32AD-4336-B5E1-DA76E43BAE3B}</Project>
+      <Name>SDPCRL.BLL.BUS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDPCRL.COM\SDPCRL.COM.csproj">
       <Project>{A6DD1483-D68F-401B-B7F8-F3B977AC7500}</Project>
       <Name>SDPCRL.COM %28SDPCRL\SDPCRL.BLL\SDPCRL.COM%29</Name>

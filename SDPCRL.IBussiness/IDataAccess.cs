@@ -10,5 +10,6 @@ namespace SDPCRL.IBussiness
     {
        object ExecuteScalar(string commandText);
        DataRow GetDataRow(string commandText);
+       DataTable GetDataTable(string commandText);
     }
 }

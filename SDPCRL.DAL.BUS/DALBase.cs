@@ -24,7 +24,7 @@ namespace SDPCRL.DAL.BUS
         #region 构造函数
         public DALBase()
         {
-
+            
         }
         #endregion
 
