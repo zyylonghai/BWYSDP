@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SDPCRL.DAL.BUS;
 using System.Data;
+using BWYResFactory;
 
 namespace BWYSDPDAL
 {
@@ -16,7 +17,7 @@ namespace BWYSDPDAL
         public Dictionary<string, string> GetAccount()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
-            DataTable dt= this.DataAccess.GetDataTable("select ID,AccoutNm from  Accout");
+            DataTable dt = this.DataAccess.GetDataTable("select ID,AccoutNm from  Accout where AccoutNm!='" + ResFactory.ResManager.SysDBNm + "'");
             foreach (DataRow row in dt.Rows)
             {
                 result.Add(row["ID"].ToString(), row["AccoutNm"].ToString());
