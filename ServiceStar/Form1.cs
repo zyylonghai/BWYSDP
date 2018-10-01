@@ -44,6 +44,7 @@ namespace ServiceTest
             if (DALBus != null)
             {
                 object obj = DALBus.ExecuteDalUpdate("TestFunc");
+
             }
         }
     }

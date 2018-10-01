@@ -18,5 +18,10 @@ namespace BWYSDP.BLL
         {
            return  (Dictionary <string ,string >) this.ExecuteDalMethod("TestFunc", "GetAccount");
         }
+
+        public void ExecuteMethod(string funid, string method, params object[] param)
+        {
+ 
+        }
     }
 }

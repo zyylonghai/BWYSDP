@@ -51,7 +51,7 @@ namespace BWYSDP.DAL
                     cmd.Connection = cn;
                     try
                     {
-                        cmd.CommandText = string.Format("insert into ServerInfo values({0},{1},{2},{3},{4},{5},{6}",
+                        cmd.CommandText = string.Format("insert into ServerInfo values('{0}','{1}','{2}',{3},'{4}','{5}','{6}')",
                             info.ipAddress,
                             info.connectype,
                             info.serverNm,
