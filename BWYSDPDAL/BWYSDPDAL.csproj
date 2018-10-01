@@ -44,6 +44,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BWYResFactory\BWYResFactory.csproj">
+      <Project>{33CC4123-1946-498B-BB4F-986E5785C5C5}</Project>
+      <Name>BWYResFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDPCRL.DAL.BUS\SDPCRL.DAL.BUS.csproj">
       <Project>{33D0D0E5-25C7-4E54-850D-C04CF586B120}</Project>
       <Name>SDPCRL.DAL.BUS</Name>
