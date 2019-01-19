@@ -48,3 +48,5 @@ F:\vsproject\BWYSDP(2)\BWYSDP\Library\ServiceStar\bin\Debug\SDPCRL.CORE.pdb
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\ServiceStar\bin\Debug\BWYResFactory.pdb
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\ServiceStar\bin\Debug\SDPCRL.IBussiness.dll
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\ServiceStar\bin\Debug\SDPCRL.IBussiness.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\ServiceStar\bin\Debug\SDPCRL.COM.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\ServiceStar\bin\Debug\SDPCRL.COM.pdb

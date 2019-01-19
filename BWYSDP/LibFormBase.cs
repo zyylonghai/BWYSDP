@@ -76,6 +76,17 @@ namespace BWYSDP
         {
 
         }
+
+        public void DoEvents(LibEventType eventType, LibEventArgs args)
+        {
+            switch (eventType)
+            {
+                case LibEventType.FormCommunitation:
+                    LibFormAcceptmsgEventArgs farg = (LibFormAcceptmsgEventArgs)args;
+                    DoFormAcceptMsg(farg.Tag, farg.ArgsDic);
+                    break;
+            }
+        }
         #endregion
 
     }

@@ -6,10 +6,11 @@ using SDPCRL.IBussiness;
 using SDPCRL.DAL.DBHelp;
 using SDPCRL.DAL.IDBHelp;
 using System.Data;
+using SDPCRL.CORE;
 
 namespace SDPCRL.DAL.BUS
 {
-    class DataAccess:IDataAccess
+    class DataAccess:IDataAccess,ILibEventListener, IDisposable
     {
        private  static DBHelpFactory  _dbFactory;
        private ILibDBHelp  _dbHelp;
@@ -25,7 +26,7 @@ namespace SDPCRL.DAL.BUS
             :this()
         {
             _dbHelp = _dbFactory.GetDBHelp(guid);
-
+            LibEventManager.SubscribeEvent(new LibSqlExceptionEventSource(this, _dbHelp), LibEventType.SqlException);
         }
 
         public object ExecuteScalar(string commandText)
@@ -42,6 +43,27 @@ namespace SDPCRL.DAL.BUS
         public DataTable GetDataTable(string commandText)
         {
             return _dbHelp.GetDataTable(commandText);
+        }
+
+
+        public int ExecuteNonQuery(string commandText)
+        {
+            return _dbHelp.ExecuteNonQuery(commandText);
+        }
+
+        public void Dispose()
+        {
+            
+        }
+
+        public void DoEvents(LibEventType eventType, LibEventArgs args)
+        {
+            switch (eventType)
+            {
+                case LibEventType.SqlException:
+
+                    break;
+            }
         }
     }
 }

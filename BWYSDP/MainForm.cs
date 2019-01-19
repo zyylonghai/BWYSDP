@@ -49,6 +49,7 @@ namespace BWYSDP
             LibTreeNode node = (LibTreeNode)e.Node;
             if (node.NodeType != NodeType.Class && node.NodeType !=NodeType.Func)
             {
+                #region  创建Tabpage
                 string tabNm = string.Format("{0}{2}{1}", node.Name, node.NodeType.ToString(), SysConstManage.Underline);
                 if (this.libTabControl1.TabPages.ContainsKey(tabNm))
                 {
@@ -57,6 +58,8 @@ namespace BWYSDP
                 }
                 TabPage page = new TabPage(string.Format("{0}({1})", node.Text, node.NodeType.ToString()));
                 page.Name = tabNm;
+                
+                #endregion
 
                 this.libTabControl1.TabPages.Add(page);
                 this.libTabControl1.SelectedTab = page;
@@ -241,20 +244,45 @@ namespace BWYSDP
         private void SaveBtn_Click(object sender, EventArgs e)
         {
             TabPage page=this.libTabControl1.SelectedTab;
-            string[] nameAndtype = page.Name.Split(SysConstManage.Underline);
-            NodeType ntype=LibSysUtils.ConvertToEnumType<NodeType>(nameAndtype[1]);
-            switch (ntype)
+            if (page.Text.Contains(SysConstManage .Asterisk))
             {
-                case NodeType.DataModel :
-                    ((DataSourceControl)page.Controls[0]).GetControlValueBindToDS();
-                    break;
+                string[] nameAndtype = page.Name.Split(SysConstManage.Underline);
+                NodeType ntype = LibSysUtils.ConvertToEnumType<NodeType>(nameAndtype[1]);
+                switch (ntype)
+                {
+                    case NodeType.DataModel:
+                        ((DataSourceControl)page.Controls[0]).GetControlValueBindToDS();
+                        break;
+                }
+                ModelDesignProject.SaveModel(nameAndtype[0], ntype);
+                page.Text = page.Text.Replace(SysConstManage.Asterisk.ToString (),"");
             }
-            ModelDesignProject.SaveModel(nameAndtype[0], ntype);
         }
         //服务配置
         private void ServerConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             WakeUpForm<ServerConfig>("SetServer");
+        }
+        /// <summary> 创建表结构</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CreateTableStructBtn_Click(object sender, EventArgs e)
+        {
+            TabPage page = this.libTabControl1.SelectedTab;
+            if (page.Text.Contains(SysConstManage.Asterisk))
+            {
+                MessageHandle.ShowMessage("模型有修改未保存", true);
+                return;
+            }
+            string[] nameAndtype = page.Name.Split(SysConstManage.Underline);
+            NodeType ntype = LibSysUtils.ConvertToEnumType<NodeType>(nameAndtype[1]);
+            switch (ntype)
+            {
+                case NodeType.DataModel:
+                    ((DataSourceControl)page.Controls[0]).CreateTableStructToDB();
+                    break;
+            }
+
         }
         //private LibTreeNode CreateNode(LibTreeNode nodeInfo, NodeType nodetype)
         //{

@@ -17,6 +17,12 @@ namespace SDPCRL.BLL.BUS
                     string.Format("{0}://{1}:{2}/{3}",ServerInfo.ConnectType ,ServerInfo.IPAddress ,ServerInfo.Point, ServerInfo.DalServerName));
             } 
         }
+
+        //private string _accoutId = string.Empty;
+        #endregion
+
+        #region 公开属性
+        public string AccoutId { get; set; }
         #endregion
 
         #region 构造函数
@@ -31,7 +37,15 @@ namespace SDPCRL.BLL.BUS
 
         protected virtual object ExecuteDalMethod(string funcId, string method,params object[] param)
         {
-            return _dalBus.ExecuteDalMethod(funcId, method, param);
+           SDPCRL .COM.DalResult result= _dalBus.ExecuteDalMethod2(AccoutId, funcId, method, param);
+           return result.Value;
+
+            //return _dalBus.ExecuteDalMethod(AccoutId,funcId, method, param);
+        }
+
+        protected object ExecuteSysDalMethod(string funcId, string method, params object[] param)
+        {
+            return _dalBus.ExecuteSysDalMethod(funcId, method, param);
         }
 
         #endregion

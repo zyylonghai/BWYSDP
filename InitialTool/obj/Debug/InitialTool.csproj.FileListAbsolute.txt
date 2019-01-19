@@ -75,3 +75,5 @@ F:\vsproject\BWYSDP(2)\BWYSDP\Library\InitialTool\bin\Debug\SDPCRL.DAL.BUS.dll
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\InitialTool\bin\Debug\SDPCRL.IBussiness.dll
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\InitialTool\bin\Debug\SDPCRL.DAL.BUS.pdb
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\InitialTool\bin\Debug\SDPCRL.IBussiness.pdb
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\InitialTool\bin\Debug\SDPCRL.COM.dll
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\InitialTool\bin\Debug\SDPCRL.COM.pdb

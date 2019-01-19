@@ -53,7 +53,38 @@ namespace SDPCRL.CORE
             {
                 return default(T);
             }
-            return DoFind(propertyNm, value)[0];
+            return array[0];
+        }
+
+        public void Remove(string propertyNm, object value)
+        {
+            T obj=default (T) ;
+            Type tp = typeof(T);
+            PropertyInfo p = tp.GetProperty(propertyNm);
+            if (p == null)
+            {
+                throw new LibExceptionBase(string.Format("属性{0}不存在", propertyNm));
+            }
+            foreach (T item in _entityArray)
+            {
+                object val = p.GetValue(item, null);
+                if (value.Equals(val))
+                {
+                    obj = item;
+                    break;
+                }
+            }
+            if (obj != null)
+            {
+                _entityArray.Remove(obj);
+                
+            }
+            
+        }
+
+        public void  Remove(T obj)
+        {
+            _entityArray.Remove(obj);
         }
 
         public int Count

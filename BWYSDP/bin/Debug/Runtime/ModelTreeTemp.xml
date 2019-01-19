@@ -3,6 +3,8 @@
   <Class name="测试">
     <Func name="func1" package="com">功能1</Func>
     <Func name="func2" package="com">功能2</Func>
+    <Func package="com" name="5555">555555</Func>
+    <Class name="新建分类1" />
   </Class>
   <Func name="func3" package="com">功能3</Func>
   <Func name="func4" package="com">功能4</Func>
@@ -28,5 +30,6 @@
     <Func package="com" name="zyylonghai">资源</Func>
     <Func package="com" name="stockin">收货单</Func>
     <Func package="com" name="jkkjkj">测试3</Func>
+    <Func package="OA" name="qjbill">请假单</Func>
   </Class>
 </Root>

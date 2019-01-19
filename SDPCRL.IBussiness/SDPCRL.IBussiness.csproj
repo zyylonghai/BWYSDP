@@ -44,6 +44,12 @@
     <Compile Include="IDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SDPCRL.COM\SDPCRL.COM.csproj">
+      <Project>{A6DD1483-D68F-401B-B7F8-F3B977AC7500}</Project>
+      <Name>SDPCRL.COM %28SDPCRL\SDPCRL.BLL\SDPCRL.COM%29</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

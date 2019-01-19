@@ -59,6 +59,7 @@
             this.btnConnect.TabIndex = 0;
             this.btnConnect.Text = "链接";
             this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // btnDelet
             // 
@@ -68,6 +69,7 @@
             this.btnDelet.TabIndex = 0;
             this.btnDelet.Text = "删除";
             this.btnDelet.UseVisualStyleBackColor = true;
+            this.btnDelet.Click += new System.EventHandler(this.btnDelet_Click);
             // 
             // btnEdit
             // 
@@ -77,6 +79,7 @@
             this.btnEdit.TabIndex = 0;
             this.btnEdit.Text = "编辑";
             this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnAdd
             // 

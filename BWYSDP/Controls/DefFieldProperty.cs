@@ -17,7 +17,7 @@ namespace BWYSDP.Controls
     public partial class DefFieldProperty : UserControl
     {
         private LibField _field;
-        private TreeNode _fieldNode;
+        private LibTreeNode _fieldNode;
         public DefFieldProperty()
         {
             InitializeComponent();
@@ -47,7 +47,7 @@ namespace BWYSDP.Controls
         /// <summary>设置属性值</summary>
         /// <param name="Field"></param>
         /// <param name="node"></param>
-        public void SetPropertyValue(LibField field, TreeNode node)
+        public void SetPropertyValue(LibField field, LibTreeNode node)
         {
             this._field = field;
             this._fieldNode = node;
@@ -58,6 +58,35 @@ namespace BWYSDP.Controls
         public void GetControlsValue()
         {
             ModelDesignProject.DoGetControlsValue(this.Controls, _field);
+        }
+
+        private void DefFieldProperty_Load(object sender, EventArgs e)
+        {
+            foreach (Control item in this.Controls)
+            {
+                if (string .Compare ("fd_txtFieldName",item.Name )==0 ||string .Compare ("fd_txtDisplayText",item.Name )==0)//字段名称控件
+                {
+                    item.KeyUp += new KeyEventHandler(item_KeyUp);
+                }
+            }
+        }
+
+        void item_KeyUp(object sender, KeyEventArgs e)
+        {
+            Control ctl=sender as Control ;
+            if (e.KeyCode == Keys.Enter)
+            {
+                foreach (LibTreeNode item in this._fieldNode.Parent.Nodes)
+                {
+                    if (string.Compare(ctl.Text .Trim (), item.Name,true) == 0)
+                    {
+                        throw new LibExceptionBase("不能有重复字段名");
+                    }
+                }
+                this._fieldNode.Name = string.Compare("fd_txtFieldName", ctl.Name) == 0 ? ctl.Text.Trim() : this._fieldNode.Name;
+                this._field.Name = string.Compare("fd_txtFieldName", ctl.Name) == 0 ? ctl.Text.Trim() : this._field.Name;
+                this._fieldNode.Text = string.Format("{0}({1})", _field.Name, string.Compare("fd_txtFieldName", ctl.Name) == 0 ?_field.DisplayName:ctl.Text);
+            }
         }
 
         ///// <summary>用于控件失去焦点后，进行对应对象的赋值</summary>

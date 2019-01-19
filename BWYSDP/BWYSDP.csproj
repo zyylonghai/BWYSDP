@@ -126,6 +126,12 @@
     <Compile Include="EventTest.Designer.cs">
       <DependentUpon>EventTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="FieldCollectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FieldCollectionForm.Designer.cs">
+      <DependentUpon>FieldCollectionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DSSearch.resx">
       <DependentUpon>DSSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FieldCollectionForm.resx">
+      <DependentUpon>FieldCollectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

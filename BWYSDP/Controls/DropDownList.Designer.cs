@@ -34,9 +34,10 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(0, 4);
+            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBox1.Location = new System.Drawing.Point(0, 0);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(78, 16);
+            this.checkBox1.Size = new System.Drawing.Size(242, 32);
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "checkBox1";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -47,7 +48,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.checkBox1);
             this.Name = "DropDownList";
-            this.Size = new System.Drawing.Size(150, 24);
+            this.Size = new System.Drawing.Size(242, 32);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -56,5 +57,7 @@
         #endregion
 
         private System.Windows.Forms.CheckBox checkBox1;
+
+
     }
 }

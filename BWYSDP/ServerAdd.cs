@@ -14,6 +14,7 @@ namespace BWYSDP
     {
         private string _tag = string.Empty;
         ServerInfo info = null;
+        string _statu = string.Empty;
         public ServerAdd()
         {
             InitializeComponent();
@@ -22,8 +23,34 @@ namespace BWYSDP
         protected override void DoSetParam(string tag, params object[] param)
         {
             base.DoSetParam(tag, param);
-            this.txtIPAddress.Text = "192.168.1.3";
-            this.txtpoint.Text = "8085";
+            this._statu = tag;
+            if (string.Compare(tag, "add") == 0)
+            {
+                //info = new ServerInfo();
+                this.combConnType.SelectedText = "TCP";
+                this.combConnType.Text = "TCP";
+                this.txtIPAddress.Text = "192.168.1.5";
+                this.txtpoint.Text = "8085";
+            }
+            else if (string.Compare(tag, "edit") == 0)
+            {
+                if (param.Length > 0)
+                {
+                    info = (ServerInfo)param[0];
+                    this.txtServerName.Enabled = false;
+                    this.txtServerName.Text = info.serverNm;
+                    this.combConnType.SelectedText = info.connectype;
+                    this.combConnType.Text = info.connectype;
+                    this.txtIPAddress.Text = info.ipAddress;
+                    this.txtpoint.Text = info.point.ToString();
+                    this.combaccountId.DataSource = new List<ServerInfo> { info };
+                    this.combaccountId.ValueMember = "accountid";
+                    this.combaccountId.DisplayMember = "accountname";
+                    this.combaccountId.SelectedValue = info.accountid;
+                    this.combaccountId.SelectedText = info.accountname;
+
+                }
+            }
         }
 
         private void btnsave_Click(object sender, EventArgs e)
@@ -35,17 +62,35 @@ namespace BWYSDP
             info.ipAddress = this.txtIPAddress.Text.Trim();
             info.point = Convert.ToInt32(this.txtpoint.Text.Trim());
             info.serverNm = this.txtServerName.Text.Trim();
-            info.IsCurrentServer = true;
             SQLite sqlite = new SQLite();
-            sqlite.Insert(info);
+            switch (this._statu)
+            {
+                case "add":
+                    sqlite.Insert(info);
+                    break;
+                case "edit":
+                    sqlite.Update(info);
+                    break;
+            }
             this.Close();
         }
 
         protected override void ReturnParam(ref string tag, Dictionary<object, object> param)
         {
             base.ReturnParam(ref tag, param);
-            tag = "serverAdd";
-            param.Add("info", info);
+            switch (this._statu)
+            {
+                case "add":
+                    tag = "serverAdd";
+                    if (info != null)
+                    {
+                        param.Add("info", info);
+                    }
+                    break;
+                case "edit":
+                    tag = "serverEdit";
+                    break;
+            }
         }
 
         private void combaccountId_Click(object sender, EventArgs e)
@@ -53,6 +98,10 @@ namespace BWYSDP
             if (!string.IsNullOrEmpty(this.txtIPAddress.Text))
             {
                 SDPCRL.BLL.BUS.ServerInfo.IPAddress = this.txtIPAddress.Text.Trim();
+            }
+            else
+            {
+                return;
             }
             if (!string.IsNullOrEmpty(this.combConnType.Text))
             {
@@ -76,8 +125,9 @@ namespace BWYSDP
         private List<ServerInfo> GetData()
         {
             List<ServerInfo> data = new List<ServerInfo>();
-            Dictionary <string ,string > dic= this.BllData.GetAccount();
-            ServerInfo info=null ;
+            BLL.BllDataBase bll = new BLL.BllDataBase(false);
+            Dictionary<string, string> dic = bll.GetAccount();
+            ServerInfo info = null;
             foreach (KeyValuePair<string, string> item in dic)
             {
                 info = new ServerInfo();

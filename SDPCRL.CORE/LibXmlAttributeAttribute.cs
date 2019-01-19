@@ -10,7 +10,8 @@ namespace SDPCRL.CORE
     {
         TextBox=1,
         Combox=2,
-        TextAndBotton
+        TextAndBotton=3
+
 
     }
     /// <summary>

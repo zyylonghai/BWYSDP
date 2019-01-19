@@ -26,5 +26,13 @@ namespace SDPCRL.CORE
                 return base.Message;
             }
         }
+
+        #region 公开函数
+
+        public void AddErrorMessage(string msg)
+        {
+            
+        }
+        #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace SDPCRL.DAL.BUS
     public class DALBus : MarshalByRefObject,IDALBus
     {
 
-        public object ExecuteDalUpdate(string funcId)
+        public object ExecuteDalUpdate(string accountId, string funcId)
         {
             ReflectionOperate reflect = new ReflectionOperate(funcId);
             object obj=reflect.InstanceTarget();
@@ -25,16 +25,17 @@ namespace SDPCRL.DAL.BUS
         }
 
 
-        public object ExecuteDalMethod(string funcId, string method, params object[] param)
+        public object ExecuteDalMethod(string accountId, string funcId, string method, params object[] param)
         {
             ReflectionOperate reflect = new ReflectionOperate(funcId);
             object obj = reflect.InstanceTarget();
+            ((DALBase)obj).AccountID = accountId;
             Type t = obj.GetType();
             MethodInfo func = t.GetMethod(method);
             return func.Invoke(obj, param);
         }
 
-        public object ExecuteDalMethod(string method, params object[] param)
+        public object ExecuteMethod(string accountId, string method, params object[] param)
         {
             throw new NotImplementedException();
         }
@@ -43,6 +44,43 @@ namespace SDPCRL.DAL.BUS
         public object ServerConnectTest()
         {
             return true;
+        }
+
+
+        public object ExecuteSysDalMethod(string funcId, string method, params object[] param)
+        {
+            return ExecuteDalMethod(null, funcId, method, param);
+        }
+
+
+        SDPCRL.COM.DalResult IDALBus.ExecuteDalMethod2(string accountId, string funcId, string method, params object[] param)
+        {
+            SDPCRL.COM.DalResult result = new SDPCRL.COM.DalResult();
+            try
+            {
+                ReflectionOperate reflect = new ReflectionOperate(funcId);
+                object obj = reflect.InstanceTarget();
+                ((DALBase)obj).AccountID = accountId;
+                Type t = obj.GetType();
+                MethodInfo func = t.GetMethod(method);
+
+
+                result.Value = func.Invoke(obj, param);
+                result.Messagelist = ((DALBase)obj).GetErrorMessage();
+                //result.Messagelist.Add("jjjj");
+               
+            }
+            catch (Exception ex)
+            {
+                SDPCRL.COM.ErrorMessage error = new SDPCRL.COM.ErrorMessage();
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                }
+                error.Message = ex.Message;
+                error.Stack = ex.StackTrace;
+            }
+            return result;
         }
     }
 

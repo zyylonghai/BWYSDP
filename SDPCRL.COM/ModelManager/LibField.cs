@@ -13,7 +13,7 @@ namespace SDPCRL.COM.ModelManager
     {
         #region 公开的属性
         /// <summary>编号 </summary>
-        [LibAttribute("fd_txtID", LibControlType.TextBox, "编号", true)]
+        [LibAttribute("fd_txtID", LibControlType.TextBox, "编号", true,true)]
         public string ID
         {
             get;
@@ -44,6 +44,10 @@ namespace SDPCRL.COM.ModelManager
             set;
         }
 
+        /// <summary> 原字段名</summary>
+        [LibAttribute("fd_txtOrignNm", LibControlType.TextBox, "原字段名")]
+        public string OrignNm { get; set; }
+
         /// <summary>字段类型</summary>
         [LibAttribute("fd_combFieldType", LibControlType.Combox, "字段类型")]
         public LibFieldType FieldType
@@ -51,6 +55,15 @@ namespace SDPCRL.COM.ModelManager
             set;
             get;
         }
+
+        /// <summary>字段长度</summary>
+        [LibAttribute("fd_txtFieldLen", LibControlType.TextBox, "字段长度")]
+        public int FieldLength { get; set; }
+
+        /// <summary>小数点位数</summary>
+        [LibAttribute("fd_txtDecimalpoint", LibControlType.TextBox, "小数点位数")]
+        public int Decimalpoint { get; set; }
+
         /// <summary>是否允许为null</summary>
         [LibAttribute("fd_combAllowNull", LibControlType.Combox, "允许为null")]
         public bool AllowNull

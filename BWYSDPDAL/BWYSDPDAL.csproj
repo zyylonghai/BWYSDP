@@ -52,6 +52,10 @@
       <Project>{33D0D0E5-25C7-4E54-850D-C04CF586B120}</Project>
       <Name>SDPCRL.DAL.BUS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SDPCRL.DAL.COM\SDPCRL.DAL.COM.csproj">
+      <Project>{AAD6A3CA-176E-46F6-A06B-3878E3434F23}</Project>
+      <Name>SDPCRL.DAL.COM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDPCRL.IBussiness\SDPCRL.IBussiness.csproj">
       <Project>{CA14898F-89A2-4DE8-A369-464954C7BA75}</Project>
       <Name>SDPCRL.IBussiness</Name>

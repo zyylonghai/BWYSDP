@@ -30,6 +30,41 @@ namespace BWYSDP.Controls
             _tbStructPropertylst = new List<TBStructProperty>();
             _fieldPropertylst = new List<DefFieldProperty>();
             this.splitContainer1.Panel2.Controls.Add(_dsProperty);
+
+            this.treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
+            this.treeView1.HideSelection = false;
+            this.treeView1.DrawNode += new DrawTreeNodeEventHandler(treeView1_DrawNode);
+        }
+
+        void treeView1_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+            e.DrawDefault = true;
+            return;
+            //if ((e.State & TreeNodeStates.Selected) != 0)
+            //{
+            //    //演示为绿底白字  
+            //    e.Graphics.FillRectangle(Brushes.DarkBlue, e.Node.Bounds);
+
+            //    Font nodeFont = e.Node.NodeFont;
+            //    if (nodeFont == null) nodeFont = ((TreeView)sender).Font;
+            //    e.Graphics.DrawString(e.Node.Text, nodeFont, Brushes.White, Rectangle.Inflate(e.Bounds, 2, 0));
+            //}
+            //else
+            //{
+            //    e.DrawDefault = true;
+            //}
+
+            //if ((e.State & TreeNodeStates.Focused) != 0)
+            //{
+            //    using (Pen focusPen = new Pen(Color.Black))
+            //    {
+            //        focusPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+            //        Rectangle focusBounds = e.Node.Bounds;
+            //        focusBounds.Size = new Size(focusBounds.Width - 1,
+            //        focusBounds.Height - 1);
+            //        e.Graphics.DrawRectangle(focusPen, focusBounds);
+            //    }
+            //}
         }
 
         private void DataSourceControl_Load(object sender, EventArgs e)
@@ -55,6 +90,7 @@ namespace BWYSDP.Controls
 
                 //this._defTBPropertylst = new List<DefTBProperty>();
                 DefTBProperty deftbp = new DefTBProperty(defTBNode.NodeId);
+                deftbp.Dock = DockStyle.Fill;
                 this._defTBPropertylst.Add(deftbp);
                 this.splitContainer1 .Panel2 .Controls .Add (deftbp);
 
@@ -78,6 +114,7 @@ namespace BWYSDP.Controls
 
                 //this._tbStructPropertylst = new List<TBStructProperty>();
                 TBStructProperty tbstructP = new TBStructProperty(tablestruc.NodeId);
+                tbstructP.Dock = DockStyle.Fill;
                 this._tbStructPropertylst.Add(tbstructP);
                 this.splitContainer1.Panel2.Controls.Add(tbstructP);
 
@@ -125,7 +162,7 @@ namespace BWYSDP.Controls
                                     fieldNode = new LibTreeNode();
                                     fieldNode.NodeId = field.ID;
                                     fieldNode.Name = field.Name;
-                                    fieldNode.Text = field.DisplayName;
+                                    fieldNode.Text =string.Format ("{0}({1})",field.Name , field.DisplayName);
                                     fieldNode.NodeType = NodeType.Field;
                                     dtstructNode.Nodes.Add(fieldNode);
                                     #endregion
@@ -175,6 +212,7 @@ namespace BWYSDP.Controls
                         if (!exists) //还未创建对应的控件
                         {
                             DefTBProperty deftbp = new DefTBProperty(libnode.NodeId);
+                            deftbp.Dock = DockStyle.Fill;
                             this._defTBPropertylst.Add(deftbp);
                             this.splitContainer1.Panel2.Controls.Add(deftbp);
                             deftbp.SetPropertyValue(_ds.DefTables.FindFirst("ID", libnode.NodeId), libnode);
@@ -199,6 +237,7 @@ namespace BWYSDP.Controls
                         if (!exists) //还未创建对应的控件
                         {
                             TBStructProperty tbstrucp = new TBStructProperty(libnode.NodeId);
+                            tbstrucp.Dock = DockStyle.Fill;
                             this._tbStructPropertylst.Add(tbstrucp);
                             this.splitContainer1.Panel2.Controls.Add(tbstrucp);
                             LibDefineTable deftb = _ds.DefTables.FindFirst("ID", ((LibTreeNode)libnode.Parent).NodeId);
@@ -223,6 +262,7 @@ namespace BWYSDP.Controls
                         if (!exists) //还未创建对应的控件
                         {
                             DefFieldProperty fieldp = new DefFieldProperty(libnode.NodeId);
+                            fieldp.Dock = DockStyle.Fill;
                             this._fieldPropertylst.Add(fieldp);
                             this.splitContainer1.Panel2.Controls.Add(fieldp);
                             LibDefineTable deftb = _ds.DefTables.FindFirst("ID", ((LibTreeNode)libnode.Parent.Parent).NodeId);
@@ -254,6 +294,10 @@ namespace BWYSDP.Controls
                 {
                     libnode.ContextMenuStrip = this.contextMenuStrip3;
                 }
+                else if (libnode.NodeType == NodeType.Field)
+                {
+                    libnode.ContextMenuStrip = this.contextMenuStrip4;
+                }
                 this.treeView1.SelectedNode = libnode;
             }
             else
@@ -261,7 +305,11 @@ namespace BWYSDP.Controls
 
             }
         }
-
+        /// <summary>
+        /// 数据集节点上的右键菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             LibTreeNode curentNode =(LibTreeNode) this.treeView1.SelectedNode;
@@ -292,6 +340,9 @@ namespace BWYSDP.Controls
             }
         }
 
+        /// <summary>自定义表节点上的右键菜单</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void contextMenuStrip2_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
@@ -326,6 +377,9 @@ namespace BWYSDP.Controls
             }
         }
 
+        /// <summary> 表结构节点上的右键菜单</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void contextMenuStrip3_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
@@ -344,6 +398,7 @@ namespace BWYSDP.Controls
                     curentNode.Nodes.Add(fieldNode);
 
                     DefFieldProperty fieldP = new DefFieldProperty(fieldNode.NodeId);
+                    fieldP.Dock = DockStyle.Fill;
                     this._fieldPropertylst.Add(fieldP);
                     this.splitContainer1.Panel2.Controls.Add(fieldP);
 
@@ -354,8 +409,32 @@ namespace BWYSDP.Controls
                     currentTBStruct.Fields.Add(field);
 
                     fieldP.SetPropertyValue(field, fieldNode);
+                    UpdateTabPageText();
                     break;
                     #endregion
+            }
+        }
+
+        /// <summary>字段节点上的右键菜单</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void contextMenuStrip4_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            LibDefineTable defineTB = _ds.DefTables.FindFirst("ID", ((LibTreeNode)curentNode.Parent.Parent).NodeId);
+            LibDataTableStruct currentTBStruct = defineTB.TableStruct.FindFirst("ID", ((LibTreeNode)curentNode.Parent).NodeId);
+            switch (e.ClickedItem.Name)
+            {
+                case "deleteField"://删除字段节点
+                   //LibField f= currentTBStruct.Fields.FindFirst("ID", curentNode.NodeId);
+                   //currentTBStruct.Fields.Remove(f);
+                    currentTBStruct.Fields.Remove("ID", curentNode.NodeId);
+                   DefFieldProperty fp= this._fieldPropertylst.FirstOrDefault(i => i.Name == curentNode.NodeId);
+                   if (fp != null)
+                       this._fieldPropertylst.Remove(fp);
+                   this.treeView1.Nodes.Remove(curentNode);
+                   UpdateTabPageText();
+                    break;
             }
         }
 
@@ -408,6 +487,23 @@ namespace BWYSDP.Controls
                 field.GetControlsValue();
             }
         }
+
+        public void CreateTableStructToDB()
+        {
+            //foreach (TBStructProperty tbstruct in _tbStructPropertylst)
+            //{
+            //    tbstruct.CreateTableStruct();
+            //}
+            foreach (LibDefineTable deftb in _ds.DefTables)
+            {
+                foreach (LibDataTableStruct tb in deftb.TableStruct)
+                {
+                    ModelDesignProject.UpdateTableStruct(tb);
+                }
+            }
+            
+        }
+
         #endregion
 
         #region 私有自定义函数
@@ -419,6 +515,18 @@ namespace BWYSDP.Controls
                 item.Visible = item == ctl ? true : false;
             }
         }
+        /// <summary>
+        /// 设置tabpage的标题后都一个*。表示已被修改
+        /// </summary>
+        private void UpdateTabPageText()
+        {
+            TabPage page = (TabPage)this.Parent;
+            if (!page.Text.Contains(SysConstManage.Asterisk))
+            {
+                page.Text += SysConstManage.Asterisk;
+            }
+        }
+
         //private void CreateNode()
         //{
             

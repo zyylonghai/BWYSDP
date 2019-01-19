@@ -37,6 +37,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "TBStructProperty";
             this.Size = new System.Drawing.Size(353, 324);
+            this.Load += new System.EventHandler(this.TBStructProperty_Load);
             this.ResumeLayout(false);
 
         }

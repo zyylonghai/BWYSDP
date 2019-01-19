@@ -160,6 +160,25 @@ namespace SDPCRL.COM.ModelManager
             get;
             set;
         }
+        ///<summary>表Index</summary>
+        [LibAttribute("tbStruct_tableIndex", LibControlType.TextBox, "表Index")]
+        public int TableIndex
+        {
+            get;
+            set;
+        }
+
+        /// <summary>关联表Index</summary>
+        [LibAttribute("tbStruct_joinTableIndex", LibControlType.TextBox, "关联表Index")]
+        public int JoinTableIndex
+        {
+            get;
+            set;
+        }
+
+        /// <summary> 关联字段</summary>
+        [LibAttribute("tbStruct_JoinFields", LibControlType.TextAndBotton, "关联字段")]
+        public List<string> JoinFields { get; set; }
         /// <summary>
         /// 主键集
         /// </summary>

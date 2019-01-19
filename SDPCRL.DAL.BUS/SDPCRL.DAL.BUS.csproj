@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SDPCRL.COM\SDPCRL.COM.csproj">
+      <Project>{A6DD1483-D68F-401B-B7F8-F3B977AC7500}</Project>
+      <Name>SDPCRL.COM %28SDPCRL\SDPCRL.BLL\SDPCRL.COM%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDPCRL.CORE\SDPCRL.CORE.csproj">
       <Project>{6737331B-873F-432B-BF3B-97B64C8E0C5F}</Project>
       <Name>SDPCRL.CORE</Name>

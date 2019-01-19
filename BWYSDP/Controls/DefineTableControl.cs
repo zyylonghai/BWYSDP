@@ -238,7 +238,7 @@ namespace BWYSDP
                 this.defTBProperty1.Visible = false;
                 this.defFieldProperty1.Visible = true;
                 string tableStructName = node.Parent.Name;
-                this.defFieldProperty1.SetPropertyValue(GetField(tableStructName, node.Name), node);
+                this.defFieldProperty1.SetPropertyValue(GetField(tableStructName, node.Name),(LibTreeNode)node);
 
             }
         }

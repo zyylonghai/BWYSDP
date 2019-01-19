@@ -92,6 +92,25 @@ namespace SDPCRL.CORE
             return default(T);
         }
 
+        public static  bool isNumberic(string val, out int result)
+        {
+            System.Text.RegularExpressions.Regex rex =
+            new System.Text.RegularExpressions.Regex(@"^\d+$");
+            result = -1;
+            if (rex.IsMatch(val))
+            {
+                result = Convert.ToInt32(val);
+                return true;
+            }
+            else
+                return false;
+        }
+
+        //public static object ConvertToEnumType(string enumNm,Type enumType)
+        //{
+            
+        //}
+
         private enum BooleanValue
         {
             [LibReSource("是")]

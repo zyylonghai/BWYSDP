@@ -9,6 +9,7 @@ using System.Reflection;
 using SDPCRL.CORE;
 using SDPCRL.COM;
 using SDPCRL.CORE.FileUtils;
+using System.Data;
 
 namespace BWYSDP.com
 {
@@ -19,6 +20,10 @@ namespace BWYSDP.com
         private static Hashtable _formSourceContain = new Hashtable();
         private static Hashtable _permissionSourceContain = new Hashtable();
         private static DSList _dsList = new DSList();
+        private static bool initialvale = false;
+
+        public  delegate void ModelEditEventHandle(bool ischange);
+        public static  event ModelEditEventHandle DoModelEdit;
 
         #region 公开函数
 
@@ -142,6 +147,7 @@ namespace BWYSDP.com
         /// <param name="valueType"></param>
         public static void DoSetPropertyValue<T>(Control.ControlCollection controls, T valueType)
         {
+            initialvale = true;
             PropertyInfo[] propertis = valueType.GetType().GetProperties();
             foreach (Control item in controls)
             {
@@ -153,21 +159,38 @@ namespace BWYSDP.com
                         LibAttributeAttribute attr = attrArray[0] as LibAttributeAttribute;
                         if (string.Compare(attr.ControlNm, item.Name, false) == 0)
                         {
-                            if (CheckEnumFields(item, info, valueType)) //dropdownlist控件
+                            switch (attr.ControlType)
                             {
-                            }
-                            else if (string.Compare(info.PropertyType.Name, "Boolean", true) == 0)
-                            {
-                                item.Text = LibSysUtils.BooleanToText((bool)info.GetValue(valueType, null));
-                            }
-                            else
-                            {
-                                item.Text = LibSysUtils.ToString(info.GetValue(valueType, null));
+                                case LibControlType.Combox :
+                                    if (info.PropertyType.Equals(typeof(bool)))
+                                    {
+                                        item.Text = LibSysUtils.BooleanToText((bool)info.GetValue(valueType, null));
+                                    }
+                                    else
+                                    {
+                                        item.Text = ReSourceManage.GetResource(info.GetValue(valueType, null));
+                                    }
+                                    break;
+                                case LibControlType.TextAndBotton:
+                                    IList lst = info.GetValue(valueType, null) as IList;
+                                    foreach (var n in lst)
+                                    {
+                                        if (!string.IsNullOrEmpty(item.Text))
+                                        {
+                                            item.Text += SysConstManage.Comma;
+                                        }
+                                        item.Text += n.ToString();
+                                    }
+                                    break;
+                                case LibControlType.TextBox:
+                                    item.Text = LibSysUtils.ToString(info.GetValue(valueType, null));
+                                    break;
                             }
                         }
                     }
                 }
             }
+            initialvale = false;
         }
 
         /// <summary>获取控件值，并赋值到相应对象（T）</summary>
@@ -192,14 +215,158 @@ namespace BWYSDP.com
                             case LibControlType.TextBox:
                                 if (p.GetSetMethod() != null)
                                 {
-                                    p.SetValue(obj, ctrl.Text.Trim(), null);
+                                    if (p.PropertyType.Equals(typeof(int)))
+                                    {
+                                        int valu;
+                                        if (LibSysUtils.isNumberic(ctrl.Text.Trim(), out valu))
+                                            p.SetValue(obj, valu, null);
+                                        else
+                                        {
+                                            ExceptionManager.ThrowError(string.Format("{0}只能输入数字", attr.DisplayText));
+                                        }
+                                    }
+                                    else
+                                        p.SetValue(obj, ctrl.Text.Trim(), null);
                                 }
                                 break;
                             case LibControlType.Combox :
+                                if (p.PropertyType.Equals(typeof(bool)))
+                                {
+                                    p.SetValue(obj, LibSysUtils.ToBooLean(ctrl.Text.Trim()), null);
+                                }
+                                else
+                                {
+                                    LibItem itm=((ComboBox)ctrl ).SelectedItem as LibItem;
+                                    p.SetValue(obj,itm.Key , null);
+                                }
+                                break;
+                            case LibControlType.TextAndBotton:
+
                                 break;
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>创建或修改数据库表结构</summary>
+        public static  void UpdateTableStruct(LibDataTableStruct obj)
+        {
+            if (obj != null)
+            {
+                StringBuilder builder = new StringBuilder();
+                BLL.BllDataBase bll = new BLL.BllDataBase();
+                DataTable result = (DataTable)bll.GetTableSchema(obj.Name);
+                if (result!=null && result .Rows .Count >0)//表已存在
+                {
+                    foreach (LibField field in obj.Fields)
+                    {
+                        if (field.IsActive)
+                        {
+                            DataRow[] rows = result.Select(string.Format("column_name='{0}'",string.IsNullOrEmpty(field.OrignNm)? field.Name:field.OrignNm));
+                            if (rows.Length > 0)
+                            {
+                                if (string.Compare(rows[0]["column_name"].ToString(), field.OrignNm) == 0)//列名称改变。
+                                {
+                                    builder.AppendFormat(" exec sp_rename '{0}.{1}','{2}'", obj.Name, field.OrignNm, field.Name);
+
+                                }
+                                builder.AppendFormat(" alter table {0}  ALTER COLUMN {1} ", obj.Name, field.Name);
+                               
+                            }
+                            else
+                            {
+                                builder.AppendFormat(" alter table {0} add {1} ",obj .Name ,field .Name);
+                            }
+                            switch (field.FieldType)
+                            {
+                                case LibFieldType.Byte:
+                                    builder.AppendFormat("[{0}] ", "bit");
+                                    break;
+                                case LibFieldType.Date:
+                                    builder.AppendFormat("[{0}] ", "date");
+                                    break;
+                                case LibFieldType.DateTime:
+                                    builder.AppendFormat("[{0}] ", "datetime");
+                                    break;
+                                case LibFieldType.Decimal:
+                                    builder.AppendFormat("[{0}]", "decimal");
+                                    builder.AppendFormat("({0}, {1}) ", field.FieldLength, field.Decimalpoint);
+                                    break;
+                                case LibFieldType.Interger:
+                                    builder.AppendFormat("[{0}] ", "int");
+                                    break;
+                                case LibFieldType.Long:
+                                    builder.AppendFormat("[{0}] ", "bigint");
+                                    break;
+                                case LibFieldType.String:
+                                    builder.AppendFormat("[{0}]", "nvarchar");
+                                    builder.AppendFormat("({0}) ", field.FieldLength);
+                                    break;
+                            }
+                            builder.AppendFormat("{0} ", field.AllowNull ? "NULL" : "NOT NULL");
+                        }
+                    }
+                    bll.BuilderTableStruct(builder.ToString());
+                    return;
+                }
+                builder.AppendFormat("CREATE TABLE [dbo].[{0}]( ", obj.Name);
+                int initlen = builder.Length;
+                foreach (LibField field in obj.Fields)
+                {
+                    if (field.IsActive)
+                    {
+                        if (builder.Length != initlen)
+                        {
+                            builder.Append(", ");
+                        }
+                        builder.AppendFormat("[{0}] ", field.Name);
+                        switch (field.FieldType)
+                        {
+                            case LibFieldType.Byte:
+                                builder.AppendFormat("[{0}] ", "bit");
+                                break;
+                            case LibFieldType.Date:
+                                builder.AppendFormat("[{0}] ", "date");
+                                break;
+                            case LibFieldType.DateTime:
+                                builder.AppendFormat("[{0}] ", "datetime");
+                                break;
+                            case LibFieldType.Decimal:
+                                builder.AppendFormat("[{0}]", "decimal");
+                                builder.AppendFormat("({0}, {1}) ",field.FieldLength ,field .Decimalpoint);
+                                break;
+                            case LibFieldType.Interger:
+                                builder.AppendFormat("[{0}] ", "int");
+                                break;
+                            case LibFieldType.Long:
+                                builder.AppendFormat("[{0}] ", "bigint");
+                                break;
+                            case LibFieldType.String:
+                                builder.AppendFormat("[{0}]", "nvarchar");
+                                builder.AppendFormat("({0}) ", field.FieldLength);
+                                break;
+                        }
+                        builder.AppendFormat("{0} ", field.AllowNull ? "NULL" : "NOT NULL");
+                    }
+                }
+                if (obj.PrimaryKey != null&&obj .PrimaryKey .Count >0)
+                {
+                    builder.Append(", ");
+                    builder.AppendFormat(" CONSTRAINT [PK_{0}] PRIMARY KEY CLUSTERED (", obj.Name);
+                    for (int i = 0; i < obj.PrimaryKey.Count; i++)
+                    {
+                        builder.AppendFormat("[{0}] ASC", obj.PrimaryKey[i]);
+                        if (i != obj.PrimaryKey.Count - 1)
+                        {
+                            builder.Append(",");
+                        }
+                    }
+                    builder.Append(")");
+                    builder.Append("WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]");
+                }
+                builder.Append(") ON [PRIMARY]");
+                bll.BuilderTableStruct(builder.ToString());
             }
         }
 
@@ -219,7 +386,7 @@ namespace BWYSDP.com
             int y = 25;
             int interval = 30;
             int index = 0;
-            int w = 158;
+            int w = 300;
             int h = 21;
             int btnW = 35;
             System.Drawing.Font font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -234,26 +401,29 @@ namespace BWYSDP.com
                         lb = new Label();
                         lb.Font = font;
                         lb.Name = string.Format("lb_{0}", attr.ControlNm);
-                        lb.Size = new System.Drawing.Size(75, 12);
+                        lb.Size = new System.Drawing.Size(80, 12);
                         lb.Text = string.Format("{0}:", attr.DisplayText);
                         lb.Location = new System.Drawing.Point(x, y + index * (interval + lb.Height));
                         UCtr.Controls.Add(lb);
                         switch (attr.ControlType)
                         {
                             case LibControlType.TextBox:
-                                #region
+                                #region 文本输入框控件
                                 tb = new TextBox();
                                 tb.Multiline = true;
                                 tb.Font = font;
                                 tb.Name = attr.ControlNm;
                                 tb.ReadOnly = attr.IsReadOnly;
                                 tb.Size = new System.Drawing.Size(w, h);
+                                tb.TabIndex = index;
+                                tb.Multiline = false;
                                 tb.Location = new System.Drawing.Point(lb.Location.X + lb.Width, y + index * (interval + lb.Height));
+                                tb.TextChanged += new EventHandler(tb_TextChanged);
                                 UCtr.Controls.Add(tb);
                                 break;
                                 #endregion
                             case LibControlType.Combox:
-                                #region
+                                #region 下拉选项列表控件
                                 comb = new ComboBox();
                                 comb.Font = font;
                                 comb.Name = attr.ControlNm;
@@ -275,19 +445,20 @@ namespace BWYSDP.com
                                         comb.Items.Add(new LibItem((int)item, ReSourceManage.GetResource(item)));
                                     }
                                 }
+                                comb.SelectedValueChanged += new EventHandler(tb_TextChanged);
                                 UCtr.Controls.Add(comb);
                                 break;
                                 #endregion
                             case LibControlType.TextAndBotton:
-                                #region
+                                #region 浏览输入框控件
                                 tb = new TextBox();
                                 tb.Multiline = true;
                                 tb.Font = font;
                                 tb.Name = attr.ControlNm;
-                                tb.ReadOnly = attr.IsReadOnly;
+                                tb.ReadOnly = true;
                                 tb.Size = new System.Drawing.Size(w, h);
                                 tb.Location = new System.Drawing.Point(lb.Location.X + lb.Width, y + index * (interval + lb.Height));
-
+                                tb.TextChanged +=new EventHandler(tb_TextChanged);
                                 btn = new Button();
                                 btn.Font = font;
                                 btn.Name = string.Format("{0}{1}", SysConstManage.BtnCtrlNmPrefix, attr.ControlNm);
@@ -303,6 +474,14 @@ namespace BWYSDP.com
                         index++;
                     }
                 }
+            }
+        }
+
+        static void tb_TextChanged(object sender, EventArgs e)
+        {
+            if (DoModelEdit != null)
+            {
+                DoModelEdit(!initialvale);
             }
         }
 
@@ -627,6 +806,15 @@ namespace BWYSDP.com
                 return ds;
             }
 
+        }
+
+        public static void RemoveDataSource(string dataSourceNm)
+        {
+            if (_dataSourceContain.ContainsKey(dataSourceNm))
+            {
+                _dataSourceContain[dataSourceNm] = null;
+                _dataSourceContain.Remove(dataSourceNm);
+            }
         }
         /// <summary>保存模型设计</summary>
         /// <param name="modelNm"></param>

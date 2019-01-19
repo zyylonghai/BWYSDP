@@ -113,7 +113,7 @@
             // 
             // btnsave
             // 
-            this.btnsave.Location = new System.Drawing.Point(46, 206);
+            this.btnsave.Location = new System.Drawing.Point(46, 211);
             this.btnsave.Name = "btnsave";
             this.btnsave.Size = new System.Drawing.Size(75, 23);
             this.btnsave.TabIndex = 3;
@@ -123,7 +123,7 @@
             // 
             // btncance
             // 
-            this.btncance.Location = new System.Drawing.Point(154, 206);
+            this.btncance.Location = new System.Drawing.Point(154, 211);
             this.btncance.Name = "btncance";
             this.btncance.Size = new System.Drawing.Size(75, 23);
             this.btncance.TabIndex = 3;
@@ -154,7 +154,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 259);
+            this.ClientSize = new System.Drawing.Size(281, 260);
             this.Controls.Add(this.combaccountId);
             this.Controls.Add(this.btncance);
             this.Controls.Add(this.btnsave);

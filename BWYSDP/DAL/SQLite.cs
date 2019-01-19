@@ -30,7 +30,7 @@ namespace BWYSDP.DAL
                             cmd.CommandText = "CREATE TABLE [ServerInfo] (" +
                                 " ipAddress nvarchar(50)," +
                                 "connectype nvarchar(15)," +
-                                "serverNm nvarchar(50)," +
+                                "serverNm nvarchar(50) primary key," +
                                 "point int," +
                                 "accountid nvarchar(36)," +
                                 "accountname nvarchar(30)," +
@@ -121,22 +121,26 @@ namespace BWYSDP.DAL
             {
                 //在打开数据库时，会判断数据库是否存在，如果不存在，则在当前目录下创建一个 
                 cn.Open();
-                ServerInfo info = new ServerInfo();
+                ServerInfo info = null;
                 using (SQLiteCommand cmd = new SQLiteCommand())
                 {
                     cmd.Connection = cn;
                     try
                     {
-                        cmd.CommandText = string.Format("Select *from ServerInfo where IsCurrentServer=1");
+                        cmd.CommandText = string.Format("Select *from ServerInfo where IsCurrentServer='True'");
                         using (SQLiteDataReader read = cmd.ExecuteReader())
                         {
-                            info.accountid = read["accountid"].ToString();
-                            info.accountname = read["accountname"].ToString();
-                            info.connectype = read["connectype"].ToString();
-                            info.ipAddress = read["ipAddress"].ToString();
-                            info.serverNm = read["serverNm"].ToString();
-                            info.IsCurrentServer = (bool)read["IsCurrentServer"];
-                            info.point =Convert.ToInt32(read["point"]);
+                            if (read.Read())
+                            {
+                                info = new ServerInfo();
+                                info.accountid = read["accountid"].ToString();
+                                info.accountname = read["accountname"].ToString();
+                                info.connectype = read["connectype"].ToString();
+                                info.ipAddress = read["ipAddress"].ToString();
+                                info.serverNm = read["serverNm"].ToString();
+                                info.IsCurrentServer = (bool)read["IsCurrentServer"];
+                                info.point = Convert.ToInt32(read["point"]);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -150,12 +154,55 @@ namespace BWYSDP.DAL
 
         public bool Update(ServerInfo info)
         {
-            return true;
+            using (SQLiteConnection cn = new SQLiteConnection("Data Source=ServerInfo.db;Pooling=true;FailIfMissing=false"))
+            {
+                //在打开数据库时，会判断数据库是否存在，如果不存在，则在当前目录下创建一个 
+                cn.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand())
+                {
+                    cmd.Connection = cn;
+                    try
+                    {
+                        cmd.CommandText = string.Format("update ServerInfo set ipAddress='{0}',connectype='{1}',accountid='{2}',point={3},accountname='{4}',IsCurrentServer='{5}' where serverNm='{6}'",
+                            info.ipAddress,
+                            info.connectype,
+                            info.accountid,
+                            info.point,
+                            info.accountname,
+                            info.IsCurrentServer,
+                            info.serverNm);
+                        cmd.ExecuteNonQuery();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+            }
         }
 
         public bool Delete(ServerInfo info)
         {
-            return true;
+            using (SQLiteConnection cn = new SQLiteConnection("Data Source=ServerInfo.db;Pooling=true;FailIfMissing=false"))
+            {
+                //在打开数据库时，会判断数据库是否存在，如果不存在，则在当前目录下创建一个 
+                cn.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand())
+                {
+                    cmd.Connection = cn;
+                    try
+                    {
+                        cmd.CommandText = string.Format("delete from ServerInfo  where serverNm='{0}'",info.serverNm);
+                        cmd.ExecuteNonQuery();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+            }
         }
     }
 
@@ -298,7 +345,7 @@ namespace BWYSDP.DAL
 
         public override string ToString()
         {
-            return string.Format("服务名：{0} IP地址：{1} 端口：{2} 账套：{3}",serverNm ,ipAddress ,point,accountname);
+            return string.Format("服务名：{0} IP地址：{1} 端口：{2} 账套：{3} 是否当前链接：{4}",serverNm ,ipAddress ,point,accountname,IsCurrentServer);
         }
     }
 }

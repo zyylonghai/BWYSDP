@@ -40,10 +40,12 @@ namespace ServiceTest
                 object obj = dbhelp.ExecuteScalar("declare @id varchar(10);set @id=1; select AccoutNm,@id from ACCOUT");
                 ILibDBHelp dbhelp2 = dbHelpFactory.GetDBHelp("14f5d469-a774-484e-b467-2f80db09a5d3");
                 DataTable dt = dbhelp2.GetDataTable("EXEC sp_executesql N'select * from INFO_lanmu where lanmu_ID=@id and lanmu_categorie_ID=@cid',N'@id nchar(3),@cid nchar(3)',@id='001',@cid='001'");
+                ILibDBHelp dbhelp3 = dbHelpFactory.GetDBHelp("3f2b5957-72dc-4c5a-bfac-35cfcdd5c71f");
+                DataTable dt2 = dbhelp3.GetDataTable("EXEC sp_executesql N'select * from Course '");
             }
             if (DALBus != null)
             {
-                object obj = DALBus.ExecuteDalUpdate("TestFunc");
+                //object obj = DALBus.ExecuteDalUpdate("TestFunc");
 
             }
         }

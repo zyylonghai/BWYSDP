@@ -36,6 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "DefFieldProperty";
             this.Size = new System.Drawing.Size(304, 489);
+            this.Load += new System.EventHandler(this.DefFieldProperty_Load);
             this.ResumeLayout(false);
 
         }

@@ -44,8 +44,11 @@
     <Compile Include="FileUtils\FileOperation.cs" />
     <Compile Include="FileUtils\XMLOperation.cs" />
     <Compile Include="LibCollection.cs" />
+    <Compile Include="LibEventArgs.cs" />
     <Compile Include="LibEventSource.cs" />
     <Compile Include="LibExceptionBase.cs" />
+    <Compile Include="LibFormAcceptmsgEventArgs.cs" />
+    <Compile Include="LibSqlExceptionEventSource.cs" />
     <Compile Include="LibSysUtils.cs" />
     <Compile Include="LibXmlAttributeAttribute.cs" />
     <Compile Include="SerializerUtils.cs" />

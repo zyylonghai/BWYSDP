@@ -61,10 +61,10 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ServerConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ServerConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -348,6 +348,7 @@
             this.CreateTableStructBtn.Size = new System.Drawing.Size(72, 37);
             this.CreateTableStructBtn.Text = "创建表结构";
             this.CreateTableStructBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.CreateTableStructBtn.Click += new System.EventHandler(this.CreateTableStructBtn_Click);
             // 
             // menuStrip1
             // 
@@ -374,6 +375,13 @@
             this.配置ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.配置ToolStripMenuItem.Text = "配置";
             // 
+            // ServerConfigToolStripMenuItem
+            // 
+            this.ServerConfigToolStripMenuItem.Name = "ServerConfigToolStripMenuItem";
+            this.ServerConfigToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.ServerConfigToolStripMenuItem.Text = "服务配置";
+            this.ServerConfigToolStripMenuItem.Click += new System.EventHandler(this.ServerConfigToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -395,13 +403,6 @@
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(131, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
-            // 
-            // ServerConfigToolStripMenuItem
-            // 
-            this.ServerConfigToolStripMenuItem.Name = "ServerConfigToolStripMenuItem";
-            this.ServerConfigToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.ServerConfigToolStripMenuItem.Text = "服务配置";
-            this.ServerConfigToolStripMenuItem.Click += new System.EventHandler(this.ServerConfigToolStripMenuItem_Click);
             // 
             // MainForm
             // 
