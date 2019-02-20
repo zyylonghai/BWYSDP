@@ -153,7 +153,7 @@ namespace SDPCRL.COM.ModelManager
             get;
             set;
         }
-        ///<summary>忽略创建表结构</summary>
+        ///<summary>创建表结构</summary>
         [LibAttribute("tbStruct_combcreateTBStruct",LibControlType .Combox ,"创建结构")]
         public bool Ignore
         {

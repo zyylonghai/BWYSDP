@@ -55,6 +55,9 @@
     <Compile Include="com\LibItem.cs" />
     <Compile Include="com\LibTreeNode.cs" />
     <Compile Include="com\ModelDesignProject.cs" />
+    <Compile Include="Controls\BaseUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\DataSourceControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -90,6 +93,24 @@
     </Compile>
     <Compile Include="Controls\DropDownList.Designer.cs">
       <DependentUpon>DropDownList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FormGroupProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FormGroupProperty.Designer.cs">
+      <DependentUpon>FormGroupProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FormPageProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FormPageProperty.Designer.cs">
+      <DependentUpon>FormPageProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FormTemplate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FormTemplate.Designer.cs">
+      <DependentUpon>FormTemplate.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\LibTabControl.cs">
       <SubType>Component</SubType>
@@ -184,6 +205,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\DropDownList.resx">
       <DependentUpon>DropDownList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FormGroupProperty.resx">
+      <DependentUpon>FormGroupProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FormPageProperty.resx">
+      <DependentUpon>FormPageProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FormTemplate.resx">
+      <DependentUpon>FormTemplate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TBStructProperty.resx">
       <DependentUpon>TBStructProperty.cs</DependentUpon>

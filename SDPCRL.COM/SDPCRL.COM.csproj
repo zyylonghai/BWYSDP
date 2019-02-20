@@ -51,6 +51,9 @@
     <Compile Include="ModelManager\DBModel.cs" />
     <Compile Include="ModelManager\DefineTable.cs" />
     <Compile Include="ModelManager\DSList.cs" />
+    <Compile Include="ModelManager\FormTemplate\LibFormGroup.cs" />
+    <Compile Include="ModelManager\FormTemplate\LibFormPage.cs" />
+    <Compile Include="ModelManager\FormTemplate\LibGridGroup.cs" />
     <Compile Include="ModelManager\LibField.cs" />
     <Compile Include="ModelManager\LibFormSource.cs" />
     <Compile Include="ModelManager\LibPermissionSource.cs" />
@@ -64,6 +67,7 @@
       <Name>SDPCRL.CORE</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

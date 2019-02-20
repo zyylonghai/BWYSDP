@@ -71,6 +71,9 @@ namespace BWYSDP
                         page.Controls.Add(dsControl);
                         break;
                     case NodeType.FormModel:
+                        FormTemplate fmControl = new FormTemplate(node);
+                        fmControl.Dock = DockStyle.Fill;
+                        page.Controls.Add(fmControl);
                         break;
                     case NodeType.PermissionModel:
                         break;

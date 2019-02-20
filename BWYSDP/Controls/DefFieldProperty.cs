@@ -14,14 +14,14 @@ using SDPCRL.COM.ModelManager.com;
 
 namespace BWYSDP.Controls
 {
-    public partial class DefFieldProperty : UserControl
+    public partial class DefFieldProperty : BaseUserControl
     {
         private LibField _field;
         private LibTreeNode _fieldNode;
         public DefFieldProperty()
         {
             InitializeComponent();
-            InitializeControls();
+            InitializeControls<LibField >();
             //this.fd_txtFieldName.LostFocus += new EventHandler(fd_PropertyTextBox_LostFocus);
             //this.fd_combFieldType.LostFocus += new EventHandler(fd_PropertyTextBox_LostFocus);
             //this.fd_txtDisplayText.LostFocus += new EventHandler(fd_PropertyTextBox_LostFocus);
@@ -34,26 +34,33 @@ namespace BWYSDP.Controls
         {
             this.Name = name;
         }
-        private void InitializeControls()
+
+        public override void SetPropertyValue<TEntity>(TEntity entity, LibTreeNode node)
         {
-            ModelDesignProject.InternalBindControls<LibField>(this);
+            base.SetPropertyValue<TEntity>(entity, node);
+            this._field = entity as LibField;
+            this._fieldNode = node;
         }
+        //private void InitializeControls()
+        //{
+        //    ModelDesignProject.InternalBindControls<LibField>(this);
+        //}
 
         //void fd_PropertyTextBox_LostFocus(object sender, EventArgs e)
         //{
         //    SetPropertyValue(sender);
         //}
 
-        /// <summary>设置属性值</summary>
-        /// <param name="Field"></param>
-        /// <param name="node"></param>
-        public void SetPropertyValue(LibField field, LibTreeNode node)
-        {
-            this._field = field;
-            this._fieldNode = node;
-            ModelDesignProject.DoSetPropertyValue<LibField>(this.Controls, field);
+        ///// <summary>设置属性值</summary>
+        ///// <param name="Field"></param>
+        ///// <param name="node"></param>
+        //public void SetPropertyValue(LibField field, LibTreeNode node)
+        //{
+        //    this._field = field;
+        //    this._fieldNode = node;
+        //    ModelDesignProject.DoSetPropertyValue<LibField>(this.Controls, field);
 
-        }
+        //}
 
         public void GetControlsValue()
         {

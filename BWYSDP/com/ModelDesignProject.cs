@@ -10,6 +10,8 @@ using SDPCRL.CORE;
 using SDPCRL.COM;
 using SDPCRL.CORE.FileUtils;
 using System.Data;
+using SDPCRL.COM.ModelManager.FormTemplate;
+using BWYSDP.Controls;
 
 namespace BWYSDP.com
 {
@@ -172,14 +174,22 @@ namespace BWYSDP.com
                                     }
                                     break;
                                 case LibControlType.TextAndBotton:
-                                    IList lst = info.GetValue(valueType, null) as IList;
-                                    foreach (var n in lst)
+                                    if (info.PropertyType.Equals(typeof(string)))
                                     {
-                                        if (!string.IsNullOrEmpty(item.Text))
+                                        item.Text = LibSysUtils.ToString(info.GetValue(valueType, null));
+                                        break;
+                                    }
+                                    IList lst = info.GetValue(valueType, null) as IList;
+                                    if (lst!= null)
+                                    {
+                                        foreach (var n in lst)
                                         {
-                                            item.Text += SysConstManage.Comma;
+                                            if (!string.IsNullOrEmpty(item.Text))
+                                            {
+                                                item.Text += SysConstManage.Comma;
+                                            }
+                                            item.Text += n.ToString();
                                         }
-                                        item.Text += n.ToString();
                                     }
                                     break;
                                 case LibControlType.TextBox:
@@ -252,7 +262,7 @@ namespace BWYSDP.com
         /// <summary>创建或修改数据库表结构</summary>
         public static  void UpdateTableStruct(LibDataTableStruct obj)
         {
-            if (obj != null)
+            if (obj != null && obj.Ignore)
             {
                 StringBuilder builder = new StringBuilder();
                 BLL.BllDataBase bll = new BLL.BllDataBase();
@@ -382,6 +392,7 @@ namespace BWYSDP.com
             TextBox tb;
             ComboBox comb;
             Button btn;
+            ToolTip tip = new ToolTip();
             int x = 25;
             int y = 25;
             int interval = 30;
@@ -465,6 +476,7 @@ namespace BWYSDP.com
                                 btn.Text = SysConstManage.BtnCtrlDefaultText;
                                 btn.Size = new System.Drawing.Size(btnW, h);
                                 btn.Location = new System.Drawing.Point(lb.Location.X + lb.Width + tb.Width, y + index * (interval + lb.Height));
+                                btn.Click += new EventHandler(((BaseUserControl)UCtr).TextAndBotton_Click);
 
                                 UCtr.Controls.Add(tb);
                                 UCtr.Controls.Add(btn);
@@ -754,6 +766,13 @@ namespace BWYSDP.com
 
         }
 
+        public static bool ExitsDataSource(string dsid,string package)
+        {
+            FileOperation fileoperation = new FileOperation();
+            fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.DataSourceNm, package, dsid);
+            return fileoperation.ExistsFile();
+        }
+
         private static List<NodeInfo> DoReadNodes(string express)
         {
             XMLOperation xmlOperation = new XMLOperation(SysConstManage.ModelTemp);
@@ -806,6 +825,20 @@ namespace BWYSDP.com
                 return ds;
             }
 
+        }
+
+        public static LibFormPage GetFormSourceByFormId(string formid)
+        {
+            if (_formSourceContain.ContainsKey(formid))
+            {
+                return (LibFormPage)_formSourceContain[formid];
+            }
+            else
+            {
+                LibFormPage fm = ModelManager.GetFormSource(formid);
+                _formSourceContain.Add(formid, fm);
+                return fm;
+            }
         }
 
         public static void RemoveDataSource(string dataSourceNm)
@@ -987,7 +1020,20 @@ namespace BWYSDP.com
         TableStruct = 9,
         /// <summary>字段</summary>
         [LibReSource("字段")]
-        Field = 10
+        Field = 10,
+
+        /// <summary>排版页面容器</summary>
+        [LibReSource("页面容器")]
+        FormPanel=11,
+        /// <summary>页面信息组 </summary>
+        [LibReSource("页面信息组")]
+        FormGroup=12,
+        /// <summary> 页面表格组</summary>
+        [LibReSource("页面表格组")]
+        GridGroup=13,
+        /// <summary> 信息组字段</summary>
+        [LibReSource("信息组字段")]
+        FormGroup_Field=14
 
     }
 }

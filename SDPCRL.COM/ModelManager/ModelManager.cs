@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SDPCRL.CORE;
 using SDPCRL.CORE.FileUtils;
+using SDPCRL.COM.ModelManager.FormTemplate;
 
 namespace SDPCRL.COM.ModelManager
 {
@@ -46,7 +47,11 @@ namespace SDPCRL.COM.ModelManager
 
         public static LibDataSource GetDataSource(string dsNm)
         {
-            return InternalInstanceDataSource(dsNm);
+            return (LibDataSource)InternalInstanceModelSource(SysConstManage.DataSourceNm, dsNm);
+        }
+        public static LibFormPage GetFormSource(string fmId)
+        {
+            return (LibFormPage)InternalInstanceModelSource(SysConstManage.FormSourceNm, fmId);
         }
 
         #endregion
@@ -131,7 +136,7 @@ namespace SDPCRL.COM.ModelManager
             fileOperation.Encoding = LibEncoding.UTF8;
             string dsListXML = fileOperation.ReadFile();
             dsinfolist = SerializerUtils.XMLDeSerialize<DSList>(dsListXML);
-            if (dsinfolist.DSInfoCollection != null&&dsinfolist.DSInfoCollection .Count >0)
+            if (dsinfolist.DSInfoCollection != null && dsinfolist.DSInfoCollection.Count > 0)
             {
                 DataSource ds = null;
                 foreach (DSInfo info in dsinfolist.DSInfoCollection)
@@ -162,18 +167,36 @@ namespace SDPCRL.COM.ModelManager
         }
         #endregion
 
-        private static LibDataSource InternalInstanceDataSource(string dataSourceId)
+        private static object InternalInstanceModelSource(string path, string modelSourceId)
         {
             FileOperation fileOperation = new FileOperation();
-            fileOperation.FilePath = string.Format(@"{0}\{1}", SysConstManage.ModelPath, SysConstManage.DataSourceNm);
+            fileOperation.FilePath = string.Format(@"{0}\{1}", SysConstManage.ModelPath, path);
             fileOperation.Encoding = LibEncoding.UTF8;
-            string dsxml = fileOperation.SearchAndRead(string.Format("{0}.xml", dataSourceId));
-            if (string.IsNullOrEmpty(dsxml))
+            string dsxml = fileOperation.SearchAndRead(string.Format("{0}.xml", modelSourceId));
+            switch (path)
             {
+                case SysConstManage.DataSourceNm:
+                    if (string.IsNullOrEmpty(dsxml))
+                    {
 
-                return new LibDataSource {DSID=dataSourceId };
+                        return new LibDataSource { DSID = modelSourceId };
+                    }
+                    return SerializerUtils.XMLDeSerialize<LibDataSource>(dsxml);
+                case SysConstManage.FormSourceNm:
+                    if (string.IsNullOrEmpty(dsxml))
+                    {
+
+                        return new LibFormPage { FormId = modelSourceId };
+                    }
+                    return SerializerUtils.XMLDeSerialize<LibFormPage>(dsxml);
+                case SysConstManage .PermissionSourceNm :
+
+                    return null;
+                default :
+
+                    return null;
             }
-            return SerializerUtils.XMLDeSerialize<LibDataSource>(dsxml);
+
         }
         #endregion
     }

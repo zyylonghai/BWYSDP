@@ -122,3 +122,6 @@ F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\SDPCRL.BLL.BUS.pdb
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\SDPCRL.IBussiness.pdb
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\bin\Debug\BWYResFactory.pdb
 F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\obj\x86\Debug\BWYSDP.FieldCollectionForm.resources
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\obj\x86\Debug\BWYSDP.Controls.FormTemplate.resources
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\obj\x86\Debug\BWYSDP.Controls.FormPageProperty.resources
+F:\vsproject\BWYSDP(2)\BWYSDP\Library\BWYSDP\obj\x86\Debug\BWYSDP.Controls.FormGroupProperty.resources

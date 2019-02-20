@@ -14,7 +14,7 @@ using BWYSDP.com;
 namespace BWYSDP.Controls
 {
     /// <summary>自定义表属性控件对象</summary>
-    public partial class DefTBProperty : UserControl
+    public partial class DefTBProperty : BaseUserControl
     {
         //private int _dsId;
         private LibDefineTable _defineTable;
@@ -22,7 +22,7 @@ namespace BWYSDP.Controls
         public DefTBProperty()
         {
             InitializeComponent();
-            InitializeControls();
+            InitializeControls<LibDefineTable >();
             //this.DefTB_txtTableName.LostFocus += new EventHandler(DefTB_PropertyTextBox_LostFocus);
             //this.DefTB_txtDisplayName.LostFocus += new EventHandler(DefTB_PropertyTextBox_LostFocus);
         }
@@ -32,10 +32,17 @@ namespace BWYSDP.Controls
             this.Name = name;
         }
 
-        private void InitializeControls()
+        public override void SetPropertyValue<TEntity>(TEntity entity, LibTreeNode node)
         {
-            ModelDesignProject.InternalBindControls<LibDefineTable>(this);
+            base.SetPropertyValue<TEntity>(entity, node);
+            _defineTable = entity as LibDefineTable;
+            _defTBNode = node;
         }
+
+        //private void InitializeControls()
+        //{
+        //    ModelDesignProject.InternalBindControls<LibDefineTable>(this);
+        //}
 
         //void DefTB_PropertyTextBox_LostFocus(object sender, EventArgs e)
         //{
@@ -44,12 +51,12 @@ namespace BWYSDP.Controls
         //}
 
 
-        public void SetPropertyValue(LibDefineTable defTB, LibTreeNode defTBNode)
-        {
-            _defineTable = defTB;
-            _defTBNode = defTBNode;
-            ModelDesignProject.DoSetPropertyValue<LibDefineTable>(this.Controls, defTB);
-        }
+        //public void SetPropertyValue(LibDefineTable defTB, LibTreeNode defTBNode)
+        //{
+        //    _defineTable = defTB;
+        //    _defTBNode = defTBNode;
+        //    ModelDesignProject.DoSetPropertyValue<LibDefineTable>(this.Controls, defTB);
+        //}
 
         public void GetControlsValue()
         {
