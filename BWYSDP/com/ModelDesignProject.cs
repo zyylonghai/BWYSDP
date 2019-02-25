@@ -225,7 +225,7 @@ namespace BWYSDP.com
                             case LibControlType.TextBox:
                                 if (p.GetSetMethod() != null)
                                 {
-                                    if (p.PropertyType.Equals(typeof(int)))
+                                    if (p.PropertyType.Equals(typeof(int)) || p.PropertyType.Equals(typeof(decimal)))
                                     {
                                         int valu;
                                         if (LibSysUtils.isNumberic(ctrl.Text.Trim(), out valu))
@@ -235,6 +235,10 @@ namespace BWYSDP.com
                                             ExceptionManager.ThrowError(string.Format("{0}只能输入数字", attr.DisplayText));
                                         }
                                     }
+                                    //else if (p.PropertyType.Equals(typeof(decimal)))
+                                    //{
+                                    //    p.SetValue(obj, ctrl.Text.Trim(), null);
+                                    //}
                                     else
                                         p.SetValue(obj, ctrl.Text.Trim(), null);
                                 }
@@ -476,7 +480,7 @@ namespace BWYSDP.com
                                 btn.Text = SysConstManage.BtnCtrlDefaultText;
                                 btn.Size = new System.Drawing.Size(btnW, h);
                                 btn.Location = new System.Drawing.Point(lb.Location.X + lb.Width + tb.Width, y + index * (interval + lb.Height));
-                                btn.Click += new EventHandler(((BaseUserControl)UCtr).TextAndBotton_Click);
+                                btn.Click += new EventHandler(((BaseUserControl<T>)UCtr).TextAndBotton_Click);
 
                                 UCtr.Controls.Add(tb);
                                 UCtr.Controls.Add(btn);
@@ -872,7 +876,8 @@ namespace BWYSDP.com
                 case NodeType.FormModel:
                     if (_formSourceContain.ContainsKey(modelNm))
                     {
-                        LibFormSource fm = (LibFormSource)_dataSourceContain[modelNm];
+                        LibFormPage fm = (LibFormPage)_formSourceContain[modelNm];
+                        path = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.FormSourceNm, fm.Package, fm.FormId);
                         return InternalSaveModel(fm, path);
                     }
                     else

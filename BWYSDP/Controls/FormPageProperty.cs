@@ -12,13 +12,13 @@ using SDPCRL.CORE;
 
 namespace BWYSDP.Controls
 {
-    public partial class FormPageProperty : BaseUserControl
+    public partial class FormPageProperty : BaseUserControl<LibFormPage >
     {
-        private LibFormPage _formSource;
+        //private LibFormPage _formSource;
         public FormPageProperty()
         {
             InitializeComponent();
-            InitializeControls<LibFormPage>();
+            InitializeControls();
         }
 
         ///// <summary>设置属性值</summary>
@@ -32,11 +32,12 @@ namespace BWYSDP.Controls
 
         //}
 
-        public override void SetPropertyValue<TEntity>(TEntity entity, LibTreeNode node)
-        {
-            base.SetPropertyValue<TEntity>(entity, node);
-            this._formSource = entity as LibFormPage;
-        }
+
+        //public override void SetPropertyValue<TEntity>(TEntity entity, LibTreeNode node)
+        //{
+        //    base.SetPropertyValue<TEntity>(entity, node);
+        //    this._formSource = entity as LibFormPage;
+        //}
 
         //private void InitializeControls()
         //{

@@ -256,6 +256,9 @@ namespace BWYSDP
                     case NodeType.DataModel:
                         ((DataSourceControl)page.Controls[0]).GetControlValueBindToDS();
                         break;
+                    case NodeType.FormModel:
+                        ((FormTemplate)page.Controls[0]).GetControlValueBindToFM();
+                        break;
                 }
                 ModelDesignProject.SaveModel(nameAndtype[0], ntype);
                 page.Text = page.Text.Replace(SysConstManage.Asterisk.ToString (),"");

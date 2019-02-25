@@ -7,21 +7,29 @@ using BWYSDP.com;
 
 namespace BWYSDP.Controls
 {
-    public class BaseUserControl : UserControl
+    public class BaseUserControl<T> : UserControl
+        //where T : class
     {
+        public T entity;
         public BaseUserControl()
         {
- 
+           
         }
 
-        public void InitializeControls<T>()
+        public void InitializeControls()
         {
             ModelDesignProject.InternalBindControls<T>(this);
         }
 
-        public virtual void SetPropertyValue<TEntity>(TEntity entity, LibTreeNode node)
+        public virtual void SetPropertyValue(T entity, LibTreeNode node)
         {
-            ModelDesignProject.DoSetPropertyValue<TEntity>(this.Controls, entity);
+            this.entity = entity;
+            ModelDesignProject.DoSetPropertyValue(this.Controls, entity);
+        }
+
+        public void GetControlsValue()
+        {
+            ModelDesignProject.DoGetControlsValue(this.Controls, this.entity);
         }
 
         public virtual void TextAndBotton_Click(object sender, EventArgs e)

@@ -14,62 +14,28 @@ using SDPCRL.CORE;
 namespace BWYSDP.Controls
 {
     /// <summary>表数据结构控件对象</summary>
-    public partial class TBStructProperty : BaseUserControl
+    public partial class TBStructProperty : BaseUserControl<LibDataTableStruct >
     {
         //private int _dsId;
-        private LibDataTableStruct _tableStruct;
+        //private LibDataTableStruct _tableStruct;
         private TreeNode _tableStructNode;
         public TBStructProperty()
         {
             InitializeComponent();
-            InitializeControls<LibDataTableStruct >();
-            //this.tbStruct_txtTableName.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
-            //this.tbStruct_txtTableDisplayName.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
-            //this.tbStruct_combcreateTBStruct.LostFocus += new EventHandler(tbStruct_PropertyTextBox_LostFocus);
+            InitializeControls();
 
         }
         public TBStructProperty(string  name)
             : this()
         {
             this.Name = name;
-            //this._dsId = dsId;
         }
-
-        public override void SetPropertyValue<TEntity>(TEntity entity, LibTreeNode node)
+        public override void SetPropertyValue(LibDataTableStruct entity, LibTreeNode node)
         {
-            base.SetPropertyValue<TEntity>(entity, node);
-            _tableStruct = entity as LibDataTableStruct;
+            base.SetPropertyValue(entity, node);
             _tableStructNode = node;
         }
 
-        //private void InitializeControls()
-        //{
-        //    ModelDesignProject.InternalBindControls<LibDataTableStruct>(this);
-        //}
-
-        //void tbStruct_PropertyTextBox_LostFocus(object sender, EventArgs e)
-        //{
-        //    SetPropertyValue(sender);
-        //}
-
-        ///// <summary>设置属性值</summary>
-        ///// <param name="tableStruct"></param>
-        //public void SetPropertyValue(LibDataTableStruct tableStruct, TreeNode tableStructNode)
-        //{
-        //    _tableStruct = tableStruct;
-        //    _tableStructNode = tableStructNode;
-        //    ModelDesignProject.DoSetPropertyValue<LibDataTableStruct>(this.Controls, tableStruct);
-        //}
-
-        public void GetControlsValue()
-        {
-            ModelDesignProject.DoGetControlsValue(this.Controls, _tableStruct);
-        }
-
-        //public void CreateTableStruct()
-        //{
-        //    ModelDesignProject.CreateTableStruct(_tableStruct);
-        //}
 
 
         private void TBStructProperty_Load(object sender, EventArgs e)
@@ -82,7 +48,7 @@ namespace BWYSDP.Controls
             //    }
             //}
         }
-
+        #region
         public override void TextAndBotton_Click(object sender, EventArgs e)
         {
             Panel p = new Panel();
@@ -93,7 +59,7 @@ namespace BWYSDP.Controls
             List<string> target = null;
             PropertyInfo targetobj = null;
             Control ctl = sender as Control;
-            PropertyInfo[] propertis = this._tableStruct.GetType().GetProperties();
+            PropertyInfo[] propertis = this.entity.GetType().GetProperties();
             foreach (PropertyInfo info in propertis)
             {
                 object[] attrArray = info.GetCustomAttributes(typeof(LibAttributeAttribute), true);
@@ -103,11 +69,11 @@ namespace BWYSDP.Controls
                     if (string.Compare(attr.ControlNm, ctl.Name.Replace(SysConstManage.BtnCtrlNmPrefix, "")) == 0)
                     {
                         targetobj = info;
-                        target = (List<string>)info.GetValue(this._tableStruct, null);
+                        target = (List<string>)info.GetValue(this.entity, null);
                     }
                 }
             }
-            foreach (LibField f in this._tableStruct.Fields)
+            foreach (LibField f in this.entity.Fields)
             {
                 chkb = new CheckBox();
                 chkb.Checked = target.Contains(f.Name);
@@ -139,7 +105,7 @@ namespace BWYSDP.Controls
                     }
                 }
                 if (targetobj != null && targetobj.GetGetMethod() != null)
-                    targetobj.SetValue(this._tableStruct, target, null);
+                    targetobj.SetValue(this.entity, target, null);
                 #region 控件赋值
                 this.Controls[ctl.Name.Replace(SysConstManage.BtnCtrlNmPrefix, "")].Text = val.ToString();
                 #endregion
@@ -147,6 +113,8 @@ namespace BWYSDP.Controls
             fielsform.Dispose();
         }
 
+        #endregion
+        #region 旧代码
         //void item_Click(object sender, EventArgs e)
         //{
         //    Panel p = new Panel();
@@ -256,5 +224,6 @@ namespace BWYSDP.Controls
         //        }
         //    }
         //}
+        #endregion
     }
 }

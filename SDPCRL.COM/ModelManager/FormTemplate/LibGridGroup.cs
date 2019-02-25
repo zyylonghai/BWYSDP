@@ -12,7 +12,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
     public class LibGridGroup
     {
         /// <summary>表格组ID（唯一）</summary>
-        [LibAttribute("fm_GridGroupID", LibControlType.TextBox, "表格组ID")]
+        [LibAttribute("fm_GridGroupID", LibControlType.TextBox, "表格组ID",true)]
         [XmlAttribute]
         public string GridGroupID
         {

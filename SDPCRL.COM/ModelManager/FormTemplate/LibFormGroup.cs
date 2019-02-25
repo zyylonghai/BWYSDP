@@ -12,7 +12,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
     public class LibFormGroup
     {
         /// <summary>信息组ID（唯一）</summary>
-        [LibAttribute("fm_FormGroupID", LibControlType.TextBox, "信息组ID")]
+        [LibAttribute("fm_FormGroupID", LibControlType.TextBox, "信息组ID",true)]
         [XmlAttribute]
         public string FormGroupID
         {
@@ -24,6 +24,12 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         [LibAttribute("fm_FormGroupName", LibControlType.TextBox, "信息组名")]
         [XmlAttribute]
         public string FormGroupName
+        {
+            get;
+            set;
+        }
+        /// <summary>字段集合</summary>
+        public LibCollection<LibFormGroupField> FmGroupFields
         {
             get;
             set;

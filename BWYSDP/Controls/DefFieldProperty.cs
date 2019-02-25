@@ -14,14 +14,14 @@ using SDPCRL.COM.ModelManager.com;
 
 namespace BWYSDP.Controls
 {
-    public partial class DefFieldProperty : BaseUserControl
+    public partial class DefFieldProperty : BaseUserControl<LibField >
     {
-        private LibField _field;
+        //private LibField _field;
         private LibTreeNode _fieldNode;
         public DefFieldProperty()
         {
             InitializeComponent();
-            InitializeControls<LibField >();
+            InitializeControls();
             //this.fd_txtFieldName.LostFocus += new EventHandler(fd_PropertyTextBox_LostFocus);
             //this.fd_combFieldType.LostFocus += new EventHandler(fd_PropertyTextBox_LostFocus);
             //this.fd_txtDisplayText.LostFocus += new EventHandler(fd_PropertyTextBox_LostFocus);
@@ -34,13 +34,19 @@ namespace BWYSDP.Controls
         {
             this.Name = name;
         }
-
-        public override void SetPropertyValue<TEntity>(TEntity entity, LibTreeNode node)
+        public override void SetPropertyValue(LibField entity, LibTreeNode node)
         {
-            base.SetPropertyValue<TEntity>(entity, node);
-            this._field = entity as LibField;
+            base.SetPropertyValue(entity, node);
+            //this.entity = entity;
             this._fieldNode = node;
         }
+
+        //public override void SetPropertyValue(TEntity entity, LibTreeNode node)
+        //{
+        //    base.SetPropertyValue(entity, node);
+        //    this._field = entity as LibField;
+        //    this._fieldNode = node;
+        //}
         //private void InitializeControls()
         //{
         //    ModelDesignProject.InternalBindControls<LibField>(this);
@@ -62,16 +68,18 @@ namespace BWYSDP.Controls
 
         //}
 
-        public void GetControlsValue()
-        {
-            ModelDesignProject.DoGetControlsValue(this.Controls, _field);
-        }
+
+        #region 临时注释
+        //public void GetControlsValue()
+        //{
+        //    ModelDesignProject.DoGetControlsValue(this.Controls, _field);
+        //}
 
         private void DefFieldProperty_Load(object sender, EventArgs e)
         {
             foreach (Control item in this.Controls)
             {
-                if (string .Compare ("fd_txtFieldName",item.Name )==0 ||string .Compare ("fd_txtDisplayText",item.Name )==0)//字段名称控件
+                if (string.Compare("fd_txtFieldName", item.Name) == 0 || string.Compare("fd_txtDisplayText", item.Name) == 0)//字段名称控件
                 {
                     item.KeyUp += new KeyEventHandler(item_KeyUp);
                 }
@@ -80,22 +88,25 @@ namespace BWYSDP.Controls
 
         void item_KeyUp(object sender, KeyEventArgs e)
         {
-            Control ctl=sender as Control ;
+            Control ctl = sender as Control;
             if (e.KeyCode == Keys.Enter)
             {
                 foreach (LibTreeNode item in this._fieldNode.Parent.Nodes)
                 {
-                    if (string.Compare(ctl.Text .Trim (), item.Name,true) == 0)
+                    if (string.Compare(ctl.Text.Trim(), item.Name, true) == 0)
                     {
                         throw new LibExceptionBase("不能有重复字段名");
                     }
                 }
                 this._fieldNode.Name = string.Compare("fd_txtFieldName", ctl.Name) == 0 ? ctl.Text.Trim() : this._fieldNode.Name;
-                this._field.Name = string.Compare("fd_txtFieldName", ctl.Name) == 0 ? ctl.Text.Trim() : this._field.Name;
-                this._fieldNode.Text = string.Format("{0}({1})", _field.Name, string.Compare("fd_txtFieldName", ctl.Name) == 0 ?_field.DisplayName:ctl.Text);
+                //this._field.Name = string.Compare("fd_txtFieldName", ctl.Name) == 0 ? ctl.Text.Trim() : this._field.Name;
+                //this._fieldNode.Text = string.Format("{0}({1})", _field.Name, string.Compare("fd_txtFieldName", ctl.Name) == 0 ? _field.DisplayName : ctl.Text);
+                this.entity.Name = string.Compare("fd_txtFieldName", ctl.Name) == 0 ? ctl.Text.Trim() : this.entity.Name;
+                this._fieldNode.Text = string.Format("{0}({1})", entity.Name, string.Compare("fd_txtFieldName", ctl.Name) == 0 ? entity.DisplayName : ctl.Text);
             }
         }
-
+        #endregion
+        #region 旧代码
         ///// <summary>用于控件失去焦点后，进行对应对象的赋值</summary>
         ///// <param name="valueObj"></param>
         //private void SetPropertyValue(object valueObj)
@@ -145,5 +156,6 @@ namespace BWYSDP.Controls
         //        }
         //    }
         //}
+        #endregion
     }
 }

@@ -52,6 +52,7 @@
     <Compile Include="ModelManager\DefineTable.cs" />
     <Compile Include="ModelManager\DSList.cs" />
     <Compile Include="ModelManager\FormTemplate\LibFormGroup.cs" />
+    <Compile Include="ModelManager\FormTemplate\LibFormGroupField.cs" />
     <Compile Include="ModelManager\FormTemplate\LibFormPage.cs" />
     <Compile Include="ModelManager\FormTemplate\LibGridGroup.cs" />
     <Compile Include="ModelManager\LibField.cs" />

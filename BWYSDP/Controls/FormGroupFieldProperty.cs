@@ -11,31 +11,31 @@ using BWYSDP.com;
 
 namespace BWYSDP.Controls
 {
-    public partial class FormGroupProperty : BaseUserControl<LibFormGroup>
+    public partial class FormGroupFieldProperty : BaseUserControl<LibFormGroupField>
     {
-        //private LibFormGroup _LibformGroup;
+        //private LibFormGroupField _LibfmgroupField;
         private LibTreeNode _Node;
-        public FormGroupProperty()
+        public FormGroupFieldProperty()
         {
             InitializeComponent();
             InitializeControls();
         }
 
-        public FormGroupProperty(string name)
-            :this()
+        public FormGroupFieldProperty(string name)
+            : this()
         {
             this.Name = name;
         }
-
-        public override void SetPropertyValue(LibFormGroup entity, LibTreeNode node)
+        public override void SetPropertyValue(LibFormGroupField entity, LibTreeNode node)
         {
             base.SetPropertyValue(entity, node);
             _Node = node;
         }
+
         //public override void SetPropertyValue<TEntity>(TEntity entity, LibTreeNode node)
         //{
         //    base.SetPropertyValue<TEntity>(entity, node);
-        //    _LibformGroup = entity as LibFormGroup;
+        //    _LibfmgroupField = entity as LibFormGroupField;
         //    _Node = node;
         //}
     }
