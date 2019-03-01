@@ -1038,7 +1038,10 @@ namespace BWYSDP.com
         GridGroup=13,
         /// <summary> 信息组字段</summary>
         [LibReSource("信息组字段")]
-        FormGroup_Field=14
+        FormGroup_Field=14,
+        /// <summary> 信息组字段</summary>
+        [LibReSource("表格组字段")]
+        GridGroup_Field=15
 
     }
 }

@@ -118,13 +118,13 @@
             this.contextMenuStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteField});
             this.contextMenuStrip4.Name = "contextMenuStrip4";
-            this.contextMenuStrip4.Size = new System.Drawing.Size(153, 48);
+            this.contextMenuStrip4.Size = new System.Drawing.Size(101, 26);
             this.contextMenuStrip4.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip4_ItemClicked);
             // 
             // deleteField
             // 
             this.deleteField.Name = "deleteField";
-            this.deleteField.Size = new System.Drawing.Size(152, 22);
+            this.deleteField.Size = new System.Drawing.Size(100, 22);
             this.deleteField.Text = "删除";
             // 
             // DataSourceControl

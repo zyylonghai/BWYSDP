@@ -20,10 +20,25 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             set;
         }
 
-        /// <summary>表格组名(显示名)</summary>
+        /// <summary>表格组名</summary>
         [LibAttribute("fm_GridGroupName", LibControlType.TextBox, "表格组名")]
         [XmlAttribute]
         public string GridGroupName
+        {
+            get;
+            set;
+        }
+        /// <summary>表格组名(显示名)</summary>
+        [LibAttribute("fm_GridGroupDisplayNm", LibControlType.TextBox, "表格组描述")]
+        [XmlAttribute]
+        public string GridGroupDisplayNm
+        {
+            get;
+            set;
+        }
+
+        /// <summary>字段集合</summary>
+        public LibCollection<LibGridGroupField> GdGroupFields
         {
             get;
             set;

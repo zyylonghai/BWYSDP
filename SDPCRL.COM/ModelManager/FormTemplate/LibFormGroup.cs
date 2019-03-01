@@ -20,7 +20,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             set;
         }
 
-        /// <summary>信息组名(显示名)</summary>
+        /// <summary>信息组名</summary>
         [LibAttribute("fm_FormGroupName", LibControlType.TextBox, "信息组名")]
         [XmlAttribute]
         public string FormGroupName
@@ -28,6 +28,15 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
+        /// <summary>信息组名(显示名)</summary>
+        [LibAttribute("fm_FormGroupDisplayNm", LibControlType.TextBox, "信息组描述")]
+        [XmlAttribute]
+        public string FormGroupDisplayNm
+        {
+            get;
+            set;
+        }
+
         /// <summary>字段集合</summary>
         public LibCollection<LibFormGroupField> FmGroupFields
         {

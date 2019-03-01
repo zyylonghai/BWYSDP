@@ -118,6 +118,18 @@
     <Compile Include="Controls\FormTemplate.Designer.cs">
       <DependentUpon>FormTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GridGroupFieldProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GridGroupFieldProperty.Designer.cs">
+      <DependentUpon>GridGroupFieldProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GridGroupProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GridGroupProperty.Designer.cs">
+      <DependentUpon>GridGroupProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LibTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
