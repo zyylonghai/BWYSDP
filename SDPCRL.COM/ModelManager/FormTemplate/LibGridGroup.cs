@@ -12,7 +12,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
     public class LibGridGroup
     {
         /// <summary>表格组ID（唯一）</summary>
-        [LibAttribute("fm_GridGroupID", LibControlType.TextBox, "表格组ID",true)]
+        [LibAttribute("grid_GridGroupID", LibControlType.TextBox, "表格组ID",true)]
         [XmlAttribute]
         public string GridGroupID
         {
@@ -21,7 +21,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         }
 
         /// <summary>表格组名</summary>
-        [LibAttribute("fm_GridGroupName", LibControlType.TextBox, "表格组名")]
+        [LibAttribute("grid_GridGroupName", LibControlType.TextBox, "表格组名")]
         [XmlAttribute]
         public string GridGroupName
         {
@@ -29,9 +29,25 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             set;
         }
         /// <summary>表格组名(显示名)</summary>
-        [LibAttribute("fm_GridGroupDisplayNm", LibControlType.TextBox, "表格组描述")]
+        [LibAttribute("grid_GridGroupDisplayNm", LibControlType.TextBox, "表格组描述")]
         [XmlAttribute]
         public string GridGroupDisplayNm
+        {
+            get;
+            set;
+        }
+        /// <summary>控制类名</summary>
+        [LibAttribute("grid_ControlClassNm", LibControlType.TextBox, "控制类名")]
+        [XmlAttribute]
+        public string ControlClassNm
+        {
+            get;
+            set;
+        }
+        /// <summary>显示汇总行</summary>
+        [LibAttribute("grid_HasSummary", LibControlType.Combox, "显示汇总行")]
+        [XmlAttribute]
+        public bool HasSummary
         {
             get;
             set;

@@ -69,6 +69,13 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
+        ///<summary>是否排序</summary>
+        [LibAttribute("gridgfld_HasSort", LibControlType.TextBox, "是否排序")]
+        public bool HasSort
+        {
+            get;
+            set;
+        }
 
         ///<summary>默认值</summary>
         [LibAttribute("gridgfld_DealfValue", LibControlType.TextBox, "默认值")]

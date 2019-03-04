@@ -512,6 +512,7 @@ namespace BWYSDP.Controls
                     p.Name = "pfieldcollection";
                     p.AutoScroll = true;
                     TreeView tree = new TreeView();
+                    tree.AfterCheck += new TreeViewEventHandler(tree_AfterCheck);
                     tree.CheckBoxes = true;
                     tree.Dock = DockStyle.Fill;
                     p.Controls.Add(tree);
@@ -523,6 +524,7 @@ namespace BWYSDP.Controls
                         {
                             LibTreeNode deftbnode = new LibTreeNode();
                             deftbnode.Name = deftb.TableName;
+                            deftbnode.NodeType = NodeType.DefindTable;
                             deftbnode.Text = string.Format("{0}({1})", deftb.DisplayName, deftb.TableName);
                             tree.Nodes.Add(deftbnode);
                             if (deftb.TableStruct != null)
@@ -530,6 +532,7 @@ namespace BWYSDP.Controls
                                 foreach (LibDataTableStruct dtstruct in deftb.TableStruct)
                                 {
                                     LibTreeNode dtstructnode = new LibTreeNode();
+                                    dtstructnode.NodeType = NodeType.TableStruct;
                                     dtstructnode.Name = dtstruct.Name;
                                     dtstructnode.Text = string.Format("{0}({1})", dtstruct.DisplayName, dtstruct.Name);
                                     deftbnode.Nodes.Add(dtstructnode);
@@ -538,6 +541,7 @@ namespace BWYSDP.Controls
                                         foreach (LibField fld in dtstruct.Fields)
                                         {
                                             _node = new LibTreeNode();
+                                            _node.NodeType = NodeType.Field;
                                             _node.Name = fld.Name;
                                             _node.Text = fld.DisplayName;
                                             dtstructnode.Nodes.Add(_node);
@@ -592,6 +596,19 @@ namespace BWYSDP.Controls
                     }
 
                     break;
+            }
+        }
+
+        void tree_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            LibTreeNode node = (LibTreeNode)e.Node;
+            if (node.Nodes.Count > 0)
+            {
+                foreach (LibTreeNode item in node.Nodes)
+                {
+                    item.Checked = node.Checked;
+
+                }
             }
         }
     }

@@ -38,6 +38,9 @@
             this.addfmGroupFields = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addgridField = new System.Windows.Forms.ToolStripMenuItem();
+            this.deletefmgroupfield = new System.Windows.Forms.ToolStripMenuItem();
+            this.deletegridfield = new System.Windows.Forms.ToolStripMenuItem();
+            this.addbuttongroup = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -73,9 +76,10 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addFormGroup,
-            this.addGridGroup});
+            this.addGridGroup,
+            this.addbuttongroup});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(137, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(137, 70);
             this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
             // 
             // addFormGroup
@@ -93,9 +97,10 @@
             // contextMenuStrip2
             // 
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addfmGroupFields});
+            this.addfmGroupFields,
+            this.deletefmgroupfield});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(125, 26);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(125, 48);
             this.contextMenuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip2_ItemClicked);
             // 
             // addfmGroupFields
@@ -107,16 +112,35 @@
             // contextMenuStrip3
             // 
             this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addgridField});
+            this.addgridField,
+            this.deletegridfield});
             this.contextMenuStrip3.Name = "contextMenuStrip3";
-            this.contextMenuStrip3.Size = new System.Drawing.Size(153, 48);
+            this.contextMenuStrip3.Size = new System.Drawing.Size(125, 48);
             this.contextMenuStrip3.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip3_ItemClicked);
             // 
             // addgridField
             // 
             this.addgridField.Name = "addgridField";
-            this.addgridField.Size = new System.Drawing.Size(152, 22);
+            this.addgridField.Size = new System.Drawing.Size(124, 22);
             this.addgridField.Text = "添加字段";
+            // 
+            // deletefmgroupfield
+            // 
+            this.deletefmgroupfield.Name = "deletefmgroupfield";
+            this.deletefmgroupfield.Size = new System.Drawing.Size(124, 22);
+            this.deletefmgroupfield.Text = "删除";
+            // 
+            // deletegridfield
+            // 
+            this.deletegridfield.Name = "deletegridfield";
+            this.deletegridfield.Size = new System.Drawing.Size(124, 22);
+            this.deletegridfield.Text = "删除";
+            // 
+            // addbuttongroup
+            // 
+            this.addbuttongroup.Name = "addbuttongroup";
+            this.addbuttongroup.Size = new System.Drawing.Size(136, 22);
+            this.addbuttongroup.Text = "添加按钮组";
             // 
             // FormTemplate
             // 
@@ -147,5 +171,8 @@
         private System.Windows.Forms.ToolStripMenuItem addfmGroupFields;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip3;
         private System.Windows.Forms.ToolStripMenuItem addgridField;
+        private System.Windows.Forms.ToolStripMenuItem deletefmgroupfield;
+        private System.Windows.Forms.ToolStripMenuItem deletegridfield;
+        private System.Windows.Forms.ToolStripMenuItem addbuttongroup;
     }
 }
