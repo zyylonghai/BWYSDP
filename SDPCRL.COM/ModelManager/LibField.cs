@@ -48,7 +48,7 @@ namespace SDPCRL.COM.ModelManager
         [LibAttribute("fd_txtOrignNm", LibControlType.TextBox, "原字段名")]
         public string OrignNm { get; set; }
 
-        /// <summary>字段类型</summary>
+        /// <summary>字段数据类型</summary>
         [LibAttribute("fd_combFieldType", LibControlType.Combox, "字段类型")]
         public LibFieldType FieldType
         {
@@ -84,7 +84,7 @@ namespace SDPCRL.COM.ModelManager
         #endregion
     }
 
-    ///<summary>字段类型枚举</summary>
+    ///<summary>字段数据类型枚举</summary>
     [Serializable]
     public enum LibFieldType
     {

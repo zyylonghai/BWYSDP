@@ -479,6 +479,10 @@ namespace BWYSDP.Controls
                                             libfgfield.ElemType = ElementType.DateTime;
                                             break;
                                     }
+                                    if (libfield.SourceField != null)
+                                    {
+                                        libfgfield.ElemType = ElementType.Search;
+                                    }
                                     currentlibfmgroup.FmGroupFields.Add(libfgfield);
 
                                     fgfieldProperty.SetPropertyValue(libfgfield, fieldNode);

@@ -94,6 +94,9 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         Date=2,
         ///<summary>日期时间控件</summary>
         [LibReSource("日期时间控件")]
-        DateTime=3
+        DateTime=3,
+        ///<summary>搜索控件</summary>
+        [LibReSource("搜索控件")]
+        Search =4
     }
 }

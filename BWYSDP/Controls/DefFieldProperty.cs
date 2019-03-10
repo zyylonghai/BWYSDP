@@ -108,12 +108,14 @@ namespace BWYSDP.Controls
 
         public override void TextAndBotton_Click(object sender, EventArgs e)
         {
+            Control ctl = sender as Control;
             Panel p = new Panel();
             p.Name = "fromsourceProperty";
             p.AutoScroll = true;
             FromSourceProperty property = new FromSourceProperty();
             property.Dock = DockStyle.Fill;
             p.Controls.Add(property);
+
             DialogForm dialogForm = new DialogForm(p);
 
             if (this.entity.SourceField == null)
@@ -129,8 +131,11 @@ namespace BWYSDP.Controls
             if (dialog == DialogResult.OK)
             {
                 property.GetControlsValue();
-
+                
             }
+            #region 控件赋值
+            this.Controls[ctl.Name.Replace(SysConstManage.BtnCtrlNmPrefix, "")].Text = this.entity.SourceField.ToString();
+            #endregion
         }
         #endregion
         #region 旧代码
