@@ -78,6 +78,9 @@ namespace SDPCRL.COM.ModelManager
             get;
             set;
         }
+        /// <summary>来源字段</summary>
+        [LibAttribute("fd_SourceField", LibControlType.TextAndBotton, "来源字段")]
+        public LibFromSourceField SourceField { get; set; }
         #endregion
     }
 
@@ -106,5 +109,52 @@ namespace SDPCRL.COM.ModelManager
         /// <summary>长整型</summary>
         [LibReSource("长整型-Long")]
         Long=6
+    }
+
+    /// <summary>
+    /// 来源字段
+    /// </summary>
+    public class LibFromSourceField
+    {
+        /// <summary>编号 </summary>
+        [LibAttribute("fsfield_txtID", LibControlType.TextBox, "编号", true, true)]
+        public string ID
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// 来源数据源
+        /// </summary>
+        [LibAttribute("fsfield_FromDataSource", LibControlType.TextBox, "来源数据源")]
+        public string FromDataSource { get; set; }
+
+        /// <summary>
+        /// 来源自定义表名
+        /// </summary>
+        [LibAttribute("fsfield_FromDefindTableNm", LibControlType.TextBox, "源自定义表")]
+        public string FromDefindTableNm { get; set; }
+        /// <summary>
+        /// 来源数据表名.
+        /// </summary>
+        [LibAttribute("fsfield_FromStructTableNm", LibControlType.TextBox, "来源数据表")]
+        public string FromStructTableNm { get; set; }
+
+        /// <summary>
+        /// 来源字段
+        /// </summary>
+        [LibAttribute("fsfield_FromFieldNm", LibControlType.TextBox, "来源字段")]
+        public string FromFieldNm { get; set; }
+
+        /// <summary>
+        /// 关联字段集合
+        /// </summary>
+        [LibAttribute("fsfield_RelateFieldNm", LibControlType.TextAndBotton , "关联字段集")]
+        public List<string> RelateFieldNm { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0}.{1}.{2}.{3}", FromDataSource, FromDefindTableNm, FromStructTableNm, FromFieldNm);
+        }
     }
 }

@@ -105,6 +105,33 @@ namespace BWYSDP.Controls
                 this._fieldNode.Text = string.Format("{0}({1})", entity.Name, string.Compare("fd_txtFieldName", ctl.Name) == 0 ? entity.DisplayName : ctl.Text);
             }
         }
+
+        public override void TextAndBotton_Click(object sender, EventArgs e)
+        {
+            Panel p = new Panel();
+            p.Name = "fromsourceProperty";
+            p.AutoScroll = true;
+            FromSourceProperty property = new FromSourceProperty();
+            property.Dock = DockStyle.Fill;
+            p.Controls.Add(property);
+            DialogForm dialogForm = new DialogForm(p);
+
+            if (this.entity.SourceField == null)
+            {
+                this.entity.SourceField = new LibFromSourceField();
+                this.entity.SourceField.ID = Guid.NewGuid().ToString();
+                //this.entity.SourceField.FromDataSource = "Materials";
+
+            }
+            property.SetPropertyValue(this.entity.SourceField, null);
+
+            DialogResult dialog = dialogForm.ShowDialog(this);
+            if (dialog == DialogResult.OK)
+            {
+                property.GetControlsValue();
+
+            }
+        }
         #endregion
         #region 旧代码
         ///// <summary>用于控件失去焦点后，进行对应对象的赋值</summary>

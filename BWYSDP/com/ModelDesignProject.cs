@@ -179,8 +179,9 @@ namespace BWYSDP.com
                                         item.Text = LibSysUtils.ToString(info.GetValue(valueType, null));
                                         break;
                                     }
-                                    IList lst = info.GetValue(valueType, null) as IList;
-                                    if (lst!= null)
+                                    object obj = info.GetValue(valueType, null);
+                                    IList lst = obj as IList;
+                                    if (lst != null)
                                     {
                                         foreach (var n in lst)
                                         {
@@ -190,6 +191,11 @@ namespace BWYSDP.com
                                             }
                                             item.Text += n.ToString();
                                         }
+                                    }
+                                    else
+                                    {
+                                        if (obj != null)
+                                            item.Text = info.GetValue(valueType, null).ToString();
                                     }
                                     break;
                                 case LibControlType.TextBox:

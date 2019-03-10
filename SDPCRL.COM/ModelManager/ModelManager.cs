@@ -53,6 +53,30 @@ namespace SDPCRL.COM.ModelManager
         {
             return (LibFormPage)InternalInstanceModelSource(SysConstManage.FormSourceNm, fmId);
         }
+        public static T GetModelBypath<T>(string rootpath, string modelId, string package)
+        {
+            FileOperation fileOperation = new FileOperation();
+            fileOperation.Encoding = LibEncoding.UTF8;
+            if (typeof(T) == typeof(LibDataSource))
+            {
+                fileOperation.FilePath = string.Format(@"{0}\Models\{1}\{2}\{3}.xml", rootpath, SysConstManage.DataSourceNm, package, modelId);
+            }
+            else if (typeof(T) == typeof(LibFormPage))
+            {
+                fileOperation.FilePath = string.Format(@"{0}\Models\{1}\{2}\{3}.xml", rootpath, SysConstManage.FormSourceNm, package, modelId);
+            }
+            else if (typeof(T) == typeof(LibPermissionSource))
+            {
+
+            }
+            string xmlstr = fileOperation.ReadFile();
+            if (!string.IsNullOrEmpty(xmlstr))
+            {
+                return SerializerUtils.XMLDeSerialize<T>(xmlstr);
+            }
+            return default(T);
+
+        }
 
         #endregion
 

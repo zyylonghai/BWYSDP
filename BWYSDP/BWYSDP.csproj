@@ -118,6 +118,12 @@
     <Compile Include="Controls\FormTemplate.Designer.cs">
       <DependentUpon>FormTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FromSourceProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FromSourceProperty.Designer.cs">
+      <DependentUpon>FromSourceProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GridGroupFieldProperty.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -147,6 +153,12 @@
     </Compile>
     <Compile Include="DAL\DBHelp.cs" />
     <Compile Include="DAL\SQLite.cs" />
+    <Compile Include="DialogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogForm.Designer.cs">
+      <DependentUpon>DialogForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DSAdd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -238,6 +250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CreateFunc.resx">
       <DependentUpon>CreateFunc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogForm.resx">
+      <DependentUpon>DialogForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DSAdd.resx">
       <DependentUpon>DSAdd.cs</DependentUpon>

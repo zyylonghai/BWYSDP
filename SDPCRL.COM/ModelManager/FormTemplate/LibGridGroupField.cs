@@ -70,7 +70,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             set;
         }
         ///<summary>是否排序</summary>
-        [LibAttribute("gridgfld_HasSort", LibControlType.TextBox, "是否排序")]
+        [LibAttribute("gridgfld_HasSort", LibControlType.Combox, "是否排序")]
         public bool HasSort
         {
             get;
