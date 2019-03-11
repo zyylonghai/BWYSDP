@@ -136,6 +136,12 @@
     <Compile Include="Controls\GridGroupProperty.Designer.cs">
       <DependentUpon>GridGroupProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\KeyValueProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\KeyValueProperty.Designer.cs">
+      <DependentUpon>KeyValueProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LibTabControl.cs">
       <SubType>Component</SubType>
     </Compile>

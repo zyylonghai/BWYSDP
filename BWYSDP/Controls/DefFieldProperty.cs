@@ -18,6 +18,7 @@ namespace BWYSDP.Controls
     {
         //private LibField _field;
         private LibTreeNode _fieldNode;
+        
         public DefFieldProperty()
         {
             InitializeComponent();
@@ -29,6 +30,7 @@ namespace BWYSDP.Controls
             //this.fd_combAllowNull.LostFocus += new EventHandler(fd_PropertyTextBox_LostFocus);
             //this.fd_combActive.LostFocus += new EventHandler(fd_PropertyTextBox_LostFocus);
         }
+
         public DefFieldProperty(string name)
             :this()
         {
@@ -109,34 +111,146 @@ namespace BWYSDP.Controls
         public override void TextAndBotton_Click(object sender, EventArgs e)
         {
             Control ctl = sender as Control;
+            string ctrNm = ctl.Name.Replace(SysConstManage.BtnCtrlNmPrefix, "");
             Panel p = new Panel();
-            p.Name = "fromsourceProperty";
             p.AutoScroll = true;
-            FromSourceProperty property = new FromSourceProperty();
-            property.Dock = DockStyle.Fill;
-            p.Controls.Add(property);
-
-            DialogForm dialogForm = new DialogForm(p);
-
-            if (this.entity.SourceField == null)
+            if (string.Compare(ctrNm, "fd_SourceField") == 0)//来源字段集
             {
-                this.entity.SourceField = new LibFromSourceField();
-                this.entity.SourceField.ID = Guid.NewGuid().ToString();
-                //this.entity.SourceField.FromDataSource = "Materials";
+                p.Name = "fromsourceProperty";
+                FromSourceProperty property = new FromSourceProperty();
+                property.Dock = DockStyle.Fill;
+                p.Controls.Add(property);
 
+                DialogForm dialogForm = new DialogForm(p);
+
+                if (this.entity.SourceField == null)
+                {
+                    this.entity.SourceField = new LibFromSourceField();
+                    this.entity.SourceField.ID = Guid.NewGuid().ToString();
+                    //this.entity.SourceField.FromDataSource = "Materials";
+
+                }
+                property.SetPropertyValue(this.entity.SourceField, null);
+
+                DialogResult dialog = dialogForm.ShowDialog(this);
+                if (dialog == DialogResult.OK)
+                {
+                    property.GetControlsValue();
+
+                }
+                #region 控件赋值
+                this.Controls[ctrNm].Text = this.entity.SourceField.ToString();
+                #endregion
             }
-            property.SetPropertyValue(this.entity.SourceField, null);
-
-            DialogResult dialog = dialogForm.ShowDialog(this);
-            if (dialog == DialogResult.OK)
+            else if (string.Compare(ctrNm, "fd_Items") == 0)//键值对集
             {
-                property.GetControlsValue();
-                
+                p.Name = "keyvalueitems";
+                Panel p2 = new Panel();
+                p2.Name = "btnpanel";
+                p2.Dock = DockStyle.Top;
+                p2.Height = 50;
+                Button addbtn = new Button();
+                addbtn.Name = "_addkeyvalu";
+                addbtn.Width = 70;
+                addbtn.Height = 25;
+                addbtn .Location= new System.Drawing.Point(20, 15);
+                addbtn.Text = "添加项";
+                addbtn.Click += Addbtn_Click;
+                p2.Controls.Add(addbtn);
+
+                Button deletbtn = new Button();
+                deletbtn.Name = "deletkeyvalu";
+                deletbtn.Width = 70;
+                deletbtn.Height = 25;
+                deletbtn.Location = new System.Drawing.Point(110, 15);
+                deletbtn.Text = "删除项";
+                p2.Controls.Add(deletbtn);
+
+                ListBox listBox = new ListBox();
+                listBox.Name = "_listbox";
+                listBox.Dock = DockStyle.Left;
+                listBox.Width = 200;
+                listBox.SelectedIndexChanged += ListBox_SelectedIndexChanged;
+
+
+
+
+                KeyValueProperty keyValueProperty = new KeyValueProperty();
+                keyValueProperty.Name = "_keyvalueProperty";
+                keyValueProperty.Dock = DockStyle.Fill;
+                p.Controls.Add(keyValueProperty);
+                //Panel p3 = new Panel();
+                //p3.Name = "keyvalueContains";
+                //p3.Dock = DockStyle.Fill;
+
+                p.Controls.Add(keyValueProperty);
+                p.Controls.Add(listBox);
+                p.Controls.Add(p2);
+
+                if (this.entity.Items != null)
+                {
+                    foreach (LibKeyValue keyvalue in this.entity.Items)
+                    {
+                        listBox.Items.Add(keyvalue);
+                    }
+                }
+
+                DialogForm dialogForm = new DialogForm(p);
+                dialogForm.Size = new Size(700, 488);
+
+
+                DialogResult dialog = dialogForm.ShowDialog(this);
+                if (dialog == DialogResult.OK)
+                {
+                    foreach (LibKeyValue item in listBox.Items)
+                    {
+                        if (this.entity.Items.FindFirst("Key", item.Key) == null)
+                        {
+                            this.entity.Items.Add(item);
+                        }
+                    }
+                }
             }
-            #region 控件赋值
-            this.Controls[ctl.Name.Replace(SysConstManage.BtnCtrlNmPrefix, "")].Text = this.entity.SourceField.ToString();
-            #endregion
         }
+
+        #region 键值对设计相关
+
+        /// <summary>键值对窗体中的添加按钮事件</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Addbtn_Click(object sender, EventArgs e)
+        {
+            Control ctl = sender as Control;
+            Control container = ctl.Parent.Parent;
+            ListBox box = container.Controls["_listbox"] as ListBox;
+            LibKeyValue keyValue = new LibKeyValue();
+            keyValue.ID = Guid.NewGuid().ToString();
+            keyValue.Key = string.Format("itemkey{0}", box.Items.Count + 1);
+            keyValue.Value = string.Format("itemvalue{0}", box.Items.Count + 1);
+
+            box.Items.Add(keyValue);
+
+            //KeyValueProperty keyValueProperty = new KeyValueProperty();
+            //keyValueProperty.Dock = DockStyle.Fill;
+            KeyValueProperty keyValueProperty = container.Controls["_keyvalueProperty"] as KeyValueProperty;
+            keyValueProperty.SetPropertyValue(keyValue, null);
+
+            //container.Controls["keyvalueContains"].Controls.Add(keyValueProperty);
+            
+        }
+
+        private void ListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            Control container = listBox.Parent; 
+            KeyValueProperty keyValueProperty = container.Controls["_keyvalueProperty"] as KeyValueProperty;
+
+            LibKeyValue keyValue = listBox.Items[listBox.SelectedIndex] as LibKeyValue;
+            keyValueProperty.SetPropertyValue(keyValue, null);
+        }
+
+        #endregion
+
         #endregion
         #region 旧代码
         ///// <summary>用于控件失去焦点后，进行对应对象的赋值</summary>

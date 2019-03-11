@@ -81,6 +81,12 @@ namespace SDPCRL.COM.ModelManager
         /// <summary>来源字段</summary>
         [LibAttribute("fd_SourceField", LibControlType.TextAndBotton, "来源字段")]
         public LibFromSourceField SourceField { get; set; }
+
+        /// <summary>键值对集</summary>
+        [LibAttribute("fd_Items", LibControlType.TextAndBotton, "键值对集")]
+        public LibCollection<LibKeyValue> Items { get; set; }
+
+        
         #endregion
     }
 
@@ -114,6 +120,7 @@ namespace SDPCRL.COM.ModelManager
     /// <summary>
     /// 来源字段
     /// </summary>
+    [Serializable]
     public class LibFromSourceField
     {
         /// <summary>编号 </summary>
@@ -123,9 +130,7 @@ namespace SDPCRL.COM.ModelManager
             get;
             set;
         }
-        /// <summary>
-        /// 来源数据源
-        /// </summary>
+        /// <summary>来源数据源</summary>
         [LibAttribute("fsfield_FromDataSource", LibControlType.TextBox, "来源数据源")]
         public string FromDataSource { get; set; }
 
@@ -154,7 +159,34 @@ namespace SDPCRL.COM.ModelManager
 
         public override string ToString()
         {
+            if (FromDataSource == null)
+                return string.Empty;
             return string.Format("{0}.{1}.{2}.{3}", FromDataSource, FromDefindTableNm, FromStructTableNm, FromFieldNm);
+        }
+    }
+
+    /// <summary>键值对</summary>
+    [Serializable]
+    public class LibKeyValue
+    {
+        /// <summary>编号</summary>
+        [LibAttribute("keyval_ID", LibControlType.TextBox, "ID")]
+        public string ID{get;set;}
+        /// <summary>键</summary>
+        [LibAttribute("keyval_Key", LibControlType.TextBox, "Key")]
+        public object Key { get; set; }
+
+        /// <summary> 值</summary>
+        [LibAttribute("keyval_Value", LibControlType.TextBox, "Value")]
+        public object Value { get; set; }
+
+        /// <summary>备注</summary>
+        [LibAttribute("keyval_Remark", LibControlType.TextBox, "备注")]
+        public string Remark { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0}:{1}", Key, Value);
         }
     }
 }

@@ -469,6 +469,7 @@ namespace BWYSDP.Controls
                                     libfgfield.FromTableNm = tbstruct.Name;
                                     libfgfield.FromDefTableNm = deftb.Name;
                                     libfgfield.DisplayName = f.Text;
+                                    libfgfield.Width = 2;
                                     LibField libfield = ds.DefTables.FindFirst("TableName", deftb.Name).TableStruct.FindFirst("Name", tbstruct.Name).Fields.FindFirst("Name", f.Name);
                                     switch (libfield.FieldType)
                                     {
