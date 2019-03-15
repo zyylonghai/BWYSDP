@@ -9,12 +9,17 @@ namespace SDPCRL.BLL.BUS
     public class BllBus
     {
         #region 私有属性
+        private IDALBus _bus = null;
         private IDALBus _dalBus 
         { 
             get 
             {
-                return (IDALBus)Activator.GetObject(typeof(IDALBus), 
-                    string.Format("{0}://{1}:{2}/{3}",ServerInfo.ConnectType ,ServerInfo.IPAddress ,ServerInfo.Point, ServerInfo.DalServerName));
+                if(_bus==null)
+                {
+                    _bus = (IDALBus)Activator.GetObject(typeof(IDALBus),
+                    string.Format("{0}://{1}:{2}/{3}", ServerInfo.ConnectType, ServerInfo.IPAddress, ServerInfo.Point, ServerInfo.DalServerName));
+                }
+                return _bus;
             } 
         }
 

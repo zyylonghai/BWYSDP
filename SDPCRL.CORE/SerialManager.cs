@@ -58,6 +58,13 @@ namespace SDPCRL.CORE
 
         public const string BtnCtrlNmPrefix = "btn_";
         public const string BtnCtrlDefaultText = "...";
+
+
+        #region BWYSDPWeb
+        public const string PageinfoCookieNm = "PageInfo";
+        public const string ProgidCookieKey = "Progid";
+        public const string PackageCookieKey = "Package";
+        #endregion
     }
 
     /// <summary>编码管理类接口</summary>
