@@ -469,6 +469,7 @@ namespace SDPCRL.DAL.DBHelp
     class DBhelpBase: MarshalByRefObject
     {
         static Hashtable connetTable = new Hashtable();
+        static readonly object locker = new object();
         DBOperate[] db;
         DBOperate _currentDBOperate;
         int _maxConnectAmount = 3;
@@ -485,29 +486,32 @@ namespace SDPCRL.DAL.DBHelp
         protected void AddConnect()
         {
             DBOperate dboperate=null;
-            if (connetTable.ContainsKey(Guid))
+            lock (locker)
             {
-                db = (DBOperate[])connetTable[Guid];
-                if (db.Length < _maxConnectAmount)
+                if (connetTable.ContainsKey(Guid))
                 {
-                    dboperate = new DBOperate(Guid);
-                    Array.Resize(ref db, db.Length + 1);
-                    db[db.Length - 1] = dboperate;
-                    connetTable[Guid] = db;
+                    db = (DBOperate[])connetTable[Guid];
+                    if (db.Length < _maxConnectAmount)
+                    {
+                        dboperate = new DBOperate(Guid);
+                        Array.Resize(ref db, db.Length + 1);
+                        db[db.Length - 1] = dboperate;
+                        connetTable[Guid] = db;
+                    }
+                    else
+                    {
+                        NeedInitial = false;
+                    }
                 }
                 else
                 {
-                    NeedInitial = false;
+                    dboperate = new DBOperate(Guid);
+                    db = new DBOperate[1];
+                    db[0] = dboperate;
+                    connetTable.Add(Guid, db);
                 }
+                _currentDBOperate = dboperate;
             }
-            else
-            {
-                dboperate = new DBOperate(Guid); 
-                db = new DBOperate[1];
-                db[0] = dboperate;
-                connetTable.Add(Guid, db);
-            }
-            _currentDBOperate = dboperate;
         }
         /// <summary>
         /// 
