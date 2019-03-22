@@ -127,7 +127,7 @@ namespace SDPCRL.CORE
             foreach (T item in _entityArray)
             {
                 object val = p.GetValue(item, null);
-                if (value.Equals(val))
+                if(value.Equals(val))
                 {
                     Array.Resize(ref result, result.Length + 1);
                     result[result.Length - 1] = item;

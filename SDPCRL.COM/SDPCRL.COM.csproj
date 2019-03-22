@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="CommandTextBuilder.cs" />
     <Compile Include="Constant\DataContext.cs" />
+    <Compile Include="CreateTableSchemaHelp.cs" />
     <Compile Include="DalResult.cs" />
     <Compile Include="DBModelOperation.cs" />
     <Compile Include="DMLOperation.cs" />

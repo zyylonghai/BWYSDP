@@ -38,6 +38,14 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
+        /// <summary>控制器名称</summary>
+        [LibAttribute("fm_ControlClassNm", LibControlType.TextBox, "控制类名")]
+        [XmlAttribute]
+        public string ControlClassNm
+        {
+            get;set;
+        }
+
         /// <summary>样式文件</summary>
         [LibAttribute("fm_txtCssFile", LibControlType.TextBox, "样式文件")]
         [XmlAttribute]

@@ -64,6 +64,8 @@ namespace SDPCRL.CORE
         public const string PageinfoCookieNm = "PageInfo";
         public const string ProgidCookieKey = "Progid";
         public const string PackageCookieKey = "Package";
+
+        public const string OperateAction = "Action";
         #endregion
     }
 
