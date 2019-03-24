@@ -31,5 +31,6 @@
     <Func package="com" name="stockin">收货单</Func>
     <Func package="com" name="jkkjkj">测试3</Func>
     <Func package="OA" name="qjbill">请假单</Func>
+    <Func package="com" name="CheckBill">检验单</Func>
   </Class>
 </Root>
