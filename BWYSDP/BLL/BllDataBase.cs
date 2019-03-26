@@ -11,22 +11,25 @@ namespace BWYSDP.BLL
     public class BllDataBase:BllBus
     {
         #region 构造函数
-        public BllDataBase()
+        public BllDataBase(bool getcurrentserver = true)
         {
-            DAL .ServerInfo info=new SQLite().GetCurrentServer();
-            if (info != null)
+            if (getcurrentserver)
             {
-                this.AccoutId = info.accountid;
-                SDPCRL.BLL.BUS.ServerInfo.ConnectType = info.connectype;
-                SDPCRL.BLL.BUS.ServerInfo.IPAddress = info.ipAddress;
-                SDPCRL.BLL.BUS.ServerInfo.Point = info.point;
+                DAL.ServerInfo info = new SQLite().GetCurrentServer();
+                if (info != null)
+                {
+                    this.AccoutId = info.accountid;
+                    SDPCRL.BLL.BUS.ServerInfo.ConnectType = info.connectype;
+                    SDPCRL.BLL.BUS.ServerInfo.IPAddress = info.ipAddress;
+                    SDPCRL.BLL.BUS.ServerInfo.Point = info.point;
+                }
             }
         }
 
-        public BllDataBase(bool getcurrentserver=false)
-        {
+        //public BllDataBase(bool getcurrentserver=false)
+        //{
            
-        }
+        //}
         #endregion
 
 

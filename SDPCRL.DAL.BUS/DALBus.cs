@@ -7,6 +7,7 @@ using SDPCRL.DAL.COM;
 using System.Data;
 using System.Reflection;
 using SDPCRL.CORE;
+using SDPCRL.COM;
 
 namespace SDPCRL.DAL.BUS
 {
@@ -53,9 +54,9 @@ namespace SDPCRL.DAL.BUS
         }
 
 
-        SDPCRL.COM.DalResult IDALBus.ExecuteDalMethod2(string accountId, string funcId, string method, params object[] param)
+        DalResult IDALBus.ExecuteDalMethod2(string accountId, string funcId, string method, params object[] param)
         {
-            SDPCRL.COM.DalResult result = new SDPCRL.COM.DalResult();
+            DalResult result = new DalResult();
             try
             {
                 ReflectionOperate reflect = new ReflectionOperate(funcId);
@@ -72,7 +73,37 @@ namespace SDPCRL.DAL.BUS
             }
             catch (Exception ex)
             {
-                SDPCRL.COM.ErrorMessage error = new SDPCRL.COM.ErrorMessage();
+                ErrorMessage error = new ErrorMessage();
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                }
+                error.Message = ex.Message;
+                error.Stack = ex.StackTrace;
+            }
+            return result;
+        }
+
+        public object ExecuteSaveMethod(string accountId, string funcId, string method, LibTable[] param)
+        {
+            DalResult result = new DalResult();
+            try
+            {
+                ReflectionOperate reflect = new ReflectionOperate(funcId);
+                object obj = reflect.InstanceTarget();
+                ((DALBase)obj).AccountID = accountId;
+                Type t = obj.GetType();
+                MethodInfo func = t.GetMethod(method);
+
+                object[] p = new object[] { param };
+                result.Value = func.Invoke(obj, p);
+                result.Messagelist = ((DALBase)obj).GetErrorMessage();
+                //result.Messagelist.Add("jjjj");
+
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage error = new ErrorMessage();
                 while (ex.InnerException != null)
                 {
                     ex = ex.InnerException;
@@ -109,7 +140,7 @@ namespace SDPCRL.DAL.BUS
 
         private void GetAssemblyInfo()
         {
-            SQLBuilder sqlbuilder = new SQLBuilder();
+           SDPCRL .DAL.COM.SQLBuilder sqlbuilder = new SDPCRL.DAL.COM.SQLBuilder();
             string sql = sqlbuilder.GetSQL("FuncAssemblyInfo", new string[] { "AssemblyName", "TypeFullName" }, string.Format("FuncID='{0}'", _funcId));
             DataRow dr = _dataAccess.GetDataRow(sql);
             if (dr != null)

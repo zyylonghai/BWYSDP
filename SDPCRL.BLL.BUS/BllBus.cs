@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SDPCRL.IBussiness;
+using SDPCRL.COM;
 
 namespace SDPCRL.BLL.BUS
 {
@@ -51,6 +52,11 @@ namespace SDPCRL.BLL.BUS
         protected object ExecuteSysDalMethod(string funcId, string method, params object[] param)
         {
             return _dalBus.ExecuteSysDalMethod(funcId, method, param);
+        }
+
+        protected object ExecuteSaveMethod(string funcId, string method, LibTable[] param)
+        {
+            return _dalBus.ExecuteSaveMethod(AccoutId, funcId, method, param);
         }
 
         #endregion

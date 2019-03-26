@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SDPCRL.IBussiness;
 using SDPCRL.CORE;
+using SDPCRL.COM;
 
 namespace SDPCRL.DAL.BUS
 {
@@ -54,6 +55,11 @@ namespace SDPCRL.DAL.BUS
         #endregion
 
         #region 公开函数
+
+        public virtual void Save(LibTable[] libtables)
+        {
+
+        }
         public void AddErrorMessage(string msg)
         {
             this._errorMsgList.Add(msg);

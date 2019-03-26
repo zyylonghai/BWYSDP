@@ -98,7 +98,7 @@ namespace SDPCRL.COM
         }
     }
 
-
+    [Serializable]
     public class LibTable
     {
         /// <summary>
