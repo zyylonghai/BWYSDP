@@ -58,7 +58,8 @@ namespace SDPCRL.DAL.BUS
 
         public virtual void Save(LibTable[] libtables)
         {
-
+            BeforeUpdate();
+            AfterUpdate();
         }
         public void AddErrorMessage(string msg)
         {
