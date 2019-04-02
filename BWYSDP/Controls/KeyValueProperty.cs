@@ -24,9 +24,12 @@ namespace BWYSDP.Controls
         {
             if (ischange)
             {
-                this.entity.Key = this.Controls["keyval_Key"].Text;
-                this.entity.Value = this.Controls["keyval_Value"].Text;
-                this.entity.Remark = this.Controls["keyval_Remark"].Text;
+                if (this.entity != null)
+                {
+                    this.entity.Key = this.Controls["keyval_Key"].Text;
+                    this.entity.Value = this.Controls["keyval_Value"].Text;
+                    this.entity.Remark = this.Controls["keyval_Remark"].Text;
+                }
             }
         }
 

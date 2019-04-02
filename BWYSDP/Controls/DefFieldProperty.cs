@@ -193,6 +193,7 @@ namespace BWYSDP.Controls
                     {
                         listBox.Items.Add(keyvalue);
                     }
+
                 }
 
                 DialogForm dialogForm = new DialogForm(p);
@@ -202,6 +203,7 @@ namespace BWYSDP.Controls
                 DialogResult dialog = dialogForm.ShowDialog(this);
                 if (dialog == DialogResult.OK)
                 {
+                    if (this.entity.Items == null) this.entity.Items = new LibCollection<LibKeyValue>();
                     foreach (LibKeyValue item in listBox.Items)
                     {
                         if (this.entity.Items.FindFirst("Key", item.Key) == null)
@@ -209,6 +211,18 @@ namespace BWYSDP.Controls
                             this.entity.Items.Add(item);
                         }
                     }
+                    #region 控件赋值
+                    this.Controls[ctrNm].Text = string.Empty;
+                    foreach (LibKeyValue keyval in this.entity.Items)
+                    {
+                        if (this.Controls[ctrNm].Text.Length != 0)
+                        {
+                            this.Controls[ctrNm].Text += ";";
+                        }
+                        this.Controls[ctrNm].Text +=keyval.ToString();
+                    }
+
+                    #endregion
                 }
             }
         }

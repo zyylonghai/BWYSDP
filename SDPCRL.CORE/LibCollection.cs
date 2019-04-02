@@ -124,6 +124,7 @@ namespace SDPCRL.CORE
             {
                 throw new LibExceptionBase(string.Format("属性{0}不存在", propertyNm));
             }
+            if (_entityArray == null) return result;
             foreach (T item in _entityArray)
             {
                 object val = p.GetValue(item, null);

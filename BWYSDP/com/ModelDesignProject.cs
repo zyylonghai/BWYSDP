@@ -180,7 +180,7 @@ namespace BWYSDP.com
                                         break;
                                     }
                                     object obj = info.GetValue(valueType, null);
-                                    IList lst = obj as IList;
+                                    ICollection lst = obj as ICollection;
                                     if (lst != null)
                                     {
                                         foreach (var n in lst)
