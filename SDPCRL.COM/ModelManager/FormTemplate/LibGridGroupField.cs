@@ -52,14 +52,14 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             set;
         }
 
-        /// <summary>控件类型</summary>
-        //[LibAttribute("gridgfld_ElemType", LibControlType.Combox, "元素类型")]
-        ////[XmlAttribute]
-        //public ElementType ElemType
-        //{
-        //    get;
-        //    set;
-        //}
+        ///<summary>控件类型</summary>
+        [LibAttribute("gridgfld_ElemType", LibControlType.Combox, "元素类型")]
+        //[XmlAttribute]
+        public ElementType ElemType
+        {
+            get;
+            set;
+        }
 
         ///<summary>元素宽度(占用列数)</summary>
         [LibAttribute("gridgfld_Width", LibControlType.TextBox, "元素宽度")]
@@ -75,6 +75,18 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         {
             get;
             set;
+        }
+        ///<summary>是否隐藏</summary>
+        [LibAttribute("gridgfld_Hidden", LibControlType.Combox, "是否隐藏")]
+        public bool Hidden
+        {
+            get;set;
+        }
+        /// <summary>是否只读</summary>
+        [LibAttribute("gridgfld_ReadOnly", LibControlType.Combox, "是否只读")]
+        public bool ReadOnly
+        {
+            get;set;
         }
 
         ///<summary>默认值</summary>
