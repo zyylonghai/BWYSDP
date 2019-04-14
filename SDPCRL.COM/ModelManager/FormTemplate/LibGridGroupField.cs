@@ -27,8 +27,8 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
-        /// <summary>来源表名</summary>
-        [LibAttribute("gridgfld_FromTableNm", LibControlType.TextBox, "来源表名", true)]
+        /// <summary>来源表名（源结构表）</summary>
+        [LibAttribute("gridgfld_FromTableNm", LibControlType.TextBox, "源结构表", true)]
         //[XmlAttribute]
         public string FromTableNm
         {
@@ -36,7 +36,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             set;
         }
         /// <summary>来源表名(自定义表)</summary>
-        [LibAttribute("gridgfld_FromDefTableNm", LibControlType.TextBox, "来源结构表", true)]
+        [LibAttribute("gridgfld_FromDefTableNm", LibControlType.TextBox, "来源表名", true)]
         public string FromDefTableNm
         {
             get;

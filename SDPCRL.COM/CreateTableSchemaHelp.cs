@@ -22,6 +22,7 @@ namespace SDPCRL.COM
             LibTable dftb = null;
             DataTable dt = null;
             DataColumn col = null;
+            List<DataColumn> primarykey= null;
             int index = 0;
             FileOperation fileoperation = new FileOperation();
             LibDataSource data = ModelManager.ModelManager.GetModelBypath<LibDataSource>(_root, dsid, package);
@@ -37,9 +38,9 @@ namespace SDPCRL.COM
                     foreach (LibDataTableStruct tb in deftb.TableStruct)
                     {
                         if (tb.Fields == null) continue;
-                        
                         dt = new DataTable(tb.Name);
                         dftb.Tables[index] = dt;
+                        primarykey = new List<DataColumn>();
                         foreach (LibField f in tb.Fields)
                         {
                             col = new DataColumn(f.Name);
@@ -67,8 +68,19 @@ namespace SDPCRL.COM
                                     col.DataType = typeof(string);
                                     break;
                             }
+                            if (tb.PrimaryKey.Contains(f.Name))//属于主键
+                            {
+                                primarykey.Add(col);
+                            }
+                            col.ExtendedProperties.Add("extProp", new ColExtendedProperties { IsRelate = true });
                             dt.Columns.Add(col);
                         }
+                        dt.PrimaryKey = primarykey.ToArray();
+                        dt.ExtendedProperties.Add("extProp", new TableExtendedProperties
+                        {
+                            TableIndex = tb.TableIndex,
+                            RelateTableIndex = tb.JoinTableIndex
+                        });
                         index++;
                     }
                     dts.Add(dftb);
@@ -114,5 +126,15 @@ namespace SDPCRL.COM
         {
             this.Name = name;
         }
+    }
+
+    public class TableExtendedProperties
+    {
+        public int TableIndex { get; set; }
+        public int RelateTableIndex { get; set; }
+    }
+    public class ColExtendedProperties
+    {
+        public bool IsRelate { get; set; }
     }
 }
