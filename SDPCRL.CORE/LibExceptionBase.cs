@@ -5,18 +5,18 @@ using System.Text;
 
 namespace SDPCRL.CORE
 {
-   public  class LibExceptionBase: Exception
+    public class LibExceptionBase : Exception
     {
         public LibExceptionBase()
             : base()
         {
- 
+
         }
 
         public LibExceptionBase(string message)
             : base(message)
         {
- 
+
         }
 
         public override string Message
@@ -31,8 +31,13 @@ namespace SDPCRL.CORE
 
         public void AddErrorMessage(string msg)
         {
-            
+
         }
         #endregion
+    }
+
+    public interface IlibException
+    {
+        void BeforeThrow();
     }
 }

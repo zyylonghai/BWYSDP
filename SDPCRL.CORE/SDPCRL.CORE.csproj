@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DesCryptFactory.cs" />
+    <Compile Include="ExceptionHelp.cs" />
     <Compile Include="FileUtils\FileOperation.cs" />
     <Compile Include="FileUtils\XMLOperation.cs" />
     <Compile Include="LibCollection.cs" />
