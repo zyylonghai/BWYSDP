@@ -64,6 +64,10 @@ namespace SDPCRL.COM.ModelManager
         [LibAttribute("fd_txtDecimalpoint", LibControlType.TextBox, "小数点位数")]
         public int Decimalpoint { get; set; }
 
+        ///<summary>对应关联表的主键名</summary>
+        [LibAttribute("fd_txtRelatePrimarykey", LibControlType.TextBox, "RelatePrimarykey")]
+        public string RelatePrimarykey { get; set; }
+
         /// <summary>是否允许为null</summary>
         [LibAttribute("fd_combAllowNull", LibControlType.Combox, "允许为null")]
         public bool AllowNull
@@ -77,6 +81,25 @@ namespace SDPCRL.COM.ModelManager
         {
             get;
             set;
+        }
+        /// <summary>是否自增长</summary>
+        [LibAttribute("fd_combAutoIncrement", LibControlType.Combox, "自增长")]
+        public bool AutoIncrement
+        {
+            get;set;
+        }
+        /// <summary>自增起始值</summary>
+        [LibAttribute("fd_txtAutoIncrementSeed", LibControlType.TextBox, "自增起始值")]
+        public int AutoIncrementSeed
+        {
+            get;
+            set;
+        }
+        /// <summary>自增增量值</summary>
+        [LibAttribute("fd_txtAutoIncrementStep", LibControlType.TextBox, "自增增量值")]
+        public int AutoIncrementStep
+        {
+            get;set;
         }
         /// <summary>来源字段</summary>
         [LibAttribute("fd_SourceField", LibControlType.TextAndBotton, "来源字段")]

@@ -72,9 +72,24 @@ namespace SDPCRL.COM
                             {
                                 primarykey.Add(col);
                             }
-                            col.ExtendedProperties.Add("extProp", new ColExtendedProperties { IsRelate = true });
+                            if (f.AutoIncrement)
+                            {
+                                col.AutoIncrement = true;
+                                col.AutoIncrementSeed = f.AutoIncrementSeed;
+                                col.AutoIncrementStep = f.AutoIncrementStep;
+                            }
+                            col.ExtendedProperties.Add("extProp", new ColExtendedProperties { IsRelate = true,MapPrimarykey =f.RelatePrimarykey});
                             dt.Columns.Add(col);
                         }
+
+                        #region 系统默认新增的一列行号 用于系统对行项 唯一标识，自增长。
+                        col = new DataColumn("sdp_rowid");
+                        col.DataType = typeof(string);
+                        col.AutoIncrement = true;
+                        col.AutoIncrementSeed = 1;
+                        dt.Columns.Add(col);
+                        #endregion
+
                         dt.PrimaryKey = primarykey.ToArray();
                         dt.ExtendedProperties.Add("extProp", new TableExtendedProperties
                         {
@@ -136,5 +151,6 @@ namespace SDPCRL.COM
     public class ColExtendedProperties
     {
         public bool IsRelate { get; set; }
+        public string MapPrimarykey { get; set; }
     }
 }

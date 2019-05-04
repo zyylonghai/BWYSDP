@@ -66,6 +66,8 @@ namespace SDPCRL.CORE
         public const string PackageCookieKey = "Package";
 
         public const string OperateAction = "Action";
+
+        public const string ExtProp = "extProp";
         #endregion
     }
 

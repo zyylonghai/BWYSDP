@@ -422,7 +422,7 @@ namespace BWYSDP.com
                         lb = new Label();
                         lb.Font = font;
                         lb.Name = string.Format("lb_{0}", attr.ControlNm);
-                        lb.Size = new System.Drawing.Size(80, 12);
+                        lb.Size = new System.Drawing.Size(85, 12);
                         lb.Text = string.Format("{0}:", attr.DisplayText);
                         lb.Location = new System.Drawing.Point(x, y + index * (interval + lb.Height));
                         UCtr.Controls.Add(lb);
