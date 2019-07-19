@@ -1,4 +1,5 @@
 ﻿using SDPCRL.COM.ModelManager;
+using SDPCRL.CORE;
 using SDPCRL.CORE.FileUtils;
 using System;
 using System.Collections.Generic;
@@ -83,8 +84,8 @@ namespace SDPCRL.COM
                         }
 
                         #region 系统默认新增的一列行号 用于系统对行项 唯一标识，自增长。
-                        col = new DataColumn("sdp_rowid");
-                        col.DataType = typeof(string);
+                        col = new DataColumn(SysConstManage.sdp_rowid);
+                        col.DataType = typeof(int);
                         col.AutoIncrement = true;
                         col.AutoIncrementSeed = 1;
                         dt.Columns.Add(col);

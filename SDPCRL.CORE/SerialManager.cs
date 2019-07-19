@@ -66,8 +66,10 @@ namespace SDPCRL.CORE
         public const string PackageCookieKey = "Package";
 
         public const string OperateAction = "Action";
-
+        //用于创建表结构时，设置表和列的自定义属性关键字
         public const string ExtProp = "extProp";
+        //用于客户端表格的行项列。
+        public const string sdp_rowid = "sdp_rowid";
         #endregion
     }
 
