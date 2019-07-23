@@ -79,7 +79,7 @@ namespace SDPCRL.COM
                                 col.AutoIncrementSeed = f.AutoIncrementSeed;
                                 col.AutoIncrementStep = f.AutoIncrementStep;
                             }
-                            col.ExtendedProperties.Add("extProp", new ColExtendedProperties { IsRelate = true,MapPrimarykey =f.RelatePrimarykey});
+                            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsRelate = true,MapPrimarykey =f.RelatePrimarykey});
                             dt.Columns.Add(col);
                         }
 
@@ -92,7 +92,7 @@ namespace SDPCRL.COM
                         #endregion
 
                         dt.PrimaryKey = primarykey.ToArray();
-                        dt.ExtendedProperties.Add("extProp", new TableExtendedProperties
+                        dt.ExtendedProperties.Add(SysConstManage .ExtProp, new TableExtendedProperties
                         {
                             TableIndex = tb.TableIndex,
                             RelateTableIndex = tb.JoinTableIndex
@@ -148,6 +148,8 @@ namespace SDPCRL.COM
     {
         public int TableIndex { get; set; }
         public int RelateTableIndex { get; set; }
+
+
     }
     public class ColExtendedProperties
     {
