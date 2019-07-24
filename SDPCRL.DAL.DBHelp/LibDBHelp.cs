@@ -283,6 +283,11 @@ namespace SDPCRL.DAL.DBHelp
                 return _dbAdapter;
             }
         }
+
+        private DbTransaction DbTransaction
+        {
+            get { return dbConnect.BeginTransaction(); }
+        }
         #endregion
 
         public DBOperate(string guid)
@@ -328,6 +333,18 @@ namespace SDPCRL.DAL.DBHelp
         }
 
         #region SQL命令执行相关函数
+
+        public void BeginTransation()
+        {
+            //dbConnect.BeginTransaction();
+            dbCommand.Transaction = DbTransaction;
+        }
+
+        public void CommitTransation()
+        {
+            DbTransaction.Commit();
+        }
+
         /// <summary>
         /// 执行sql语法返回受影响的行数
         /// </summary>

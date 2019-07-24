@@ -70,6 +70,17 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
+        /// <summary>字段长度</summary>
+        [LibAttribute("fmfld_FieldLength", LibControlType.TextBox, "字符长度",true)]
+        public int FieldLength { get; set; }
+
+        /// <summary>是否必填</summary>
+        [LibAttribute("fmfld_IsAllowNull", LibControlType.Combox, "是否必填")]
+        public bool IsAllowNull { get; set; }
+
+        /// <summary>是否数字</summary>
+        [LibAttribute("fmfld_IsNumber", LibControlType.Combox, "是否数字", true)]
+        public bool IsNumber { get; set; }
 
         ///<summary>默认值</summary>
         [LibAttribute("fmfld_DealfValue", LibControlType.TextBox, "默认值")]

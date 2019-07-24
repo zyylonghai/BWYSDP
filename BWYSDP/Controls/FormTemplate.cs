@@ -479,7 +479,14 @@ namespace BWYSDP.Controls
                                         case LibFieldType.DateTime:
                                             libfgfield.ElemType = ElementType.DateTime;
                                             break;
+                                        case LibFieldType.Decimal :
+                                        case  LibFieldType.Interger:
+                                        case LibFieldType.Long:
+                                            libfgfield.IsNumber = true;
+                                            break;
                                     }
+                                    libfgfield.IsAllowNull = !libfield.AllowNull;
+                                    libfgfield.FieldLength = libfield.FieldLength;
                                     if (libfield.SourceField != null)
                                     {
                                         libfgfield.ElemType = ElementType.Search;

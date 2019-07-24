@@ -450,7 +450,7 @@ namespace BWYSDP.com
                                 comb.Name = attr.ControlNm;
                                 comb.DropDownStyle = ComboBoxStyle.DropDownList;
                                 comb.Size = new System.Drawing.Size(w, h);
-
+                                comb.Enabled = !attr.IsReadOnly;
                                 comb.Location = new System.Drawing.Point(lb.Location.X + lb.Width, y + index * (interval + lb.Height));
                                 if (p.PropertyType.Equals(typeof(bool)))
                                 {
