@@ -58,6 +58,9 @@ namespace SDPCRL.DAL.BUS
 
         public virtual void Save(LibTable[] libtables)
         {
+            #region 数据验证.
+
+            #endregion
             BeforeUpdate();
             AfterUpdate();
         }

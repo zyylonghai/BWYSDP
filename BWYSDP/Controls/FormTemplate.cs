@@ -427,6 +427,7 @@ namespace BWYSDP.Controls
                                             _node = new LibTreeNode();
                                             _node.Name = fld.Name;
                                             _node.Text = fld.DisplayName;
+                                            
                                             dtstructnode.Nodes.Add(_node);
                                         }
                                     }
@@ -439,6 +440,8 @@ namespace BWYSDP.Controls
                     DialogResult dialog = fielsform.ShowDialog(this);
                     if (dialog == DialogResult.OK)
                     {
+                        curentNode.Nodes.Clear();
+                        currentlibfmgroup.FmGroupFields.RemoveAll();
                         foreach (LibTreeNode deftb in tree.Nodes)
                         {
                             foreach (LibTreeNode tbstruct in deftb.Nodes)
@@ -449,6 +452,7 @@ namespace BWYSDP.Controls
                                     if (!f.Checked) continue;
                                     #region 添加节点
                                     //树节点
+                                    
                                     LibTreeNode fieldNode = new LibTreeNode();
                                     fieldNode.NodeId = Guid.NewGuid().ToString();
                                     fieldNode.NodeType = NodeType.FormGroup_Field;
@@ -487,9 +491,14 @@ namespace BWYSDP.Controls
                                     }
                                     libfgfield.IsAllowNull = !libfield.AllowNull;
                                     libfgfield.FieldLength = libfield.FieldLength;
-                                    if (libfield.SourceField != null)
+                                    if (libfield.SourceField != null && !string.IsNullOrEmpty (libfield.SourceField .FromDataSource ) 
+                                        && !string.IsNullOrEmpty (libfield .SourceField .FromStructTableNm ) && !string.IsNullOrEmpty (libfield .SourceField .FromFieldNm ))
                                     {
                                         libfgfield.ElemType = ElementType.Search;
+                                    }
+                                    if (libfield.Items != null && libfield.Items.Count > 0)
+                                    {
+                                        libfgfield.ElemType = ElementType.Select;
                                     }
                                     currentlibfmgroup.FmGroupFields.Add(libfgfield);
 
@@ -499,6 +508,7 @@ namespace BWYSDP.Controls
                                 }
                             }
                         }
+                        UpdateTabPageText();
                     }
 
                     break;
@@ -524,7 +534,7 @@ namespace BWYSDP.Controls
                     p.Name = "pfieldcollection";
                     p.AutoScroll = true;
                     TreeView tree = new TreeView();
-                    tree.AfterCheck += new TreeViewEventHandler(tree_AfterCheck);
+                    tree.AfterCheck += new TreeViewEventHandler(Gridtree_AfterCheck);
                     tree.CheckBoxes = true;
                     tree.Dock = DockStyle.Fill;
                     p.Controls.Add(tree);
@@ -611,7 +621,7 @@ namespace BWYSDP.Controls
             }
         }
 
-        void tree_AfterCheck(object sender, TreeViewEventArgs e)
+        void Gridtree_AfterCheck(object sender, TreeViewEventArgs e)
         {
             LibTreeNode node = (LibTreeNode)e.Node;
             if (node.Nodes.Count > 0)

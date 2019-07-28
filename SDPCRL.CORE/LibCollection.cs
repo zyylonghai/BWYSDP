@@ -87,6 +87,11 @@ namespace SDPCRL.CORE
             _entityArray.Remove(obj);
         }
 
+        public void RemoveAll()
+        {
+            _entityArray.Clear();
+        }
+
         public int Count
         {
             get
