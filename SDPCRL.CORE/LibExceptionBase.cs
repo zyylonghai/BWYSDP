@@ -16,8 +16,9 @@ namespace SDPCRL.CORE
         public LibExceptionBase(string message)
             : base(message)
         {
-
+           
         }
+
 
         public override string Message
         {

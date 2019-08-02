@@ -14,6 +14,14 @@ namespace SDPCRL.DAL.BUS
     {
        private  static DBHelpFactory  _dbFactory;
        private ILibDBHelp  _dbHelp;
+        private ExceptionHelp _ExceptionHelp;
+        private ExceptionHelp ExceptionHelp {
+            get {
+                if (_ExceptionHelp == null)
+                    _ExceptionHelp = new ExceptionHelp();
+                return _ExceptionHelp;
+            }
+        }
         public DataAccess()
         {
             if (_dbFactory == null)
@@ -70,7 +78,8 @@ namespace SDPCRL.DAL.BUS
             switch (eventType)
             {
                 case LibEventType.SqlException:
-
+                    LibSqlExceptionEventArgs eventarg = args as LibSqlExceptionEventArgs;
+                    this.ExceptionHelp.ThrowError(this, eventarg.Exception.Message);
                     break;
             }
         }

@@ -80,6 +80,7 @@ namespace SDPCRL.DAL.BUS
                 }
                 error.Message = ex.Message;
                 error.Stack = ex.StackTrace;
+                result.ErrorMsglst.Add(error);
             }
             return result;
         }
