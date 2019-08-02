@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SDPCRL.IBussiness;
 using SDPCRL.COM;
+using SDPCRL.CORE;
 
 namespace SDPCRL.BLL.BUS
 {
@@ -44,6 +45,10 @@ namespace SDPCRL.BLL.BUS
         protected virtual object ExecuteDalMethod(string funcId, string method,params object[] param)
         {
            SDPCRL .COM.DalResult result= _dalBus.ExecuteDalMethod2(AccoutId, funcId, method, param);
+            if (result.ErrorMsglst != null && result.ErrorMsglst.Count > 0)
+            {
+                throw new LibExceptionBase(result.ErrorMsglst[0].Message, result.ErrorMsglst[0].Stack);
+            }
            return result.Value;
 
             //return _dalBus.ExecuteDalMethod(AccoutId,funcId, method, param);

@@ -52,6 +52,13 @@ namespace BWYSDP.com
             ShowMessage(message);
         }
 
+        public static void ShowMessage(List<string> msglist, bool clear)
+        {
+            if (clear)
+                PromPt.MessageList.Items.Clear();
+            PromPt.MessageList.Items.AddRange(msglist.ToArray());
+            PromPt.Show();
+        }
         public static void DisposePromptForm()
         {
             _promPt = null;
