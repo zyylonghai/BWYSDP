@@ -8,7 +8,9 @@ namespace SDPCRL.IBussiness
 {
    public interface IDataAccess
     {
-       object ExecuteScalar(string commandText);
+        void BeginTransation();
+        void CommitTransation();
+        object ExecuteScalar(string commandText);
        int ExecuteNonQuery(string commandText); 
        DataRow GetDataRow(string commandText);
        DataTable GetDataTable(string commandText);

@@ -181,8 +181,15 @@ namespace SDPCRL.DAL.DBHelp
 
         int ILibDBHelp.ExecuteNonQuery(string commandText)
         {
-            return this.CurrentDBOpreate.ExecuteNonQuery(commandText);
+            int result= this.CurrentDBOpreate.ExecuteNonQuery(commandText);
+            if (result == -900)
+            {
+                LibEventManager.TouchEvent(this, LibEventType.SqlException, this.CurrentDBOpreate.Exception);
+                LibEventManager.LogOutListener(this);
+            }
+            //return this.CurrentDBOpreate.ExecuteNonQuery(commandText);
             //return DBOperate.ExecuteNonQuery(commandText);
+            return result;
         }
 
         object ILibDBHelp.ExecuteScalar(string commandText)
@@ -207,6 +214,16 @@ namespace SDPCRL.DAL.DBHelp
         public bool SaveAccout(DBInfo dbinfo)
         {
           return  this.CurrentDBOpreate.SaveAccout(dbinfo);
+        }
+
+        public void BeginTransation()
+        {
+            this.CurrentDBOpreate.BeginTransation();
+        }
+
+        public void CommitTransation()
+        {
+            this.CurrentDBOpreate.CommitTransation();
         }
     }
     class DBOperate
@@ -290,6 +307,8 @@ namespace SDPCRL.DAL.DBHelp
         }
         #endregion
 
+        public Exception Exception { get; set; }
+
         public DBOperate(string guid)
         {
             this._guid = guid;
@@ -360,7 +379,8 @@ namespace SDPCRL.DAL.DBHelp
             catch (Exception excep)
             {
                 //ex = excep.Message;
-                return -1;
+                this.Exception = excep;
+                return -900;
             }
             finally
             {

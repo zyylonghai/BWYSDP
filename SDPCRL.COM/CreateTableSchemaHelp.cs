@@ -66,6 +66,7 @@ namespace SDPCRL.COM
                                     col.DataType = typeof(long);
                                     break;
                                 case LibFieldType.String:
+                                case LibFieldType.Text:
                                     col.DataType = typeof(string);
                                     break;
                             }
@@ -79,7 +80,7 @@ namespace SDPCRL.COM
                                 col.AutoIncrementSeed = f.AutoIncrementSeed;
                                 col.AutoIncrementStep = f.AutoIncrementStep;
                             }
-                            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsRelate = true,MapPrimarykey =f.RelatePrimarykey});
+                            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsRelate = true,MapPrimarykey =f.RelatePrimarykey,DataTypeLen=f.FieldLength,Decimalpoint =f.Decimalpoint});
                             dt.Columns.Add(col);
                         }
 
@@ -92,11 +93,12 @@ namespace SDPCRL.COM
                         #endregion
 
                         dt.PrimaryKey = primarykey.ToArray();
-                        dt.ExtendedProperties.Add(SysConstManage .ExtProp, new TableExtendedProperties
+                        dt.ExtendedProperties.Add(SysConstManage.ExtProp, new TableExtendedProperties
                         {
                             TableIndex = tb.TableIndex,
-                            RelateTableIndex = tb.JoinTableIndex
-                        });
+                            RelateTableIndex = tb.JoinTableIndex,
+                            Ignore = tb.Ignore
+                        }) ;
                         index++;
                     }
                     dts.Add(dftb);
@@ -149,11 +151,16 @@ namespace SDPCRL.COM
         public int TableIndex { get; set; }
         public int RelateTableIndex { get; set; }
 
-
+        /// <summary>是否忽略创建表结构</summary>
+        public bool Ignore { get; set; }
     }
     public class ColExtendedProperties
     {
         public bool IsRelate { get; set; }
         public string MapPrimarykey { get; set; }
+
+        public int DataTypeLen { get; set; }
+
+        public int Decimalpoint { get; set; }
     }
 }

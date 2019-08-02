@@ -85,6 +85,25 @@ namespace SDPCRL.CORE
         {
             if (_listenerList.ContainsKey(sender))
                 _listenerList.Remove(sender);
+            else
+            {
+                object _sender = null;
+                foreach (object item in _listenerList.Keys)
+                {
+                    if (item.GetType().Equals(typeof(LibSqlExceptionEventSource)))
+                    {
+                        LibSqlExceptionEventSource a = (LibSqlExceptionEventSource)item;
+                        if (a.TouchObj == sender)
+                        {
+                            _sender = item;
+                            break;
+                        }
+                    }
+                }
+                if (_sender != null)
+                    _listenerList.Remove(_sender);
+            }
+
         }
         #endregion
         /// <summary> 事件源</summary>
@@ -191,6 +210,17 @@ namespace SDPCRL.CORE
             void eventSource_DoSqlException(Exception ex)
             {
                 LibSqlExceptionEventSource eventlistener = _obj as LibSqlExceptionEventSource;
+                if (eventlistener != null)
+                {
+                    ILibEventListener even = eventlistener.SubscribeObj as ILibEventListener;
+                    if (even != null)
+                    {
+                        LibSqlExceptionEventArgs fargs = new LibSqlExceptionEventArgs();
+                        fargs.Exception = ex;
+                        fargs.EventSourse = eventlistener;
+                        even.DoEvents(LibEventType.SqlException, fargs);
+                    }
+                }
 
             }
             //void eventSource_DoModelEdit(bool ischange)

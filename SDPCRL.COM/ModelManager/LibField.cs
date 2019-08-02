@@ -137,7 +137,10 @@ namespace SDPCRL.COM.ModelManager
         DateTime=5,
         /// <summary>长整型</summary>
         [LibReSource("长整型-Long")]
-        Long=6
+        Long=6,
+        /// <summary>文本型</summary>
+        [LibReSource("文本型-Text")]
+        Text =7
     }
 
     /// <summary>

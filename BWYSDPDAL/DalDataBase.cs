@@ -39,7 +39,7 @@ namespace BWYSDPDAL
 
         public DataTable GetTableSchema(string tableNm)
         {
-            throw new Exception("ziidingyierror");
+            //throw new Exception("ziidingyierror");
             return this.DataAccess.GetDataTable(string.Format("select column_name,data_type,IS_NULLABLE,NUMERIC_PRECISION,NUMERIC_SCALE,CHARACTER_MAXIMUM_LENGTH" +
                                                          " from information_schema.columns " +
                                                          "where table_name = '{0}'", tableNm));

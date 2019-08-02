@@ -323,6 +323,9 @@ namespace BWYSDP.com
                                     builder.AppendFormat("[{0}]", "nvarchar");
                                     builder.AppendFormat("({0}) ", field.FieldLength);
                                     break;
+                                case LibFieldType.Text:
+                                    builder.AppendFormat("[{0}]", "ntext");
+                                    break;
                             }
                             builder.AppendFormat("{0} ", field.AllowNull ? "NULL" : "NOT NULL");
                         }
@@ -365,6 +368,9 @@ namespace BWYSDP.com
                             case LibFieldType.String:
                                 builder.AppendFormat("[{0}]", "nvarchar");
                                 builder.AppendFormat("({0}) ", field.FieldLength);
+                                break;
+                            case LibFieldType.Text:
+                                builder.AppendFormat("[{0}]", "ntext");
                                 break;
                         }
                         builder.AppendFormat("{0} ", field.AllowNull ? "NULL" : "NOT NULL");

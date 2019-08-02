@@ -9,6 +9,8 @@ namespace SDPCRL.DAL.IDBHelp
 {
     public interface ILibDBHelp
     {
+        void BeginTransation();
+        void CommitTransation();
         /// <summary>执行sql语法返回受影响的行数</summary>
         /// <param name="sql"></param>
         /// <returns></returns>
