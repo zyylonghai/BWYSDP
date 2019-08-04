@@ -311,7 +311,7 @@
     </ProjectReference>
     <ProjectReference Include="..\SDPCRL.COM\SDPCRL.COM.csproj">
       <Project>{A6DD1483-D68F-401B-B7F8-F3B977AC7500}</Project>
-      <Name>SDPCRL.COM %28SDPCRL\SDPCRL.BLL\SDPCRL.COM%29</Name>
+      <Name>SDPCRL.COM</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\SDPCRL.CORE\SDPCRL.CORE.csproj">

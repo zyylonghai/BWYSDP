@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,7 +52,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SDPCRL.COM\SDPCRL.COM.csproj">
       <Project>{A6DD1483-D68F-401B-B7F8-F3B977AC7500}</Project>
-      <Name>SDPCRL.COM %28SDPCRL\SDPCRL.BLL\SDPCRL.COM%29</Name>
+      <Name>SDPCRL.COM</Name>
     </ProjectReference>
     <ProjectReference Include="..\SDPCRL.CORE\SDPCRL.CORE.csproj">
       <Project>{6737331B-873F-432B-BF3B-97B64C8E0C5F}</Project>

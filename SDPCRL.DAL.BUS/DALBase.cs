@@ -12,7 +12,7 @@ namespace SDPCRL.DAL.BUS
     public class DALBase
     {
         private IDataAccess _dataAccess;
-        private List<string> _errorMsgList = null;
+        private List<LibMessage> MsgList = null;
         #region 公开的属性
         public IDataAccess DataAccess
         {
@@ -35,7 +35,7 @@ namespace SDPCRL.DAL.BUS
         #region 构造函数
         public DALBase()
         {
-            _errorMsgList = new List<string>();
+            MsgList = new List<LibMessage>();
         }
         #endregion
 
@@ -59,114 +59,132 @@ namespace SDPCRL.DAL.BUS
 
         public virtual void Save(LibTable[] libtables)
         {
-            #region 数据验证.
-
-            #endregion
-
-            this.DataAccess.BeginTransation();
-            #region 解析LibTable 并转为sql语句
-            LibTable libtable = null;
-            DataTable dt = null;
-            StringBuilder fields = null;
-            StringBuilder fieldtypes = null;
-            StringBuilder fieldvalue = null;
-            string sql = string.Empty;
-            ColExtendedProperties colextprop = null;
-            TableExtendedProperties tbextprop = null;
-            for (int i = 0; i < libtables.Length; i++)
+            try
             {
-                libtable = libtables[i];
-                if (libtable.Tables == null) continue;
-                for (int n = 0; n < libtable.Tables.Length; n++)
+                #region 数据验证.
+
+                #endregion
+
+                BeforeUpdate();
+                this.DataAccess.BeginTrans();
+                #region 解析LibTable 并转为sql语句
+                LibTable libtable = null;
+                DataTable dt = null;
+                StringBuilder fields = null;
+                StringBuilder fieldtypes = null;
+                StringBuilder fieldvalue = null;
+                string sql = string.Empty;
+                ColExtendedProperties colextprop = null;
+                TableExtendedProperties tbextprop = null;
+                for (int i = 0; i < libtables.Length; i++)
                 {
-                    dt = libtable.Tables[n];
-                    tbextprop = dt.ExtendedProperties[SysConstManage.ExtProp] as TableExtendedProperties;
-                    if (!tbextprop.Ignore) continue;
-                    fields = new StringBuilder();
-                    fieldtypes = new StringBuilder();
-                    fieldvalue = new StringBuilder();
-                    foreach (DataColumn col in dt.Columns)
+                    libtable = libtables[i];
+                    if (libtable.Tables == null) continue;
+                    for (int n = 0; n < libtable.Tables.Length; n++)
                     {
-                        colextprop = col.ExtendedProperties[SysConstManage.ExtProp] as ColExtendedProperties;
-                        if (fields.Length > 0)
+                        dt = libtable.Tables[n];
+                        tbextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<TableExtendedProperties>(dt.ExtendedProperties[SysConstManage.ExtProp].ToString());
+                        if (!tbextprop.Ignore) continue;
+                        fields = new StringBuilder();
+                        fieldtypes = new StringBuilder();
+                        fieldvalue = new StringBuilder();
+                        foreach (DataColumn col in dt.Columns)
                         {
-                            fields.Append(",");
-                            fieldtypes.Append(",");
-                            fieldvalue.Append(",");
-                        }
-                        fields.AppendFormat("@{0}", col.ColumnName);
-                        fieldtypes.AppendFormat("@{0} ", col.ColumnName);
-                        if (col.DataType == typeof(string))
-                        {
-                            if (colextprop.DataTypeLen == 0)
+                            colextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<ColExtendedProperties>(col.ExtendedProperties[SysConstManage.ExtProp].ToString());
+                            if (!colextprop.IsActive) continue;
+                            if (fields.Length > 0)
                             {
-                                fieldtypes.Append("ntext");
+                                fields.Append(",");
+                                fieldtypes.Append(",");
+                                fieldvalue.Append(",");
                             }
-                            else
-                                fieldtypes.AppendFormat("nvarchar({0})", colextprop.DataTypeLen);
-                            fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "='{" + dt.Columns.IndexOf(col) + "}'");
+                            fields.AppendFormat("@{0}", col.ColumnName);
+                            fieldtypes.AppendFormat("@{0} ", col.ColumnName);
+                            if (col.DataType == typeof(string))
+                            {
+                                if (colextprop.DataTypeLen == 0)
+                                {
+                                    fieldtypes.Append("ntext");
+                                }
+                                else
+                                    fieldtypes.AppendFormat("nvarchar({0})", colextprop.DataTypeLen);
+                                fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "='{" + dt.Columns.IndexOf(col) + "}'");
+                            }
+                            else if (col.DataType == typeof(long))
+                            {
+                                fieldtypes.AppendFormat("bigint");
+                                fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "={" + dt.Columns.IndexOf(col) + "}");
+                            }
+                            else if (col.DataType == typeof(Int32))
+                            {
+                                fieldtypes.AppendFormat("int");
+                                fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "={" + dt.Columns.IndexOf(col) + "}");
+                            }
+                            else if (col.DataType == typeof(decimal))
+                            {
+                                fieldtypes.AppendFormat("decimal({0}, {1})", colextprop.DataTypeLen, colextprop.Decimalpoint);
+                                fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "={" + dt.Columns.IndexOf(col) + "}");
+                            }
+                            else if (col.DataType == typeof(DateTime))
+                            {
+                                fieldtypes.AppendFormat("datetime");
+                                fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "='{" + dt.Columns.IndexOf(col) + "}'");
+                            }
+                            else if (col.DataType == typeof(Date))
+                            {
+                                fieldtypes.AppendFormat("date");
+                                fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "='{" + dt.Columns.IndexOf(col) + "}'");
+                            }
+                            else if (col.DataType == typeof(byte))
+                            {
+                                fieldtypes.AppendFormat("bit");
+                                fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "={" + dt.Columns.IndexOf(col) + "}");
+                            }
                         }
-                        else if (col.DataType == typeof(long))
+                        foreach (DataRow row in dt.Rows)
                         {
-                            fieldtypes.AppendFormat("bigint");
-                            fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "={" + dt.Columns.IndexOf(col) + "}");
+                            switch (row.RowState)
+                            {
+                                case DataRowState.Added:
+                                    sql = string.Format(string.Format("EXEC sp_executesql N'insert into {0} values({1}) ',N'{2}',{3}",
+                                        dt.TableName, fields.ToString(), fieldtypes.ToString(), fieldvalue.ToString()), row.ItemArray);
+                                    break;
+                                case DataRowState.Modified:
+
+                                    continue;
+                                //break;
+                                case DataRowState.Deleted:
+                                    continue;
+                                //break;
+                                default:
+                                    continue;
+                                    //break;
+                            }
+                            this.DataAccess.ExecuteNonQuery(sql);
                         }
-                        else if (col.DataType == typeof(Int32))
-                        {
-                            fieldtypes.AppendFormat("int");
-                            fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "={" + dt.Columns.IndexOf(col) + "}");
-                        }
-                        else if (col.DataType == typeof(decimal))
-                        {
-                            fieldtypes.AppendFormat("decimal({0}, {1})", colextprop.DataTypeLen, colextprop.Decimalpoint);
-                            fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "={" + dt.Columns.IndexOf(col) + "}");
-                        }
-                        else if (col.DataType == typeof(DateTime))
-                        {
-                            fieldtypes.AppendFormat("datetime");
-                            fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "='{" + dt.Columns.IndexOf(col) + "}'");
-                        }
-                        else if (col.DataType == typeof(Date))
-                        {
-                            fieldtypes.AppendFormat("date");
-                            fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "='{" + dt.Columns.IndexOf(col) + "}'");
-                        }
-                        else if (col.DataType == typeof(byte))
-                        {
-                            fieldtypes.AppendFormat("bit");
-                            fieldvalue.Append(string.Format("@{0}", col.ColumnName) + "={" + dt.Columns.IndexOf(col) + "}");
-                        }
-                    }
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        switch (row.RowState)
-                        {
-                            case DataRowState.Added:
-                                sql = string.Format(string.Format("EXEC sp_executesql N'insert into {0} values({1}) ',N'{2}',{3}",
-                                    dt.TableName,fields .ToString (),fieldtypes.ToString (),fieldvalue.ToString ()),row.ItemArray);
-                                break;
-                            case DataRowState.Modified:
-                                
-                                break;
-                            case DataRowState.Deleted:
-                                break;
-                        }
-                        this.DataAccess.ExecuteNonQuery(sql);
                     }
                 }
+                #endregion
+                AfterUpdate();
+                if (this.MsgList.FirstOrDefault(i => i.MsgType == LibMessageType.Error) != null)//有类型为error的信息，必须回滚事务
+                {
+                    this.DataAccess.RollbackTrans();
+                }
+                else
+                    this.DataAccess.CommitTrans();
             }
-            #endregion
-            AfterUpdate();
-            this.DataAccess.CommitTransation();
+            catch {
+                this.DataAccess.RollbackTrans();
+            }
         }
-        public void AddErrorMessage(string msg)
+        public void AddErrorMessage(string msg,LibMessageType type)
         {
-            this._errorMsgList.Add(msg);
+            this.MsgList.Add(new LibMessage { Message = msg, MsgType = type });
         }
 
-        public List<string> GetErrorMessage()
+        public List<LibMessage> GetErrorMessage()
         {
-            return _errorMsgList;
+            return MsgList;
         }
         #endregion
     }

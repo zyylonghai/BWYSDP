@@ -37,14 +37,20 @@ namespace SDPCRL.DAL.BUS
             LibEventManager.SubscribeEvent(new LibSqlExceptionEventSource(this, _dbHelp), LibEventType.SqlException);
         }
 
-        public void BeginTransation()
+        public void BeginTrans()
         {
-            _dbHelp.BeginTransation();
+            _dbHelp.BeginTrans();
         }
 
-        public void CommitTransation()
+        public void CommitTrans()
         {
-            _dbHelp.CommitTransation();
+            _dbHelp.CommitTrans();
+        }
+
+
+        public void RollbackTrans()
+        {
+            _dbHelp.RollbackTrans();
         }
         public object ExecuteScalar(string commandText)
         {
@@ -83,6 +89,5 @@ namespace SDPCRL.DAL.BUS
                     break;
             }
         }
-
     }
 }

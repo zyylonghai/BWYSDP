@@ -80,7 +80,7 @@ namespace SDPCRL.COM
                                 col.AutoIncrementSeed = f.AutoIncrementSeed;
                                 col.AutoIncrementStep = f.AutoIncrementStep;
                             }
-                            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsRelate = true,MapPrimarykey =f.RelatePrimarykey,DataTypeLen=f.FieldLength,Decimalpoint =f.Decimalpoint});
+                            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive=f.IsActive , IsRelate = true,MapPrimarykey =f.RelatePrimarykey,DataTypeLen=f.FieldLength,Decimalpoint =f.Decimalpoint});
                             dt.Columns.Add(col);
                         }
 
@@ -89,6 +89,15 @@ namespace SDPCRL.COM
                         col.DataType = typeof(int);
                         col.AutoIncrement = true;
                         col.AutoIncrementSeed = 1;
+                        col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive =false, IsRelate = false});
+                        dt.Columns.Add(col);
+                        #endregion
+
+                        #region 系统默认新增的一列 是否选中。
+                        col = new DataColumn(SysConstManage.IsSelect);
+                        col.DataType = typeof(bool);
+                        col.DefaultValue = false;
+                        col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive = false, IsRelate = false });
                         dt.Columns.Add(col);
                         #endregion
 
@@ -145,7 +154,7 @@ namespace SDPCRL.COM
             this.Name = name;
         }
     }
-
+    [Serializable]
     public class TableExtendedProperties
     {
         public int TableIndex { get; set; }
@@ -153,14 +162,28 @@ namespace SDPCRL.COM
 
         /// <summary>是否忽略创建表结构</summary>
         public bool Ignore { get; set; }
+        public override string ToString()
+        {
+            //{"TableIndex":0,"RelateTableIndex":0,"Ignore":false}
+            string s = string.Format("\"TableIndex\":\"{0}\",\"RelateTableIndex\":\"{1}\",\"Ignore\":\"{2}\"", TableIndex, RelateTableIndex, Ignore);
+            return "{" + s + "}";
+        }
     }
+    [Serializable]
     public class ColExtendedProperties
     {
+        public bool IsActive { get; set; }
         public bool IsRelate { get; set; }
         public string MapPrimarykey { get; set; }
 
         public int DataTypeLen { get; set; }
 
         public int Decimalpoint { get; set; }
+
+        public override string ToString()
+        {
+            string s= string.Format("\"IsActive\":\"{0}\",\"IsRelate\":\"{1}\",\"MapPrimarykey\":\"{2}\",\"DataTypeLen\":\"{3}\",\"Decimalpoint\":\"{4}\"", IsActive, IsRelate, MapPrimarykey, DataTypeLen, Decimalpoint);
+            return "{" + s + "}";
+        }
     }
 }

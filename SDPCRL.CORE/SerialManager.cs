@@ -70,6 +70,9 @@ namespace SDPCRL.CORE
         public const string ExtProp = "extProp";
         //用于客户端表格的行项列。
         public const string sdp_rowid = "sdp_rowid";
+
+        //用于客户端表格的行项列，是否选中
+        public const string IsSelect = "sdp_select";
         #endregion
     }
 

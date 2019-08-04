@@ -216,14 +216,19 @@ namespace SDPCRL.DAL.DBHelp
           return  this.CurrentDBOpreate.SaveAccout(dbinfo);
         }
 
-        public void BeginTransation()
+        public void BeginTrans()
         {
             this.CurrentDBOpreate.BeginTransation();
         }
 
-        public void CommitTransation()
+        public void CommitTrans()
         {
             this.CurrentDBOpreate.CommitTransation();
+        }
+
+        public void RollbackTrans()
+        {
+            this.CurrentDBOpreate.RollbackTransation();
         }
     }
     class DBOperate
@@ -232,9 +237,11 @@ namespace SDPCRL.DAL.DBHelp
         private  DbConnection _dbConnect = null;
         private  DbCommand _dbcmd;
         private  DbDataAdapter _dbAdapter;
+        //private DbTransaction _dbTransaction=null;
         private  string _dbConnectStr = string.Empty;
         private  DBInfoHelp _dbInfoHelp;
         private string _guid=string.Empty ;
+        private bool _transaction = false;
 
         private  DBInfoHelp DBInfoHelp
         {
@@ -303,7 +310,7 @@ namespace SDPCRL.DAL.DBHelp
 
         private DbTransaction DbTransaction
         {
-            get { return dbConnect.BeginTransaction(); }
+            get { return  dbConnect.BeginTransaction();  }
         }
         #endregion
 
@@ -357,11 +364,23 @@ namespace SDPCRL.DAL.DBHelp
         {
             //dbConnect.BeginTransaction();
             dbCommand.Transaction = DbTransaction;
+            this._transaction = true;
         }
 
         public void CommitTransation()
         {
-            DbTransaction.Commit();
+            if (dbCommand.Transaction != null)
+                dbCommand.Transaction.Commit();
+            this._transaction = false;
+            CloseConnect();
+        }
+
+        public void RollbackTransation()
+        {
+            if (dbCommand.Transaction != null)
+                dbCommand.Transaction.Rollback();
+            this._transaction = false;
+            CloseConnect();
         }
 
         /// <summary>
@@ -380,11 +399,14 @@ namespace SDPCRL.DAL.DBHelp
             {
                 //ex = excep.Message;
                 this.Exception = excep;
+                //if (this._transaction && dbCommand.Transaction != null)
+                //    RollbackTransation();
                 return -900;
             }
             finally
             {
-                CloseConnect();
+                if (!this._transaction)
+                    CloseConnect();
             }
         }
 
@@ -479,7 +501,7 @@ namespace SDPCRL.DAL.DBHelp
         public bool SaveAccout(DBInfo info)
         {
             string commandText = string.Format("Insert Into Accout(ID,AccoutNm,IPAddress,CreateTime,Creater,[Key]) values('{0}','{1}','{2}','{3}','{4}','{5}')",
-                                               info.Guid, info.DataBase, info.ServerAddr, DateTime.Now.ToString(), "admin", info.Key);
+                                               info.Guid, info.DataBase, info.ServerAddr, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "admin", info.Key);
             if (ExecuteNonQuery(commandText) != -1)
                 return true;
             return false;
@@ -509,7 +531,7 @@ namespace SDPCRL.DAL.DBHelp
         static readonly object locker = new object();
         DBOperate[] db;
         DBOperate _currentDBOperate;
-        int _maxConnectAmount = 3;
+        int _maxConnectAmount = 2;
         protected  bool NeedInitial = true;
         protected string Guid
         {

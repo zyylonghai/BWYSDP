@@ -9,17 +9,17 @@ namespace SDPCRL.COM
    public  class DalResult
    {
        #region 私有属性
-       private List<string> _messageList = null;
+       private List<LibMessage> _messageList = null;
        private List<ErrorMessage> _errormsglst = null;
        #endregion
 
        public object Value { get; set; }
 
-       public List<string> Messagelist {
+       public List<LibMessage> Messagelist {
            get
            {
-               if (_messageList == null)
-                   _messageList = new List<string>();
+                if (_messageList == null)
+                    _messageList = new List<LibMessage>();
                return _messageList;
            }
            set { _messageList = value; } 
