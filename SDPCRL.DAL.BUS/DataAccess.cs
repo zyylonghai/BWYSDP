@@ -10,7 +10,7 @@ using SDPCRL.CORE;
 
 namespace SDPCRL.DAL.BUS
 {
-    class DataAccess:IDataAccess,ILibEventListener, IDisposable
+    class DataAccess:IDataAccess,ILibEventListener, IDisposable,IlibException
     {
        private  static DBHelpFactory  _dbFactory;
        private ILibDBHelp  _dbHelp;
@@ -85,9 +85,14 @@ namespace SDPCRL.DAL.BUS
             {
                 case LibEventType.SqlException:
                     LibSqlExceptionEventArgs eventarg = args as LibSqlExceptionEventArgs;
-                    this.ExceptionHelp.ThrowError(this, eventarg.Exception.Message);
+                    this.ExceptionHelp.ThrowError(this, eventarg.Exception.Message,eventarg.Exception .StackTrace);
                     break;
             }
+        }
+
+        public void BeforeThrow()
+        {
+            
         }
     }
 }

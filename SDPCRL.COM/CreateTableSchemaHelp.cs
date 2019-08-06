@@ -116,18 +116,18 @@ namespace SDPCRL.COM
             return dts.ToArray();
         }
     }
-
+    [Serializable]
     public class Date
     {
-        string value;
-        public Date()
-        {
+       public string value { get; set; }
+        //public Date()
+        //{
 
-        }
-        public Date(string date)
-        {
-            value = date;
-        }
+        //}
+        //public Date(string date)
+        //{
+        //    value = date;
+        //}
 
         //public Date CurrentDate { get { return new Date { value = DateTime.Now.ToString("yyyy-MM-dd") }; } }
 

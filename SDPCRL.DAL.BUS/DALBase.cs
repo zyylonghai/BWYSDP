@@ -173,8 +173,9 @@ namespace SDPCRL.DAL.BUS
                 else
                     this.DataAccess.CommitTrans();
             }
-            catch {
+            catch(Exception ex) {
                 this.DataAccess.RollbackTrans();
+                throw ex;
             }
         }
         public void AddErrorMessage(string msg,LibMessageType type)

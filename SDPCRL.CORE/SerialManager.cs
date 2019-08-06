@@ -37,6 +37,8 @@ namespace SDPCRL.CORE
         public const char Underline = '_';
         public const char Comma = ',';
         public const char Asterisk = '*';
+        public const char Point = '.';
+
         #endregion
 
         public const string SQLConnect = "SQLSERVERCONN";
