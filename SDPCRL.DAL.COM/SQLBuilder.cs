@@ -12,15 +12,20 @@ namespace SDPCRL.DAL.COM
 {
     public class SQLBuilder
     {
-        private string _progId = string.Empty;
+        private string _id = string.Empty;
+        private bool _mark = true;
         #region 构造函数
         public SQLBuilder()
         {
 
         }
-        public SQLBuilder(string progid)
+        /// <summary> </summary>
+        /// <param name="id">ProgId或者DSID</param>
+        /// <param name="mark">是否为DSID，默认true</param>
+        public SQLBuilder(string id,bool mark=true)
         {
-            this._progId = progid;
+            this._id = id;
+            this._mark = mark;
         }
         #endregion 
         public string GetSQL(string tableNm,string[] fields,string whereStr)
@@ -46,7 +51,7 @@ namespace SDPCRL.DAL.COM
         public string GetSQL(string tableNm, string[] fields, WhereObject where)
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append( ResFactory.ResManager.SQLSelect);
+            builder.Append(ResFactory.ResManager.SQLSelect);
             foreach (string field in fields)
             {
                 if (builder.Length != ResFactory.ResManager.SQLSelect.Length)
@@ -55,11 +60,109 @@ namespace SDPCRL.DAL.COM
                 }
                 builder.AppendFormat(" {0}", field);
             }
-            builder.AppendFormat(" {0}", ResFactory.ResManager.SQLFrom);
-            builder.AppendFormat(" {0}", tableNm);
+            if (string.IsNullOrEmpty(this._id))
+            {
+                if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
+                {
+                    builder.AppendFormat(" {0}", SysConstManage.Asterisk);
+                }
+                builder.AppendFormat(" {0}", ResFactory.ResManager.SQLFrom);
+                builder.AppendFormat(" {0}", tableNm);
+                //if (!string.IsNullOrEmpty(where.WhereFormat))
+                //{
+                //    return string.Format("EXEC sp_executesql N'{0} where {1}',{2}", builder.ToString(), where.WhereFormat, where.ValueTostring);
+                //}
+                //return string.Format("EXEC sp_executesql N'{0}'", builder.ToString());
+            }
+            else
+            {
+                LibDataSource ds = null;
+                if (this._mark)
+                {
+                    ds = ModelManager.GetDataSource(this._id);
+                }
+                else
+                {
+                    LibFormPage form = ModelManager.GetFormSource(this._id);
+                    ds = ModelManager.GetDataSource(form.DSID);
+                }
+                if (ds != null)
+                {
+                    List<LibDataTableStruct> list = new List<LibDataTableStruct>();
+                    StringBuilder joinstr = new StringBuilder();
+                    StringBuilder joinfield = null;
+                    StringBuilder allfields = new StringBuilder();
+                    foreach (LibDefineTable item in ds.DefTables)
+                    {
+                        list.AddRange(item.TableStruct.ToArray());
+                    }
+                    var tb = list.FirstOrDefault(i => i.Name == tableNm && i.Ignore);
+                    char tbaliasnm = (char)(tb.TableIndex+65);
+                    #region 组织要查询表的字段
+                    if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
+                    {
+                        foreach (LibField f in tb.Fields)
+                        {
+                            if (!f.IsActive) continue;
+                            if (allfields.Length > 0)
+                            {
+                                allfields.Append(SysConstManage.Comma);
+                            }
+                            allfields.AppendFormat(" {0}.{1}", tbaliasnm, f.Name);
+                        }
+                    }
+                    #endregion
+                    if (tb != null)
+                    {
+                        var relatetbs = list.Where(i => i.JoinTableIndex == tb.TableIndex).ToList();
+                        if (relatetbs != null)
+                        {
+                            foreach (var jointb in relatetbs)
+                            {
+                                #region 组织joinstr语句
+                                joinstr.AppendFormat(" {0} {1} {2} {3} ",
+                                                     ResFactory.ResManager.SQLLeftJoin,
+                                                     jointb.Name,
+                                                     (char)(jointb.TableIndex+65),
+                                                     ResFactory.ResManager.SQLOn);
+                                joinfield = new StringBuilder();
+                                foreach (var relatfield in jointb.JoinFields)
+                                {
+                                    if (joinfield.Length > 0)
+                                    {
+                                        joinfield.Append(ResFactory.ResManager.SQLAnd); ;
+                                    }
+                                    joinfield.AppendFormat(" {0}.{1}={2}.{3} ", tbaliasnm, relatfield, (char)(jointb.TableIndex+65), relatfield);
+                                }
+                                joinstr.Append(joinfield.ToString());
+                                joinstr.AppendLine();
+                                #endregion
+
+                                #region 取关联表的字段
+                                if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
+                                {
+                                    foreach (LibField f2 in jointb.Fields)
+                                    {
+                                        if (!f2.IsActive) continue;
+                                        allfields.AppendFormat("{0}{1}.{2}", SysConstManage.Comma, (char)(jointb.TableIndex+65), f2.Name);
+                                    }
+                                }
+                                #endregion
+                            }
+                        }
+                        if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
+                        {
+                            builder.Append(allfields.ToString());
+                        }
+                        builder.AppendFormat(" {0}", ResFactory.ResManager.SQLFrom);
+                        builder.AppendFormat(" {0} {1}", tableNm, tbaliasnm);
+                        builder.Append(joinstr.ToString());
+                    }
+                }
+            }
             if (!string.IsNullOrEmpty(where.WhereFormat))
             {
-                return string.Format("EXEC sp_executesql N'{0} where {1}',{2}",builder .ToString (),where.WhereFormat ,where .ValueTostring);
+                return string.Format("EXEC sp_executesql N'{0} where {1}',{2}", builder.ToString(), where.WhereFormat, where.ValueTostring);
             }
             return string.Format("EXEC sp_executesql N'{0}'", builder.ToString());
         }
@@ -67,7 +170,7 @@ namespace SDPCRL.DAL.COM
         public string GetSQLBydeftableNm(string deftbnm,string[] fields, WhereObject where)
         {
             StringBuilder sql = new StringBuilder();
-            LibFormPage form = ModelManager.GetFormSource(this._progId);
+            LibFormPage form = ModelManager.GetFormSource(this._id);
             var datasourse = ModelManager.GetDataSource(form.DSID);
             foreach (LibDefineTable item in datasourse.DefTables)
             {
@@ -87,7 +190,7 @@ namespace SDPCRL.DAL.COM
         public string GetSQL()
         {
             StringBuilder sql = new StringBuilder();
-            LibFormPage form = ModelManager.GetFormSource(this._progId);
+            LibFormPage form = ModelManager.GetFormSource(this._id);
             var datasourse = ModelManager.GetDataSource(form.DSID);
             if (datasourse != null)
             {
@@ -111,6 +214,17 @@ namespace SDPCRL.DAL.COM
             wobj.Values = values;
             return wobj;
         }
+
+        #region 私有函数
+        //private void DoGetSQLField(StringBuilder builder,string field)
+        //{
+        //    if (builder.Length != ResFactory.ResManager.SQLSelect.Length)
+        //    {
+        //        builder.Append(SysConstManage.Comma);
+        //    }
+        //    builder.AppendFormat(" {0}", field);
+        //}
+        #endregion
     }
    public class WhereObject
     {

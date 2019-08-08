@@ -39,6 +39,16 @@ namespace BWYResFactory
             get { return Res.SQLAnd; }
         }
 
+        public new string SQLLeftJoin
+        {
+            get { return Res.SQLLeftJoin; }
+        }
+
+        public new string SQLOn
+        {
+            get { return Res.SQLOn; }
+        }
+
     }
 
     public interface IResManager
@@ -49,5 +59,7 @@ namespace BWYResFactory
         string SQLFrom { get; }
         string SQLWhere { get; }
         string SQLAnd { get; }
+        string SQLLeftJoin { get; }
+        string SQLOn { get; }
     }
 }

@@ -119,6 +119,26 @@ namespace SDPCRL.CORE
             return _entityArray.GetEnumerator();
         }
 
+        public T[] ToArray()
+        {
+            T[] result = new T[this._entityArray.Count];
+            for (int i = 0; i < this._entityArray.Count; i++)
+            {
+                result[i] =(T)this._entityArray[i];
+            }
+            return result;
+        }
+
+        public List<T> Tolist()
+        {
+            List<T> list = new List<T>();
+            foreach (T item in _entityArray)
+            {
+                list.Add(item);
+            }
+            return list;
+        }
+
         #region 私有函数
         private T[] DoFind(string propertyNm, object value)
         {

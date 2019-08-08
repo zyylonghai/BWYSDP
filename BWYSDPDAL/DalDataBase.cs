@@ -18,6 +18,8 @@ namespace BWYSDPDAL
         public Dictionary<string, string> GetAccount()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
+            //SQLBuilder builder2 = new SQLBuilder("CheckBill");
+            //builder2.GetSQL("CheckBill", new string[] { },new WhereObject());
             SQLBuilder build = new SQLBuilder();
             //DataTable dt = this.DataAccess.GetDataTable("select ID,AccoutNm from  Accout where AccoutNm!='" + ResFactory.ResManager.SysDBNm + "'");
             DataTable dt = this.DataAccess.GetDataTable(build.GetSQL("Accout", new string[] { "ID", "AccoutNm" }, build.Where("AccoutNm!={0}", ResFactory.ResManager.SysDBNm)));
