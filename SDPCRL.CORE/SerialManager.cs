@@ -75,6 +75,14 @@ namespace SDPCRL.CORE
 
         //用于客户端表格的行项列，是否选中
         public const string IsSelect = "sdp_select";
+
+        //用于搜索模态框的固定命名。
+        //public const string sdp_smodalform = "sdp_smodalform";
+        //public const string sdp_smodalCondition = "sdp_smodalCondition";
+        public const string sdp_smodalfield = "sdp_smodalfield";
+        public const string sdp_smodalsymbol = "sdp_smodalsymbol";
+        public const string sdp_smodalval = "sdp_smodalval";
+        public const string sdp_smodallogic = "sdp_smodallogic";
         #endregion
     }
 

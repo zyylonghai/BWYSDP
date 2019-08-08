@@ -5,11 +5,24 @@ using System.Text;
 using BWYResFactory;
 using SDPCRL.CORE;
 using System.Text.RegularExpressions;
+using SDPCRL.COM.ModelManager.FormTemplate;
+using SDPCRL.COM.ModelManager;
 
 namespace SDPCRL.DAL.COM
 {
     public class SQLBuilder
     {
+        private string _progId = string.Empty;
+        #region 构造函数
+        public SQLBuilder()
+        {
+
+        }
+        public SQLBuilder(string progid)
+        {
+            this._progId = progid;
+        }
+        #endregion 
         public string GetSQL(string tableNm,string[] fields,string whereStr)
         {
             StringBuilder builder = new StringBuilder();
@@ -49,6 +62,46 @@ namespace SDPCRL.DAL.COM
                 return string.Format("EXEC sp_executesql N'{0} where {1}',{2}",builder .ToString (),where.WhereFormat ,where .ValueTostring);
             }
             return string.Format("EXEC sp_executesql N'{0}'", builder.ToString());
+        }
+
+        public string GetSQLBydeftableNm(string deftbnm,string[] fields, WhereObject where)
+        {
+            StringBuilder sql = new StringBuilder();
+            LibFormPage form = ModelManager.GetFormSource(this._progId);
+            var datasourse = ModelManager.GetDataSource(form.DSID);
+            foreach (LibDefineTable item in datasourse.DefTables)
+            {
+                if (item.TableName != deftbnm) continue;
+                foreach (LibDataTableStruct tbstruct in item.TableStruct)
+                {
+
+                    if (tbstruct.TableIndex != tbstruct.JoinTableIndex) {
+
+                    }
+                }
+                break;
+            }
+            return sql.ToString();
+        }
+
+        public string GetSQL()
+        {
+            StringBuilder sql = new StringBuilder();
+            LibFormPage form = ModelManager.GetFormSource(this._progId);
+            var datasourse = ModelManager.GetDataSource(form.DSID);
+            if (datasourse != null)
+            {
+                foreach (LibDefineTable deftb in datasourse.DefTables)
+                {
+                    if (deftb.TableStruct == null) continue;
+                    foreach (LibDataTableStruct tbstruct in deftb.TableStruct)
+                    {
+                        if (!tbstruct.Ignore) continue;
+
+                    }
+                }
+            }
+            return sql.ToString();
         }
 
         public WhereObject Where(string format, params object[] values)

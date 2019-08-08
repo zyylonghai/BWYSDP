@@ -30,6 +30,8 @@ namespace SDPCRL.DAL.BUS
         }
 
         public string AccountID { get; set; }
+        /// <summary>功能编号</summary>
+        public string ProgId { get; set; }
         #endregion
 
         #region 构造函数

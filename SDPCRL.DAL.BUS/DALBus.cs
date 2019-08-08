@@ -61,13 +61,15 @@ namespace SDPCRL.DAL.BUS
             {
                 ReflectionOperate reflect = new ReflectionOperate(funcId);
                 object obj = reflect.InstanceTarget();
-                ((DALBase)obj).AccountID = accountId;
+                DALBase dalBase = ((DALBase)obj);
+                dalBase.AccountID = accountId;
+                dalBase.ProgId = funcId;
                 Type t = obj.GetType();
                 MethodInfo func = t.GetMethod(method);
 
 
                 result.Value = func.Invoke(obj, param);
-                result.Messagelist = ((DALBase)obj).GetErrorMessage();
+                result.Messagelist = dalBase.GetErrorMessage();
                 //result.Messagelist.Add("jjjj");
                
             }
@@ -92,13 +94,15 @@ namespace SDPCRL.DAL.BUS
             {
                 ReflectionOperate reflect = new ReflectionOperate(funcId);
                 object obj = reflect.InstanceTarget();
-                ((DALBase)obj).AccountID = accountId;
+                DALBase dalBase = ((DALBase)obj);
+                dalBase.AccountID = accountId;
+                dalBase.ProgId = funcId;
                 Type t = obj.GetType();
                 MethodInfo func = t.GetMethod(method);
 
                 object[] p = new object[] { param };
                 result.Value = func.Invoke(obj, p);
-                result.Messagelist = ((DALBase)obj).GetErrorMessage();
+                result.Messagelist = dalBase.GetErrorMessage();
                 //result.Messagelist.Add("jjjj");
 
             }
