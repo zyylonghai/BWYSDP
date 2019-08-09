@@ -52,13 +52,16 @@ namespace SDPCRL.DAL.COM
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(ResFactory.ResManager.SQLSelect);
-            foreach (string field in fields)
+            if (fields != null)
             {
-                if (builder.Length != ResFactory.ResManager.SQLSelect.Length)
+                foreach (string field in fields)
                 {
-                    builder.Append(SysConstManage.Comma);
+                    if (builder.Length != ResFactory.ResManager.SQLSelect.Length)
+                    {
+                        builder.Append(SysConstManage.Comma);
+                    }
+                    builder.AppendFormat(" {0}", field);
                 }
-                builder.AppendFormat(" {0}", field);
             }
             if (string.IsNullOrEmpty(this._id))
             {
@@ -114,7 +117,7 @@ namespace SDPCRL.DAL.COM
                     #endregion
                     if (tb != null)
                     {
-                        var relatetbs = list.Where(i => i.JoinTableIndex == tb.TableIndex).ToList();
+                        var relatetbs = list.Where(i => i.JoinTableIndex == tb.TableIndex && i.TableIndex !=tb.TableIndex).ToList();
                         if (relatetbs != null)
                         {
                             foreach (var jointb in relatetbs)
