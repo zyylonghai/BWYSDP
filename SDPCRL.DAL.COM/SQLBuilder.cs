@@ -22,26 +22,26 @@ namespace SDPCRL.DAL.COM
         /// <summary> </summary>
         /// <param name="id">ProgId或者DSID</param>
         /// <param name="mark">是否为DSID，默认true</param>
-        public SQLBuilder(string id,bool mark=true)
+        public SQLBuilder(string id, bool mark = true)
         {
             this._id = id;
             this._mark = mark;
         }
         #endregion 
-        public string GetSQL(string tableNm,string[] fields,string whereStr)
+        public string GetSQL(string tableNm, string[] fields, string whereStr)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(ResFactory.ResManager.SQLSelect);
             foreach (string field in fields)
             {
-                if(builder .Length !=ResFactory.ResManager .SQLSelect .Length)
+                if (builder.Length != ResFactory.ResManager.SQLSelect.Length)
                 {
                     builder.Append(SysConstManage.Comma);
                 }
                 builder.AppendFormat(" {0}", field);
             }
 
-            builder.AppendFormat(" {0}",ResFactory.ResManager.SQLFrom);
+            builder.AppendFormat(" {0}", ResFactory.ResManager.SQLFrom);
             builder.AppendFormat(" {0}", tableNm);
             builder.AppendFormat(" {0} {1}", ResFactory.ResManager.SQLWhere, whereStr);
             return builder.ToString();
@@ -100,7 +100,7 @@ namespace SDPCRL.DAL.COM
                         list.AddRange(item.TableStruct.ToArray());
                     }
                     var tb = list.FirstOrDefault(i => i.Name == tableNm && i.Ignore);
-                    char tbaliasnm = (char)(tb.TableIndex+65);
+                    char tbaliasnm = LibSysUtils.ToCharByTableIndex(tb.TableIndex);
                     #region 组织要查询表的字段
                     if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
                     {
@@ -126,7 +126,8 @@ namespace SDPCRL.DAL.COM
                                 joinstr.AppendFormat(" {0} {1} {2} {3} ",
                                                      ResFactory.ResManager.SQLLeftJoin,
                                                      jointb.Name,
-                                                     (char)(jointb.TableIndex+65),
+                                                     LibSysUtils .ToCharByTableIndex (jointb.TableIndex),
+                                                     //(char)(jointb.TableIndex+65),
                                                      ResFactory.ResManager.SQLOn);
                                 joinfield = new StringBuilder();
                                 foreach (var relatfield in jointb.JoinFields)
@@ -135,7 +136,7 @@ namespace SDPCRL.DAL.COM
                                     {
                                         joinfield.Append(ResFactory.ResManager.SQLAnd); ;
                                     }
-                                    joinfield.AppendFormat(" {0}.{1}={2}.{3} ", tbaliasnm, relatfield, (char)(jointb.TableIndex+65), relatfield);
+                                    joinfield.AppendFormat(" {0}.{1}={2}.{3} ", tbaliasnm, relatfield, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), relatfield);
                                 }
                                 joinstr.Append(joinfield.ToString());
                                 joinstr.AppendLine();
@@ -147,7 +148,7 @@ namespace SDPCRL.DAL.COM
                                     foreach (LibField f2 in jointb.Fields)
                                     {
                                         if (!f2.IsActive) continue;
-                                        allfields.AppendFormat("{0}{1}.{2}", SysConstManage.Comma, (char)(jointb.TableIndex+65), f2.Name);
+                                        allfields.AppendFormat("{0}{1}.{2}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name);
                                     }
                                 }
                                 #endregion

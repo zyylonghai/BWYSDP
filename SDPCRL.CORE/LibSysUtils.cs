@@ -106,6 +106,14 @@ namespace SDPCRL.CORE
                 return false;
         }
 
+        /// <summary>特殊函数，只针对表索引转为对应字符</summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static char ToCharByTableIndex(int val)
+        {
+            return (char)(val + 65);
+        }
+
         //public static object ConvertToEnumType(string enumNm,Type enumType)
         //{
             

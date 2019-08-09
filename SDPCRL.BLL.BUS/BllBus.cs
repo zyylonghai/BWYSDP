@@ -49,7 +49,7 @@ namespace SDPCRL.BLL.BUS
             {
                 throw new LibExceptionBase(result.ErrorMsglst[0].Message, result.ErrorMsglst[0].Stack);
             }
-           return result.Value;
+           return result;
 
             //return _dalBus.ExecuteDalMethod(AccoutId,funcId, method, param);
         }
