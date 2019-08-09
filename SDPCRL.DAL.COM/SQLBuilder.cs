@@ -147,7 +147,7 @@ namespace SDPCRL.DAL.COM
                                 {
                                     foreach (LibField f2 in jointb.Fields)
                                     {
-                                        if (!f2.IsActive) continue;
+                                        if (!f2.IsActive || jointb.JoinFields.Contains(f2.Name)) continue;
                                         allfields.AppendFormat("{0}{1}.{2}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name);
                                     }
                                 }
