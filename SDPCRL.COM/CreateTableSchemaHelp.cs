@@ -45,6 +45,7 @@ namespace SDPCRL.COM
                         foreach (LibField f in tb.Fields)
                         {
                             col = new DataColumn(f.Name);
+                            col.Caption = f.DisplayName;
                             switch (f.FieldType)
                             {
                                 case LibFieldType.Byte:
