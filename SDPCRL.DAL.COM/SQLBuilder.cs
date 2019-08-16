@@ -149,10 +149,15 @@ namespace SDPCRL.DAL.COM
             }
             return string.Format("EXEC sp_executesql N'select *from({0}) as temp where rownumber>={1} and rownumber<={2}'", builder.ToString(), (pageindex - 1) * pagesize + 1, pageindex * pagesize);
         }
-
-        public string GetSQL()
+        /// <summary>用于取整个数据源的查询语法</summary>
+        /// <param name="where">指主表的条件</param>
+        /// <returns></returns>
+        public string GetSQL(WhereObject where)
         {
             StringBuilder sql = new StringBuilder();
+            if (string.IsNullOrEmpty(this._id)) return string.Empty;
+            StringBuilder fields = null;
+
             LibFormPage form = ModelManager.GetFormSource(this._id);
             var datasourse = ModelManager.GetDataSource(form.DSID);
             if (datasourse != null)
@@ -163,7 +168,22 @@ namespace SDPCRL.DAL.COM
                     foreach (LibDataTableStruct tbstruct in deftb.TableStruct)
                     {
                         if (!tbstruct.Ignore) continue;
-
+                        fields = new StringBuilder();
+                        char tbaliasnm = LibSysUtils.ToCharByTableIndex(tbstruct.TableIndex);
+                        foreach (LibField f in tbstruct.Fields)
+                        {
+                            if (fields.Length > 0)
+                                fields.Append(SysConstManage.Comma);
+                            fields.AppendFormat("{0}.{1}", tbaliasnm, string.IsNullOrEmpty(f.AliasName) ? f.Name : f.AliasName);
+                        }
+                        if (fields.Length > 0)
+                        {
+                            if (string.IsNullOrEmpty(where.WhereFormat))
+                                sql.AppendFormat("select {0} from {1} {2}", fields.ToString(), tbstruct.Name, tbaliasnm);
+                            else
+                                sql.AppendFormat("select {0} from {1} {2} where {3}", fields.ToString(), tbstruct.Name, tbaliasnm, where.WhereFormat);
+                            sql.AppendLine();
+                        }
                     }
                 }
             }
@@ -207,11 +227,14 @@ namespace SDPCRL.DAL.COM
             #endregion
             if (tb != null)
             {
-                var relatetbs = list.Where(i => i.JoinTableIndex == tb.TableIndex && i.TableIndex != tb.TableIndex).ToList();
-                if (relatetbs != null)
+                var relatetbs = list.Where(i => i.JoinTableIndex == tb.TableIndex && i.TableIndex != tb.TableIndex && i.Ignore).ToList();
+                List<int> tbindexs = null;
+                while (relatetbs != null &&relatetbs .Count >0)
                 {
+                    tbindexs = new List<int>();
                     foreach (var jointb in relatetbs)
                     {
+                        tbindexs.Add(jointb.TableIndex);
                         #region 组织joinstr语句
                         joinstr.AppendFormat(" {0} {1} {2} {3} ",
                                              ResFactory.ResManager.SQLLeftJoin,
@@ -226,7 +249,15 @@ namespace SDPCRL.DAL.COM
                             {
                                 joinfield.Append(ResFactory.ResManager.SQLAnd); ;
                             }
-                            joinfield.AppendFormat(" {0}.{1}={2}.{3} ", tbaliasnm, relatfield, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), relatfield);
+                            LibField  libfd = jointb.Fields.FindFirst("Name", relatfield);
+                            //if (string.IsNullOrEmpty(libfd.RelatePrimarykey))
+                            joinfield.AppendFormat(" {0}.{1}={2}.{3} ", 
+                                tbaliasnm, 
+                                string.IsNullOrEmpty(libfd.RelatePrimarykey)? relatfield:libfd.RelatePrimarykey, 
+                                LibSysUtils.ToCharByTableIndex(jointb.TableIndex), 
+                                relatfield);
+                            //else 
+
                         }
                         joinstr.Append(joinfield.ToString());
                         joinstr.AppendLine();
@@ -240,7 +271,7 @@ namespace SDPCRL.DAL.COM
                                 if (!f2.IsActive || jointb.JoinFields.Contains(f2.Name)) continue;
                                 if (allfields.ToString().Contains(string.Format(".{0}", f2.Name)))
                                 {
-                                    allfields.AppendFormat("{0}{1}.{2} as {3}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, string.Format("{0}_{1}", LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name));
+                                    allfields.AppendFormat("{0}{1}.{2} as {3}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, string.Format("{0}{2}{1}", LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name,SysConstManage.Underline));
                                 }
                                 else
                                 {
@@ -255,6 +286,7 @@ namespace SDPCRL.DAL.COM
                         }
                         #endregion
                     }
+                    relatetbs = list.Where(i => tbindexs.Contains(i.JoinTableIndex) && i.TableIndex != i.JoinTableIndex &&i.Ignore).ToList ();
                 }
                 if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
                 {
@@ -271,7 +303,7 @@ namespace SDPCRL.DAL.COM
                         }
                         orderstr.AppendFormat("{0}.{1}", LibSysUtils.ToCharByTableIndex(tb.TableIndex), key);
                     }
-                    builder.AppendFormat(",ROW_NUMBER()OVER(order by {0}) as rownumber",orderstr.ToString ());
+                    builder.AppendFormat(",ROW_NUMBER()OVER(order by {0}) as rownumber ,COUNT(1)OVER() as {1} ", orderstr.ToString (),SysConstManage .sdp_total_row);
                 }
                 builder.AppendFormat(" {0}", ResFactory.ResManager.SQLFrom);
                 builder.AppendFormat(" {0} {1}", tableNm, tbaliasnm);

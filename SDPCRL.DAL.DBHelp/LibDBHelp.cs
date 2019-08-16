@@ -230,6 +230,11 @@ namespace SDPCRL.DAL.DBHelp
         {
             this.CurrentDBOpreate.RollbackTransation();
         }
+
+        public void GetDataTables(string commandText,ref DataTable[] dts)
+        {
+            this.CurrentDBOpreate.GetDataTables(commandText,ref dts);
+        }
     }
     class DBOperate
     {
@@ -469,6 +474,20 @@ namespace SDPCRL.DAL.DBHelp
             dbAdapter.Fill(dt);
             CloseConnect();
             return dt;
+        }
+
+        public void GetDataTables(string commandText,ref DataTable[] dts)
+        {
+            //DataTable[] dts = new DataTable[cout];
+            //for (int i = 0; i < cout; i++)
+            //{
+            //    dts[i] = new DataTable();
+            //}
+            dbCommand.CommandText = commandText;
+            dbAdapter.SelectCommand = dbCommand;
+            dbAdapter.Fill(0, 0, dts);
+            CloseConnect();
+            //return dts;
         }
 
         //public object DoExecuteProcedure(string procedure)

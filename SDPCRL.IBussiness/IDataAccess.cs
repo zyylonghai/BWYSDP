@@ -6,14 +6,15 @@ using System.Data;
 
 namespace SDPCRL.IBussiness
 {
-   public interface IDataAccess
+    public interface IDataAccess
     {
         void BeginTrans();
         void CommitTrans();
         void RollbackTrans();
         object ExecuteScalar(string commandText);
-       int ExecuteNonQuery(string commandText); 
-       DataRow GetDataRow(string commandText);
-       DataTable GetDataTable(string commandText);
+        int ExecuteNonQuery(string commandText);
+        DataRow GetDataRow(string commandText);
+        DataTable GetDataTable(string commandText);
+        void GetDatatTables(string commandText, ref DataTable[] dts);
     }
 }

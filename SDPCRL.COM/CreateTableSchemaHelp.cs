@@ -50,25 +50,39 @@ namespace SDPCRL.COM
                             {
                                 case LibFieldType.Byte:
                                     col.DataType = typeof(byte);
+                                    if (!f.AutoIncrement)
+                                        col.DefaultValue = 0;
                                     break;
                                 case LibFieldType.Date:
                                     col.DataType = typeof(Date);
+                                    //if (!f.AutoIncrement)
+                                    //    col.DefaultValue = new Date { value = DateTime.Now.ToString() };
                                     break;
                                 case LibFieldType.DateTime:
                                     col.DataType = typeof(DateTime);
+                                    if (!f.AutoIncrement)
+                                        col.DefaultValue = DateTime.Now;
                                     break;
                                 case LibFieldType.Decimal:
                                     col.DataType = typeof(decimal);
+                                    if (!f.AutoIncrement)
+                                        col.DefaultValue = 0;
                                     break;
                                 case LibFieldType.Interger:
                                     col.DataType = typeof(Int32);
+                                    if (!f.AutoIncrement)
+                                        col.DefaultValue = 0;
                                     break;
                                 case LibFieldType.Long:
                                     col.DataType = typeof(long);
+                                    if (!f.AutoIncrement)
+                                        col.DefaultValue = 0;
                                     break;
                                 case LibFieldType.String:
                                 case LibFieldType.Text:
                                     col.DataType = typeof(string);
+                                    if (!f.AutoIncrement)
+                                        col.DefaultValue = string.Empty;
                                     break;
                             }
                             if (tb.PrimaryKey.Contains(f.Name))//属于主键
@@ -81,7 +95,13 @@ namespace SDPCRL.COM
                                 col.AutoIncrementSeed = f.AutoIncrementSeed;
                                 col.AutoIncrementStep = f.AutoIncrementStep;
                             }
-                            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive=f.IsActive , IsRelate = true,MapPrimarykey =f.RelatePrimarykey,DataTypeLen=f.FieldLength,Decimalpoint =f.Decimalpoint});
+                            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive=f.IsActive ,
+                                IsRelate = true,
+                                MapPrimarykey =f.RelatePrimarykey,
+                                DataTypeLen =f.FieldLength,
+                                Decimalpoint =f.Decimalpoint,
+                                AliasName=f.AliasName
+                                });
                             dt.Columns.Add(col);
                         }
 
@@ -117,6 +137,7 @@ namespace SDPCRL.COM
             return dts.ToArray();
         }
     }
+
     [Serializable]
     public class Date
     {
@@ -134,7 +155,8 @@ namespace SDPCRL.COM
 
         public override string ToString()
         {
-            return value;
+            return LibSysUtils .IsNULLOrEmpty(value )?string.Empty : Convert.ToDateTime(value).ToString("yyyy-MM-dd");
+            //return value.ToString ();
         }
     }
 
@@ -181,9 +203,11 @@ namespace SDPCRL.COM
 
         public int Decimalpoint { get; set; }
 
+        public string AliasName { get; set; }
+
         public override string ToString()
         {
-            string s= string.Format("\"IsActive\":\"{0}\",\"IsRelate\":\"{1}\",\"MapPrimarykey\":\"{2}\",\"DataTypeLen\":\"{3}\",\"Decimalpoint\":\"{4}\"", IsActive, IsRelate, MapPrimarykey, DataTypeLen, Decimalpoint);
+            string s= string.Format("\"IsActive\":\"{0}\",\"IsRelate\":\"{1}\",\"MapPrimarykey\":\"{2}\",\"DataTypeLen\":\"{3}\",\"Decimalpoint\":\"{4}\",\"AliasName\":\"{5}\"", IsActive, IsRelate, MapPrimarykey, DataTypeLen, Decimalpoint,AliasName);
             return "{" + s + "}";
         }
     }

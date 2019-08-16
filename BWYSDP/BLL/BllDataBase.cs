@@ -42,7 +42,7 @@ namespace BWYSDP.BLL
         /// <returns></returns>
         public bool IsExistTable(string tableNm)
         {
-            return (bool)this.ExecuteDalMethod("TestFunc", "IsExistsTable", tableNm);   
+            return (bool)this.ExecuteDalMethod("TestFunc", "IsExistsTable",null , tableNm);   
         }
 
         /// <summary>获取表所有列信息</summary>
@@ -50,11 +50,11 @@ namespace BWYSDP.BLL
         /// <returns></returns>
         public DataTable GetTableSchema(string tableNm)
         {
-            return (DataTable)this.ExecuteDalMethod("TestFunc", "GetTableSchema", tableNm);
+            return (DataTable)this.ExecuteDalMethod("TestFunc", "GetTableSchema",null , tableNm);
         }
         public bool BuilderTableStruct(string sqlstr)
         {
-            return (bool)this.ExecuteDalMethod("TestFunc", "BuilderTableStruct", sqlstr);
+            return (bool)this.ExecuteDalMethod("TestFunc", "BuilderTableStruct",null , sqlstr);
         }
     }
 }

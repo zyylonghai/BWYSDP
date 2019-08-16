@@ -54,7 +54,7 @@ namespace SDPCRL.DAL.BUS
         }
 
 
-        DalResult IDALBus.ExecuteDalMethod2(string accountId, string funcId, string method, params object[] param)
+        DalResult IDALBus.ExecuteDalMethod2(string accountId, string funcId, string method, LibTable[] libTables, params object[] param)
         {
             DalResult result = new DalResult();
             try
@@ -64,6 +64,7 @@ namespace SDPCRL.DAL.BUS
                 DALBase dalBase = ((DALBase)obj);
                 dalBase.AccountID = accountId;
                 dalBase.ProgId = funcId;
+                dalBase.LibTables = libTables;
                 Type t = obj.GetType();
                 MethodInfo func = t.GetMethod(method);
 

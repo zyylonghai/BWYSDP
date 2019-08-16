@@ -69,6 +69,11 @@ namespace SDPCRL.DAL.BUS
         }
 
 
+        public void GetDatatTables(string commandText, ref DataTable[] dts)
+        {
+             _dbHelp.GetDataTables(commandText,ref dts);
+        }
+
         public int ExecuteNonQuery(string commandText)
         {
             return _dbHelp.ExecuteNonQuery(commandText);

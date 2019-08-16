@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,6 +46,7 @@
     <Compile Include="Constant\DataContext.cs" />
     <Compile Include="CreateTableSchemaHelp.cs" />
     <Compile Include="DalResult.cs" />
+    <Compile Include="DataTableHelp.cs" />
     <Compile Include="DBModelOperation.cs" />
     <Compile Include="DMLOperation.cs" />
     <Compile Include="ErrorMessage.cs" />

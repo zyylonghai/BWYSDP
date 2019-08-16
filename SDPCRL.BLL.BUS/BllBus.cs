@@ -42,9 +42,9 @@ namespace SDPCRL.BLL.BUS
         #region 受保护函数
 
 
-        protected virtual object ExecuteDalMethod(string funcId, string method,params object[] param)
+        protected virtual object ExecuteDalMethod(string funcId, string method, LibTable[] libTables, params object[] param)
         {
-           SDPCRL .COM.DalResult result= _dalBus.ExecuteDalMethod2(AccoutId, funcId, method, param);
+           SDPCRL .COM.DalResult result= _dalBus.ExecuteDalMethod2(AccoutId, funcId, method,libTables , param);
             if (result.ErrorMsglst != null && result.ErrorMsglst.Count > 0)
             {
                 throw new LibExceptionBase(result.ErrorMsglst[0].Message, result.ErrorMsglst[0].Stack);

@@ -32,6 +32,10 @@ namespace SDPCRL.DAL.BUS
         public string AccountID { get; set; }
         /// <summary>功能编号</summary>
         public string ProgId { get; set; }
+        /// <summary>
+        /// 数据集
+        /// </summary>
+        public LibTable[] LibTables { get; set; }
         #endregion
 
         #region 构造函数
@@ -50,6 +54,11 @@ namespace SDPCRL.DAL.BUS
         protected virtual void AfterUpdate()
         {
 
+        }
+
+        protected T JsonToObj<T>(string objstr)
+        {
+           return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(objstr);
         }
         #endregion
 

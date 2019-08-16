@@ -34,6 +34,12 @@ namespace SDPCRL.DAL.IDBHelp
         /// <param name="sql"></param>
         /// <returns></returns>
         DataTable GetDataTable(string commandText);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commandText"></param>
+        /// <returns></returns>
+        void GetDataTables(string commandText,ref DataTable[] dts);
         //object ExecuteProcedure(string procedureNm,
         bool TestConnect(string connectStr, out string ex);
         bool SaveAccout(SDPCRL.DAL.COM.DBInfo dbinfo);
