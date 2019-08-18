@@ -12,6 +12,8 @@ namespace SDPCRL.COM
     public class CreateTableSchemaHelp
     {
         private string _root;
+        public CreateTableSchemaHelp() {
+        }
         public CreateTableSchemaHelp(string modelpath)
         {
             _root = modelpath;
@@ -19,14 +21,134 @@ namespace SDPCRL.COM
 
         public LibTable[] CreateTableSchema(string dsid,string package)
         {
+            //List<LibTable> dts = new List<LibTable>();
+            //LibTable dftb = null;
+            //DataTable dt = null;
+            //DataColumn col = null;
+            //List<DataColumn> primarykey= null;
+            //int index = 0;
+            FileOperation fileoperation = new FileOperation();
+            LibDataSource data = ModelManager.ModelManager.GetModelBypath<LibDataSource>(_root, dsid, package);
+            return CreateTableSchema(data);
+            #region 旧代码
+            //if (data != null)
+            //{
+            //    if (data.DefTables == null) return null;
+            //    foreach (LibDefineTable deftb in data.DefTables)
+            //    {
+            //        if (deftb.TableStruct == null) continue;
+            //        dftb = new LibTable(deftb.TableName);
+            //        dftb.Tables = new DataTable[deftb.TableStruct.Count];
+            //        index = 0;
+            //        foreach (LibDataTableStruct tb in deftb.TableStruct)
+            //        {
+            //            if (tb.Fields == null) continue;
+            //            dt = new DataTable(tb.Name);
+            //            dftb.Tables[index] = dt;
+            //            primarykey = new List<DataColumn>();
+            //            foreach (LibField f in tb.Fields)
+            //            {
+            //                col = new DataColumn(f.Name);
+            //                col.Caption = f.DisplayName;
+            //                switch (f.FieldType)
+            //                {
+            //                    case LibFieldType.Byte:
+            //                        col.DataType = typeof(byte);
+            //                        if (!f.AutoIncrement)
+            //                            col.DefaultValue = 0;
+            //                        break;
+            //                    case LibFieldType.Date:
+            //                        col.DataType = typeof(Date);
+            //                        //if (!f.AutoIncrement)
+            //                        //    col.DefaultValue = new Date { value = DateTime.Now.ToString() };
+            //                        break;
+            //                    case LibFieldType.DateTime:
+            //                        col.DataType = typeof(DateTime);
+            //                        if (!f.AutoIncrement)
+            //                            col.DefaultValue = DateTime.Now;
+            //                        break;
+            //                    case LibFieldType.Decimal:
+            //                        col.DataType = typeof(decimal);
+            //                        if (!f.AutoIncrement)
+            //                            col.DefaultValue = 0;
+            //                        break;
+            //                    case LibFieldType.Interger:
+            //                        col.DataType = typeof(Int32);
+            //                        if (!f.AutoIncrement)
+            //                            col.DefaultValue = 0;
+            //                        break;
+            //                    case LibFieldType.Long:
+            //                        col.DataType = typeof(long);
+            //                        if (!f.AutoIncrement)
+            //                            col.DefaultValue = 0;
+            //                        break;
+            //                    case LibFieldType.String:
+            //                    case LibFieldType.Text:
+            //                        col.DataType = typeof(string);
+            //                        if (!f.AutoIncrement)
+            //                            col.DefaultValue = string.Empty;
+            //                        break;
+            //                }
+            //                if (tb.PrimaryKey.Contains(f.Name))//属于主键
+            //                {
+            //                    primarykey.Add(col);
+            //                }
+            //                if (f.AutoIncrement)
+            //                {
+            //                    col.AutoIncrement = true;
+            //                    col.AutoIncrementSeed = f.AutoIncrementSeed;
+            //                    col.AutoIncrementStep = f.AutoIncrementStep;
+            //                }
+            //                col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive=f.IsActive ,
+            //                    IsRelate = true,
+            //                    MapPrimarykey =f.RelatePrimarykey,
+            //                    DataTypeLen =f.FieldLength,
+            //                    Decimalpoint =f.Decimalpoint,
+            //                    AliasName=f.AliasName
+            //                    });
+            //                dt.Columns.Add(col);
+            //            }
+
+            //            #region 系统默认新增的一列行号 用于系统对行项 唯一标识，自增长。
+            //            col = new DataColumn(SysConstManage.sdp_rowid);
+            //            col.DataType = typeof(int);
+            //            col.AutoIncrement = true;
+            //            col.AutoIncrementSeed = 1;
+            //            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive =false, IsRelate = false});
+            //            dt.Columns.Add(col);
+            //            #endregion
+
+            //            #region 系统默认新增的一列 是否选中。
+            //            col = new DataColumn(SysConstManage.IsSelect);
+            //            col.DataType = typeof(bool);
+            //            col.DefaultValue = false;
+            //            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive = false, IsRelate = false });
+            //            dt.Columns.Add(col);
+            //            #endregion
+
+            //            dt.PrimaryKey = primarykey.ToArray();
+            //            dt.ExtendedProperties.Add(SysConstManage.ExtProp, new TableExtendedProperties
+            //            {
+            //                TableIndex = tb.TableIndex,
+            //                RelateTableIndex = tb.JoinTableIndex,
+            //                Ignore = tb.Ignore
+            //            }) ;
+            //            index++;
+            //        }
+            //        dts.Add(dftb);
+            //    }
+            //}
+            //return dts.ToArray();
+            #endregion
+        }
+        public  LibTable[] CreateTableSchema(LibDataSource data)
+        {
             List<LibTable> dts = new List<LibTable>();
             LibTable dftb = null;
             DataTable dt = null;
             DataColumn col = null;
-            List<DataColumn> primarykey= null;
+            List<DataColumn> primarykey = null;
             int index = 0;
-            FileOperation fileoperation = new FileOperation();
-            LibDataSource data = ModelManager.ModelManager.GetModelBypath<LibDataSource>(_root, dsid, package);
             if (data != null)
             {
                 if (data.DefTables == null) return null;
@@ -95,13 +217,15 @@ namespace SDPCRL.COM
                                 col.AutoIncrementSeed = f.AutoIncrementSeed;
                                 col.AutoIncrementStep = f.AutoIncrementStep;
                             }
-                            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive=f.IsActive ,
+                            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties
+                            {
+                                IsActive = f.IsActive,
                                 IsRelate = true,
-                                MapPrimarykey =f.RelatePrimarykey,
-                                DataTypeLen =f.FieldLength,
-                                Decimalpoint =f.Decimalpoint,
-                                AliasName=f.AliasName
-                                });
+                                MapPrimarykey = f.RelatePrimarykey,
+                                DataTypeLen = f.FieldLength,
+                                Decimalpoint = f.Decimalpoint,
+                                AliasName = f.AliasName
+                            });
                             dt.Columns.Add(col);
                         }
 
@@ -110,7 +234,7 @@ namespace SDPCRL.COM
                         col.DataType = typeof(int);
                         col.AutoIncrement = true;
                         col.AutoIncrementSeed = 1;
-                        col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive =false, IsRelate = false});
+                        col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive = false, IsRelate = false });
                         dt.Columns.Add(col);
                         #endregion
 
@@ -128,7 +252,7 @@ namespace SDPCRL.COM
                             TableIndex = tb.TableIndex,
                             RelateTableIndex = tb.JoinTableIndex,
                             Ignore = tb.Ignore
-                        }) ;
+                        });
                         index++;
                     }
                     dts.Add(dftb);

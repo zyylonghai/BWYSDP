@@ -37,7 +37,13 @@ namespace SDPCRL.COM
         Between = 5,
         /// <summary>不等于</summary>
         [LibReSource("不等于")]
-        NoEqual = 6
+        NoEqual = 6,
+        /// <summary>大于等于</summary>
+        [LibReSource("大于等于")]
+        MoreAndEqual =7,
+        /// <summary>小于等于</summary>
+        [LibReSource("小于等于")]
+        LessAndEqual =8
 
     }
 

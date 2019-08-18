@@ -6,11 +6,11 @@ using System.Reflection;
 
 namespace SDPCRL.CORE
 {
-    public sealed  class LibSysUtils
+    public sealed class LibSysUtils
     {
         public static Int32 ToInt32(object obj)
         {
-            Int32 result =0;
+            Int32 result = 0;
 
             if (Int32.TryParse(obj.ToString(), out result))
             {
@@ -28,7 +28,7 @@ namespace SDPCRL.CORE
                 }
             }
             return result;
-            
+
 
         }
 
@@ -84,15 +84,15 @@ namespace SDPCRL.CORE
         {
             foreach (T item in Enum.GetValues(typeof(T)))
             {
-                if (string.Compare(item.ToString(), enumNm)==0)
+                if (string.Compare(item.ToString(), enumNm) == 0)
                 {
-                    return  item;
+                    return item;
                 }
             }
             return default(T);
         }
 
-        public static  bool isNumberic(string val, out int result)
+        public static bool isNumberic(string val, out int result)
         {
             System.Text.RegularExpressions.Regex rex =
             new System.Text.RegularExpressions.Regex(@"^\d+$");
@@ -114,17 +114,51 @@ namespace SDPCRL.CORE
             return (char)(val + 65);
         }
 
+        public static bool Compare(object a, object b, bool ignore = false)
+        {
+            if (a.GetType() != b.GetType()) { throw new LibExceptionBase("请确保比较的双反类型一致"); }
+            if (a.GetType().Equals(typeof(int)))
+            {
+                return (int)a == (int)b;
+            }
+            else if (a.GetType().Equals(typeof(decimal)))
+            {
+                return (decimal)a == (decimal)b;
+            }
+            else if (a.GetType().Equals(typeof(long)))
+            {
+                return (long)a == (long)b;
+            }
+            else if (a.GetType().Equals(typeof(float)))
+            {
+                return (float)a == (float)b;
+            }
+            else if (a.GetType().Equals(typeof(double)))
+            {
+                return (double)a == (double)b;
+            }
+            else if (a.GetType().Equals(typeof(byte)))
+            {
+                return (byte)a == (byte)b;
+            }
+            else
+            {
+
+                return string.Compare(a.ToString(), b.ToString(), ignore) == 0;
+            }
+        }
+
         //public static object ConvertToEnumType(string enumNm,Type enumType)
         //{
-            
+
         //}
 
         private enum BooleanValue
         {
             [LibReSource("是")]
-            True=1,
+            True = 1,
             [LibReSource("否")]
-            False=0
+            False = 0
         }
     }
 
@@ -132,9 +166,9 @@ namespace SDPCRL.CORE
     {
         public static string GetResource(object enumObj)
         {
-            Type t=enumObj .GetType ();
+            Type t = enumObj.GetType();
             FieldInfo field = t.GetField(t.GetEnumName(enumObj));
-            object[] attrArray=field.GetCustomAttributes(typeof(LibReSourceAttribute), true);
+            object[] attrArray = field.GetCustomAttributes(typeof(LibReSourceAttribute), true);
             LibReSourceAttribute resource = attrArray[0] as LibReSourceAttribute;
             return resource.Resource;
         }
