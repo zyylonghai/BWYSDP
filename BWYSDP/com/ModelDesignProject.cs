@@ -12,6 +12,7 @@ using SDPCRL.CORE.FileUtils;
 using System.Data;
 using SDPCRL.COM.ModelManager.FormTemplate;
 using BWYSDP.Controls;
+using static System.Windows.Forms.Control;
 
 namespace BWYSDP.com
 {
@@ -510,6 +511,14 @@ namespace BWYSDP.com
             if (DoModelEdit != null)
             {
                 DoModelEdit(!initialvale);
+            }
+        }
+
+        public static void SetControlVisible(Control ctl, ControlCollection controlCollection)
+        {
+            foreach (Control item in controlCollection)
+            {
+                item.Visible = item == ctl ? true : false;
             }
         }
 

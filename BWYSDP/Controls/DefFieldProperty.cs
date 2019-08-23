@@ -117,29 +117,48 @@ namespace BWYSDP.Controls
             if (string.Compare(ctrNm, "fd_SourceField") == 0)//来源字段集
             {
                 p.Name = "fromsourceProperty";
-                FromSourceProperty property = new FromSourceProperty();
-                property.Dock = DockStyle.Fill;
-                p.Controls.Add(property);
 
-                DialogForm dialogForm = new DialogForm(p);
+                FromSourceControl fromSourceControl = null;
 
                 if (this.entity.SourceField == null)
                 {
-                    this.entity.SourceField = new LibFromSourceField();
-                    this.entity.SourceField.ID = Guid.NewGuid().ToString();
-                    //this.entity.SourceField.FromDataSource = "Materials";
-
+                    this.entity.SourceField = new LibCollection<LibFromSourceField>();
+                    fromSourceControl = new FromSourceControl();
                 }
-                property.SetPropertyValue(this.entity.SourceField, null);
+                else
+                    fromSourceControl = new FromSourceControl(this.entity.SourceField.ToArray());
+                fromSourceControl.Dock = DockStyle.Fill;
+                p.Controls.Add(fromSourceControl);
+
+
+                DialogForm dialogForm = new DialogForm(p);
 
                 DialogResult dialog = dialogForm.ShowDialog(this);
                 if (dialog == DialogResult.OK)
                 {
-                    property.GetControlsValue();
-
+                    SplitContainer ctr = fromSourceControl.Controls["splitContainer1"] as SplitContainer;
+                    foreach (Control c in ctr.Panel2.Controls)
+                    {
+                        FromSourceProperty prop = c as FromSourceProperty;
+                        prop.GetControlsValue();
+                        
+                    }
+                    ListBox box = ctr.Panel1.Controls["listBox1"] as ListBox;
+                    foreach (LibFromSourceField sfield in box.Items)
+                    {
+                        if (this.entity.SourceField.FindFirst("ID", sfield.ID) == null)
+                            this.entity.SourceField.Add(sfield);
+                    }
                 }
                 #region 控件赋值
-                this.Controls[ctrNm].Text = this.entity.SourceField.ToString();
+                this.Controls[ctrNm].Text = string.Empty;
+                foreach (LibFromSourceField item in this.entity.SourceField)
+                {
+                    if (!string.IsNullOrEmpty(this.Controls[ctrNm].Text))
+                        this.Controls[ctrNm].Text += SysConstManage.Comma;
+                    this.Controls[ctrNm].Text += item.ToString();
+                }
+                //this.Controls[ctrNm].Text = this.entity.SourceField.ToString();
                 #endregion
             }
             else if (string.Compare(ctrNm, "fd_Items") == 0)//键值对集

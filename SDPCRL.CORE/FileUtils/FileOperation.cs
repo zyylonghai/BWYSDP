@@ -104,6 +104,34 @@ namespace SDPCRL.CORE.FileUtils
                 return string.Empty;
             }
         }
+
+        /// <summary>
+        /// 获取子目录下的所有文件
+        /// </summary>
+        /// <returns></returns>
+        public string[] SearchFileNm()
+        {
+            string filepath = string.Empty;
+            List<string> result = new List<string>();
+            DirectoryInfo directory = null;
+            FileInfo[] files = null;
+            if (IsDirectory)
+            {
+                string[] dirpath = Directory.GetDirectories(_filePath);
+                foreach (string path in dirpath)
+                {
+                    directory = new DirectoryInfo(path);
+                    files= directory.GetFiles();
+                    foreach (FileInfo info in files)
+                    {
+                        result.Add(info.Name.Replace(info.Extension, ""));
+                    }
+                    //result.AddRange(Directory.GetFiles(path));
+                }
+                return result.ToArray();
+            }
+            return null;
+        }
         public void CreateFile(bool cover)
         {
             FileStream stream=null;

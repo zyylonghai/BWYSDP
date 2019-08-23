@@ -103,7 +103,7 @@ namespace SDPCRL.COM.ModelManager
         }
         /// <summary>来源字段</summary>
         [LibAttribute("fd_SourceField", LibControlType.TextAndBotton, "来源字段")]
-        public LibFromSourceField SourceField { get; set; }
+        public LibCollection<LibFromSourceField> SourceField { get; set; }
 
         /// <summary>键值对集</summary>
         [LibAttribute("fd_Items", LibControlType.TextAndBotton, "键值对集")]
@@ -157,37 +157,65 @@ namespace SDPCRL.COM.ModelManager
             set;
         }
         /// <summary>来源数据源</summary>
-        [LibAttribute("fsfield_FromDataSource", LibControlType.TextBox, "来源数据源")]
+        [LibAttribute("fsfield_FromDataSource", LibControlType.TextAndBotton, "来源数据源")]
         public string FromDataSource { get; set; }
 
         /// <summary>
         /// 来源自定义表名
         /// </summary>
-        [LibAttribute("fsfield_FromDefindTableNm", LibControlType.TextBox, "源自定义表")]
+        [LibAttribute("fsfield_FromDefindTableNm", LibControlType.TextAndBotton, "源自定义表")]
         public string FromDefindTableNm { get; set; }
         /// <summary>
         /// 来源数据表名.
         /// </summary>
-        [LibAttribute("fsfield_FromStructTableNm", LibControlType.TextBox, "来源数据表")]
+        [LibAttribute("fsfield_FromStructTableNm", LibControlType.TextAndBotton, "来源数据表")]
         public string FromStructTableNm { get; set; }
 
         /// <summary>
         /// 来源字段
         /// </summary>
-        [LibAttribute("fsfield_FromFieldNm", LibControlType.TextBox, "来源字段")]
+        [LibAttribute("fsfield_FromFieldNm", LibControlType.TextAndBotton, "来源字段")]
         public string FromFieldNm { get; set; }
+
+        [LibAttribute("fsfield_FromTableIndex", LibControlType.TextBox, "来源表索引",true ,true)]
+        public int FromTableIndex { get; set; }
+
+        [LibAttribute("fsfield_RelateCondition", LibControlType.TextBox, "关联条件")]
+        public string RelateCondition { get; set; }
 
         /// <summary>
         /// 关联字段集合
         /// </summary>
         [LibAttribute("fsfield_RelateFieldNm", LibControlType.TextAndBotton , "关联字段集")]
-        public List<string> RelateFieldNm { get; set; }
+        public List<LibRelateField> RelateFieldNm { get; set; }
 
         public override string ToString()
         {
             if (FromDataSource == null)
-                return string.Empty;
+                return ID;
             return string.Format("{0}.{1}.{2}.{3}", FromDataSource, FromDefindTableNm, FromStructTableNm, FromFieldNm);
+        }
+    }
+    /// <summary>关联字段的属性</summary>
+    public class LibRelateField
+    {
+        [LibAttribute("relate_txtID", LibControlType.TextBox, "编号", true, true)]
+        public string ID
+        {
+            get;
+            set;
+        }
+        [LibAttribute("relate_FieldNm", LibControlType.TextBox, "字段名")]
+        public string FieldNm { get; set; }
+
+        [LibAttribute("relate_AliasName", LibControlType.TextBox, "别名")]
+        public string AliasName { get; set; }
+
+        public override string ToString()
+        {
+            if (!string.IsNullOrEmpty(AliasName))
+                return AliasName;
+            return FieldNm;
         }
     }
 

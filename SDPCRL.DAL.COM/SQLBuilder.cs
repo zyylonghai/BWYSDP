@@ -288,6 +288,39 @@ namespace SDPCRL.DAL.COM
                     }
                     relatetbs = list.Where(i => tbindexs.Contains(i.JoinTableIndex) && i.TableIndex != i.JoinTableIndex &&i.Ignore).ToList ();
                 }
+
+                #region 字段上的来源表。
+                var relatefields = tb.Fields.ToArray().Where(i => i.SourceField != null);
+                foreach (LibField f in relatefields)
+                {
+                    foreach (LibFromSourceField fromfield in f.SourceField)
+                    {
+                        #region 组织joinstr语句
+                        joinstr.AppendFormat(" {0} {1} {2} {3} ",
+                                             ResFactory.ResManager.SQLLeftJoin,
+                                             fromfield .FromStructTableNm,
+                                             string.Format("{0}{1}",tbaliasnm, LibSysUtils.ToCharByTableIndex(fromfield.FromTableIndex)),
+                                             //(char)(jointb.TableIndex+65),
+                                             ResFactory.ResManager.SQLOn);
+                        joinfield = new StringBuilder();
+                        //foreach (string relatef in fromfield.RelateFieldNm)
+                        //{
+                        //    if (joinfield.Length > 0)
+                        //    {
+                        //        joinfield.Append(ResFactory.ResManager.SQLAnd); 
+                        //    }
+                        //    joinfield.AppendFormat(" {0}.{1}={2}.{3} ",
+                        //        tbaliasnm,
+                        //        f.Name,
+                        //        string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(fromfield.FromTableIndex)),
+                        //        relatef);
+                        //}
+                        joinstr.Append(joinfield.ToString());
+                        joinstr.AppendLine();
+                        #endregion
+                    }
+                }
+                #endregion
                 if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
                 {
                     builder.Append(allfields.ToString());
@@ -369,7 +402,7 @@ namespace SDPCRL.DAL.COM
                                 val.AppendFormat("{0}='{1}'", _params[n], o);
                                 break;
                             case "Int32":
-                                partype.AppendFormat("{0} int)", _params[n]);
+                                partype.AppendFormat("{0} int ", _params[n]);
                                 val.AppendFormat("{0}={1}", _params[n], o);
                                 break;
                             case "DateTime":

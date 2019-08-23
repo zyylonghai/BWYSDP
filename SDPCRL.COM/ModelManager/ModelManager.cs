@@ -78,7 +78,35 @@ namespace SDPCRL.COM.ModelManager
 
         }
 
+        public static T GetModelBymodelId<T>(string rootpath, string modelId)
+        {
+            FileOperation fileOperation = new FileOperation();
+            fileOperation.Encoding = LibEncoding.UTF8;
+            if (typeof(T).Equals(typeof(LibDataSource)))
+            {
+                fileOperation.FilePath = string.Format(@"{0}\{1}", rootpath, SysConstManage.DataSourceNm);
+            }
+            else if (typeof(T).Equals(typeof(LibFormPage)))
+            {
+                fileOperation.FilePath = string.Format(@"{0}\{1}", rootpath, SysConstManage.FormSourceNm);
+            }
+            else
+            {
+                fileOperation.FilePath = string.Format(@"{0}\{1}", rootpath, SysConstManage.PermissionSourceNm);
+            }
+            string dsxml = fileOperation.SearchAndRead(string.Format("{0}.xml", modelId));
+            if (string.IsNullOrEmpty(dsxml))
+            {
+                return default(T);
+            }
+            return SerializerUtils.XMLDeSerialize<T>(dsxml);
 
+        }
+
+        public static string[] GetAllDataSourceNm(string path)
+        {
+            return InternalSearchAllModel(path, SysConstManage.DataSourceNm);
+        }
         #endregion
 
         #region 私有函数
@@ -222,6 +250,19 @@ namespace SDPCRL.COM.ModelManager
                     return null;
             }
 
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path">模型所在的根目录,如果为空 则以SysConstManage.ModelPath为值</param>
+        /// <param name="modeltype">数据源模型或排班模型或权限模型</param>
+        /// <returns></returns>
+        private static string[] InternalSearchAllModel(string path,string modeltype)
+        {
+            FileOperation fileOperation = new FileOperation();
+            fileOperation.FilePath = string.Format(@"{0}\{1}", string.IsNullOrEmpty(path) ? SysConstManage.ModelPath : path, modeltype);
+            fileOperation.Encoding = LibEncoding.UTF8;
+            return fileOperation.SearchFileNm();
         }
         #endregion
     }

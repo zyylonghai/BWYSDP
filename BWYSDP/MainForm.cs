@@ -290,6 +290,31 @@ namespace BWYSDP
             }
 
         }
+
+        private void 多语言配置ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SDPCRL.COM.ModelManager.LibDataSource ds = null;
+            TabPage page = this.libTabControl1.SelectedTab;
+            if (page != null)
+            {
+                string[] nameAndtype = page.Name.Split(SysConstManage.Underline);
+                NodeType ntype = LibSysUtils.ConvertToEnumType<NodeType>(nameAndtype[1]);
+                switch (ntype)
+                {
+                    case NodeType.DataModel:
+                        ds = ModelDesignProject.GetDataSourceById(nameAndtype[0]);
+                        break;
+                    case NodeType.FormModel:
+                        var fm = ModelDesignProject.GetFormSourceByFormId(nameAndtype[0]);
+                        if (fm != null && !string.IsNullOrEmpty(fm.DSID))
+                        {
+                            ds = ModelDesignProject.GetDataSourceById(fm.DSID);
+                        }
+                        break;
+                }
+            }
+            WakeUpForm<LanguageConfig>("language",ds);
+        }
         //private LibTreeNode CreateNode(LibTreeNode nodeInfo, NodeType nodetype)
         //{
         //    LibTreeNode node = new LibTreeNode();

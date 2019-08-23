@@ -65,6 +65,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.多语言配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -138,7 +139,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.panel2);
             this.splitContainer1.Panel2MinSize = 500;
-            this.splitContainer1.Size = new System.Drawing.Size(960, 530);
+            this.splitContainer1.Size = new System.Drawing.Size(960, 508);
             this.splitContainer1.SplitterDistance = 285;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -150,7 +151,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(285, 530);
+            this.panel1.Size = new System.Drawing.Size(285, 508);
             this.panel1.TabIndex = 0;
             // 
             // panel4
@@ -159,7 +160,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(285, 313);
+            this.panel4.Size = new System.Drawing.Size(285, 291);
             this.panel4.TabIndex = 1;
             // 
             // treeView1
@@ -167,7 +168,7 @@
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(285, 313);
+            this.treeView1.Size = new System.Drawing.Size(285, 291);
             this.treeView1.TabIndex = 0;
             this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeExpand);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -187,7 +188,7 @@
             this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.FuncNm);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 313);
+            this.panel3.Location = new System.Drawing.Point(0, 291);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(285, 217);
             this.panel3.TabIndex = 0;
@@ -285,7 +286,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(671, 530);
+            this.panel2.Size = new System.Drawing.Size(671, 508);
             this.panel2.TabIndex = 0;
             // 
             // panel5
@@ -294,7 +295,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(671, 530);
+            this.panel5.Size = new System.Drawing.Size(671, 508);
             this.panel5.TabIndex = 1;
             // 
             // libTabControl1
@@ -306,7 +307,7 @@
             this.libTabControl1.Name = "libTabControl1";
             this.libTabControl1.Padding = new System.Drawing.Point(22, 11);
             this.libTabControl1.SelectedIndex = 0;
-            this.libTabControl1.Size = new System.Drawing.Size(671, 530);
+            this.libTabControl1.Size = new System.Drawing.Size(671, 508);
             this.libTabControl1.TabIndex = 0;
             // 
             // toolStrip1
@@ -370,7 +371,8 @@
             // 配置ToolStripMenuItem
             // 
             this.配置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ServerConfigToolStripMenuItem});
+            this.ServerConfigToolStripMenuItem,
+            this.多语言配置ToolStripMenuItem});
             this.配置ToolStripMenuItem.Name = "配置ToolStripMenuItem";
             this.配置ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.配置ToolStripMenuItem.Text = "配置";
@@ -378,7 +380,7 @@
             // ServerConfigToolStripMenuItem
             // 
             this.ServerConfigToolStripMenuItem.Name = "ServerConfigToolStripMenuItem";
-            this.ServerConfigToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.ServerConfigToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ServerConfigToolStripMenuItem.Text = "服务配置";
             this.ServerConfigToolStripMenuItem.Click += new System.EventHandler(this.ServerConfigToolStripMenuItem_Click);
             // 
@@ -404,12 +406,18 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(131, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
+            // 多语言配置ToolStripMenuItem
+            // 
+            this.多语言配置ToolStripMenuItem.Name = "多语言配置ToolStripMenuItem";
+            this.多语言配置ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.多语言配置ToolStripMenuItem.Text = "多语言配置";
+            this.多语言配置ToolStripMenuItem.Click += new System.EventHandler(this.多语言配置ToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(960, 595);
-          
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
@@ -477,5 +485,6 @@
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem ServerConfigToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 多语言配置ToolStripMenuItem;
     }
 }

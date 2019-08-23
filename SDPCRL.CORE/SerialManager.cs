@@ -85,6 +85,7 @@ namespace SDPCRL.CORE
         public const string sdp_smodallogic = "sdp_smodallogic";
         public const string sdp_total_row = "total_row";
         public const string sdp_Schcond = "sdp_searchcond";
+        public const string sdp_language = "sdp_language";
 
         #endregion
     }

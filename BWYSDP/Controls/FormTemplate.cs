@@ -491,8 +491,9 @@ namespace BWYSDP.Controls
                                     }
                                     libfgfield.IsAllowNull = !libfield.AllowNull;
                                     libfgfield.FieldLength = libfield.FieldLength;
-                                    if (libfield.SourceField != null && !string.IsNullOrEmpty (libfield.SourceField .FromDataSource ) 
-                                        && !string.IsNullOrEmpty (libfield .SourceField .FromStructTableNm ) && !string.IsNullOrEmpty (libfield .SourceField .FromFieldNm ))
+                                    //if (libfield.SourceField != null && !string.IsNullOrEmpty (libfield.SourceField .FromDataSource ) 
+                                    //    && !string.IsNullOrEmpty (libfield .SourceField .FromStructTableNm ) && !string.IsNullOrEmpty (libfield .SourceField .FromFieldNm ))
+                                    if(libfield.SourceField !=null &&libfield.SourceField .Count >0)
                                     {
                                         libfgfield.ElemType = ElementType.Search;
                                     }

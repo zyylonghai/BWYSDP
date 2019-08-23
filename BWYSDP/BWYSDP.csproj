@@ -118,6 +118,12 @@
     <Compile Include="Controls\FormTemplate.Designer.cs">
       <DependentUpon>FormTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FromSourceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FromSourceControl.Designer.cs">
+      <DependentUpon>FromSourceControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FromSourceProperty.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -195,6 +201,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="LanguageConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LanguageConfig.Designer.cs">
+      <DependentUpon>LanguageConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="LibFormBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -251,6 +263,9 @@
     <EmbeddedResource Include="Controls\FormTemplate.resx">
       <DependentUpon>FormTemplate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FromSourceControl.resx">
+      <DependentUpon>FromSourceControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TBStructProperty.resx">
       <DependentUpon>TBStructProperty.cs</DependentUpon>
     </EmbeddedResource>
@@ -271,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LanguageConfig.resx">
+      <DependentUpon>LanguageConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

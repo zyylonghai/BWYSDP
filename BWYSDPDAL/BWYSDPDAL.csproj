@@ -48,6 +48,14 @@
       <Project>{33CC4123-1946-498B-BB4F-986E5785C5C5}</Project>
       <Name>BWYResFactory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SDPCRL.COM\SDPCRL.COM.csproj">
+      <Project>{a6dd1483-d68f-401b-b7f8-f3b977ac7500}</Project>
+      <Name>SDPCRL.COM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SDPCRL.CORE\SDPCRL.CORE.csproj">
+      <Project>{6737331b-873f-432b-bf3b-97b64c8e0c5f}</Project>
+      <Name>SDPCRL.CORE</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDPCRL.DAL.BUS\SDPCRL.DAL.BUS.csproj">
       <Project>{33D0D0E5-25C7-4E54-850D-C04CF586B120}</Project>
       <Name>SDPCRL.DAL.BUS</Name>

@@ -56,5 +56,14 @@ namespace BWYSDP.BLL
         {
             return (bool)this.ExecuteDalMethod("TestFunc", "BuilderTableStruct",null , sqlstr);
         }
+
+        public DataTable Getlanguagebydsid(string dsid)
+        {
+            return (DataTable)this.ExecuteSysDalMethod("TestFunc", "GetFieldDescByDSID", dsid);
+        }
+        public void Updatelanguage(DataTable dt, string dsid)
+        {
+            this.ExecuteSysDalMethod("TestFunc", "UpdateLanguage", dt, dsid);
+        }
     }
 }
