@@ -60,10 +60,11 @@ namespace BWYSDP.Controls
                     {
                         foreach (Control c in this.Controls)
                         {
-                            if (!c.GetType().Equals(typeof(Label)))
+                            if (c.GetType().Equals(typeof(TextBox)))
                                 c.Text = string.Empty;
                         }
                         this.Controls[ctrNm].Text = listBox.SelectedItem.ToString();
+                        this.entity.FromDataSource = listBox.SelectedItem.ToString();
                         //this.Controls["fsfield_FromDefindTableNm"].Text = string.Empty;
                         //this.Controls["fsfield_FromStructTableNm"].Text = string.Empty;
                         //this.Controls["fsfield_FromFieldNm"].Text = string.Empty; 
@@ -88,6 +89,7 @@ namespace BWYSDP.Controls
                 if (dialog == DialogResult.OK)
                 {
                     this.Controls[ctrNm].Text = listBox.SelectedItem.ToString();
+                    this.entity.FromDefindTableNm = listBox.SelectedItem.ToString();
                 }
             }
             else if (string.Compare(ctrNm, "fsfield_FromStructTableNm") == 0)//来源数据表名
@@ -110,7 +112,9 @@ namespace BWYSDP.Controls
                 DialogResult dialog = fielsform.ShowDialog(this);
                 if (dialog == DialogResult.OK)
                 {
-                    
+                    this.Controls[ctrNm].Text = listBox.SelectedItem.ToString();
+                    this.entity.FromStructTableNm = listBox.SelectedItem.ToString();
+                    //foreach (LibDataTableStruct item in )
                 }
             }
             else if (string.Compare(ctrNm, "fsfield_FromFieldNm") == 0)//来源字段
@@ -133,9 +137,11 @@ namespace BWYSDP.Controls
                 DialogResult dialog = fielsform.ShowDialog(this);
                 if (dialog == DialogResult.OK)
                 {
-
+                    this.Controls[ctrNm].Text = listBox.SelectedItem.ToString();
+                    this.entity.FromFieldNm = listBox.SelectedItem.ToString();
                 }
             }
+
         }
     }
 }
