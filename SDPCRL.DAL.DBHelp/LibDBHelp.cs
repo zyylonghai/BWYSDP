@@ -175,7 +175,14 @@ namespace SDPCRL.DAL.DBHelp
 
         public DataTable GetDataTable(string commandText)
         {
-            return this.CurrentDBOpreate.GetDataTable(commandText);
+            DataTable result= this.CurrentDBOpreate.GetDataTable(commandText);
+            if (result == null)
+            {
+                LibEventManager.TouchEvent(this, LibEventType.SqlException, this.CurrentDBOpreate.Exception);
+                LibEventManager.LogOutListener(this);
+            }
+
+            return result;
             //return DBOperate.GetDataTable(commandText);
         }
 
@@ -468,11 +475,21 @@ namespace SDPCRL.DAL.DBHelp
         }
         public  DataTable GetDataTable(string commandText)
         {
-            DataTable dt=new DataTable ();
-            dbCommand.CommandText = commandText;
-            dbAdapter.SelectCommand = dbCommand;
-            dbAdapter.Fill(dt);
-            CloseConnect();
+            DataTable dt = new DataTable();
+            try
+            {
+                dbCommand.CommandText = commandText;
+                dbAdapter.SelectCommand = dbCommand;
+                dbAdapter.Fill(dt);
+            }
+            catch (Exception ex) {
+                this.Exception = ex;
+                return null;
+            }
+            finally
+            {
+                CloseConnect();
+            }
             return dt;
         }
 
@@ -483,10 +500,21 @@ namespace SDPCRL.DAL.DBHelp
             //{
             //    dts[i] = new DataTable();
             //}
-            dbCommand.CommandText = commandText;
-            dbAdapter.SelectCommand = dbCommand;
-            dbAdapter.Fill(0, 0, dts);
-            CloseConnect();
+            try
+            {
+                dbCommand.CommandText = commandText;
+                dbAdapter.SelectCommand = dbCommand;
+                dbAdapter.Fill(0, 0, dts);
+            }
+            catch (Exception ex)
+            {
+                this.Exception = ex;
+                return;
+            }
+            finally
+            {
+                CloseConnect();
+            }
             //return dts;
         }
 

@@ -25,8 +25,8 @@ namespace BWYSDP.com
         private static DSList _dsList = new DSList();
         private static bool initialvale = false;
 
-        public  delegate void ModelEditEventHandle(bool ischange);
-        public static  event ModelEditEventHandle DoModelEdit;
+        public delegate void ModelEditEventHandle(bool ischange);
+        public static event ModelEditEventHandle DoModelEdit;
 
         #region 公开函数
 
@@ -164,7 +164,7 @@ namespace BWYSDP.com
                         {
                             switch (attr.ControlType)
                             {
-                                case LibControlType.Combox :
+                                case LibControlType.Combox:
                                     if (info.PropertyType.Equals(typeof(bool)))
                                     {
                                         item.Text = LibSysUtils.BooleanToText((bool)info.GetValue(valueType, null));
@@ -221,7 +221,7 @@ namespace BWYSDP.com
             foreach (PropertyInfo p in propertis)
             {
                 object[] attrArray = p.GetCustomAttributes(typeof(LibAttributeAttribute), true);
-                if (attrArray.Length > 0) 
+                if (attrArray.Length > 0)
                 {
                     LibAttributeAttribute attr = attrArray[0] as LibAttributeAttribute;
                     if (controls.ContainsKey(attr.ControlNm))
@@ -250,15 +250,15 @@ namespace BWYSDP.com
                                         p.SetValue(obj, ctrl.Text.Trim(), null);
                                 }
                                 break;
-                            case LibControlType.Combox :
+                            case LibControlType.Combox:
                                 if (p.PropertyType.Equals(typeof(bool)))
                                 {
                                     p.SetValue(obj, LibSysUtils.ToBooLean(ctrl.Text.Trim()), null);
                                 }
                                 else
                                 {
-                                    LibItem itm=((ComboBox)ctrl ).SelectedItem as LibItem;
-                                    p.SetValue(obj,itm.Key , null);
+                                    LibItem itm = ((ComboBox)ctrl).SelectedItem as LibItem;
+                                    p.SetValue(obj, itm.Key, null);
                                 }
                                 break;
                             case LibControlType.TextAndBotton:
@@ -271,20 +271,20 @@ namespace BWYSDP.com
         }
 
         /// <summary>创建或修改数据库表结构</summary>
-        public static  void UpdateTableStruct(LibDataTableStruct obj)
+        public static void UpdateTableStruct(LibDataTableStruct obj)
         {
             if (obj != null && obj.Ignore)
             {
                 StringBuilder builder = new StringBuilder();
                 BLL.BllDataBase bll = new BLL.BllDataBase();
                 DataTable result = (DataTable)bll.GetTableSchema(obj.Name);
-                if (result!=null && result .Rows .Count >0)//表已存在
+                if (result != null && result.Rows.Count > 0)//表已存在
                 {
                     foreach (LibField field in obj.Fields)
                     {
                         if (field.IsActive)
                         {
-                            DataRow[] rows = result.Select(string.Format("column_name='{0}'",string.IsNullOrEmpty(field.OrignNm)? field.Name:field.OrignNm));
+                            DataRow[] rows = result.Select(string.Format("column_name='{0}'", string.IsNullOrEmpty(field.OrignNm) ? field.Name : field.OrignNm));
                             if (rows.Length > 0)
                             {
                                 if (string.Compare(rows[0]["column_name"].ToString(), field.OrignNm) == 0)//列名称改变。
@@ -293,11 +293,11 @@ namespace BWYSDP.com
 
                                 }
                                 builder.AppendFormat(" alter table {0}  ALTER COLUMN {1} ", obj.Name, field.Name);
-                               
+
                             }
                             else
                             {
-                                builder.AppendFormat(" alter table {0} add {1} ",obj .Name ,field .Name);
+                                builder.AppendFormat(" alter table {0} add {1} ", obj.Name, field.Name);
                             }
                             switch (field.FieldType)
                             {
@@ -334,6 +334,8 @@ namespace BWYSDP.com
                     bll.BuilderTableStruct(builder.ToString());
                     return;
                 }
+                //else
+                //{
                 builder.AppendFormat("CREATE TABLE [dbo].[{0}]( ", obj.Name);
                 int initlen = builder.Length;
                 foreach (LibField field in obj.Fields)
@@ -358,7 +360,7 @@ namespace BWYSDP.com
                                 break;
                             case LibFieldType.Decimal:
                                 builder.AppendFormat("[{0}]", "decimal");
-                                builder.AppendFormat("({0}, {1}) ",field.FieldLength ,field .Decimalpoint);
+                                builder.AppendFormat("({0}, {1}) ", field.FieldLength, field.Decimalpoint);
                                 break;
                             case LibFieldType.Interger:
                                 builder.AppendFormat("[{0}] ", "int");
@@ -377,7 +379,8 @@ namespace BWYSDP.com
                         builder.AppendFormat("{0} ", field.AllowNull ? "NULL" : "NOT NULL");
                     }
                 }
-                if (obj.PrimaryKey != null&&obj .PrimaryKey .Count >0)
+                //}
+                if (obj.PrimaryKey != null && obj.PrimaryKey.Count > 0)
                 {
                     builder.Append(", ");
                     builder.AppendFormat(" CONSTRAINT [PK_{0}] PRIMARY KEY CLUSTERED (", obj.Name);
@@ -449,7 +452,7 @@ namespace BWYSDP.com
                                 tb.TextChanged += new EventHandler(tb_TextChanged);
                                 UCtr.Controls.Add(tb);
                                 break;
-                                #endregion
+                            #endregion
                             case LibControlType.Combox:
                                 #region 下拉选项列表控件
                                 comb = new ComboBox();
@@ -476,7 +479,7 @@ namespace BWYSDP.com
                                 comb.SelectedValueChanged += new EventHandler(tb_TextChanged);
                                 UCtr.Controls.Add(comb);
                                 break;
-                                #endregion
+                            #endregion
                             case LibControlType.TextAndBotton:
                                 #region 浏览输入框控件
                                 tb = new TextBox();
@@ -486,7 +489,7 @@ namespace BWYSDP.com
                                 tb.ReadOnly = true;
                                 tb.Size = new System.Drawing.Size(w, h);
                                 tb.Location = new System.Drawing.Point(lb.Location.X + lb.Width, y + index * (interval + lb.Height));
-                                tb.TextChanged +=new EventHandler(tb_TextChanged);
+                                tb.TextChanged += new EventHandler(tb_TextChanged);
                                 btn = new Button();
                                 btn.Font = font;
                                 btn.Name = string.Format("{0}{1}", SysConstManage.BtnCtrlNmPrefix, attr.ControlNm);
@@ -791,7 +794,7 @@ namespace BWYSDP.com
 
         }
 
-        public static bool ExitsDataSource(string dsid,string package)
+        public static bool ExitsDataSource(string dsid, string package)
         {
             FileOperation fileoperation = new FileOperation();
             fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.DataSourceNm, package, dsid);
@@ -878,7 +881,7 @@ namespace BWYSDP.com
         /// <param name="modelNm"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool SaveModel(string modelNm,NodeType type)
+        public static bool SaveModel(string modelNm, NodeType type)
         {
             string path = string.Empty;
             switch (type)
@@ -886,9 +889,9 @@ namespace BWYSDP.com
                 case NodeType.DataModel:
                     if (_dataSourceContain.ContainsKey(modelNm))
                     {
-                       LibDataSource ds=(LibDataSource)_dataSourceContain[modelNm];
-                       path = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.DataSourceNm, ds.Package, ds.DSID);
-                        return InternalSaveModel(ds,path);
+                        LibDataSource ds = (LibDataSource)_dataSourceContain[modelNm];
+                        path = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.DataSourceNm, ds.Package, ds.DSID);
+                        return InternalSaveModel(ds, path);
                     }
                     else
                     {
@@ -905,17 +908,17 @@ namespace BWYSDP.com
                     {
                         return false;
                     }
-                case NodeType.PermissionModel :
+                case NodeType.PermissionModel:
                     if (_permissionSourceContain.ContainsKey(modelNm))
                     {
-                        LibPermissionSource pm=(LibPermissionSource)_permissionSourceContain[modelNm];
-                        return InternalSaveModel(pm,path);
+                        LibPermissionSource pm = (LibPermissionSource)_permissionSourceContain[modelNm];
+                        return InternalSaveModel(pm, path);
                     }
                     else
                     {
                         return false;
                     }
-                default :
+                default:
                     return false;
             }
         }
@@ -1002,7 +1005,7 @@ namespace BWYSDP.com
         }
         #endregion
 
-        private static bool InternalSaveModel<T>(T entity,string path)
+        private static bool InternalSaveModel<T>(T entity, string path)
         {
             SerializerUtils.xmlserialzaition(entity, path);
             return true;
@@ -1050,19 +1053,19 @@ namespace BWYSDP.com
 
         /// <summary>排版页面容器</summary>
         [LibReSource("页面容器")]
-        FormPanel=11,
+        FormPanel = 11,
         /// <summary>页面信息组 </summary>
         [LibReSource("页面信息组")]
-        FormGroup=12,
+        FormGroup = 12,
         /// <summary> 页面表格组</summary>
         [LibReSource("页面表格组")]
-        GridGroup=13,
+        GridGroup = 13,
         /// <summary> 信息组字段</summary>
         [LibReSource("信息组字段")]
-        FormGroup_Field=14,
+        FormGroup_Field = 14,
         /// <summary> 信息组字段</summary>
         [LibReSource("表格组字段")]
-        GridGroup_Field=15
+        GridGroup_Field = 15
 
     }
 }

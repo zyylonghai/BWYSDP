@@ -220,13 +220,65 @@ namespace SDPCRL.COM
                             col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties
                             {
                                 IsActive = f.IsActive,
-                                IsRelate = true,
+                                IsRelate = false,
                                 MapPrimarykey = f.RelatePrimarykey,
                                 DataTypeLen = f.FieldLength,
                                 Decimalpoint = f.Decimalpoint,
                                 AliasName = f.AliasName
                             });
                             dt.Columns.Add(col);
+                            if (f.SourceField != null && f.SourceField.Count > 0)
+                            {
+                                foreach (LibFromSourceField item in f.SourceField)
+                                {
+                                    foreach (var relatef in item.RelateFieldNm)
+                                    {
+                                        col = new DataColumn(string.IsNullOrEmpty(relatef.AliasName) ? relatef.FieldNm : relatef.AliasName);
+                                        col.Caption = relatef.DisplayNm;
+                                        switch (relatef.FieldType)
+                                        {
+                                            case LibFieldType.Byte:
+                                                col.DataType = typeof(byte);
+                                                col.DefaultValue = 0;
+                                                break;
+                                            case LibFieldType.Date:
+                                                col.DataType = typeof(Date);
+                                                break;
+                                            case LibFieldType.DateTime:
+                                                col.DataType = typeof(DateTime);
+                                                col.DefaultValue = DateTime.Now;
+                                                break;
+                                            case LibFieldType.Decimal:
+                                                col.DataType = typeof(decimal);
+                                                col.DefaultValue = 0;
+                                                break;
+                                            case LibFieldType.Interger:
+                                                col.DataType = typeof(Int32);
+                                                col.DefaultValue = 0;
+                                                break;
+                                            case LibFieldType.Long:
+                                                col.DataType = typeof(long);
+                                                col.DefaultValue = 0;
+                                                break;
+                                            case LibFieldType.String:
+                                            case LibFieldType.Text:
+                                                col.DataType = typeof(string);
+                                                col.DefaultValue = string.Empty;
+                                                break;
+                                        }
+                                        col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties
+                                        {
+                                            IsActive = false,
+                                            IsRelate = true,
+                                            MapPrimarykey = string.Empty,
+                                            DataTypeLen = 0,
+                                            Decimalpoint = 0,
+                                            AliasName = relatef.AliasName
+                                        });
+                                        dt.Columns.Add(col);
+                                    }
+                                }
+                            }
                         }
 
                         #region 系统默认新增的一列行号 用于系统对行项 唯一标识，自增长。

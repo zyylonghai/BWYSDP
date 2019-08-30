@@ -108,6 +108,9 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         DateTime=3,
         ///<summary>搜索控件</summary>
         [LibReSource("搜索控件")]
-        Search =4
+        Search =4,
+        ///<summary>大文本框</summary>
+        [LibReSource("大文本框")]
+        Textarea =5
     }
 }

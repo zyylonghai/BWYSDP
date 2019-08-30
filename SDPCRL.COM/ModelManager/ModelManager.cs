@@ -82,6 +82,7 @@ namespace SDPCRL.COM.ModelManager
         {
             FileOperation fileOperation = new FileOperation();
             fileOperation.Encoding = LibEncoding.UTF8;
+            rootpath = string.Format(@"{0}\Models", rootpath);
             if (typeof(T).Equals(typeof(LibDataSource)))
             {
                 fileOperation.FilePath = string.Format(@"{0}\{1}", rootpath, SysConstManage.DataSourceNm);

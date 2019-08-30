@@ -5,6 +5,7 @@ using System.Text;
 using SDPCRL.BLL.BUS;
 using BWYSDP.DAL;
 using System.Data;
+using SDPCRL.COM;
 
 namespace BWYSDP.BLL
 {
@@ -50,11 +51,11 @@ namespace BWYSDP.BLL
         /// <returns></returns>
         public DataTable GetTableSchema(string tableNm)
         {
-            return (DataTable)this.ExecuteDalMethod("TestFunc", "GetTableSchema",null , tableNm);
+            return (DataTable)((DalResult)this.ExecuteDalMethod("TestFunc", "GetTableSchema",null , tableNm)).Value;
         }
         public bool BuilderTableStruct(string sqlstr)
         {
-            return (bool)this.ExecuteDalMethod("TestFunc", "BuilderTableStruct",null , sqlstr);
+            return (bool)((DalResult)this.ExecuteDalMethod("TestFunc", "BuilderTableStruct",null , sqlstr)).Value;
         }
 
         public DataTable Getlanguagebydsid(string dsid)

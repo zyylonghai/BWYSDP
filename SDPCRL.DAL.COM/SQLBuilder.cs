@@ -48,7 +48,7 @@ namespace SDPCRL.DAL.COM
         }
 
 
-        public string GetSQL(string tableNm, string[] fields, WhereObject where)
+        public string GetSQL(string tableNm, string[] fields, WhereObject where, bool IsJoinRelateTable = true)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(ResFactory.ResManager.SQLSelect);
@@ -71,11 +71,6 @@ namespace SDPCRL.DAL.COM
                 }
                 builder.AppendFormat(" {0}", ResFactory.ResManager.SQLFrom);
                 builder.AppendFormat(" {0}", tableNm);
-                //if (!string.IsNullOrEmpty(where.WhereFormat))
-                //{
-                //    return string.Format("EXEC sp_executesql N'{0} where {1}',{2}", builder.ToString(), where.WhereFormat, where.ValueTostring);
-                //}
-                //return string.Format("EXEC sp_executesql N'{0}'", builder.ToString());
             }
             else
             {
@@ -91,7 +86,7 @@ namespace SDPCRL.DAL.COM
                 }
                 if (ds != null)
                 {
-                    DoGetSQL(builder, tableNm, ds);
+                    DoGetSQL(builder, tableNm, ds,false , IsJoinRelateTable);
                 }
             }
             if (!string.IsNullOrEmpty(where.WhereFormat))
@@ -100,6 +95,10 @@ namespace SDPCRL.DAL.COM
             }
             return string.Format("EXEC sp_executesql N'{0}'", builder.ToString());
         }
+        //public string GetSQL(string tableNm, string[] fields, WhereObject where, bool IsContainRelateField = true)
+        //{
+
+        //}
         public string GetSQLByPage(string tableNm, string[] fields, WhereObject where, int pageindex, int pagesize)
         {
             StringBuilder builder = new StringBuilder();
@@ -199,7 +198,7 @@ namespace SDPCRL.DAL.COM
         }
 
         #region 私有函数
-        private void DoGetSQL(StringBuilder builder, string tableNm, LibDataSource ds,bool page=false)
+        private void DoGetSQL(StringBuilder builder, string tableNm, LibDataSource ds,bool page=false, bool IsJoinRelateTable = true)
         {
             List<LibDataTableStruct> list = new List<LibDataTableStruct>();
             StringBuilder joinstr = new StringBuilder();
@@ -227,68 +226,70 @@ namespace SDPCRL.DAL.COM
             #endregion
             if (tb != null)
             {
-                var relatetbs = list.Where(i => i.JoinTableIndex == tb.TableIndex && i.TableIndex != tb.TableIndex && i.Ignore).ToList();
-                List<int> tbindexs = null;
-                while (relatetbs != null &&relatetbs .Count >0)
+                if (IsJoinRelateTable)
                 {
-                    tbindexs = new List<int>();
-                    foreach (var jointb in relatetbs)
+                    var relatetbs = list.Where(i => i.JoinTableIndex == tb.TableIndex && i.TableIndex != tb.TableIndex && i.Ignore).ToList();
+                    List<int> tbindexs = null;
+                    while (relatetbs != null && relatetbs.Count > 0)
                     {
-                        tbindexs.Add(jointb.TableIndex);
-                        #region 组织joinstr语句
-                        joinstr.AppendFormat(" {0} {1} {2} {3} ",
-                                             ResFactory.ResManager.SQLLeftJoin,
-                                             jointb.Name,
-                                             LibSysUtils.ToCharByTableIndex(jointb.TableIndex),
-                                             //(char)(jointb.TableIndex+65),
-                                             ResFactory.ResManager.SQLOn);
-                        joinfield = new StringBuilder();
-                        foreach (var relatfield in jointb.JoinFields)
+                        tbindexs = new List<int>();
+                        foreach (var jointb in relatetbs)
                         {
-                            if (joinfield.Length > 0)
+                            tbindexs.Add(jointb.TableIndex);
+                            #region 组织joinstr语句
+                            joinstr.AppendFormat(" {0} {1} {2} {3} ",
+                                                 ResFactory.ResManager.SQLLeftJoin,
+                                                 jointb.Name,
+                                                 LibSysUtils.ToCharByTableIndex(jointb.TableIndex),
+                                                 //(char)(jointb.TableIndex+65),
+                                                 ResFactory.ResManager.SQLOn);
+                            joinfield = new StringBuilder();
+                            foreach (var relatfield in jointb.JoinFields)
                             {
-                                joinfield.Append(ResFactory.ResManager.SQLAnd); ;
-                            }
-                            LibField  libfd = jointb.Fields.FindFirst("Name", relatfield);
-                            //if (string.IsNullOrEmpty(libfd.RelatePrimarykey))
-                            joinfield.AppendFormat(" {0}.{1}={2}.{3} ", 
-                                tbaliasnm, 
-                                string.IsNullOrEmpty(libfd.RelatePrimarykey)? relatfield:libfd.RelatePrimarykey, 
-                                LibSysUtils.ToCharByTableIndex(jointb.TableIndex), 
-                                relatfield);
-                            //else 
-
-                        }
-                        joinstr.Append(joinfield.ToString());
-                        joinstr.AppendLine();
-                        #endregion
-
-                        #region 取关联表的字段
-                        if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
-                        {
-                            foreach (LibField f2 in jointb.Fields)
-                            {
-                                if (!f2.IsActive || jointb.JoinFields.Contains(f2.Name)) continue;
-                                if (allfields.ToString().Contains(string.Format(".{0}", f2.Name)))
+                                if (joinfield.Length > 0)
                                 {
-                                    allfields.AppendFormat("{0}{1}.{2} as {3}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, string.Format("{0}{2}{1}", LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name,SysConstManage.Underline));
+                                    joinfield.Append(ResFactory.ResManager.SQLAnd); ;
                                 }
-                                else
+                                LibField libfd = jointb.Fields.FindFirst("Name", relatfield);
+                                //if (string.IsNullOrEmpty(libfd.RelatePrimarykey))
+                                joinfield.AppendFormat(" {0}.{1}={2}.{3} ",
+                                    tbaliasnm,
+                                    string.IsNullOrEmpty(libfd.RelatePrimarykey) ? relatfield : libfd.RelatePrimarykey,
+                                    LibSysUtils.ToCharByTableIndex(jointb.TableIndex),
+                                    relatfield);
+                                //else 
+
+                            }
+                            joinstr.Append(joinfield.ToString());
+                            joinstr.AppendLine();
+                            #endregion
+
+                            #region 取关联表的字段
+                            if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
+                            {
+                                foreach (LibField f2 in jointb.Fields)
                                 {
-                                    if (!string.IsNullOrEmpty(f2.AliasName))
+                                    if (!f2.IsActive || jointb.JoinFields.Contains(f2.Name)) continue;
+                                    if (allfields.ToString().Contains(string.Format(".{0}", f2.Name)))
                                     {
-                                        allfields.AppendFormat("{0}{1}.{2} as {3}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name,f2.AliasName);
+                                        allfields.AppendFormat("{0}{1}.{2} as {3}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, string.Format("{0}{2}{1}", LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, SysConstManage.Underline));
                                     }
                                     else
-                                        allfields.AppendFormat("{0}{1}.{2}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name);
+                                    {
+                                        if (!string.IsNullOrEmpty(f2.AliasName))
+                                        {
+                                            allfields.AppendFormat("{0}{1}.{2} as {3}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, f2.AliasName);
+                                        }
+                                        else
+                                            allfields.AppendFormat("{0}{1}.{2}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name);
+                                    }
                                 }
                             }
+                            #endregion
                         }
-                        #endregion
+                        relatetbs = list.Where(i => tbindexs.Contains(i.JoinTableIndex) && i.TableIndex != i.JoinTableIndex && i.Ignore).ToList();
                     }
-                    relatetbs = list.Where(i => tbindexs.Contains(i.JoinTableIndex) && i.TableIndex != i.JoinTableIndex &&i.Ignore).ToList ();
                 }
-
                 #region 字段上的来源表。
                 var relatefields = tb.Fields.ToArray().Where(i => i.SourceField != null);
                 foreach (LibField f in relatefields)
@@ -303,20 +304,39 @@ namespace SDPCRL.DAL.COM
                                              //(char)(jointb.TableIndex+65),
                                              ResFactory.ResManager.SQLOn);
                         joinfield = new StringBuilder();
-                        //foreach (string relatef in fromfield.RelateFieldNm)
-                        //{
-                        //    if (joinfield.Length > 0)
-                        //    {
-                        //        joinfield.Append(ResFactory.ResManager.SQLAnd); 
-                        //    }
-                        //    joinfield.AppendFormat(" {0}.{1}={2}.{3} ",
-                        //        tbaliasnm,
-                        //        f.Name,
-                        //        string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(fromfield.FromTableIndex)),
-                        //        relatef);
-                        //}
+                        if (joinfield.Length > 0)
+                        {
+                            joinfield.Append(ResFactory.ResManager.SQLAnd);
+                        }
+                        joinfield.AppendFormat(" {0}.{1}={2}.{3} ",
+                            tbaliasnm,
+                            f.Name,
+                            string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(fromfield.FromTableIndex)),
+                            fromfield.FromFieldNm);
                         joinstr.Append(joinfield.ToString());
                         joinstr.AppendLine();
+                        if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
+                        {
+                            if (fromfield.RelateFieldNm != null)
+                            {
+                                foreach (LibRelateField relatef in fromfield.RelateFieldNm)
+                                {
+                                    if (!string.IsNullOrEmpty(relatef.AliasName))
+                                    {
+                                        allfields.AppendFormat("{0}{1}.{2} as {3}",
+                                            SysConstManage.Comma,
+                                            string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(fromfield.FromTableIndex)),
+                                            relatef.FieldNm,
+                                            relatef.AliasName);
+                                    }
+                                    else
+                                        allfields.AppendFormat("{0}{1}.{2}",
+                                            SysConstManage.Comma,
+                                            string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(fromfield.FromTableIndex)),
+                                            relatef.FieldNm);
+                                }
+                            }
+                        }
                         #endregion
                     }
                 }

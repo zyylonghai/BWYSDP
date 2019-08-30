@@ -75,8 +75,8 @@ namespace BWYSDP.Controls
             {
                 if (!string.IsNullOrEmpty(this.Controls["fsfield_FromDataSource"].Text))
                 {
-                    this._ds =ModelManager .GetDataSource(this.Controls["fsfield_FromDataSource"].Text);
-                    if (this._ds != null&& this._ds .DefTables !=null)
+                    this._ds = ModelManager.GetDataSource(this.Controls["fsfield_FromDataSource"].Text);
+                    if (this._ds != null && this._ds.DefTables != null)
                     {
                         foreach (LibDefineTable deftb in this._ds.DefTables)
                         {
@@ -96,8 +96,8 @@ namespace BWYSDP.Controls
             {
                 if (!string.IsNullOrEmpty(this.Controls["fsfield_FromDefindTableNm"].Text))
                 {
-                    if(_ds==null)
-                        _ds= ModelManager.GetDataSource(this.Controls["fsfield_FromDataSource"].Text);
+                    if (_ds == null)
+                        _ds = ModelManager.GetDataSource(this.Controls["fsfield_FromDataSource"].Text);
                     LibDefineTable deftb = this._ds.DefTables.FindFirst("TableName", this.Controls["fsfield_FromDefindTableNm"].Text.Trim());
                     if (deftb != null)
                     {
@@ -140,6 +140,49 @@ namespace BWYSDP.Controls
                     this.Controls[ctrNm].Text = listBox.SelectedItem.ToString();
                     this.entity.FromFieldNm = listBox.SelectedItem.ToString();
                 }
+            }
+            else if (string.Compare(ctrNm, "fsfield_RelateFieldNm") == 0)//关联字段
+            {
+                LibDataTableStruct dtstruct = null;
+                if (!string.IsNullOrEmpty(this.Controls["fsfield_FromStructTableNm"].Text))
+                {
+                    if (_ds == null)
+                        _ds = ModelManager.GetDataSource(this.Controls["fsfield_FromDataSource"].Text);
+                    LibDefineTable deftb = this._ds.DefTables.FindFirst("TableName", this.Controls["fsfield_FromDefindTableNm"].Text.Trim());
+                    dtstruct = deftb.TableStruct.FindFirst("Name", this.Controls["fsfield_FromStructTableNm"].Text.Trim());
+                    if (dtstruct != null)
+                    {
+                        listBox.SelectionMode = SelectionMode.MultiExtended;
+                        foreach (LibField f in dtstruct.Fields)
+                        {
+                            listBox.Items.Add(f.Name);
+                        }
+                    }
+                }
+                FieldCollectionForm fielsform = new FieldCollectionForm(p);
+                DialogResult dialog = fielsform.ShowDialog(this);
+                if (dialog == DialogResult.OK)
+                {
+                    if (this.entity.RelateFieldNm == null) this.entity.RelateFieldNm = new List<LibRelateField>();
+                    this.entity.RelateFieldNm.Clear();
+                    LibRelateField relateField = null;
+                    string text = string.Empty;
+                    foreach (var item in listBox.SelectedItems)
+                    {
+                        LibField field = dtstruct.Fields.FindFirst("Name", item.ToString());
+                        relateField = new LibRelateField();
+                        relateField.ID = Guid.NewGuid().ToString();
+                        relateField.FieldNm = field.Name;
+                        relateField.DisplayNm = field.DisplayName;
+                        relateField.AliasName = field.AliasName;
+                        relateField.FieldType = field.FieldType;
+                        this.entity.RelateFieldNm.Add(relateField);
+                        if (text.Length > 0) { text += SysConstManage.Comma; }
+                        text += field.Name;
+                    }
+                    this.Controls[ctrNm].Text = text;
+                }
+
             }
 
         }

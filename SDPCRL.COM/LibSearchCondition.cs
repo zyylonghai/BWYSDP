@@ -10,6 +10,8 @@ namespace SDPCRL.COM
     [Serializable]
     public  class LibSearchCondition
     {
+        public string DSID { get; set; }
+        public string TableNm { get; set; }
         public string FieldNm { get; set; }
 
         public SmodalSymbol Symbol { get; set; }

@@ -488,6 +488,9 @@ namespace BWYSDP.Controls
                                         case LibFieldType.Long:
                                             libfgfield.IsNumber = true;
                                             break;
+                                        case LibFieldType.Text:
+                                            libfgfield.ElemType = ElementType.Textarea;
+                                            break;
                                     }
                                     libfgfield.IsAllowNull = !libfield.AllowNull;
                                     libfgfield.FieldLength = libfield.FieldLength;

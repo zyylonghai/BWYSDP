@@ -211,6 +211,10 @@ namespace SDPCRL.COM.ModelManager
         [LibAttribute("relate_AliasName", LibControlType.TextBox, "别名")]
         public string AliasName { get; set; }
 
+        public string DisplayNm { get; set; }
+
+        public LibFieldType FieldType { get; set; }
+
         public override string ToString()
         {
             if (!string.IsNullOrEmpty(AliasName))

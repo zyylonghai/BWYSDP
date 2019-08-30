@@ -151,6 +151,12 @@
     <Compile Include="Controls\LibTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\RelateFieldProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\RelateFieldProperty.Designer.cs">
+      <DependentUpon>RelateFieldProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TBStructProperty.cs">
       <SubType>UserControl</SubType>
     </Compile>
