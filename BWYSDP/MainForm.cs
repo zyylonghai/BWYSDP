@@ -294,6 +294,7 @@ namespace BWYSDP
         private void 多语言配置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SDPCRL.COM.ModelManager.LibDataSource ds = null;
+            SDPCRL.COM.ModelManager.FormTemplate .LibFormPage fm = null;
             TabPage page = this.libTabControl1.SelectedTab;
             if (page != null)
             {
@@ -305,15 +306,16 @@ namespace BWYSDP
                         ds = ModelDesignProject.GetDataSourceById(nameAndtype[0]);
                         break;
                     case NodeType.FormModel:
-                        var fm = ModelDesignProject.GetFormSourceByFormId(nameAndtype[0]);
+                         fm = ModelDesignProject.GetFormSourceByFormId(nameAndtype[0]);
                         if (fm != null && !string.IsNullOrEmpty(fm.DSID))
                         {
+
                             ds = ModelDesignProject.GetDataSourceById(fm.DSID);
                         }
                         break;
                 }
             }
-            WakeUpForm<LanguageConfig>("language",ds);
+            WakeUpForm<LanguageConfig>("language",ds,fm);
         }
         //private LibTreeNode CreateNode(LibTreeNode nodeInfo, NodeType nodetype)
         //{

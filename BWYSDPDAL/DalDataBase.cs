@@ -71,7 +71,7 @@ namespace BWYSDPDAL
         {
             SQLBuilder build = new SQLBuilder();
             string sql = build.GetSQL("Language_Field", new string[] { "FieldNm", "DSID", "LanguageId", "TableNm", "Vals" },
-                                     build.Where("DSID={0}",dsid));
+                                     build.Where("DSID={0} OR DSID={1}",dsid,""));
             DataTable data = this.DataAccess.GetDataTable(sql);
             return data;
         }

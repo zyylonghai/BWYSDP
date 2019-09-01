@@ -86,6 +86,7 @@ namespace SDPCRL.CORE
         public const string sdp_total_row = "total_row";
         public const string sdp_Schcond = "sdp_searchcond";
         public const string sdp_language = "sdp_language";
+        public const string sdp_userinfo = "sdp_userinfo";
 
         #endregion
     }

@@ -15,6 +15,7 @@ namespace BWYSDP
     public partial class LanguageConfig : LibFormBase
     {
         LibDataSource ds = null;
+        
         DataTable languagedt = null;
         public LanguageConfig()
         {
@@ -26,9 +27,11 @@ namespace BWYSDP
             base.DoSetParam(tag, param);
             if (LibSysUtils.Compare(tag, "language"))
             {
-                if (param.Length > 0)
+                SDPCRL.COM.ModelManager.FormTemplate.LibFormPage fm = null;
+                if (param.Length > 1)
                 {
                     ds = param[0] as LibDataSource;
+                    fm = param[1] as SDPCRL.COM.ModelManager.FormTemplate.LibFormPage;
                 }
                 if (ds == null) return;
                 this.textBox1.Text = ds.DSID;
@@ -40,6 +43,38 @@ namespace BWYSDP
                     {
                         this.comboBox1.Items.Add(dt.Name);
                         FillDataGrid(dt, false);
+                    }
+                }
+                if (fm != null)
+                {
+                    DataTable dt = this.dataGridView1.DataSource as DataTable;
+                    DataRow row = null;
+                    if (dt != null)
+                    {
+                        row = dt.NewRow();
+                        row["TableNm"] = string.Empty;
+                        row["FieldNm"] = fm.FormId;
+                        row[GetLanguageCol(dt)] = fm.FormName;
+                        FilllanguageValue(languagedt, string.Empty, fm.FormId, row);
+                        dt.Rows.Add(row);
+                        foreach (SDPCRL.COM.ModelManager.FormTemplate.LibFormGroup fg in fm.FormGroups)
+                        {
+                            row = dt.NewRow();
+                            row["TableNm"] = string.Empty;
+                            row["FieldNm"] = fg.FormGroupName;
+                            row[GetLanguageCol(dt)] = fg.FormGroupDisplayNm;
+                            FilllanguageValue(languagedt, string.Empty, fg.FormGroupName, row);
+                            dt.Rows.Add(row);
+                        }
+                        foreach (SDPCRL.COM.ModelManager.FormTemplate.LibGridGroup gg in fm.GridGroups)
+                        {
+                            row = dt.NewRow();
+                            row["TableNm"] = string.Empty;
+                            row["FieldNm"] = gg.GridGroupName;
+                            row[GetLanguageCol(dt)] = gg.GridGroupDisplayNm;
+                            FilllanguageValue(languagedt, string.Empty, gg.GridGroupName, row);
+                            dt.Rows.Add(row);
+                        }
                     }
                 }
             }
@@ -111,36 +146,50 @@ namespace BWYSDP
             {
                 langcol = dt.Columns[Language.CHS.ToString()];
             }
-            DataRow[] drs = null;
+            //DataRow[] drs = null;
             foreach (LibField f in dtstruct.Fields)
             {
-                if (languagedt != null) {
-                    drs = languagedt.Select(string.Format("TableNm='{0}' and FieldNm='{1}'",dtstruct .Name ,f.Name));
-                }
+                //if (languagedt != null) {
+                //    drs = languagedt.Select(string.Format("TableNm='{0}' and FieldNm='{1}'",dtstruct .Name ,f.Name));
+                //}
                 row = dt.NewRow();
                 row["TableNm"] = dtstruct.Name;
                 row["FieldNm"] = f.Name;
                 row[langcol] = f.DisplayName;
+                FilllanguageValue(languagedt, dtstruct.Name, f.Name, row);
+                //if (drs != null && drs.Length > 0)
+                //{
+                //    foreach (DataRow r in drs)
+                //    {
+                //        row[((Language)(Convert.ToInt32(r["LanguageId"]))).ToString()] = r["Vals"];
+                //    }
+                //}
+                dt.Rows.Add(row);
+            }
+        }
+
+        private DataColumn GetLanguageCol(DataTable dt)
+        {
+            DataColumn col = null;
+            if (System.Globalization.CultureInfo.InstalledUICulture.Name.ToUpper() == "ZH-CN")
+            {
+                col = dt.Columns[Language.CHS.ToString()];
+            }
+            return col;
+        }
+        private void FilllanguageValue(DataTable langdt, string tbnm, string fieldnm,DataRow row)
+        {
+            DataRow[] drs = null;
+            if (langdt != null)
+            {
+                drs = langdt.Select(string.Format("TableNm='{0}' and FieldNm='{1}'", tbnm, fieldnm));
                 if (drs != null && drs.Length > 0)
                 {
                     foreach (DataRow r in drs)
                     {
                         row[((Language)(Convert.ToInt32(r["LanguageId"]))).ToString()] = r["Vals"];
-                        //switch ((Language)(Convert .ToInt32(r["LanguageId"])))
-                        //{
-                        //    case Language.CHS:
-                        //        row[Language.CHS.ToString()] = r["Vals"];
-                        //        break;
-                        //    case Language.CHS_F:
-                        //        row[Language.CHS_F.ToString()] = r["Vals"];
-                        //        break;
-                        //    case Language.ENG:
-                        //        row[Language.ENG.ToString()] = r["Vals"];
-                        //        break;
-                        //}
                     }
                 }
-                dt.Rows.Add(row);
             }
         }
     }
