@@ -22,10 +22,11 @@ namespace BWYSDP.com
         private static Hashtable _dataSourceContain = Hashtable.Synchronized(new Hashtable());
         private static Hashtable _formSourceContain = new Hashtable();
         private static Hashtable _permissionSourceContain = new Hashtable();
+        private static Hashtable _keyvaluesContain = new Hashtable();
         private static DSList _dsList = new DSList();
         private static bool initialvale = false;
 
-        public delegate void ModelEditEventHandle(bool ischange);
+        public delegate void ModelEditEventHandle(object sender, bool ischange);
         public static event ModelEditEventHandle DoModelEdit;
 
         #region 公开函数
@@ -513,7 +514,7 @@ namespace BWYSDP.com
         {
             if (DoModelEdit != null)
             {
-                DoModelEdit(!initialvale);
+                DoModelEdit(sender , !initialvale);
             }
         }
 
@@ -553,6 +554,13 @@ namespace BWYSDP.com
                     node.NodeType = NodeType.Func;
                     node.Package = item.Attributions[SysConstManage.AtrrPackage];
                 }
+                //else if (string.Compare(item.NodeName, SysConstManage.KeyValues) == 0)
+                //{
+                //    node.Text = item.InnerText;
+                //    node.Name = item.Attributions[SysConstManage.AtrrName];
+                //    node.NodeType = NodeType.KeyValues;
+                //    node.Package = item.Attributions[SysConstManage.AtrrPackage];
+                //}
                 node.OriginalName = node.Name;
                 LibTreeNode child = new LibTreeNode(string.Empty);
                 child.Name = "-1";
@@ -572,6 +580,7 @@ namespace BWYSDP.com
                 List<NodeInfo> childs = null;
                 LibTreeNode node;
                 LibTreeNode preParent = (LibTreeNode)parent.Parent;
+                bool needchild = true;
                 parent.Nodes.RemoveByKey("-1");
                 if (parent.NodeType == NodeType.Class)
                 {
@@ -615,10 +624,21 @@ namespace BWYSDP.com
                             node.NodeType = NodeType.Func;
                             node.Package = item.Attributions[SysConstManage.AtrrPackage];
                         }
+                        else if (string.Compare(item.NodeName, SysConstManage.KeyValues) == 0)//
+                        {
+                            node.Text = item.InnerText;
+                            node.Name = item.Attributions[SysConstManage.AtrrName];
+                            node.NodeType = NodeType.KeyValues;
+                            node.Package = item.Attributions[SysConstManage.AtrrPackage];
+                            needchild = false;
+                        }
                         node.OriginalName = node.Name;
-                        LibTreeNode child = new LibTreeNode(string.Empty);
-                        child.Name = "-1";
-                        node.Nodes.Add(child);
+                        if (needchild)
+                        {
+                            LibTreeNode child = new LibTreeNode(string.Empty);
+                            child.Name = "-1";
+                            node.Nodes.Add(child);
+                        }
                         parent.Nodes.Add(node);
                     }
                 }
@@ -679,6 +699,10 @@ namespace BWYSDP.com
                         break;
                     case NodeType.Func:
                         nodeinfo.NodeName = SysConstManage.FuncNodeNm;
+                        attributcollection.Add(SysConstManage.AtrrPackage, newNode.Package);
+                        break;
+                    case NodeType.KeyValues:
+                        nodeinfo.NodeName = SysConstManage.KeyValues;
                         attributcollection.Add(SysConstManage.AtrrPackage, newNode.Package);
                         break;
                 }
@@ -784,6 +808,9 @@ namespace BWYSDP.com
                 case NodeType.PermissionModel:
                     dir = SysConstManage.PermissionSourceNm;
                     break;
+                case NodeType.KeyValues:
+                    dir = SysConstManage.KeyValues;
+                    break;
             }
             fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, dir, treeNode.Package, treeNode.Name);
             fileoperation.CreateFile(true);
@@ -868,6 +895,19 @@ namespace BWYSDP.com
                 return fm;
             }
         }
+        public static LibKeyValueCollection GetKeyvaluesByid(string id)
+        {
+            if (_keyvaluesContain.ContainsKey(id))
+            {
+                return (LibKeyValueCollection)_keyvaluesContain[id];
+            }
+            else
+            {
+                LibKeyValueCollection keyvalus = ModelManager.GetKeyValues(id);
+                _keyvaluesContain.Add(id, keyvalus);
+                return keyvalus;
+            }
+        }
 
         public static void RemoveDataSource(string dataSourceNm)
         {
@@ -918,6 +958,15 @@ namespace BWYSDP.com
                     {
                         return false;
                     }
+                case NodeType.KeyValues:
+                    if (_keyvaluesContain.ContainsKey(modelNm))
+                    {
+                        LibKeyValueCollection keyvalus = (LibKeyValueCollection)_keyvaluesContain[modelNm];
+                        path = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.KeyValues, keyvalus.Package, keyvalus.ID);
+                        return InternalSaveModel(keyvalus, path);
+                    }
+                    else
+                        return false;
                 default:
                     return false;
             }
@@ -1037,6 +1086,10 @@ namespace BWYSDP.com
         /// <summary>报表功能</summary>
         [LibReSource("报表功能节点")]
         ReportFunc = 6,
+        /// <summary>字典模型</summary>
+        [LibReSource("字典模型节点")]
+        KeyValues =16,
+
 
         /// <summary>数据集</summary>
         [LibReSource("数据集")]

@@ -43,12 +43,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.radioButton7 = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.radioButton7);
             this.panel1.Controls.Add(this.radioButton6);
             this.panel1.Controls.Add(this.radioButton5);
             this.panel1.Controls.Add(this.radioButton4);
@@ -58,7 +60,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(323, 164);
+            this.panel1.Size = new System.Drawing.Size(323, 186);
             this.panel1.TabIndex = 0;
             // 
             // radioButton6
@@ -143,9 +145,9 @@
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 164);
+            this.panel2.Location = new System.Drawing.Point(0, 186);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(323, 208);
+            this.panel2.Size = new System.Drawing.Size(323, 206);
             this.panel2.TabIndex = 1;
             // 
             // btnsure
@@ -206,11 +208,23 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "功能ID：";
             // 
+            // radioButton7
+            // 
+            this.radioButton7.AutoSize = true;
+            this.radioButton7.Location = new System.Drawing.Point(22, 145);
+            this.radioButton7.Name = "radioButton7";
+            this.radioButton7.Size = new System.Drawing.Size(71, 16);
+            this.radioButton7.TabIndex = 6;
+            this.radioButton7.TabStop = true;
+            this.radioButton7.Tag = "16";
+            this.radioButton7.Text = "字典模型";
+            this.radioButton7.UseVisualStyleBackColor = true;
+            // 
             // CreateFunc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(323, 372);
+            this.ClientSize = new System.Drawing.Size(323, 392);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "CreateFunc";
@@ -240,5 +254,6 @@
         private System.Windows.Forms.TextBox txtbPackage;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnsure;
+        private System.Windows.Forms.RadioButton radioButton7;
     }
 }

@@ -228,8 +228,13 @@ namespace SDPCRL.COM.ModelManager
     public class LibKeyValue
     {
         /// <summary>编号</summary>
-        [LibAttribute("keyval_ID", LibControlType.TextBox, "ID")]
+        [LibAttribute("keyval_ID", LibControlType.TextBox, "ID",true)]
         public string ID{get;set;}
+
+        /// <summary>来源模型</summary>
+        [LibAttribute("keyval_txtFromID", LibControlType.TextBox, "来源模型",true)]
+        public string FromkeyValueID { get; set; }
+
         /// <summary>键</summary>
         [LibAttribute("keyval_Key", LibControlType.TextBox, "Key")]
         public object Key { get; set; }

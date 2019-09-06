@@ -148,6 +148,12 @@
     <Compile Include="Controls\KeyValueProperty.Designer.cs">
       <DependentUpon>KeyValueProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\KeyValuesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\KeyValuesControl.Designer.cs">
+      <DependentUpon>KeyValuesControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LibTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -271,6 +277,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\FromSourceControl.resx">
       <DependentUpon>FromSourceControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\KeyValuesControl.resx">
+      <DependentUpon>KeyValuesControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TBStructProperty.resx">
       <DependentUpon>TBStructProperty.cs</DependentUpon>

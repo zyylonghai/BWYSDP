@@ -64,6 +64,7 @@
     <Compile Include="ModelManager\FormTemplate\LibGridGroupField.cs" />
     <Compile Include="ModelManager\LibField.cs" />
     <Compile Include="ModelManager\LibFormSource.cs" />
+    <Compile Include="ModelManager\LibKeyValueCollection.cs" />
     <Compile Include="ModelManager\LibPermissionSource.cs" />
     <Compile Include="ModelManager\ModelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

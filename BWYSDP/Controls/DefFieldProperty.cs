@@ -185,6 +185,15 @@ namespace BWYSDP.Controls
                 deletbtn.Text = "删除项";
                 p2.Controls.Add(deletbtn);
 
+                Button frombtn = new Button();
+                frombtn.Name = "fromkeyvaluid";
+                frombtn.Width = 70;
+                frombtn.Height = 25;
+                frombtn.Location = new System.Drawing.Point(200, 15);
+                frombtn.Text = "来源字典模型";
+                frombtn.Click += Frombtn_Click;
+                p2.Controls.Add(frombtn);
+
                 ListBox listBox = new ListBox();
                 listBox.Name = "_listbox";
                 listBox.Dock = DockStyle.Left;
@@ -223,12 +232,13 @@ namespace BWYSDP.Controls
                 if (dialog == DialogResult.OK)
                 {
                     if (this.entity.Items == null) this.entity.Items = new LibCollection<LibKeyValue>();
+                    this.entity.Items.RemoveAll();
                     foreach (LibKeyValue item in listBox.Items)
                     {
-                        if (this.entity.Items.FindFirst("Key", item.Key) == null)
-                        {
+                        //if (this.entity.Items.FindFirst("Key", item.Key) == null)
+                        //{
                             this.entity.Items.Add(item);
-                        }
+                        //}
                     }
                     #region 控件赋值
                     this.Controls[ctrNm].Text = string.Empty;
@@ -270,6 +280,44 @@ namespace BWYSDP.Controls
 
             //container.Controls["keyvalueContains"].Controls.Add(keyValueProperty);
             
+        }
+
+        private void Frombtn_Click(object sender, EventArgs e)
+        {
+            string[] allkeyvalues = ModelManager.GetAllKeyValuesNm(string.Empty);
+            Panel p = new Panel();
+            p.Dock = DockStyle.Fill;
+            p.Name = "pkeyvaluescollection";
+            p.AutoScroll = true;
+            ListBox listBox = new ListBox();
+            listBox.Dock = DockStyle.Fill;
+            listBox.Name = "keyvaluelist";
+            foreach (string kv in allkeyvalues)
+            {
+                listBox.Items.Add(kv);
+            }
+            p.Controls.Add(listBox);
+
+            FieldCollectionForm fielsform = new FieldCollectionForm(p);
+            DialogResult dialog = fielsform.ShowDialog(this);
+            if (dialog == DialogResult.OK)
+            {
+                string nm = listBox.SelectedItem.ToString();
+                LibKeyValueCollection obj = ModelManager.GetKeyValues(nm);
+
+                Control ctl = sender as Control;
+                Control container = ctl.Parent.Parent;
+                ListBox box = container.Controls["_listbox"] as ListBox;
+                if (obj != null && obj.KeyValues != null)
+                {
+                    box.Items.Clear();
+                    foreach (LibKeyValue item in obj.KeyValues)
+                    {
+                        item.FromkeyValueID = nm;
+                        box.Items.Add(item);
+                    }
+                }
+            }
         }
 
         private void ListBox_SelectedIndexChanged(object sender, EventArgs e)

@@ -77,6 +77,11 @@ namespace BWYSDP
                         break;
                     case NodeType.PermissionModel:
                         break;
+                    case NodeType.KeyValues:
+                        KeyValuesControl keyvaluectrl = new KeyValuesControl(node);
+                        keyvaluectrl.Dock = DockStyle.Fill;
+                        page.Controls.Add(keyvaluectrl);
+                        break;
                 }
             }
             
@@ -236,6 +241,12 @@ namespace BWYSDP
                             break;
                         case NodeType.PermissionModel:
                             break;
+                        case NodeType.KeyValues:
+                            ModelDesignProject.CreatModelFile(funcNode);
+                            this.treeView1.SelectedNode.Nodes.Add(funcNode);
+                            ModelDesignProject.AddXmlNode(funcNode);
+                            this.treeView1.SelectedNode = funcNode;
+                            break;
                     }
                 }
             }
@@ -258,6 +269,9 @@ namespace BWYSDP
                         break;
                     case NodeType.FormModel:
                         ((FormTemplate)page.Controls[0]).GetControlValueBindToFM();
+                        break;
+                    case NodeType.KeyValues:
+                        ((KeyValuesControl)page.Controls[0]).GetControlValueBindToKeyValue();
                         break;
                 }
                 ModelDesignProject.SaveModel(nameAndtype[0], ntype);

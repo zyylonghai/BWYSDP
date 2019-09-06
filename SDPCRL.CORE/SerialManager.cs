@@ -56,6 +56,7 @@ namespace SDPCRL.CORE
         public const string DataSourceNm = "DataSource";
         public const string FormSourceNm = "FormSource";
         public const string PermissionSourceNm = "PermissionSource";
+        public const string KeyValues = "KeyValues";
         #endregion
 
         public const string BtnCtrlNmPrefix = "btn_";

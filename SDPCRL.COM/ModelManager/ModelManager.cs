@@ -53,6 +53,10 @@ namespace SDPCRL.COM.ModelManager
         {
             return (LibFormPage)InternalInstanceModelSource(SysConstManage.FormSourceNm, fmId);
         }
+        public static LibKeyValueCollection GetKeyValues(string id)
+        {
+            return (LibKeyValueCollection)InternalInstanceModelSource(SysConstManage.KeyValues, id);
+        }
         public static T GetModelBypath<T>(string rootpath, string modelId, string package)
         {
             FileOperation fileOperation = new FileOperation();
@@ -107,6 +111,11 @@ namespace SDPCRL.COM.ModelManager
         public static string[] GetAllDataSourceNm(string path)
         {
             return InternalSearchAllModel(path, SysConstManage.DataSourceNm);
+        }
+
+        public static string[] GetAllKeyValuesNm(string path)
+        {
+            return InternalSearchAllModel(path, SysConstManage.KeyValues);
         }
         #endregion
 
@@ -246,6 +255,12 @@ namespace SDPCRL.COM.ModelManager
                 case SysConstManage .PermissionSourceNm :
 
                     return null;
+                case SysConstManage.KeyValues:
+                    if (string.IsNullOrEmpty(dsxml))
+                    {
+                        return new LibKeyValueCollection { ID = modelSourceId };
+                    }
+                    return SerializerUtils.XMLDeSerialize<LibKeyValueCollection>(dsxml);
                 default :
 
                     return null;

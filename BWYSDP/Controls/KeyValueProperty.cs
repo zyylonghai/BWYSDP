@@ -20,7 +20,7 @@ namespace BWYSDP.Controls
             ModelDesignProject.DoModelEdit += ModelDesignProject_DoModelEdit; ;
         }
 
-        private void ModelDesignProject_DoModelEdit(bool ischange)
+        private void ModelDesignProject_DoModelEdit(object sender, bool ischange)
         {
             if (ischange)
             {
