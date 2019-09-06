@@ -292,9 +292,12 @@ namespace BWYSDP.Controls
             ListBox listBox = new ListBox();
             listBox.Dock = DockStyle.Fill;
             listBox.Name = "keyvaluelist";
-            foreach (string kv in allkeyvalues)
+            if (allkeyvalues != null)
             {
-                listBox.Items.Add(kv);
+                foreach (string kv in allkeyvalues)
+                {
+                    listBox.Items.Add(kv);
+                }
             }
             p.Controls.Add(listBox);
 
@@ -325,9 +328,17 @@ namespace BWYSDP.Controls
             ListBox listBox = sender as ListBox;
             Control container = listBox.Parent; 
             KeyValueProperty keyValueProperty = container.Controls["_keyvalueProperty"] as KeyValueProperty;
-
+            
             LibKeyValue keyValue = listBox.Items[listBox.SelectedIndex] as LibKeyValue;
             keyValueProperty.SetPropertyValue(keyValue, null);
+            if (!string.IsNullOrEmpty(keyValue.FromkeyValueID))
+            {
+                keyValueProperty.Enabled = false;
+            }
+            else
+            {
+                keyValueProperty.Enabled = true;
+            }
         }
 
         #endregion
