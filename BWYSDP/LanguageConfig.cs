@@ -17,6 +17,25 @@ namespace BWYSDP
         LibDataSource ds = null;
         
         DataTable languagedt = null;
+        private DataColumn _currenlangcol = null;
+        public DataColumn CurrentLangCol
+        {
+            get {
+                if (_currenlangcol == null)
+                {
+                    DataTable dt = this.dataGridView1.DataSource as DataTable;
+                    switch (System.Globalization.CultureInfo.InstalledUICulture.Name.ToUpper())
+                    {
+                        case "ZH-CN":
+                            _currenlangcol = dt.Columns[Language.CHS.ToString()];
+                            break;
+                        case "":
+                            break;
+                    }
+                }
+                return _currenlangcol;
+            }
+        }
         public LanguageConfig()
         {
             InitializeComponent();
@@ -28,10 +47,25 @@ namespace BWYSDP
             if (LibSysUtils.Compare(tag, "language"))
             {
                 SDPCRL.COM.ModelManager.FormTemplate.LibFormPage fm = null;
+                SDPCRL.COM.ModelManager.LibKeyValueCollection keyValueCollection = null;
                 if (param.Length > 1)
                 {
                     ds = param[0] as LibDataSource;
                     fm = param[1] as SDPCRL.COM.ModelManager.FormTemplate.LibFormPage;
+                    keyValueCollection = param[2] as SDPCRL.COM.ModelManager.LibKeyValueCollection;
+                }
+                if (keyValueCollection != null)
+                {
+                    this.textBox1.Text = keyValueCollection.ID;
+                    languagedt = this.BllData.Getlanguagebydsid(keyValueCollection.ID);
+                    if (keyValueCollection.KeyValues != null)
+                    {
+                        foreach (LibKeyValue kv in keyValueCollection.KeyValues)
+                        {
+                            AddDataGridRow(string.Empty, kv.Key.ToString(), kv.Value.ToString());
+                        }
+                    }
+
                 }
                 if (ds == null) return;
                 this.textBox1.Text = ds.DSID;
@@ -51,29 +85,32 @@ namespace BWYSDP
                     DataRow row = null;
                     if (dt != null)
                     {
-                        row = dt.NewRow();
-                        row["TableNm"] = string.Empty;
-                        row["FieldNm"] = fm.FormId;
-                        row[GetLanguageCol(dt)] = fm.FormName;
-                        FilllanguageValue(languagedt, string.Empty, fm.FormId, row);
-                        dt.Rows.Add(row);
+                        AddDataGridRow(string.Empty, fm.FormId, fm.FormName);
+                        //row = dt.NewRow();
+                        //row["TableNm"] = string.Empty;
+                        //row["FieldNm"] = fm.FormId;
+                        //row[GetLanguageCol(dt)] = fm.FormName;
+                        //FilllanguageValue(languagedt, string.Empty, fm.FormId, row);
+                        //dt.Rows.Add(row);
                         foreach (SDPCRL.COM.ModelManager.FormTemplate.LibFormGroup fg in fm.FormGroups)
                         {
-                            row = dt.NewRow();
-                            row["TableNm"] = string.Empty;
-                            row["FieldNm"] = fg.FormGroupName;
-                            row[GetLanguageCol(dt)] = fg.FormGroupDisplayNm;
-                            FilllanguageValue(languagedt, string.Empty, fg.FormGroupName, row);
-                            dt.Rows.Add(row);
+                            AddDataGridRow(string.Empty, fg.FormGroupName, fg.FormGroupDisplayNm);
+                            //row = dt.NewRow();
+                            //row["TableNm"] = string.Empty;
+                            //row["FieldNm"] = fg.FormGroupName;
+                            //row[GetLanguageCol(dt)] = fg.FormGroupDisplayNm;
+                            //FilllanguageValue(languagedt, string.Empty, fg.FormGroupName, row);
+                            //dt.Rows.Add(row);
                         }
                         foreach (SDPCRL.COM.ModelManager.FormTemplate.LibGridGroup gg in fm.GridGroups)
                         {
-                            row = dt.NewRow();
-                            row["TableNm"] = string.Empty;
-                            row["FieldNm"] = gg.GridGroupName;
-                            row[GetLanguageCol(dt)] = gg.GridGroupDisplayNm;
-                            FilllanguageValue(languagedt, string.Empty, gg.GridGroupName, row);
-                            dt.Rows.Add(row);
+                            AddDataGridRow(string.Empty, gg.GridGroupName, gg.GridGroupDisplayNm);
+                            //row = dt.NewRow();
+                            //row["TableNm"] = string.Empty;
+                            //row["FieldNm"] = gg.GridGroupName;
+                            //row[GetLanguageCol(dt)] = gg.GridGroupDisplayNm;
+                            //FilllanguageValue(languagedt, string.Empty, gg.GridGroupName, row);
+                            //dt.Rows.Add(row);
                         }
                     }
                 }
@@ -137,35 +174,53 @@ namespace BWYSDP
 
         private void FillDataGrid(LibDataTableStruct dtstruct, bool isclear)
         {
-            DataRow row = null;
+            //DataRow row = null;
             DataTable dt = this.dataGridView1.DataSource as DataTable;
-            DataColumn langcol = null;
+            //DataColumn langcol = null;
             if (isclear)
                 dt.Rows.Clear();
-            if (System.Globalization.CultureInfo.InstalledUICulture.Name.ToUpper() == "ZH-CN")
-            {
-                langcol = dt.Columns[Language.CHS.ToString()];
-            }
+            //if (System.Globalization.CultureInfo.InstalledUICulture.Name.ToUpper() == "ZH-CN")
+            //{
+            //    langcol = dt.Columns[Language.CHS.ToString()];
+            //}
             //DataRow[] drs = null;
             foreach (LibField f in dtstruct.Fields)
             {
-                //if (languagedt != null) {
-                //    drs = languagedt.Select(string.Format("TableNm='{0}' and FieldNm='{1}'",dtstruct .Name ,f.Name));
-                //}
-                row = dt.NewRow();
-                row["TableNm"] = dtstruct.Name;
-                row["FieldNm"] = f.Name;
-                row[langcol] = f.DisplayName;
-                FilllanguageValue(languagedt, dtstruct.Name, f.Name, row);
-                //if (drs != null && drs.Length > 0)
-                //{
-                //    foreach (DataRow r in drs)
-                //    {
-                //        row[((Language)(Convert.ToInt32(r["LanguageId"]))).ToString()] = r["Vals"];
-                //    }
-                //}
-                dt.Rows.Add(row);
+                if (f.Items != null)
+                {
+                    foreach (LibKeyValue item in f.Items)
+                    {
+                        if (string.IsNullOrEmpty(item.FromkeyValueID))
+                        {
+                            AddDataGridRow(dtstruct.Name, string.Format("{0}_{1}", f.Name, item.Key), item.Value.ToString ());
+                            //row = dt.NewRow();
+                            //row["TableNm"] = dtstruct.Name;
+                            //row["FieldNm"] = string.Format("{0}_{1}", f.Name, item.Key);
+                            //row[langcol] = item.Value;
+                            //FilllanguageValue(languagedt, dtstruct.Name, row["FieldNm"].ToString (), row);
+                            //dt.Rows.Add(row);
+                        }
+                    }
+                }
+                AddDataGridRow(dtstruct.Name, f.Name, f.DisplayName);
+                //row = dt.NewRow();
+                //row["TableNm"] = dtstruct.Name;
+                //row["FieldNm"] = f.Name;
+                //row[langcol] = f.DisplayName;
+                //FilllanguageValue(languagedt, dtstruct.Name, f.Name, row);
+                //dt.Rows.Add(row);
             }
+        }
+        private void AddDataGridRow(string tablenm,string fieldnm,string langvalue)
+        {
+            DataTable dt = this.dataGridView1.DataSource as DataTable;
+            DataRow row = null;
+            row = dt.NewRow();
+            row["TableNm"] = tablenm;
+            row["FieldNm"] = fieldnm;
+            row[CurrentLangCol] = langvalue;
+            FilllanguageValue(languagedt, tablenm, fieldnm, row);
+            dt.Rows.Add(row);
         }
 
         private DataColumn GetLanguageCol(DataTable dt)

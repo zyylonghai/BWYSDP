@@ -309,6 +309,7 @@ namespace BWYSDP
         {
             SDPCRL.COM.ModelManager.LibDataSource ds = null;
             SDPCRL.COM.ModelManager.FormTemplate .LibFormPage fm = null;
+            SDPCRL.COM.ModelManager.LibKeyValueCollection keyvaluecollection = null;
             TabPage page = this.libTabControl1.SelectedTab;
             if (page != null)
             {
@@ -327,9 +328,12 @@ namespace BWYSDP
                             ds = ModelDesignProject.GetDataSourceById(fm.DSID);
                         }
                         break;
+                    case NodeType.KeyValues:
+                        keyvaluecollection = ModelDesignProject.GetKeyvaluesByid(nameAndtype[0]);
+                        break;
                 }
             }
-            WakeUpForm<LanguageConfig>("language",ds,fm);
+            WakeUpForm<LanguageConfig>("language", ds, fm, keyvaluecollection);
         }
         //private LibTreeNode CreateNode(LibTreeNode nodeInfo, NodeType nodetype)
         //{
