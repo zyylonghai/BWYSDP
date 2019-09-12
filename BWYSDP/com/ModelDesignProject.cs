@@ -895,6 +895,21 @@ namespace BWYSDP.com
                 return fm;
             }
         }
+
+        public static LibPermissionSource GetLibPermissionById(string permissionid)
+        {
+            if (_permissionSourceContain.ContainsKey(permissionid))
+            {
+                return (LibPermissionSource)_permissionSourceContain[permissionid];
+            }
+            else
+            {
+                LibPermissionSource p = ModelManager.GetLibPermission(permissionid);
+                _permissionSourceContain.Add(permissionid, p);
+                return p;
+            }
+        }
+
         public static LibKeyValueCollection GetKeyvaluesByid(string id)
         {
             if (_keyvaluesContain.ContainsKey(id))
@@ -952,6 +967,7 @@ namespace BWYSDP.com
                     if (_permissionSourceContain.ContainsKey(modelNm))
                     {
                         LibPermissionSource pm = (LibPermissionSource)_permissionSourceContain[modelNm];
+                        path = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.PermissionSourceNm, pm.Package, pm.PermissionID);
                         return InternalSaveModel(pm, path);
                     }
                     else

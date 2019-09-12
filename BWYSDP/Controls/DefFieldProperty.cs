@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using BWYSDP.com;
 using SDPCRL.COM.ModelManager;
-using BWYSDP.com;
 using SDPCRL.CORE;
-using System.Reflection;
-using SDPCRL.COM.ModelManager.com;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace BWYSDP.Controls
 {

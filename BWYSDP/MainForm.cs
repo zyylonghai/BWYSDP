@@ -76,6 +76,12 @@ namespace BWYSDP
                         page.Controls.Add(fmControl);
                         break;
                     case NodeType.PermissionModel:
+                        PermissionProperty permissionctrl = new PermissionProperty(node.Name);
+                        permissionctrl.Dock = DockStyle.Fill;
+                        page.Controls.Add(permissionctrl);
+                        SDPCRL.COM.ModelManager.LibPermissionSource libpermission = ModelDesignProject.GetLibPermissionById(node.Name);
+                        libpermission.Package = node.Package;
+                        permissionctrl.SetPropertyValue(libpermission, node);
                         break;
                     case NodeType.KeyValues:
                         KeyValuesControl keyvaluectrl = new KeyValuesControl(node);
@@ -269,6 +275,9 @@ namespace BWYSDP
                         break;
                     case NodeType.FormModel:
                         ((FormTemplate)page.Controls[0]).GetControlValueBindToFM();
+                        break;
+                    case NodeType.PermissionModel:
+                        ((PermissionProperty)page.Controls[0]).GetControlsValue();
                         break;
                     case NodeType.KeyValues:
                         ((KeyValuesControl)page.Controls[0]).GetControlValueBindToKeyValue();

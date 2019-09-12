@@ -157,6 +157,12 @@
     <Compile Include="Controls\LibTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\PermissionProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PermissionProperty.Designer.cs">
+      <DependentUpon>PermissionProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\RelateFieldProperty.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -95,7 +95,7 @@ namespace SDPCRL.DAL.BUS
             {
                 ReflectionOperate reflect = new ReflectionOperate(funcId);
                 object obj = reflect.InstanceTarget();
-                DALBase dalBase = ((DALBase)obj);
+                DALBase dalBase =((DALBase)obj);
                 dalBase.AccountID = accountId;
                 dalBase.ProgId = funcId;
                 Type t = obj.GetType();

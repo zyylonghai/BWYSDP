@@ -53,6 +53,11 @@ namespace SDPCRL.COM.ModelManager
         {
             return (LibFormPage)InternalInstanceModelSource(SysConstManage.FormSourceNm, fmId);
         }
+
+        public static LibPermissionSource GetLibPermission(string permissionid)
+        {
+            return (LibPermissionSource)InternalInstanceModelSource(SysConstManage.PermissionSourceNm, permissionid);
+        }
         public static LibKeyValueCollection GetKeyValues(string id)
         {
             return (LibKeyValueCollection)InternalInstanceModelSource(SysConstManage.KeyValues, id);
@@ -71,7 +76,7 @@ namespace SDPCRL.COM.ModelManager
             }
             else if (typeof(T) == typeof(LibPermissionSource))
             {
-
+                fileOperation.FilePath = string.Format(@"{0}\Models\{1}\{2}\{3}.xml", rootpath, SysConstManage.PermissionSourceNm, package, modelId);
             }
             string xmlstr = fileOperation.ReadFile();
             if (!string.IsNullOrEmpty(xmlstr))
@@ -253,8 +258,11 @@ namespace SDPCRL.COM.ModelManager
                     }
                     return SerializerUtils.XMLDeSerialize<LibFormPage>(dsxml);
                 case SysConstManage .PermissionSourceNm :
-
-                    return null;
+                    if (string.IsNullOrEmpty(dsxml))
+                    {
+                        return new LibPermissionSource { PermissionID = modelSourceId };
+                    }
+                    return SerializerUtils.XMLDeSerialize<LibPermissionSource>(dsxml); ;
                 case SysConstManage.KeyValues:
                     if (string.IsNullOrEmpty(dsxml))
                     {
