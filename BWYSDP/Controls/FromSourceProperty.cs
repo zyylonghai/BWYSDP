@@ -117,7 +117,7 @@ namespace BWYSDP.Controls
                     //foreach (LibDataTableStruct item in )
                 }
             }
-            else if (string.Compare(ctrNm, "fsfield_FromFieldNm") == 0)//来源字段
+            else if (string.Compare(ctrNm, "fsfield_FromFieldNm") == 0 || string.Compare(ctrNm, "fsfield_FromFieldDesc") == 0)//来源字段
             {
                 if (!string.IsNullOrEmpty(this.Controls["fsfield_FromStructTableNm"].Text))
                 {
@@ -138,7 +138,10 @@ namespace BWYSDP.Controls
                 if (dialog == DialogResult.OK)
                 {
                     this.Controls[ctrNm].Text = listBox.SelectedItem.ToString();
-                    this.entity.FromFieldNm = listBox.SelectedItem.ToString();
+                    if (string.Compare(ctrNm, "fsfield_FromFieldNm") == 0)
+                        this.entity.FromFieldNm = listBox.SelectedItem.ToString();
+                    else 
+                        this.entity .FromFieldDesc= listBox.SelectedItem.ToString();
                 }
             }
             else if (string.Compare(ctrNm, "fsfield_RelateFieldNm") == 0)//关联字段

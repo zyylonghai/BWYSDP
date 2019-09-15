@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 namespace SDPCRL.COM
 {
@@ -28,8 +29,8 @@ namespace SDPCRL.COM
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sdt"></param>
-        /// <param name="tdt"></param>
+        /// <param name="sdt">来源表</param>
+        /// <param name="tdt">目标表</param>
         public DataTableHelp(DataTable sdt, DataTable tdt)
         {
             this.SDataTable = sdt;
@@ -93,6 +94,27 @@ namespace SDPCRL.COM
             }
             else
                 row[colnm] = val;
+        }
+
+        public static List<T> TableToList<T>(DataTable dt)
+        {
+            if (dt == null || dt.Rows.Count == 0) return default(List<T>);
+            List<T> result = new List<T>();
+            PropertyInfo[] pinfos = typeof(T).GetProperties();
+            T entity;
+            DataColumn col = null;
+            foreach (DataRow row in dt.Rows)
+            {
+                entity = Activator.CreateInstance<T>();
+                foreach (PropertyInfo p in pinfos)
+                {
+                    col = dt.Columns[p.Name];
+                    if (col != null)
+                        p.SetValue(entity, row[col], null);
+                }
+                result.Add(entity);
+            }
+            return result;
         }
         #endregion
     }

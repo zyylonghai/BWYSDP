@@ -177,9 +177,21 @@ namespace SDPCRL.COM.ModelManager
         [LibAttribute("fsfield_FromFieldNm", LibControlType.TextAndBotton, "来源字段")]
         public string FromFieldNm { get; set; }
 
+        /// <summary>
+        /// 来源字段描述
+        /// </summary>
+        [LibAttribute("fsfield_FromFieldDesc", LibControlType.TextAndBotton, "来源字段描述")]
+        public string FromFieldDesc { get; set; }
+
+        /// <summary>
+        /// 来源表索引
+        /// </summary>
         [LibAttribute("fsfield_FromTableIndex", LibControlType.TextBox, "来源表索引",true ,true)]
         public int FromTableIndex { get; set; }
 
+        /// <summary>
+        /// 关联条件
+        /// </summary>
         [LibAttribute("fsfield_RelateCondition", LibControlType.TextBox, "关联条件")]
         public string RelateCondition { get; set; }
 

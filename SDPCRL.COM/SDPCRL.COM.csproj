@@ -68,6 +68,7 @@
     <Compile Include="ModelManager\LibPermissionSource.cs" />
     <Compile Include="ModelManager\ModelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchConditionHelper.cs" />
     <Compile Include="SQLBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
