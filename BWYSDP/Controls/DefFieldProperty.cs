@@ -32,6 +32,10 @@ namespace BWYSDP.Controls
         public override void SetPropertyValue(LibField entity, LibTreeNode node)
         {
             base.SetPropertyValue(entity, node);
+            if (entity.SysField)
+            {
+                this.Controls["fd_txtFieldName"].Enabled = false;
+            }
             //this.entity = entity;
             this._fieldNode = node;
         }

@@ -109,6 +109,10 @@ namespace SDPCRL.COM.ModelManager
         [LibAttribute("fd_Items", LibControlType.TextAndBotton, "键值对集")]
         public LibCollection<LibKeyValue> Items { get; set; }
 
+        /// <summary>是否系统字段</summary>
+        [LibAttribute("fd_combSysField", LibControlType.Combox, "是否系统字段",true ,true)]
+        public bool SysField { get; set; }
+
         
         #endregion
     }
@@ -263,5 +267,32 @@ namespace SDPCRL.COM.ModelManager
         {
             return string.Format("{0}:{1}", Key, Value);
         }
+    }
+
+    /// <summary>
+    /// 系统字段
+    /// </summary>
+    [Serializable]
+    public class LibSysField
+    {
+        /// <summary>字段名称</summary>
+        [LibAttribute("sysfd_txtFieldName", LibControlType.TextBox, "字段名称")]
+        public string Name
+        {
+            get;
+            set;
+        }
+        /// <summary>显示名称</summary>
+        [LibAttribute("sysfd_txtDisplayText", LibControlType.TextBox, "显示名称")]
+        public string DisplayName
+        {
+            get;
+            set;
+        }
+        public override string ToString()
+        {
+            return string.Format("{0}:{1}", Name, DisplayName);
+        }
+
     }
 }

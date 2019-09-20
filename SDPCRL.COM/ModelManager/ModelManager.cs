@@ -122,6 +122,17 @@ namespace SDPCRL.COM.ModelManager
         {
             return InternalSearchAllModel(path, SysConstManage.KeyValues);
         }
+
+        public static List<LibSysField> Sysfields {
+            get {
+                List<LibSysField> result = new List<LibSysField>();
+                Addsysfield(SysConstManage.sysfld_creater, "创建者", result);
+                Addsysfield(SysConstManage .sysfld_createDT, "创建时间", result);
+                Addsysfield(SysConstManage .sysfld_lastmodifier, "最后修改者", result);
+                Addsysfield(SysConstManage.sysfld_lastmodifyDT, "最后修改日期", result);
+                return result;
+            }
+        }
         #endregion
 
         #region 私有函数
@@ -287,6 +298,11 @@ namespace SDPCRL.COM.ModelManager
             fileOperation.FilePath = string.Format(@"{0}\{1}", string.IsNullOrEmpty(path) ? SysConstManage.ModelPath : path, modeltype);
             fileOperation.Encoding = LibEncoding.UTF8;
             return fileOperation.SearchFileNm();
+        }
+        private static void Addsysfield(string fieldnm,string displaynm,List<LibSysField> collections)
+        {
+            LibSysField f = new LibSysField { Name = fieldnm, DisplayName = displaynm };
+            collections.Add(f);
         }
         #endregion
     }

@@ -390,28 +390,56 @@ namespace BWYSDP.Controls
             {
                 case "CreateField": //新建字段
                     #region
-                    LibTreeNode fieldNode = new LibTreeNode();
-                    fieldNode.NodeId = Guid.NewGuid().ToString();
-                    fieldNode.Name = string.Format("{0}_Field{1}", currentTBStruct.Name, currentTBStruct.Fields.Count + 1);
-                    fieldNode.Text = fieldNode.Name;
-                    fieldNode.NodeType = NodeType.Field;
-                    curentNode.Nodes.Add(fieldNode);
+                    //LibTreeNode fieldNode = new LibTreeNode();
+                    //fieldNode.NodeId = Guid.NewGuid().ToString();
+                    //fieldNode.Name = string.Format("{0}_Field{1}", currentTBStruct.Name, currentTBStruct.Fields.Count + 1);
+                    //fieldNode.Text = fieldNode.Name;
+                    //fieldNode.NodeType = NodeType.Field;
+                    //curentNode.Nodes.Add(fieldNode);
 
-                    DefFieldProperty fieldP = new DefFieldProperty(fieldNode.NodeId);
-                    fieldP.Dock = DockStyle.Fill;
-                    this._fieldPropertylst.Add(fieldP);
-                    this.splitContainer1.Panel2.Controls.Add(fieldP);
+                    //DefFieldProperty fieldP = new DefFieldProperty(fieldNode.NodeId);
+                    //fieldP.Dock = DockStyle.Fill;
+                    //this._fieldPropertylst.Add(fieldP);
+                    //this.splitContainer1.Panel2.Controls.Add(fieldP);
 
-                    LibField field = new LibField();
-                    field.ID = fieldNode.NodeId;
-                    field.Name = fieldNode.Name;
-                    field.DisplayName = fieldNode.Text;
-                    currentTBStruct.Fields.Add(field);
+                    //LibField field = new LibField();
+                    //field.ID = fieldNode.NodeId;
+                    //field.Name = fieldNode.Name;
+                    //field.DisplayName = fieldNode.Text;
+                    //currentTBStruct.Fields.Add(field);
 
-                    fieldP.SetPropertyValue(field, fieldNode);
+                    //fieldP.SetPropertyValue(field, fieldNode);
+
+                    string fieldnm= string.Format("{0}_Field{1}", currentTBStruct.Name, currentTBStruct.Fields.Count + 1);
+                    DoCreateField(fieldnm, fieldnm, curentNode, currentTBStruct,false);
                     UpdateTabPageText();
                     break;
-                    #endregion
+                #endregion
+                case "CreatesysFields"://添加系统字段
+                    Panel p = new Panel();
+                    p.Dock = DockStyle.Fill;
+                    p.Name = "pfieldcollection";
+                    p.AutoScroll = true;
+                    ListBox listBox = new ListBox();
+                    listBox.Dock = DockStyle.Fill;
+                    listBox.SelectionMode = SelectionMode.MultiExtended;
+                    p.Controls.Add(listBox);
+                    foreach (LibSysField sysfld in ModelManager.Sysfields)
+                    {
+                        listBox.Items.Add(sysfld);
+                    }
+                    FieldCollectionForm fielsform = new FieldCollectionForm(p);
+                    DialogResult dialog = fielsform.ShowDialog(this);
+                    if (dialog == DialogResult.OK)
+                    {
+                        foreach (LibSysField item in listBox.SelectedItems)
+                        {
+
+                            DoCreateField(item.Name, item.DisplayName, curentNode, currentTBStruct,true);
+                        }
+                        UpdateTabPageText();
+                    }
+                    break;
             }
         }
 
@@ -525,6 +553,33 @@ namespace BWYSDP.Controls
             {
                 page.Text += SysConstManage.Asterisk;
             }
+        }
+
+        private void DoCreateField(string fieldnm, string displaynm, LibTreeNode currentNode, LibDataTableStruct currentTBStruct,bool sysfield)
+        {
+            LibTreeNode fieldNode = new LibTreeNode();
+            fieldNode.NodeId = Guid.NewGuid().ToString();
+            fieldNode.Name = fieldnm;
+            fieldNode.Text = displaynm;
+            fieldNode.NodeType = NodeType.Field;
+            currentNode.Nodes.Add(fieldNode);
+
+            DefFieldProperty fieldP = new DefFieldProperty(fieldNode.NodeId);
+            fieldP.Dock = DockStyle.Fill;
+            this._fieldPropertylst.Add(fieldP);
+            this.splitContainer1.Panel2.Controls.Add(fieldP);
+
+            LibField field = new LibField();
+            field.ID = fieldNode.NodeId;
+            field.Name = fieldNode.Name;
+            field.DisplayName = fieldNode.Text;
+            field.IsActive = true;
+            field.AllowNull = true;
+            field.SysField = sysfield;
+            
+            currentTBStruct.Fields.Add(field);
+
+            fieldP.SetPropertyValue(field, fieldNode);
         }
 
         //private void CreateNode()

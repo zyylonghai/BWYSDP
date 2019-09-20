@@ -89,9 +89,14 @@ namespace SDPCRL.CORE
         public const string sdp_language = "sdp_language";
         public const string sdp_userinfo = "sdp_userinfo";
 
+        //系统字段 创建者，创建日期，最后修改者，最后修改日期
+        public const string sysfld_creater = "Creater";
+        public const string sysfld_createDT = "CreateDate";
+        public const string sysfld_lastmodifier = "LastmodifyUser";
+        public const string sysfld_lastmodifyDT = "LastmodifyDate";
+
         #endregion
     }
-
     /// <summary>编码管理类接口</summary>
     public interface ISerialManager
     {

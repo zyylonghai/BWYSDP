@@ -39,6 +39,7 @@
             this.CreateField = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteField = new System.Windows.Forms.ToolStripMenuItem();
+            this.CreatesysFields = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -102,15 +103,16 @@
             // contextMenuStrip3
             // 
             this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CreateField});
+            this.CreateField,
+            this.CreatesysFields});
             this.contextMenuStrip3.Name = "contextMenuStrip3";
-            this.contextMenuStrip3.Size = new System.Drawing.Size(125, 26);
+            this.contextMenuStrip3.Size = new System.Drawing.Size(149, 48);
             this.contextMenuStrip3.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip3_ItemClicked);
             // 
             // CreateField
             // 
             this.CreateField.Name = "CreateField";
-            this.CreateField.Size = new System.Drawing.Size(124, 22);
+            this.CreateField.Size = new System.Drawing.Size(148, 22);
             this.CreateField.Text = "新建字段";
             // 
             // contextMenuStrip4
@@ -126,6 +128,12 @@
             this.deleteField.Name = "deleteField";
             this.deleteField.Size = new System.Drawing.Size(100, 22);
             this.deleteField.Text = "删除";
+            // 
+            // CreatesysFields
+            // 
+            this.CreatesysFields.Name = "CreatesysFields";
+            this.CreatesysFields.Size = new System.Drawing.Size(148, 22);
+            this.CreatesysFields.Text = "添加系统字段";
             // 
             // DataSourceControl
             // 
@@ -158,5 +166,6 @@
         private System.Windows.Forms.ToolStripMenuItem CreateField;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip4;
         private System.Windows.Forms.ToolStripMenuItem deleteField;
+        private System.Windows.Forms.ToolStripMenuItem CreatesysFields;
     }
 }
