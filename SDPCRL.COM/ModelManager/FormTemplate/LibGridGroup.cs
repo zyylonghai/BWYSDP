@@ -11,7 +11,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
     [Serializable]
     public class LibGridGroup
     {
-        /// <summary>表格组ID（唯一）</summary>
+        /// <summary>表格组ID（唯一,guid）</summary>
         [LibAttribute("grid_GridGroupID", LibControlType.TextBox, "表格组ID",true)]
         [XmlAttribute]
         public string GridGroupID

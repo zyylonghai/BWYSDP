@@ -230,6 +230,7 @@ namespace SDPCRL.DAL.COM
                 {
                     var relatetbs = list.Where(i => i.JoinTableIndex == tb.TableIndex && i.TableIndex != tb.TableIndex && i.Ignore).ToList();
                     List<int> tbindexs = null;
+                    //char tbaliasnm2 = tbaliasnm;
                     while (relatetbs != null && relatetbs.Count > 0)
                     {
                         tbindexs = new List<int>();
@@ -253,7 +254,7 @@ namespace SDPCRL.DAL.COM
                                 LibField libfd = jointb.Fields.FindFirst("Name", relatfield);
                                 //if (string.IsNullOrEmpty(libfd.RelatePrimarykey))
                                 joinfield.AppendFormat(" {0}.{1}={2}.{3} ",
-                                    tbaliasnm,
+                                    LibSysUtils.ToCharByTableIndex(jointb .JoinTableIndex ),
                                     string.IsNullOrEmpty(libfd.RelatePrimarykey) ? relatfield : libfd.RelatePrimarykey,
                                     LibSysUtils.ToCharByTableIndex(jointb.TableIndex),
                                     relatfield);
@@ -288,6 +289,7 @@ namespace SDPCRL.DAL.COM
                             #endregion
                         }
                         relatetbs = list.Where(i => tbindexs.Contains(i.JoinTableIndex) && i.TableIndex != i.JoinTableIndex && i.Ignore).ToList();
+                        //tbaliasnm2=
                     }
                 }
                 #region 字段上的来源表。

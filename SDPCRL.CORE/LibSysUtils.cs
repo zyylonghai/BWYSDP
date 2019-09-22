@@ -116,28 +116,41 @@ namespace SDPCRL.CORE
 
         public static bool Compare(object a, object b, bool ignore = false)
         {
-            if (a.GetType() != b.GetType()) { throw new LibExceptionBase("请确保比较的双反类型一致"); }
-            if (a.GetType().Equals(typeof(int)))
+            Type atype = a.GetType();
+            Type btype = b.GetType();
+            if (atype != btype) {
+                if (atype.Equals(typeof(System.DBNull)) && btype.Equals(typeof(string)))
+                {
+                    return string.IsNullOrEmpty(b.ToString ());
+                }
+                else if (atype.Equals(typeof(string)) && btype.Equals(typeof(System.DBNull)))
+                {
+                    return string.IsNullOrEmpty(a.ToString());
+                }
+                else
+                    throw new LibExceptionBase("请确保比较的双反类型一致");
+            }
+            if (atype.Equals(typeof(int)))
             {
                 return (int)a == (int)b;
             }
-            else if (a.GetType().Equals(typeof(decimal)))
+            else if (atype.Equals(typeof(decimal)))
             {
                 return (decimal)a == (decimal)b;
             }
-            else if (a.GetType().Equals(typeof(long)))
+            else if (atype.Equals(typeof(long)))
             {
                 return (long)a == (long)b;
             }
-            else if (a.GetType().Equals(typeof(float)))
+            else if (atype.Equals(typeof(float)))
             {
                 return (float)a == (float)b;
             }
-            else if (a.GetType().Equals(typeof(double)))
+            else if (atype.Equals(typeof(double)))
             {
                 return (double)a == (double)b;
             }
-            else if (a.GetType().Equals(typeof(byte)))
+            else if (atype.Equals(typeof(byte)))
             {
                 return (byte)a == (byte)b;
             }

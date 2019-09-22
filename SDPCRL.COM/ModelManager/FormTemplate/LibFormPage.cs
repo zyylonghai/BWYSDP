@@ -72,6 +72,10 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
+        /// <summary>所属包</summary>
+        [LibAttribute("fm_txtModuleOrder", LibControlType.TextBox, "模块顺序",true ,true)]
+        public LibCollection<ModuleOrder> ModuleOrder { get; set; }
+
         /// <summary>信息组集合</summary>
         public LibCollection<LibFormGroup> FormGroups
         {
@@ -85,5 +89,18 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             set;
         }
         #endregion
+    }
+
+    [Serializable]
+    public class ModuleOrder
+    {
+        public ModuleType moduleType { get; set; }
+        public string ID { get; set; }
+    }
+    [Serializable]
+    public enum ModuleType
+    {
+        FormGroup=0,
+        GridGroup=1
     }
 }

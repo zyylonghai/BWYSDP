@@ -11,7 +11,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
     [Serializable]
     public class LibFormGroup
     {
-        /// <summary>信息组ID（唯一）</summary>
+        /// <summary>信息组ID（唯一,guid）</summary>
         [LibAttribute("fm_FormGroupID", LibControlType.TextBox, "信息组ID",true)]
         [XmlAttribute]
         public string FormGroupID

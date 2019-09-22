@@ -48,61 +48,133 @@ namespace BWYSDP.Controls
             fmNode.Name = _funNode.Name;
             fmNode.Text = ReSourceManage.GetResource(NodeType.FormPanel);
             fmNode.NodeType = NodeType.FormPanel;
-
-            if (_fm.FormGroups != null)
+            if (_fm.ModuleOrder != null)
             {
-                #region 加载信息组节点及其字段子节点
-                foreach (LibFormGroup fg in _fm.FormGroups)
+                foreach (ModuleOrder item in _fm.ModuleOrder)
                 {
-                    #region 创建信息组节点
-                    LibTreeNode fmgroupNode = new LibTreeNode();
-                    fmgroupNode.NodeId = fg.FormGroupID;
-                    fmgroupNode.NodeType = NodeType.FormGroup;
-                    fmgroupNode.Name = fg.FormGroupName;
-                    fmgroupNode.Text = fg.FormGroupDisplayNm;
-                    fmNode.Nodes.Add(fmgroupNode);
-                    #endregion
-                    foreach (LibFormGroupField fd in fg.FmGroupFields)
+                    switch (item.moduleType)
                     {
-                        #region 创建信息组字段节点
-                        LibTreeNode fmgroupfield = new LibTreeNode();
-                        fmgroupfield.NodeType = NodeType.FormGroup_Field;
-                        fmgroupfield.NodeId = fd.ID;
-                        fmgroupfield.Name = fd.Name;
-                        fmgroupfield.Text = fd.Name;
-                        fmgroupNode.Nodes.Add(fmgroupfield);
-                        #endregion
+                        case ModuleType.FormGroup:
+                            if (_fm.FormGroups != null)
+                            {
+                                #region 加载信息组节点及其字段子节点
+                                foreach (LibFormGroup fg in _fm.FormGroups)
+                                {
+                                    if (fg.FormGroupID != item.ID) continue;
+                                    #region 创建信息组节点
+                                    LibTreeNode fmgroupNode = new LibTreeNode();
+                                    fmgroupNode.NodeId = fg.FormGroupID;
+                                    fmgroupNode.NodeType = NodeType.FormGroup;
+                                    fmgroupNode.Name = fg.FormGroupName;
+                                    fmgroupNode.Text = fg.FormGroupDisplayNm;
+                                    fmNode.Nodes.Add(fmgroupNode);
+                                    #endregion
+                                    if (fg.FmGroupFields != null)
+                                        foreach (LibFormGroupField fd in fg.FmGroupFields)
+                                        {
+                                            #region 创建信息组字段节点
+                                            LibTreeNode fmgroupfield = new LibTreeNode();
+                                            fmgroupfield.NodeType = NodeType.FormGroup_Field;
+                                            fmgroupfield.NodeId = fd.ID;
+                                            fmgroupfield.Name = fd.Name;
+                                            fmgroupfield.Text = fd.Name;
+                                            fmgroupNode.Nodes.Add(fmgroupfield);
+                                            #endregion
+                                        }
+                                }
+                                #endregion
+                            }
+                            break;
+                        case ModuleType.GridGroup:
+                            if (_fm.GridGroups != null)
+                            {
+                                #region 加载表格组节点及其字段子节点
+                                foreach (LibGridGroup gd in _fm.GridGroups)
+                                {
+                                    if (gd.GridGroupID != item.ID) continue;
+                                    #region 创建表格组节点
+                                    LibTreeNode gdgroupNode = new LibTreeNode();
+                                    gdgroupNode.NodeId = gd.GridGroupID;
+                                    gdgroupNode.NodeType = NodeType.GridGroup;
+                                    gdgroupNode.Name = gd.GridGroupName;
+                                    gdgroupNode.Text = gd.GridGroupDisplayNm;
+                                    fmNode.Nodes.Add(gdgroupNode);
+                                    #endregion
+                                    if (gd.GdGroupFields != null)
+                                        foreach (LibGridGroupField fd in gd.GdGroupFields)
+                                        {
+                                            #region 创建表格组字段节点
+                                            LibTreeNode gdgroupfield = new LibTreeNode();
+                                            gdgroupfield.NodeType = NodeType.GridGroup_Field;
+                                            gdgroupfield.NodeId = fd.ID;
+                                            gdgroupfield.Name = fd.Name;
+                                            gdgroupfield.Text = fd.Name;
+                                            gdgroupNode.Nodes.Add(gdgroupfield);
+                                            #endregion
+                                        }
+                                }
+                                #endregion
+                            }
+                            break;
                     }
                 }
-                #endregion
             }
-            if (_fm.GridGroups != null)
-            {
-                #region 加载表格组节点及其字段子节点
-                foreach (LibGridGroup gd in _fm.GridGroups)
-                {
-                    #region 创建表格组节点
-                    LibTreeNode gdgroupNode = new LibTreeNode();
-                    gdgroupNode.NodeId = gd.GridGroupID;
-                    gdgroupNode.NodeType = NodeType.GridGroup;
-                    gdgroupNode.Name = gd.GridGroupName;
-                    gdgroupNode.Text = gd.GridGroupDisplayNm;
-                    fmNode.Nodes.Add(gdgroupNode);
-                    #endregion
-                    foreach (LibGridGroupField fd in gd.GdGroupFields)
-                    {
-                        #region 创建表格组字段节点
-                        LibTreeNode gdgroupfield = new LibTreeNode();
-                        gdgroupfield.NodeType = NodeType.GridGroup_Field;
-                        gdgroupfield.NodeId = fd.ID;
-                        gdgroupfield.Name = fd.Name;
-                        gdgroupfield.Text = fd.Name;
-                        gdgroupNode.Nodes.Add(gdgroupfield);
-                        #endregion
-                    }
-                }
-                #endregion
-            }
+            #region 旧代码
+            //if (_fm.FormGroups != null)
+            //{
+            //    #region 加载信息组节点及其字段子节点
+            //    foreach (LibFormGroup fg in _fm.FormGroups)
+            //    {
+            //        #region 创建信息组节点
+            //        LibTreeNode fmgroupNode = new LibTreeNode();
+            //        fmgroupNode.NodeId = fg.FormGroupID;
+            //        fmgroupNode.NodeType = NodeType.FormGroup;
+            //        fmgroupNode.Name = fg.FormGroupName;
+            //        fmgroupNode.Text = fg.FormGroupDisplayNm;
+            //        fmNode.Nodes.Add(fmgroupNode);
+            //        #endregion
+            //        foreach (LibFormGroupField fd in fg.FmGroupFields)
+            //        {
+            //            #region 创建信息组字段节点
+            //            LibTreeNode fmgroupfield = new LibTreeNode();
+            //            fmgroupfield.NodeType = NodeType.FormGroup_Field;
+            //            fmgroupfield.NodeId = fd.ID;
+            //            fmgroupfield.Name = fd.Name;
+            //            fmgroupfield.Text = fd.Name;
+            //            fmgroupNode.Nodes.Add(fmgroupfield);
+            //            #endregion
+            //        }
+            //    }
+            //    #endregion
+            //}
+            //if (_fm.GridGroups != null)
+            //{
+            //    #region 加载表格组节点及其字段子节点
+            //    foreach (LibGridGroup gd in _fm.GridGroups)
+            //    {
+            //        #region 创建表格组节点
+            //        LibTreeNode gdgroupNode = new LibTreeNode();
+            //        gdgroupNode.NodeId = gd.GridGroupID;
+            //        gdgroupNode.NodeType = NodeType.GridGroup;
+            //        gdgroupNode.Name = gd.GridGroupName;
+            //        gdgroupNode.Text = gd.GridGroupDisplayNm;
+            //        fmNode.Nodes.Add(gdgroupNode);
+            //        #endregion
+            //        foreach (LibGridGroupField fd in gd.GdGroupFields)
+            //        {
+            //            #region 创建表格组字段节点
+            //            LibTreeNode gdgroupfield = new LibTreeNode();
+            //            gdgroupfield.NodeType = NodeType.GridGroup_Field;
+            //            gdgroupfield.NodeId = fd.ID;
+            //            gdgroupfield.Name = fd.Name;
+            //            gdgroupfield.Text = fd.Name;
+            //            gdgroupNode.Nodes.Add(gdgroupfield);
+            //            #endregion
+            //        }
+            //    }
+            //    #endregion
+            //}
+            #endregion
             this.treeView1.Nodes.Add(fmNode);
             this.treeView1.SelectedNode = fmNode;
         }
@@ -323,9 +395,11 @@ namespace BWYSDP.Controls
         private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            if (_fm.ModuleOrder == null) _fm.ModuleOrder = new LibCollection<ModuleOrder>();
             switch (e.ClickedItem.Name)
             {
                 case "addFormGroup": //添加信息组
+                    #region
                     //树节点
                     LibTreeNode fmgroupNode = new LibTreeNode();
                     fmgroupNode.NodeId = Guid.NewGuid().ToString();
@@ -349,8 +423,12 @@ namespace BWYSDP.Controls
                     _fm.FormGroups.Add(libfg);
 
                     fgProperty.SetPropertyValue(libfg, fmgroupNode);
+                    _fm.ModuleOrder.Add(new ModuleOrder { moduleType = ModuleType.FormGroup, ID = libfg.FormGroupID });
+                    #endregion
                     break;
+                    
                 case "addGridGroup"://添加表格组
+                    #region
                     //树节点
                     LibTreeNode gridNode = new LibTreeNode();
                     gridNode.NodeId = Guid.NewGuid().ToString();
@@ -374,7 +452,10 @@ namespace BWYSDP.Controls
                     _fm.GridGroups.Add(libgrid);
 
                     gridProperty.SetPropertyValue(libgrid, gridNode);
-
+                    _fm.ModuleOrder.Add(new ModuleOrder { moduleType = ModuleType.GridGroup, ID = libgrid.GridGroupID });
+                    #endregion
+                    break;
+                case "addbuttongroup"://添加按钮组
                     break;
             }
             UpdateTabPageText();
@@ -388,10 +469,11 @@ namespace BWYSDP.Controls
         private void contextMenuStrip2_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            LibFormGroup currentlibfmgroup = _fm.FormGroups.FindFirst("FormGroupID", curentNode.NodeId);
             switch (e.ClickedItem.Name)
             {
                 case "addfmGroupFields"://添加字段
-                    LibFormGroup currentlibfmgroup = _fm.FormGroups.FindFirst("FormGroupID", curentNode.NodeId);
+                    #region
                     if (currentlibfmgroup.FmGroupFields == null) currentlibfmgroup.FmGroupFields = new LibCollection<LibFormGroupField>();
                     LibDataSource ds = ModelDesignProject.GetDataSourceById(_fm.DSID);
                     Panel p = new Panel();
@@ -399,6 +481,7 @@ namespace BWYSDP.Controls
                     p.Name = "pfieldcollection";
                     p.AutoScroll = true;
                     TreeView tree = new TreeView();
+                    tree.AfterCheck += new TreeViewEventHandler(Gridtree_AfterCheck);
                     tree.CheckBoxes = true;
                     tree.Dock = DockStyle.Fill;
                     p.Controls.Add(tree);
@@ -441,7 +524,8 @@ namespace BWYSDP.Controls
                     if (dialog == DialogResult.OK)
                     {
                         curentNode.Nodes.Clear();
-                        currentlibfmgroup.FmGroupFields.RemoveAll();
+                        if (currentlibfmgroup.FmGroupFields != null && currentlibfmgroup.FmGroupFields.Count > 0)
+                            currentlibfmgroup.FmGroupFields.RemoveAll();
                         foreach (LibTreeNode deftb in tree.Nodes)
                         {
                             foreach (LibTreeNode tbstruct in deftb.Nodes)
@@ -514,7 +598,12 @@ namespace BWYSDP.Controls
                         }
                         UpdateTabPageText();
                     }
-
+                    #endregion
+                    break;
+                case "deletefmgroupfield"://删除
+                    _fm.FormGroups.Remove(currentlibfmgroup);
+                    curentNode.Remove();
+                    UpdateTabPageText();
                     break;
             }
         }
@@ -527,10 +616,12 @@ namespace BWYSDP.Controls
         private void contextMenuStrip3_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            LibGridGroup currentlibgridgroup = _fm.GridGroups.FindFirst("GridGroupID", curentNode.NodeId);
             switch (e.ClickedItem.Name)
             {
                 case "addgridField"://添加字段
-                    LibGridGroup currentlibgridgroup = _fm.GridGroups.FindFirst("GridGroupID", curentNode.NodeId);
+                    #region
+                   
                     if (currentlibgridgroup.GdGroupFields == null) currentlibgridgroup.GdGroupFields = new LibCollection<LibGridGroupField>();
                     LibDataSource ds = ModelDesignProject.GetDataSourceById(_fm.DSID);
                     Panel p = new Panel();
@@ -582,6 +673,9 @@ namespace BWYSDP.Controls
                     DialogResult dialog = fielsform.ShowDialog(this);
                     if (dialog == DialogResult.OK)
                     {
+                        curentNode.Nodes.Clear();
+                        if (currentlibgridgroup.GdGroupFields  != null && currentlibgridgroup.GdGroupFields.Count > 0)
+                            currentlibgridgroup.GdGroupFields.RemoveAll();
                         foreach (LibTreeNode deftb in tree.Nodes)
                         {
                             foreach (LibTreeNode tbstruct in deftb.Nodes)
@@ -620,7 +714,12 @@ namespace BWYSDP.Controls
                             }
                         }
                     }
-
+                    #endregion
+                    break;
+                case "deletegridfield"://删除
+                    _fm.GridGroups.Remove(currentlibgridgroup);
+                    curentNode.Remove();
+                    UpdateTabPageText();
                     break;
             }
         }
