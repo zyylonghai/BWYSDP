@@ -150,6 +150,11 @@ namespace SDPCRL.DAL.BUS
            SDPCRL .DAL.COM.SQLBuilder sqlbuilder = new SDPCRL.DAL.COM.SQLBuilder();
             string sql = sqlbuilder.GetSQL("FuncAssemblyInfo", new string[] { "AssemblyName", "TypeFullName" }, string.Format("FuncID='{0}'", _funcId));
             DataRow dr = _dataAccess.GetDataRow(sql);
+            if (dr == null)
+            {
+                sql = sqlbuilder.GetSQL("FuncAssemblyInfo", new string[] { "AssemblyName", "TypeFullName" }, string.Format("FuncID='{0}'", SysConstManage.sdp_webdalbase));
+                dr = _dataAccess.GetDataRow(sql);
+            }
             if (dr != null)
             {
                 _assemblyNm = dr["AssemblyName"].ToString();

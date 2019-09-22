@@ -95,6 +95,9 @@ namespace SDPCRL.CORE
         public const string sysfld_lastmodifier = "LastmodifyUser";
         public const string sysfld_lastmodifyDT = "LastmodifyDate";
 
+        //dal最基类名称
+        public const string sdp_webdalbase = "webdaldatabase";
+
         #endregion
     }
     /// <summary>编码管理类接口</summary>

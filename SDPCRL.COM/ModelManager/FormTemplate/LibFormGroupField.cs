@@ -82,6 +82,10 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         [LibAttribute("fmfld_IsNumber", LibControlType.Combox, "是否数字", true)]
         public bool IsNumber { get; set; }
 
+        /// <summary>是否只读</summary>
+        [LibAttribute("fmfld_Readonly", LibControlType.Combox, "是否只读")]
+        public bool Readonly { get; set; }
+
         ///<summary>默认值</summary>
         [LibAttribute("fmfld_DealfValue", LibControlType.TextBox, "默认值")]
         //[XmlAttribute]
