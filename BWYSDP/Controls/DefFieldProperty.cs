@@ -78,7 +78,7 @@ namespace BWYSDP.Controls
         {
             foreach (Control item in this.Controls)
             {
-                if (string.Compare("fd_txtFieldName", item.Name) == 0 || string.Compare("fd_txtDisplayText", item.Name) == 0)//字段名称控件
+                if (string.Compare("fd_txtFieldName", item.Name) == 0 || string.Compare("fd_txtAliasName", item.Name) == 0)//字段名称控件
                 {
                     item.KeyUp += new KeyEventHandler(item_KeyUp);
                 }
@@ -92,7 +92,7 @@ namespace BWYSDP.Controls
             {
                 foreach (LibTreeNode item in this._fieldNode.Parent.Nodes)
                 {
-                    if (string.Compare(ctl.Text.Trim(), item.Name, true) == 0)
+                    if (item.NodeId!=this.entity .ID && string.Compare(ctl.Text.Trim(), item.Name, true) == 0)
                     {
                         throw new LibExceptionBase("不能有重复字段名");
                     }
