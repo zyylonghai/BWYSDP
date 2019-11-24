@@ -53,6 +53,14 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             set;
         }
 
+        /// <summary>子表格组名 </summary>
+        [LibAttribute("grid_ChildGridNm", LibControlType.TextBox, "子表格组")]
+        [XmlAttribute]
+        public string ChildGridNm
+        {
+            get;set;
+        }
+
         /// <summary>字段集合</summary>
         public LibCollection<LibGridGroupField> GdGroupFields
         {

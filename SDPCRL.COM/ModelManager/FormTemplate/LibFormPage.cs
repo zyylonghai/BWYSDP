@@ -72,7 +72,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
-        /// <summary>所属包</summary>
+        /// <summary>页面模块顺序</summary>
         [LibAttribute("fm_txtModuleOrder", LibControlType.TextBox, "模块顺序",true ,true)]
         public LibCollection<ModuleOrder> ModuleOrder { get; set; }
 
