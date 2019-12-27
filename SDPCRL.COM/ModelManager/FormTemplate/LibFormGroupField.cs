@@ -115,6 +115,12 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         Search =4,
         ///<summary>大文本框</summary>
         [LibReSource("大文本框")]
-        Textarea =5
+        Textarea =5,
+        ///<summary>图片控件</summary>
+        [LibReSource("图片控件")]
+        Img =6,
+        ///<summary>文件上传控件</summary>
+        [LibReSource("文件上传控件")]
+        FileUpload =7
     }
 }

@@ -144,7 +144,10 @@ namespace SDPCRL.COM.ModelManager
         Long=6,
         /// <summary>文本型</summary>
         [LibReSource("文本型-Text")]
-        Text =7
+        Text =7,
+        /// <summary>图片类型</summary>
+        [LibReSource("图片类型-Img")]
+        Img = 8
     }
 
     /// <summary>
