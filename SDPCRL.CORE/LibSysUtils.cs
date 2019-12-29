@@ -119,16 +119,24 @@ namespace SDPCRL.CORE
             Type atype = a.GetType();
             Type btype = b.GetType();
             if (atype != btype) {
+                if (atype.Equals(typeof(System.DBNull)) && btype.Equals(typeof(byte[])))
+                {
+                    return ((byte[])b).Length == 0;
+                }
+                else if (btype.Equals(typeof(System.DBNull)) && atype.Equals(typeof(byte[])))
+                {
+                    return ((byte[])a).Length == 0;
+                }
                 if (atype.Equals(typeof(System.DBNull)) && btype.Equals(typeof(string)))
                 {
-                    return string.IsNullOrEmpty(b.ToString ());
+                    return string.IsNullOrEmpty(b.ToString());
                 }
                 else if (atype.Equals(typeof(string)) && btype.Equals(typeof(System.DBNull)))
                 {
                     return string.IsNullOrEmpty(a.ToString());
                 }
                 else
-                    throw new LibExceptionBase("请确保比较的双反类型一致");
+                    throw new LibExceptionBase("请确保比较的双方类型一致");
             }
             if (atype.Equals(typeof(int)))
             {
@@ -154,9 +162,12 @@ namespace SDPCRL.CORE
             {
                 return (byte)a == (byte)b;
             }
+            else if (atype.Equals(typeof(byte[])))
+            {
+                return string.Compare(Convert.ToBase64String((byte[])a), Convert.ToBase64String((byte[])b), ignore) == 0;
+            }
             else
             {
-
                 return string.Compare(a.ToString(), b.ToString(), ignore) == 0;
             }
         }

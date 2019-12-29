@@ -206,6 +206,9 @@ namespace SDPCRL.COM
                                     if (!f.AutoIncrement)
                                         col.DefaultValue = string.Empty;
                                     break;
+                                case LibFieldType.Img:
+                                    col.DataType = typeof(byte[]);
+                                    break;
                             }
                             if (tb.PrimaryKey.Contains(f.Name))//属于主键
                             {

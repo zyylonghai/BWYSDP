@@ -105,6 +105,11 @@ namespace SDPCRL.DAL.BUS
                 fieldtypes.AppendFormat("bit");
                 fieldvalue.Append(string.Format("@{0}", parmNm) + "={" + index + "}");
             }
+            else if (col.DataType == typeof(byte[]))
+            {
+                fieldtypes.AppendFormat("image");
+                fieldvalue.Append(string.Format("@{0}", parmNm) + "='{" + index + "}'");
+            }
         }
         #endregion
 
@@ -147,6 +152,7 @@ namespace SDPCRL.DAL.BUS
                         fields = new StringBuilder();
                         fieldtypes = new StringBuilder();
                         fieldvalue = new StringBuilder();
+                        List<int> bytecols = new List<int>();
                         foreach (DataColumn col in dt.Columns)
                         {
                             colextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<ColExtendedProperties>(col.ExtendedProperties[SysConstManage.ExtProp].ToString());
@@ -159,6 +165,10 @@ namespace SDPCRL.DAL.BUS
                             }
                             fields.AppendFormat("@{0}", col.ColumnName);
                             fieldtypes.AppendFormat("@{0} ", col.ColumnName);
+                            if (col.DataType == typeof(byte[]))
+                            {
+                                bytecols.Add(dt.Columns.IndexOf(col));
+                            }
                             SetColmnTypeAndValue(col,col.ColumnName, colextprop, fieldtypes, fieldvalue, dt.Columns.IndexOf(col));
                             #region 旧代码
                             //if (col.DataType == typeof(string))
@@ -208,10 +218,20 @@ namespace SDPCRL.DAL.BUS
                             switch (row.RowState)
                             {
                                 case DataRowState.Added:
+                                    object[] vals = new object[row.ItemArray.Length];
+                                    if (bytecols.Count > 0)
+                                    {
+                                        for(int a=0;a<row .ItemArray .Length;a++)
+                                        {
+                                            vals[a] = bytecols.Contains(a)? Convert .ToBase64String((byte[])row.ItemArray[a]) :row.ItemArray[a];
+                                        }
+                                    }
+                                    else
+                                        vals = row.ItemArray;
                                     sql = string.Format(string.Format("EXEC sp_executesql N'insert into {0} values({1}) ',N'{2}',{3}",
                                                                       dt.TableName, fields.ToString(), fieldtypes.ToString(), fieldvalue.ToString()
-                                                                      ), 
-                                                        row.ItemArray);
+                                                                      ),
+                                                        vals);
                                     break;
                                 case DataRowState.Modified:
                                     updateFields = new StringBuilder();
@@ -242,7 +262,12 @@ namespace SDPCRL.DAL.BUS
                                             updatefldtypes.AppendFormat("@{0} ", c.ColumnName);
                                             SetColmnTypeAndValue(c,c.ColumnName , colextprop, updatefldtypes, updatefldval, index);
                                             index++;
-                                            updatevalue.Add(row[c, DataRowVersion.Current]);
+                                            if (c.DataType.Equals(typeof(byte[])))
+                                            {
+                                                updatevalue.Add(Convert.ToBase64String((byte[])row[c, DataRowVersion.Current]));
+                                            }
+                                            else
+                                                updatevalue.Add(row[c, DataRowVersion.Current]);
                                         }
                                         if (dt.PrimaryKey.Contains(c))
                                         {
