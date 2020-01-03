@@ -328,6 +328,9 @@ namespace BWYSDP.com
                                 case LibFieldType.Text:
                                     builder.AppendFormat("[{0}]", "ntext");
                                     break;
+                                case LibFieldType.Img:
+                                    builder.AppendFormat("[{0}]", "image");
+                                    break;
                             }
                             builder.AppendFormat("{0} ", field.AllowNull ? "NULL" : "NOT NULL");
                         }
@@ -375,6 +378,9 @@ namespace BWYSDP.com
                                 break;
                             case LibFieldType.Text:
                                 builder.AppendFormat("[{0}]", "ntext");
+                                break;
+                            case LibFieldType.Img:
+                                builder.AppendFormat("[{0}]", "image");
                                 break;
                         }
                         builder.AppendFormat("{0} ", field.AllowNull ? "NULL" : "NOT NULL");
