@@ -223,7 +223,7 @@ namespace SDPCRL.DAL.BUS
                                     {
                                         for(int a=0;a<row .ItemArray .Length;a++)
                                         {
-                                            vals[a] = bytecols.Contains(a)? Convert .ToBase64String((byte[])row.ItemArray[a]) :row.ItemArray[a];
+                                            vals[a] = bytecols.Contains(a)&&row .ItemArray[a]!=DBNull.Value? Convert .ToBase64String((byte[])row.ItemArray[a]) :row.ItemArray[a];
                                         }
                                     }
                                     else
