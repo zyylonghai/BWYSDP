@@ -1,5 +1,6 @@
 ﻿using SDPCRL.COM;
 using SDPCRL.COM.ModelManager;
+using SDPCRL.COM.ModelManager.FormTemplate;
 using SDPCRL.CORE;
 using System;
 using System.Collections.Generic;
@@ -105,6 +106,10 @@ namespace BWYSDP
                         foreach (SDPCRL.COM.ModelManager.FormTemplate.LibGridGroup gg in fm.GridGroups)
                         {
                             AddDataGridRow(string.Empty, gg.GridGroupName, gg.GridGroupDisplayNm);
+                            foreach (LibGridButton item in gg.GdButtons)
+                            {
+                                AddDataGridRow(string.Empty, item.GridButtonName, item.GridButtonDisplayNm);
+                            }
                             //row = dt.NewRow();
                             //row["TableNm"] = string.Empty;
                             //row["FieldNm"] = gg.GridGroupName;

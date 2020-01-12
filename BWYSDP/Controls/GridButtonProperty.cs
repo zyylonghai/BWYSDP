@@ -6,34 +6,32 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using SDPCRL.COM.ModelManager;
+using SDPCRL.COM.ModelManager.FormTemplate;
 using BWYSDP.com;
 
 namespace BWYSDP.Controls
 {
-    public partial class KeyValueProperty : BaseUserControl<LibKeyValue>
+    public partial class GridButtonProperty : BaseUserControl<LibGridButton>
     {
-        public KeyValueProperty()
+        public GridButtonProperty()
         {
             InitializeComponent();
             InitializeControls();
             ModelDesignProject.DoModelEdit += ModelDesignProject_DoModelEdit;
         }
-
         private void ModelDesignProject_DoModelEdit(object sender, bool ischange)
         {
             if (ischange)
             {
                 if (this.entity != null)
                 {
-                    this.entity.Key = this.Controls["keyval_Key"].Text;
-                    this.entity.Value = this.Controls["keyval_Value"].Text;
-                    this.entity.Remark = this.Controls["keyval_Remark"].Text;
+                    this.entity.GridButtonName = this.Controls["gridbtn_GridButtonName"].Text;
+                    this.entity.GridButtonDisplayNm = this.Controls["gridbtn_GridButtonDisplayNm"].Text;
+                    this.entity.GridButtonEvent = this.Controls["gridbtn_GridButtonEvent"].Text;
                 }
             }
         }
-
-        public override void SetPropertyValue(LibKeyValue entity, LibTreeNode node)
+        public override void SetPropertyValue(LibGridButton entity, LibTreeNode node)
         {
             base.SetPropertyValue(entity, node);
         }

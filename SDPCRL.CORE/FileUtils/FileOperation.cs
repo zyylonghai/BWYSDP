@@ -132,6 +132,38 @@ namespace SDPCRL.CORE.FileUtils
             }
             return null;
         }
+
+        public List<LibFileInfo> SearchAllFileInfo()
+        {
+            string filepath = string.Empty;
+            List<LibFileInfo> result = new List<LibFileInfo>();
+            DirectoryInfo directory = null;
+            FileInfo[] files = null;
+            LibFileInfo f = null;
+            if (IsDirectory)
+            {
+                string[] dirpath = Directory.GetDirectories(_filePath);
+                string[] folders = null;
+                foreach (string path in dirpath)
+                {
+                    folders = path.Split('\\');
+                    directory = new DirectoryInfo(path);
+                    files = directory.GetFiles();
+                    foreach (FileInfo info in files)
+                    {
+                        f = new LibFileInfo();
+                        f.FullFileName = info.Name;
+                        f.Path = info.FullName;
+                        f.FileName = info.Name.Replace(info.Extension, "");
+
+                        f.Folder = folders == null ? string.Empty : folders[folders.Length - 1];
+                        result.Add(f);
+                    }
+                }
+                return result;
+            }
+            return null;
+        }
         public void CreateFile(bool cover)
         {
             FileStream stream=null;
@@ -208,5 +240,19 @@ namespace SDPCRL.CORE.FileUtils
         UTF32 = 3,
         Unicode = 4,
         ASCII = 5
+    }
+
+    public class LibFileInfo
+    {
+        /// <summary>所在文件夹</summary>
+        public string Folder { get; set; }
+
+        /// <summary>文件名(不包含后缀)</summary>
+        public string FileName { get; set; }
+        /// <summary> 文件名(包含后缀) </summary>
+        public string FullFileName { get; set; }
+        /// <summary> 完整路径</summary>
+        public string Path { get; set; }
+
     }
 }

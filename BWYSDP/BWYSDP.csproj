@@ -130,6 +130,12 @@
     <Compile Include="Controls\FromSourceProperty.Designer.cs">
       <DependentUpon>FromSourceProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GridButtonProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GridButtonProperty.Designer.cs">
+      <DependentUpon>GridButtonProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GridGroupFieldProperty.cs">
       <SubType>UserControl</SubType>
     </Compile>

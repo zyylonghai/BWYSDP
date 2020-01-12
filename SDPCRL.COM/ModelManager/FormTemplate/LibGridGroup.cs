@@ -53,6 +53,26 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             set;
         }
 
+        /// <summary>是否有新增行按钮</summary>
+        [LibAttribute("grid_HasAddRowButton", LibControlType.Combox, "新增按钮")]
+        [XmlAttribute]
+        public bool HasAddRowButton { get; set; }
+
+        /// <summary>是否有编辑行按钮</summary>
+        [LibAttribute("grid_HasEditRowButton", LibControlType.Combox, "编辑按钮")]
+        [XmlAttribute]
+
+        public bool HasEditRowButton { get; set; }
+
+        /// <summary>是否有删除行按钮</summary>
+        [LibAttribute("grid_HasDeletRowButton", LibControlType.Combox, "删除按钮")]
+        [XmlAttribute]
+        public bool HasDeletRowButton { get; set; }
+
+        /// <summary>自定义按钮</summary>
+        [LibAttribute("grid_GdButtons", LibControlType.TextAndBotton, "自定义按钮")]
+        public LibCollection<LibGridButton> GdButtons { get; set; }
+
         /// <summary>子表格组名 </summary>
         [LibAttribute("grid_ChildGridNm", LibControlType.TextBox, "子表格组")]
         [XmlAttribute]
