@@ -88,6 +88,15 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
+
+        /// <summary>按钮组集合</summary>
+        public LibCollection<LibButtonGroup> BtnGroups 
+        { 
+            get; 
+            set; 
+        }
+
+
         #endregion
     }
 
@@ -101,6 +110,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
     public enum ModuleType
     {
         FormGroup=0,
-        GridGroup=1
+        GridGroup=1,
+        ButtonGroup=2
     }
 }

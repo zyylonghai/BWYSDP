@@ -57,6 +57,8 @@
     <Compile Include="ModelManager\DBModel.cs" />
     <Compile Include="ModelManager\DefineTable.cs" />
     <Compile Include="ModelManager\DSList.cs" />
+    <Compile Include="ModelManager\FormTemplate\LibButton.cs" />
+    <Compile Include="ModelManager\FormTemplate\LibButtonGroup.cs" />
     <Compile Include="ModelManager\FormTemplate\LibFormGroup.cs" />
     <Compile Include="ModelManager\FormTemplate\LibFormGroupField.cs" />
     <Compile Include="ModelManager\FormTemplate\LibFormPage.cs" />
