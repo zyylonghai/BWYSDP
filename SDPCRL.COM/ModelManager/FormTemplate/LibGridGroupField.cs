@@ -88,6 +88,12 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         {
             get;set;
         }
+        /// <summary>是否来源数据所关联出来的字段</summary>
+        [LibAttribute("gridgfld_IsFromSourceField", LibControlType.Combox, "是否来源关联出来的字段",true ,true)]
+        public bool IsFromSourceField
+        {
+            get;set;
+        }
 
         ///<summary>默认值</summary>
         [LibAttribute("gridgfld_DealfValue", LibControlType.TextBox, "默认值")]

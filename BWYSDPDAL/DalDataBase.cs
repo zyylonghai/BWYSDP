@@ -65,7 +65,7 @@ namespace BWYSDPDAL
             {
                 return row["Vals"].ToString();
             }
-            return string.Empty;
+            return fieldid;
         }
         public DataTable GetFieldDescByDSID(string dsid)
         {

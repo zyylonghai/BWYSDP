@@ -411,7 +411,7 @@ namespace BWYSDP.Controls
                     //fieldP.SetPropertyValue(field, fieldNode);
 
                     string fieldnm= string.Format("{0}_Field{1}", currentTBStruct.Name, currentTBStruct.Fields.Count + 1);
-                    DoCreateField(fieldnm, fieldnm, curentNode, currentTBStruct,false);
+                    DoCreateField(fieldnm, fieldnm,null , curentNode, currentTBStruct);
                     UpdateTabPageText();
                     break;
                 #endregion
@@ -435,7 +435,7 @@ namespace BWYSDP.Controls
                         foreach (LibSysField item in listBox.SelectedItems)
                         {
 
-                            DoCreateField(item.Name, item.DisplayName, curentNode, currentTBStruct,true);
+                            DoCreateField(string.Empty ,string.Empty ,item, curentNode, currentTBStruct);
                         }
                         UpdateTabPageText();
                     }
@@ -555,12 +555,12 @@ namespace BWYSDP.Controls
             }
         }
 
-        private void DoCreateField(string fieldnm, string displaynm, LibTreeNode currentNode, LibDataTableStruct currentTBStruct,bool sysfield)
+        private void DoCreateField(string fieldnm, string displaynm,LibSysField sysfd, LibTreeNode currentNode, LibDataTableStruct currentTBStruct)
         {
             LibTreeNode fieldNode = new LibTreeNode();
             fieldNode.NodeId = Guid.NewGuid().ToString();
-            fieldNode.Name = fieldnm;
-            fieldNode.Text = displaynm;
+            fieldNode.Name = sysfd!=null ? sysfd.Name : fieldnm;
+            fieldNode.Text = sysfd != null ? sysfd.DisplayName : displaynm;
             fieldNode.NodeType = NodeType.Field;
             currentNode.Nodes.Add(fieldNode);
 
@@ -573,9 +573,14 @@ namespace BWYSDP.Controls
             field.ID = fieldNode.NodeId;
             field.Name = fieldNode.Name;
             field.DisplayName = fieldNode.Text;
+            if (sysfd!=null)
+            {
+                field.FieldType = sysfd.FieldType;
+                field.FieldLength = sysfd.FieldLength;
+            }
             field.IsActive = true;
             field.AllowNull = true;
-            field.SysField = sysfield;
+            field.SysField = sysfd!=null;
             
             currentTBStruct.Fields.Add(field);
 

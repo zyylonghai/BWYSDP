@@ -10,6 +10,7 @@ using BWYSDP.com;
 using SDPCRL.COM.ModelManager.FormTemplate;
 using SDPCRL.CORE;
 using SDPCRL.COM.ModelManager;
+using System.Reflection;
 
 namespace BWYSDP.Controls
 {
@@ -23,6 +24,9 @@ namespace BWYSDP.Controls
 
         private List<GridGroupProperty> _gridgrouplst = null;
         private List<GridGroupFieldProperty> _gridgroupfieldlst = null;
+
+        private List<ButtonGroupProperty> _btngrouplst = null;
+        private List<ButtonProperty> _btnlst = null;
         public FormTemplate(LibTreeNode funcNode)
         {
             this._funNode = funcNode;
@@ -34,6 +38,8 @@ namespace BWYSDP.Controls
             _formgroupfieldlst = new List<FormGroupFieldProperty>();
             _gridgrouplst = new List<GridGroupProperty>();
             _gridgroupfieldlst = new List<GridGroupFieldProperty>();
+            _btngrouplst = new List<ButtonGroupProperty>();
+            _btnlst = new List<ButtonProperty>();
             this.splitContainer1.Panel2.Controls.Add(_fmProperty);
 
             this.treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
@@ -114,6 +120,35 @@ namespace BWYSDP.Controls
                                         }
                                 }
                                 #endregion
+                            }
+                            break;
+                        case ModuleType.ButtonGroup:
+                            if (_fm.BtnGroups != null)
+                            {
+                                foreach (LibButtonGroup btngroup in _fm.BtnGroups)
+                                {
+                                    if (btngroup.BtnGroupID != item.ID) continue;
+                                    #region 创建按钮组节点
+                                    LibTreeNode btngroupNode = new LibTreeNode();
+                                    btngroupNode.NodeId = btngroup.BtnGroupID;
+                                    btngroupNode.NodeType = NodeType.ButtonGroup;
+                                    btngroupNode.Name = btngroup.BtnGroupName;
+                                    btngroupNode.Text = btngroup.BtnGroupDisplayNm;
+                                    fmNode.Nodes.Add(btngroupNode);
+                                    #endregion 
+                                    if (btngroup.LibButtons != null)
+                                    {
+                                        foreach (LibButton btn in btngroup.LibButtons)
+                                        {
+                                            LibTreeNode btnnode = new LibTreeNode();
+                                            btnnode.NodeId = btn.LibButtonID;
+                                            btnnode.NodeType = NodeType.BtnGroup_button;
+                                            btnnode.Name = btn.LibButtonName;
+                                            btnnode.Text = btn.LibButtonDisplayNm;
+                                            btngroupNode.Nodes.Add(btnnode);
+                                        }
+                                    }
+                                }
                             }
                             break;
                     }
@@ -306,6 +341,47 @@ namespace BWYSDP.Controls
                         }
                     }
                     break;
+                case NodeType.ButtonGroup:
+                    if (_btngrouplst != null)
+                    {
+                        var exist = _btngrouplst.FirstOrDefault(i => i.Name == libnode.NodeId);
+                        if (exist != null)
+                        {
+                            SetPanel2ControlsVisible(exist);
+                        }
+                        else
+                        {
+                            ButtonGroupProperty btngroup = new ButtonGroupProperty(libnode.NodeId);
+                            btngroup.Dock = DockStyle.Fill;
+                            this._btngrouplst.Add(btngroup);
+                            this.splitContainer1.Panel2.Controls.Add(btngroup);
+                            btngroup.SetPropertyValue(_fm.BtnGroups.FindFirst("BtnGroupID", libnode.NodeId), libnode);
+
+                            SetPanel2ControlsVisible(btngroup);
+                        }
+                    }
+                    break;
+                case NodeType.BtnGroup_button:
+                    if (_btnlst != null)
+                    {
+                        var exist = _btnlst.FirstOrDefault(i => i.Name == libnode.NodeId);
+                        if (exist != null)
+                        {
+                            SetPanel2ControlsVisible(exist);
+                        }
+                        else
+                        {
+                            ButtonProperty btn = new ButtonProperty(libnode.NodeId);
+                            btn.Dock = DockStyle.Fill;
+                            this._btnlst.Add(btn);
+                            this.splitContainer1.Panel2.Controls.Add(btn);
+                            LibButtonGroup btngroup = _fm.BtnGroups.FindFirst("BtnGroupID", ((LibTreeNode)libnode.Parent).NodeId);
+                            btn.SetPropertyValue(btngroup.LibButtons.FindFirst("LibButtonID", libnode.NodeId), libnode);
+
+                            SetPanel2ControlsVisible(btn);
+                        }
+                    }
+                    break;
             }
         }
 
@@ -356,6 +432,14 @@ namespace BWYSDP.Controls
             {
                 gdfield.GetControlsValue();
             }
+            foreach (ButtonGroupProperty btngroup in _btngrouplst)
+            {
+                btngroup.GetControlsValue();
+            }
+            foreach (ButtonProperty btn in _btnlst)
+            {
+                btn.GetControlsValue();
+            }
         }
         #endregion
 
@@ -376,10 +460,10 @@ namespace BWYSDP.Controls
                 {
                     libnode.ContextMenuStrip = this.contextMenuStrip3;
                 }
-                //else if (libnode.NodeType == NodeType.Field)
-                //{
-                //    libnode.ContextMenuStrip = this.contextMenuStrip4;
-                //}
+                else if (libnode.NodeType == NodeType.ButtonGroup)
+                {
+                    libnode.ContextMenuStrip = this.contextMenuStrip4;
+                }
                 this.treeView1.SelectedNode = libnode;
             }
             else
@@ -399,63 +483,95 @@ namespace BWYSDP.Controls
             switch (e.ClickedItem.Name)
             {
                 case "addFormGroup": //添加信息组
-                    #region
-                    //树节点
-                    LibTreeNode fmgroupNode = new LibTreeNode();
-                    fmgroupNode.NodeId = Guid.NewGuid().ToString();
-                    fmgroupNode.NodeType = NodeType.FormGroup;
                     if (_fm.FormGroups == null) _fm.FormGroups = new LibCollection<LibFormGroup>();
-                    fmgroupNode.Name = string.Format("FormGroup{0}", _fm.FormGroups.Count + 1);
-                    fmgroupNode.Text = string.Format("{0}{1}", ReSourceManage.GetResource(NodeType.FormGroup), _fm.FormGroups.Count + 1);
-                    curentNode.Nodes.Add(fmgroupNode);
+                    AddNodeBindEntityToCtr<LibFormGroup, FormGroupProperty>(_formgrouplst, _fm.FormGroups, "FormGroupID", "FormGroupName", "FormGroupDisplayNm", "FormGroup", curentNode, NodeType.FormGroup, ModuleType.FormGroup);
+                    #region
+                    ////树节点
+                    //LibTreeNode fmgroupNode = new LibTreeNode();
+                    //fmgroupNode.NodeId = Guid.NewGuid().ToString();
+                    //fmgroupNode.NodeType = NodeType.FormGroup;
+                    //if (_fm.FormGroups == null) _fm.FormGroups = new LibCollection<LibFormGroup>();
+                    //fmgroupNode.Name = string.Format("FormGroup{0}", _fm.FormGroups.Count + 1);
+                    //fmgroupNode.Text = string.Format("{0}{1}", ReSourceManage.GetResource(NodeType.FormGroup), _fm.FormGroups.Count + 1);
+                    //curentNode.Nodes.Add(fmgroupNode);
 
-                    //控件属性
-                    FormGroupProperty fgProperty = new FormGroupProperty(fmgroupNode.NodeId);
-                    fgProperty.Dock = DockStyle.Fill;
-                    _formgrouplst.Add(fgProperty);
-                    this.splitContainer1.Panel2.Controls.Add(fgProperty);
+                    ////控件属性
+                    //FormGroupProperty fgProperty = new FormGroupProperty(fmgroupNode.NodeId);
+                    //fgProperty.Dock = DockStyle.Fill;
+                    //_formgrouplst.Add(fgProperty);
+                    //this.splitContainer1.Panel2.Controls.Add(fgProperty);
 
-                    //对应实体
-                    LibFormGroup libfg = new LibFormGroup();
-                    libfg.FormGroupID = fmgroupNode.NodeId;
-                    libfg.FormGroupName = fmgroupNode.Name;
-                    libfg.FormGroupDisplayNm = fmgroupNode.Text;
-                    _fm.FormGroups.Add(libfg);
+                    ////对应实体
+                    //LibFormGroup libfg = new LibFormGroup();
+                    //libfg.FormGroupID = fmgroupNode.NodeId;
+                    //libfg.FormGroupName = fmgroupNode.Name;
+                    //libfg.FormGroupDisplayNm = fmgroupNode.Text;
+                    //_fm.FormGroups.Add(libfg);
 
-                    fgProperty.SetPropertyValue(libfg, fmgroupNode);
-                    _fm.ModuleOrder.Add(new ModuleOrder { moduleType = ModuleType.FormGroup, ID = libfg.FormGroupID });
+                    //fgProperty.SetPropertyValue(libfg, fmgroupNode);
+                    //_fm.ModuleOrder.Add(new ModuleOrder { moduleType = ModuleType.FormGroup, ID = libfg.FormGroupID });
                     #endregion
                     break;
                     
                 case "addGridGroup"://添加表格组
-                    #region
-                    //树节点
-                    LibTreeNode gridNode = new LibTreeNode();
-                    gridNode.NodeId = Guid.NewGuid().ToString();
-                    gridNode.NodeType = NodeType.GridGroup;
                     if (_fm.GridGroups == null) _fm.GridGroups = new LibCollection<LibGridGroup>();
-                    gridNode.Name = string.Format("GridGroup{0}", _fm.GridGroups.Count + 1);
-                    gridNode.Text = string.Format("{0}{1}", ReSourceManage.GetResource(NodeType.GridGroup), _fm.GridGroups.Count + 1);
-                    curentNode.Nodes.Add(gridNode);
+                    AddNodeBindEntityToCtr<LibGridGroup, GridGroupProperty>(_gridgrouplst, _fm.GridGroups, "GridGroupID", "GridGroupName", "GridGroupDisplayNm", "GridGroup", curentNode, NodeType.GridGroup, ModuleType.GridGroup);
+                    #region
+                    ////树节点
+                    //LibTreeNode gridNode = new LibTreeNode();
+                    //gridNode.NodeId = Guid.NewGuid().ToString();
+                    //gridNode.NodeType = NodeType.GridGroup;
+                    //if (_fm.GridGroups == null) _fm.GridGroups = new LibCollection<LibGridGroup>();
+                    //gridNode.Name = string.Format("GridGroup{0}", _fm.GridGroups.Count + 1);
+                    //gridNode.Text = string.Format("{0}{1}", ReSourceManage.GetResource(NodeType.GridGroup), _fm.GridGroups.Count + 1);
+                    //curentNode.Nodes.Add(gridNode);
 
-                    //控件属性
-                    GridGroupProperty gridProperty = new GridGroupProperty(gridNode.NodeId);
-                    gridProperty.Dock = DockStyle.Fill;
-                    _gridgrouplst.Add(gridProperty);
-                    this.splitContainer1.Panel2.Controls.Add(gridProperty);
+                    ////控件属性
+                    //GridGroupProperty gridProperty = new GridGroupProperty(gridNode.NodeId);
+                    //gridProperty.Dock = DockStyle.Fill;
+                    //_gridgrouplst.Add(gridProperty);
+                    //this.splitContainer1.Panel2.Controls.Add(gridProperty);
 
-                    //对应实体
-                    LibGridGroup libgrid = new LibGridGroup();
-                    libgrid.GridGroupID = gridNode.NodeId;
-                    libgrid.GridGroupName = gridNode.Name;
-                    libgrid.GridGroupDisplayNm = gridNode.Text;
-                    _fm.GridGroups.Add(libgrid);
+                    ////对应实体
+                    //LibGridGroup libgrid = new LibGridGroup();
+                    //libgrid.GridGroupID = gridNode.NodeId;
+                    //libgrid.GridGroupName = gridNode.Name;
+                    //libgrid.GridGroupDisplayNm = gridNode.Text;
+                    //_fm.GridGroups.Add(libgrid);
 
-                    gridProperty.SetPropertyValue(libgrid, gridNode);
-                    _fm.ModuleOrder.Add(new ModuleOrder { moduleType = ModuleType.GridGroup, ID = libgrid.GridGroupID });
+                    //gridProperty.SetPropertyValue(libgrid, gridNode);
+                    //_fm.ModuleOrder.Add(new ModuleOrder { moduleType = ModuleType.GridGroup, ID = libgrid.GridGroupID });
                     #endregion
                     break;
                 case "addbuttongroup"://添加按钮组
+                    if (_fm.BtnGroups == null) _fm.BtnGroups = new LibCollection<LibButtonGroup>();
+                    AddNodeBindEntityToCtr<LibButtonGroup, ButtonGroupProperty>(_btngrouplst, _fm.BtnGroups, "BtnGroupID", "BtnGroupName", "BtnGroupDisplayNm", "BtnGroup", curentNode, NodeType.ButtonGroup, ModuleType.ButtonGroup);
+                    #region 
+                    ////树节点
+                    //LibTreeNode btngroupNode = new LibTreeNode();
+                    //btngroupNode.NodeId = Guid.NewGuid().ToString();
+                    //btngroupNode.NodeType = NodeType.ButtonGroup;
+                    //if (_fm.BtnGroups == null) _fm.BtnGroups = new LibCollection<LibButtonGroup>();
+                    //btngroupNode.Name = string.Format("BtnGroup{0}", _fm.BtnGroups.Count + 1);
+                    //btngroupNode.Text = string.Format("{0}{1}", ReSourceManage.GetResource(NodeType.ButtonGroup), _fm.BtnGroups.Count + 1);
+                    //curentNode.Nodes.Add(btngroupNode);
+
+                    ////控件属性
+                    //ButtonGroupProperty btnProperty = new ButtonGroupProperty(btngroupNode.NodeId);
+                    //btnProperty.Dock = DockStyle.Fill;
+                    //_btngrouplst.Add(btnProperty);
+                    //this.splitContainer1.Panel2.Controls.Add(btnProperty);
+
+                    ////对应实体
+                    //LibButtonGroup libbtngroup = new LibButtonGroup();
+                    //libbtngroup.BtnGroupID = btngroupNode.NodeId;
+                    //libbtngroup.BtnGroupName = btngroupNode.Name;
+                    //libbtngroup.BtnGroupDisplayNm = btngroupNode.Text;
+                    //_fm.BtnGroups.Add(libbtngroup);
+
+                    //btnProperty.SetPropertyValue(libbtngroup, btngroupNode);
+                    //_fm.ModuleOrder.Add(new ModuleOrder { moduleType = ModuleType.ButtonGroup, ID = libbtngroup.BtnGroupID });
+                    #endregion
                     break;
             }
             UpdateTabPageText();
@@ -602,6 +718,7 @@ namespace BWYSDP.Controls
                     break;
                 case "deletefmgroupfield"://删除
                     _fm.FormGroups.Remove(currentlibfmgroup);
+                    _fm.ModuleOrder.Remove("ID", currentlibfmgroup.FormGroupID);
                     curentNode.Remove();
                     UpdateTabPageText();
                     break;
@@ -662,6 +779,22 @@ namespace BWYSDP.Controls
                                             _node.Name = fld.Name;
                                             _node.Text = fld.DisplayName;
                                             dtstructnode.Nodes.Add(_node);
+                                            if (fld.SourceField != null)
+                                            {
+                                                foreach (LibFromSourceField sfd in fld.SourceField)
+                                                {
+                                                    if (sfd.RelateFieldNm == null) continue;
+                                                    foreach (LibRelateField rfd in sfd.RelateFieldNm)
+                                                    {
+                                                        _node = new LibTreeNode();
+                                                        _node.NodeType = NodeType.Field;
+                                                        _node.Name = string.IsNullOrEmpty(rfd.AliasName) ? rfd.FieldNm : rfd.AliasName;
+                                                        _node.Text = rfd.DisplayNm;
+                                                        _node.Tag = 1;
+                                                        dtstructnode.Nodes.Add(_node);
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -705,6 +838,7 @@ namespace BWYSDP.Controls
                                     libgdfield.FromTableNm = tbstruct.Name;
                                     libgdfield.FromDefTableNm = deftb.Name;
                                     libgdfield.DisplayName = f.Text;
+                                    libgdfield.IsFromSourceField = (f.Tag!=null &&Convert .ToInt32(f.Tag) == 1);
                                     currentlibgridgroup.GdGroupFields.Add(libgdfield);
 
                                     gdfieldProperty.SetPropertyValue(libgdfield, fieldNode);
@@ -718,9 +852,33 @@ namespace BWYSDP.Controls
                     break;
                 case "deletegridfield"://删除
                     _fm.GridGroups.Remove(currentlibgridgroup);
+                    _fm.ModuleOrder.Remove("ID", currentlibgridgroup.GridGroupID);
                     curentNode.Remove();
                     UpdateTabPageText();
                     break;
+            }
+        }
+
+        /// <summary>按钮组节点上的右键菜单</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void contextMenuStrip4_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            LibButtonGroup currentlibbtngroup = _fm.BtnGroups.FindFirst("BtnGroupID", curentNode.NodeId);
+            switch (e.ClickedItem.Name)
+            {
+                case "addLibButton"://添加按钮
+                    if (currentlibbtngroup.LibButtons == null) currentlibbtngroup.LibButtons = new LibCollection<LibButton>();
+                    AddNodeBindEntityToCtr<LibButton, ButtonProperty>(_btnlst, currentlibbtngroup.LibButtons, "LibButtonID", "LibButtonName", "LibButtonDisplayNm", "Button", curentNode, NodeType.BtnGroup_button, null);
+                    break;
+                case "deletelibbutton": //删除
+                    _fm.BtnGroups.Remove(currentlibbtngroup);
+                    _fm.ModuleOrder.Remove("ID", currentlibbtngroup.BtnGroupID);
+                    curentNode.Remove();
+                    UpdateTabPageText();
+                    break;
+
             }
         }
 
@@ -736,5 +894,41 @@ namespace BWYSDP.Controls
                 }
             }
         }
+
+        private void AddNodeBindEntityToCtr<T,PropertyT>(List<PropertyT> propertylst, LibCollection<T> libCollection,string entiyid,string entiynm,string entiydisplaytext,string name, LibTreeNode curentNode, NodeType nodeType, ModuleType? moduleType)
+            where PropertyT: BaseUserControl<T>
+        {
+            //树节点
+            LibTreeNode Node = new LibTreeNode();
+            Node.NodeId = Guid.NewGuid().ToString();
+            Node.NodeType = nodeType;
+            if (_fm.BtnGroups == null) _fm.BtnGroups = new LibCollection<LibButtonGroup>();
+            Node.Name = string.Format("{1}{0}", libCollection.Count + 1,name);
+            Node.Text = string.Format("{0}{1}", ReSourceManage.GetResource(nodeType), libCollection.Count + 1);
+            curentNode.Nodes.Add(Node);
+
+            //控件属性
+            PropertyT propertyT = Activator.CreateInstance<PropertyT>();
+            ((UserControl)propertyT).Dock = DockStyle.Fill;
+            propertylst.Add(propertyT);
+            this.splitContainer1.Panel2.Controls.Add(propertyT);
+
+            //对应实体
+            T entity = Activator.CreateInstance<T>();
+            Type type = typeof(T);
+            PropertyInfo p = null;
+            p = type.GetProperty(entiyid);
+            p.SetValue(entity, Node.NodeId,null);
+            p= type.GetProperty(entiynm);
+            p.SetValue(entity, Node.Name, null);
+            p = type.GetProperty(entiydisplaytext);
+            p.SetValue(entity, Node.Text, null);
+            libCollection.Add(entity);
+
+            propertyT.SetPropertyValue(entity, Node);
+            if (moduleType != null)
+                _fm.ModuleOrder.Add(new ModuleOrder { moduleType = moduleType, ID = Node.NodeId });
+        }
+
     }
 }

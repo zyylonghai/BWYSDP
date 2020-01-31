@@ -218,18 +218,22 @@ namespace SDPCRL.COM.ModelManager
     /// <summary>关联字段的属性</summary>
     public class LibRelateField
     {
-        [LibAttribute("relate_txtID", LibControlType.TextBox, "编号", true, true)]
+        [LibAttribute("relate_txtID", LibControlType.TextBox, "编号", true)]
         public string ID
         {
             get;
             set;
         }
-        [LibAttribute("relate_FieldNm", LibControlType.TextBox, "字段名")]
+        [LibAttribute("relate_FromTableIndex", LibControlType.TextBox, "来源表索引",true)]
+        public int FromTableIndex { get; set; }
+
+        [LibAttribute("relate_FieldNm", LibControlType.TextBox, "字段名",true)]
         public string FieldNm { get; set; }
 
         [LibAttribute("relate_AliasName", LibControlType.TextBox, "别名")]
         public string AliasName { get; set; }
 
+        [LibAttribute("relate_DisplayNm", LibControlType.TextBox, "字段描述", true)]
         public string DisplayNm { get; set; }
 
         public LibFieldType FieldType { get; set; }
@@ -292,6 +296,19 @@ namespace SDPCRL.COM.ModelManager
             get;
             set;
         }
+        /// <summary>字段数据类型</summary>
+        [LibAttribute("sysfd_combFieldType", LibControlType.Combox, "字段类型")]
+        public LibFieldType FieldType
+        {
+            set;
+            get;
+        }
+
+        /// <summary>字段长度</summary>
+        [LibAttribute("sysfd_txtFieldLen", LibControlType.TextBox, "字段长度")]
+        public int FieldLength { get; set; }
+
+
         public override string ToString()
         {
             return string.Format("{0}:{1}", Name, DisplayName);

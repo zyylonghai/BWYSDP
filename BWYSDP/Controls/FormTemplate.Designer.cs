@@ -34,19 +34,23 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addFormGroup = new System.Windows.Forms.ToolStripMenuItem();
             this.addGridGroup = new System.Windows.Forms.ToolStripMenuItem();
+            this.addbuttongroup = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addfmGroupFields = new System.Windows.Forms.ToolStripMenuItem();
+            this.deletefmgroupfield = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addgridField = new System.Windows.Forms.ToolStripMenuItem();
-            this.deletefmgroupfield = new System.Windows.Forms.ToolStripMenuItem();
             this.deletegridfield = new System.Windows.Forms.ToolStripMenuItem();
-            this.addbuttongroup = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addLibButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.deletelibbutton = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip3.SuspendLayout();
+            this.contextMenuStrip4.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeView1
@@ -94,6 +98,12 @@
             this.addGridGroup.Size = new System.Drawing.Size(136, 22);
             this.addGridGroup.Text = "添加表格组";
             // 
+            // addbuttongroup
+            // 
+            this.addbuttongroup.Name = "addbuttongroup";
+            this.addbuttongroup.Size = new System.Drawing.Size(136, 22);
+            this.addbuttongroup.Text = "添加按钮组";
+            // 
             // contextMenuStrip2
             // 
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -108,6 +118,12 @@
             this.addfmGroupFields.Name = "addfmGroupFields";
             this.addfmGroupFields.Size = new System.Drawing.Size(124, 22);
             this.addfmGroupFields.Text = "添加字段";
+            // 
+            // deletefmgroupfield
+            // 
+            this.deletefmgroupfield.Name = "deletefmgroupfield";
+            this.deletefmgroupfield.Size = new System.Drawing.Size(124, 22);
+            this.deletefmgroupfield.Text = "删除";
             // 
             // contextMenuStrip3
             // 
@@ -124,23 +140,32 @@
             this.addgridField.Size = new System.Drawing.Size(124, 22);
             this.addgridField.Text = "添加字段";
             // 
-            // deletefmgroupfield
-            // 
-            this.deletefmgroupfield.Name = "deletefmgroupfield";
-            this.deletefmgroupfield.Size = new System.Drawing.Size(124, 22);
-            this.deletefmgroupfield.Text = "删除";
-            // 
             // deletegridfield
             // 
             this.deletegridfield.Name = "deletegridfield";
             this.deletegridfield.Size = new System.Drawing.Size(124, 22);
             this.deletegridfield.Text = "删除";
             // 
-            // addbuttongroup
+            // contextMenuStrip4
             // 
-            this.addbuttongroup.Name = "addbuttongroup";
-            this.addbuttongroup.Size = new System.Drawing.Size(136, 22);
-            this.addbuttongroup.Text = "添加按钮组";
+            this.contextMenuStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addLibButton,
+            this.deletelibbutton});
+            this.contextMenuStrip4.Name = "contextMenuStrip4";
+            this.contextMenuStrip4.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip4.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip4_ItemClicked);
+            // 
+            // addLibButton
+            // 
+            this.addLibButton.Name = "addLibButton";
+            this.addLibButton.Size = new System.Drawing.Size(180, 22);
+            this.addLibButton.Text = "添加按钮";
+            // 
+            // deletelibbutton
+            // 
+            this.deletelibbutton.Name = "deletelibbutton";
+            this.deletelibbutton.Size = new System.Drawing.Size(180, 22);
+            this.deletelibbutton.Text = "删除";
             // 
             // FormTemplate
             // 
@@ -156,6 +181,7 @@
             this.contextMenuStrip1.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
             this.contextMenuStrip3.ResumeLayout(false);
+            this.contextMenuStrip4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -174,5 +200,8 @@
         private System.Windows.Forms.ToolStripMenuItem deletefmgroupfield;
         private System.Windows.Forms.ToolStripMenuItem deletegridfield;
         private System.Windows.Forms.ToolStripMenuItem addbuttongroup;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip4;
+        private System.Windows.Forms.ToolStripMenuItem addLibButton;
+        private System.Windows.Forms.ToolStripMenuItem deletelibbutton;
     }
 }

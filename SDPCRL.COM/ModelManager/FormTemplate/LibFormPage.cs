@@ -64,6 +64,10 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             set;
         }
 
+        /// <summary>自定义按钮</summary>
+        [LibAttribute("fm_Buttons", LibControlType.TextAndBotton, "自定义按钮")]
+        public LibCollection<LibButton>  Buttons { get; set; }
+
         /// <summary>所属包</summary>
         [LibAttribute("fm_txtPackage", LibControlType.TextBox, "所属包")]
         [XmlAttribute]
@@ -103,7 +107,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
     [Serializable]
     public class ModuleOrder
     {
-        public ModuleType moduleType { get; set; }
+        public ModuleType? moduleType { get; set; }
         public string ID { get; set; }
     }
     [Serializable]

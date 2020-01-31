@@ -126,10 +126,14 @@ namespace SDPCRL.COM.ModelManager
         public static List<LibSysField> Sysfields {
             get {
                 List<LibSysField> result = new List<LibSysField>();
-                Addsysfield(SysConstManage.sysfld_creater, "创建者", result);
-                Addsysfield(SysConstManage .sysfld_createDT, "创建时间", result);
-                Addsysfield(SysConstManage .sysfld_lastmodifier, "最后修改者", result);
-                Addsysfield(SysConstManage.sysfld_lastmodifyDT, "最后修改日期", result);
+                result.Add(new LibSysField {Name =SysConstManage .sysfld_creater,DisplayName= "创建者",FieldType=LibFieldType.String,FieldLength=30 });
+                result.Add(new LibSysField { Name = SysConstManage.sysfld_createDT, DisplayName = "创建时间", FieldType = LibFieldType.DateTime, FieldLength = 0 });
+                result.Add(new LibSysField { Name = SysConstManage.sysfld_lastmodifier, DisplayName = "最后修改者", FieldType = LibFieldType.String, FieldLength = 30 });
+                result.Add(new LibSysField { Name = SysConstManage.sysfld_lastmodifyDT, DisplayName = "最后修改日期", FieldType = LibFieldType.DateTime, FieldLength = 0 });
+                //Addsysfield(SysConstManage.sysfld_creater, "创建者", result);
+                //Addsysfield(SysConstManage .sysfld_createDT, "创建时间", result);
+                //Addsysfield(SysConstManage .sysfld_lastmodifier, "最后修改者", result);
+                //Addsysfield(SysConstManage.sysfld_lastmodifyDT, "最后修改日期", result);
                 return result;
             }
         }
@@ -299,11 +303,11 @@ namespace SDPCRL.COM.ModelManager
             fileOperation.Encoding = LibEncoding.UTF8;
             return fileOperation.SearchFileNm();
         }
-        private static void Addsysfield(string fieldnm,string displaynm,List<LibSysField> collections)
-        {
-            LibSysField f = new LibSysField { Name = fieldnm, DisplayName = displaynm };
-            collections.Add(f);
-        }
+        //private static void Addsysfield(string fieldnm,string displaynm,List<LibSysField> collections)
+        //{
+        //    LibSysField f = new LibSysField { Name = fieldnm, DisplayName = displaynm };
+        //    collections.Add(f);
+        //}
         #endregion
     }
 }

@@ -6,27 +6,29 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using SDPCRL.COM.ModelManager;
+using SDPCRL.COM.ModelManager.FormTemplate;
 using BWYSDP.com;
 
 namespace BWYSDP.Controls
 {
-    public partial class RelateFieldProperty : BaseUserControl<LibRelateField>
+    public partial class ButtonProperty :BaseUserControl<LibButton>
     {
-        public RelateFieldProperty()
+        private LibTreeNode _Node;
+        public ButtonProperty()
         {
             InitializeComponent();
             InitializeControls();
         }
-        public RelateFieldProperty(string name)
-          : this()
+        public ButtonProperty(string name)
+       : this()
         {
             this.Name = name;
         }
 
-        public override void SetPropertyValue(LibRelateField entity, LibTreeNode node)
+        public override void SetPropertyValue(LibButton entity, LibTreeNode node)
         {
             base.SetPropertyValue(entity, node);
+            _Node = node;
         }
     }
 }

@@ -301,6 +301,40 @@ namespace SDPCRL.DAL.BUS
                                     }
                                     continue;
                                 case DataRowState.Deleted:
+                                    updatefldtypes = new StringBuilder();
+                                    updatefldval = new StringBuilder();
+                                    updatewhere = new StringBuilder();
+                                    updatevalue = new List<object>();
+                                    index = 0;
+                                    foreach (DataColumn col in dt.PrimaryKey)
+                                    {
+                                        colextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<ColExtendedProperties>(col.ExtendedProperties[SysConstManage.ExtProp].ToString());
+                                        if (updatewhere.Length > 0)
+                                        {
+                                            updatewhere.Append(" And ");
+                                        }
+                                        if (updatefldtypes.Length > 0)
+                                        {
+                                            updatefldtypes.Append(",");
+                                            updatefldval.Append(",");
+                                        }
+                                        updatewhere.AppendFormat("{0}=@{1}", col.ColumnName, string.Format("{0}1", col.ColumnName));
+                                        updatefldtypes.AppendFormat("@{0} ", string.Format("{0}1", col.ColumnName));
+                                        SetColmnTypeAndValue(col, string.Format("{0}1", col.ColumnName), colextprop, updatefldtypes, updatefldval, index);
+                                        index++;
+                                        updatevalue.Add(row[col, DataRowVersion.Original]);
+                                    }
+                                    if (updatefldval.Length > 0)
+                                    {
+                                        sql = string.Format(string.Format("EXEC sp_executesql N'Delete from {0} where {1}',N'{2}',{3}",
+                                                                           dt.TableName,
+                                                                           updatewhere.ToString(),
+                                                                           updatefldtypes.ToString(),
+                                                                           updatefldval.ToString()
+                                                                          ),
+                                                            updatevalue.ToArray());
+                                        break;
+                                    }
                                     continue;
                                 //break;
                                 default:

@@ -87,21 +87,9 @@ namespace BWYSDP
                     if (dt != null)
                     {
                         AddDataGridRow(string.Empty, fm.FormId, fm.FormName);
-                        //row = dt.NewRow();
-                        //row["TableNm"] = string.Empty;
-                        //row["FieldNm"] = fm.FormId;
-                        //row[GetLanguageCol(dt)] = fm.FormName;
-                        //FilllanguageValue(languagedt, string.Empty, fm.FormId, row);
-                        //dt.Rows.Add(row);
                         foreach (SDPCRL.COM.ModelManager.FormTemplate.LibFormGroup fg in fm.FormGroups)
                         {
                             AddDataGridRow(string.Empty, fg.FormGroupName, fg.FormGroupDisplayNm);
-                            //row = dt.NewRow();
-                            //row["TableNm"] = string.Empty;
-                            //row["FieldNm"] = fg.FormGroupName;
-                            //row[GetLanguageCol(dt)] = fg.FormGroupDisplayNm;
-                            //FilllanguageValue(languagedt, string.Empty, fg.FormGroupName, row);
-                            //dt.Rows.Add(row);
                         }
                         foreach (SDPCRL.COM.ModelManager.FormTemplate.LibGridGroup gg in fm.GridGroups)
                         {
@@ -110,13 +98,19 @@ namespace BWYSDP
                             {
                                 AddDataGridRow(string.Empty, item.GridButtonName, item.GridButtonDisplayNm);
                             }
-                            //row = dt.NewRow();
-                            //row["TableNm"] = string.Empty;
-                            //row["FieldNm"] = gg.GridGroupName;
-                            //row[GetLanguageCol(dt)] = gg.GridGroupDisplayNm;
-                            //FilllanguageValue(languagedt, string.Empty, gg.GridGroupName, row);
-                            //dt.Rows.Add(row);
                         }
+                        if (fm.BtnGroups != null)
+                            foreach (LibButtonGroup btngroup in fm.BtnGroups)
+                            {
+                                if(btngroup .LibButtons !=null )
+                                {
+                                    foreach (LibButton btn in btngroup.LibButtons)
+                                    {
+                                        AddDataGridRow(string.Empty, btn.LibButtonName, btn.LibButtonDisplayNm);
+                                    }
+                                }
+                                
+                            }
                     }
                 }
             }
@@ -228,15 +222,15 @@ namespace BWYSDP
             dt.Rows.Add(row);
         }
 
-        private DataColumn GetLanguageCol(DataTable dt)
-        {
-            DataColumn col = null;
-            if (System.Globalization.CultureInfo.InstalledUICulture.Name.ToUpper() == "ZH-CN")
-            {
-                col = dt.Columns[Language.CHS.ToString()];
-            }
-            return col;
-        }
+        //private DataColumn GetLanguageCol(DataTable dt)
+        //{
+        //    DataColumn col = null;
+        //    if (System.Globalization.CultureInfo.InstalledUICulture.Name.ToUpper() == "ZH-CN")
+        //    {
+        //        col = dt.Columns[Language.CHS.ToString()];
+        //    }
+        //    return col;
+        //}
         private void FilllanguageValue(DataTable langdt, string tbnm, string fieldnm,DataRow row)
         {
             DataRow[] drs = null;
@@ -251,6 +245,16 @@ namespace BWYSDP
                     }
                 }
             }
+        }
+
+        /// <summary>
+        ///一键翻译
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btntranslation_Click(object sender, EventArgs e)
+        {
+            this.contextMenuStrip1.Show(this.btntranslation, 0 , this.btntranslation.Height);
         }
     }
 }

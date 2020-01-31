@@ -236,6 +236,7 @@ namespace SDPCRL.COM
                                 {
                                     foreach (var relatef in item.RelateFieldNm)
                                     {
+                                        if (relatef.FromTableIndex != item.FromTableIndex) continue;
                                         col = new DataColumn(string.IsNullOrEmpty(relatef.AliasName) ? relatef.FieldNm : relatef.AliasName);
                                         col.Caption = relatef.DisplayNm;
                                         switch (relatef.FieldType)
