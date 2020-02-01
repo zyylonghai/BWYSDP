@@ -12,7 +12,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
     public class LibFormGroupField
     {
         /// <summary>ID（唯一）</summary>
-        [LibAttribute("fmfld_ID", LibControlType.TextBox, "ID", true,true)]
+        [LibAttribute("fmfld_ID", LibControlType.TextBox, "ID", true)]
         [XmlAttribute]
         public string ID
         {

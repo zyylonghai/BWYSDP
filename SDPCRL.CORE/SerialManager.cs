@@ -38,6 +38,7 @@ namespace SDPCRL.CORE
         public const char Comma = ',';
         public const char Asterisk = '*';
         public const char Point = '.';
+        public const char SingleQuotes = '\'';
 
         #endregion
 

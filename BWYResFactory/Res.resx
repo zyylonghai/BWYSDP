@@ -153,4 +153,7 @@
   <data name="DALServerName" xml:space="preserve">
     <value>DALServer</value>
   </data>
+  <data name="SQLOr" xml:space="preserve">
+    <value>Or</value>
+  </data>
 </root>

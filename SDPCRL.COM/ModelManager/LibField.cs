@@ -13,7 +13,7 @@ namespace SDPCRL.COM.ModelManager
     {
         #region 公开的属性
         /// <summary>编号 </summary>
-        [LibAttribute("fd_txtID", LibControlType.TextBox, "编号", true,true)]
+        [LibAttribute("fd_txtID", LibControlType.TextBox, "编号", true,false)]
         public string ID
         {
             get;
@@ -199,8 +199,14 @@ namespace SDPCRL.COM.ModelManager
         /// <summary>
         /// 关联条件
         /// </summary>
-        [LibAttribute("fsfield_RelateCondition", LibControlType.TextBox, "关联条件")]
+        [LibAttribute("fsfield_RelateCondition", LibControlType.TextBox, "前提条件")]
         public string RelateCondition { get; set; }
+
+        /// <summary>
+        /// 关联条件
+        /// </summary>
+        [LibAttribute("fsfield_JoinOnCondition", LibControlType.TextBox, "关联条件")]
+        public string JoinOnCondition { get; set; }
 
         /// <summary>
         /// 关联字段集合

@@ -86,7 +86,7 @@ namespace SDPCRL.DAL.COM
                 }
                 if (ds != null)
                 {
-                    DoGetSQL(builder, tableNm, ds, false, IsJoinRelateTable,IsJoinFromSourceField);
+                    DoGetSQL(builder, tableNm, ds,where , false, IsJoinRelateTable,IsJoinFromSourceField);
                 }
             }
             if (!string.IsNullOrEmpty(where.WhereFormat))
@@ -139,7 +139,7 @@ namespace SDPCRL.DAL.COM
                 }
                 if (ds != null)
                 {
-                    DoGetSQL(builder, tableNm, ds, true,IsJoinRelateTable ,IsJoinFromSourceField);
+                    DoGetSQL(builder, tableNm, ds,where, true,IsJoinRelateTable ,IsJoinFromSourceField);
                 }
             }
             if (!string.IsNullOrEmpty(where.WhereFormat))
@@ -198,7 +198,7 @@ namespace SDPCRL.DAL.COM
         }
 
         #region 私有函数
-        private void DoGetSQL(StringBuilder builder, string tableNm, LibDataSource ds, bool page = false, bool IsJoinRelateTable = true,bool IsJoinFromSourceField=true)
+        private void DoGetSQL(StringBuilder builder, string tableNm, LibDataSource ds,WhereObject where, bool page = false, bool IsJoinRelateTable = true,bool IsJoinFromSourceField=true)
         {
             List<LibDataTableStruct> list = new List<LibDataTableStruct>();
             StringBuilder joinstr = new StringBuilder();
@@ -326,6 +326,12 @@ namespace SDPCRL.DAL.COM
                             f.Name,
                             tbnm,
                             fromfield.FromFieldNm);
+                        #region 处理JoinOnCondition
+                        if (!string.IsNullOrEmpty(fromfield.JoinOnCondition))
+                        {
+                            DoJoinOnCondition(fromfield.JoinOnCondition, where);
+                        }
+                        #endregion 
                         joinstr.Append(joinfield.ToString());
                         joinstr.AppendLine();
                         if (IsJoinFromSourceField)
@@ -393,9 +399,9 @@ namespace SDPCRL.DAL.COM
                                 foreach (LibRelateField relatef in fromfield.RelateFieldNm)
                                 {
                                     if (!IsJoinFromSourceField && relatef.FromTableIndex != fromfield.FromTableIndex) continue;
+                                    tbnm = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(relatef.FromTableIndex));
                                     if (IsJoinFromSourceField&& relatef.FromTableIndex != fromfield.FromTableIndex)
                                     {
-                                        tbnm = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(relatef.FromTableIndex));
                                         tbnm = tablealiasmdic[tbnm] == 0 ? tbnm : string.Format("{0}{1}", tbnm, tablealiasmdic[tbnm]);
                                     }
                                     if (!string.IsNullOrEmpty(relatef.AliasName))
@@ -440,17 +446,79 @@ namespace SDPCRL.DAL.COM
                 builder.Append(joinstr.ToString());
             }
         }
+
+        private void DoJoinOnCondition(string condition, WhereObject where)
+        {
+            string[] array = condition.Split('=');
+            string[] separator = { "(", ")", "AND", "OR" };
+            string itemstr = string.Empty;
+            StringBuilder condformat = new StringBuilder();
+            object[] valus = { };
+            string pattern = "^[0-9]*$";
+            Regex regex = new Regex(pattern);
+            if (array.Length > 0)
+            {
+                condformat.Append(array[0]);
+                int index = -1;
+                int n = 0;
+                for (int i = 1; i < array.Length; i++)
+                {
+                    foreach (string sep in separator)
+                    {
+                        index = array[i].IndexOf(sep);
+                        if (index == -1) continue;
+                        break;
+                    }
+                    if (index != -1)
+                    {
+                        itemstr = array[i].Substring(0, index);
+                        if (itemstr.Contains("'") || regex.IsMatch(itemstr))
+                        {
+                            condformat.AppendFormat("={0} ", array[i].Replace(itemstr, "{"+n+"} "));
+                            n++;
+                            Array.Resize(ref valus, valus.Length + 1);
+                            valus[valus.Length - 1] = itemstr.Trim();
+                        }
+                        else
+                        {
+                            condformat.AppendFormat("={0} ", array[i]);
+                        }
+                    }
+                    else
+                    {
+                        if (array[i].Contains("'") || regex.IsMatch(array[i]))
+                        {
+                            condformat.AppendFormat("={0} ", array[i].Replace(array[i], "{" + n + "} "));
+                            n++;
+                            Array.Resize(ref valus, valus.Length + 1);
+                            if (regex.IsMatch(array[i]))
+                            {
+                                valus[valus.Length - 1] = Convert.ToInt32(array[i]);
+                            }
+                            else
+                                valus[valus.Length - 1] = array[i].Replace(SysConstManage.SingleQuotes, ' ').Trim();
+                        }
+                        else
+                            condformat.AppendFormat("={0}", array[i]);
+                    }
+                }
+                where.AppendWhereFormat(ResFactory.ResManager.SQLAnd, string.Format("({0})", condformat), valus);
+            }
+        }
         #endregion
     }
     public class WhereObject
     {
         private string _whereformat = string.Empty;
         private string[] _params;
+        string patter = @"{\w*}+";
+        #region 公开属性
         public string WhereFormat
         {
             get
             {
-                MatchCollection matchs = Regex.Matches(_whereformat, @"{\w*}+");
+                string result = _whereformat;
+                MatchCollection matchs = Regex.Matches(result, patter);
                 int index = 0;
                 if (matchs.Count > 0)
                     _params = new string[matchs.Count];
@@ -458,9 +526,9 @@ namespace SDPCRL.DAL.COM
                 {
                     index = Convert.ToInt32(item.Value.Replace("{", "").Replace("}", ""));
                     _params[index] = string.Format("@V{0}", index);
-                    _whereformat = _whereformat.Replace(item.Value, _params[index]);
+                    result = result.Replace(item.Value, _params[index]);
                 }
-                return _whereformat;
+                return result;
             }
             set
             {
@@ -512,6 +580,40 @@ namespace SDPCRL.DAL.COM
                     return string.Empty;
             }
         }
+        #endregion
+
+        #region 公开方法
+        public void AppendWhereFormat(string andor,string whereformat, params object[] values)
+        {
+            if (string.IsNullOrEmpty(this._whereformat))
+                this._whereformat = whereformat;
+            else
+            {
+                MatchCollection matchs = Regex.Matches(_whereformat, patter);
+                if (matchs != null)
+                {
+                    int oldcout = matchs.Count;
+                    matchs = Regex.Matches(whereformat, patter);
+                    int index = 0;
+                    foreach (Match item in matchs)
+                    {
+                        index = Convert.ToInt32(item.Value.Replace("{", "").Replace("}", ""));
+                        whereformat= whereformat.Replace(item.Value, item.Value .Replace(index.ToString (), (oldcout + index).ToString ()));
+                    }
+                }
+                this._whereformat = string.Format("{0} {1} {2}", this._whereformat, andor, whereformat);
+            }
+            if (values != null)
+            {
+                List<object> vals = new List<object>();
+                if (this.Values != null && this.Values.Length > 0)
+                    vals.AddRange(this.Values);
+                vals.AddRange(values);
+                this.Values = vals.ToArray();
+            }
+        }
+        #endregion 
+
     }
 
 }

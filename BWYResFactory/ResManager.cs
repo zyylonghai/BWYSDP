@@ -48,6 +48,10 @@ namespace BWYResFactory
         {
             get { return Res.SQLOn; }
         }
+        public new string SQLOr
+        {
+            get { return Res.SQLOr; }
+        }
 
     }
 
@@ -61,5 +65,6 @@ namespace BWYResFactory
         string SQLAnd { get; }
         string SQLLeftJoin { get; }
         string SQLOn { get; }
+        string SQLOr { get; }
     }
 }

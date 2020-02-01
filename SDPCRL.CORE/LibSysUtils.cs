@@ -34,7 +34,7 @@ namespace SDPCRL.CORE
 
         public static bool IsNULLOrEmpty(object obj)
         {
-            if (obj == null)
+            if (obj == null ||obj ==DBNull .Value)
             {
                 return true;
             }
