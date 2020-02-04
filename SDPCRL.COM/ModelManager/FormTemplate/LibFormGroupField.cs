@@ -121,6 +121,9 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         Img =6,
         ///<summary>文件上传控件</summary>
         [LibReSource("文件上传控件")]
-        FileUpload =7
+        FileUpload =7,
+        ///<summary>密码控件</summary>
+        [LibReSource("密码控件")]
+        Password =8
     }
 }

@@ -26,11 +26,13 @@ namespace SDPCRL.DAL.BUS
         }
 
 
-        public object ExecuteDalMethod(string accountId, string funcId, string method, params object[] param)
+        public object ExecuteDalMethod(string accountId,int language, string funcId, string method, params object[] param)
         {
             ReflectionOperate reflect = new ReflectionOperate(funcId);
             object obj = reflect.InstanceTarget();
-            ((DALBase)obj).AccountID = accountId;
+            DALBase dalBase = ((DALBase)obj);
+            dalBase.AccountID = accountId;
+            dalBase.Language = (Language)language;
             Type t = obj.GetType();
             MethodInfo func = t.GetMethod(method);
             return func.Invoke(obj, param);
@@ -48,13 +50,13 @@ namespace SDPCRL.DAL.BUS
         }
 
 
-        public object ExecuteSysDalMethod(string funcId, string method, params object[] param)
+        public object ExecuteSysDalMethod(int language, string funcId, string method, params object[] param)
         {
-            return ExecuteDalMethod(null, funcId, method, param);
+            return ExecuteDalMethod(null,language, funcId, method, param);
         }
 
 
-        DalResult IDALBus.ExecuteDalMethod2(string accountId, string funcId, string method, LibTable[] libTables, params object[] param)
+        DalResult IDALBus.ExecuteDalMethod2(string accountId, int language, string funcId, string method, LibTable[] libTables, params object[] param)
         {
             DalResult result = new DalResult();
             try
@@ -65,12 +67,13 @@ namespace SDPCRL.DAL.BUS
                 dalBase.AccountID = accountId;
                 dalBase.ProgId = funcId;
                 dalBase.LibTables = libTables;
+                dalBase.Language = (Language)language;
                 Type t = obj.GetType();
                 MethodInfo func = t.GetMethod(method);
 
 
                 result.Value = func.Invoke(obj, param);
-                result.Messagelist = dalBase.GetErrorMessage();
+                result.Messagelist = dalBase.GetMessage();
                 //result.Messagelist.Add("jjjj");
                
             }
@@ -88,7 +91,7 @@ namespace SDPCRL.DAL.BUS
             return result;
         }
 
-        public object ExecuteSaveMethod(string accountId, string funcId, string method, LibTable[] param)
+        public object ExecuteSaveMethod(string accountId, int language, string funcId, string method, LibTable[] param)
         {
             DalResult result = new DalResult();
             try
@@ -98,12 +101,14 @@ namespace SDPCRL.DAL.BUS
                 DALBase dalBase =((DALBase)obj);
                 dalBase.AccountID = accountId;
                 dalBase.ProgId = funcId;
+                dalBase.LibTables = param;
+                dalBase.Language = (Language)language;
                 Type t = obj.GetType();
                 MethodInfo func = t.GetMethod(method);
 
                 object[] p = new object[] { param };
                 result.Value = func.Invoke(obj, p);
-                result.Messagelist = dalBase.GetErrorMessage();
+                result.Messagelist = dalBase.GetMessage();
                 //result.Messagelist.Add("jjjj");
 
             }

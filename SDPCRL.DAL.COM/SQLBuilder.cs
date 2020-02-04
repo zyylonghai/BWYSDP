@@ -189,12 +189,45 @@ namespace SDPCRL.DAL.COM
             return sql.ToString();
         }
 
+        public string GetUpdateSQL(string tableNm, UpdateObject updatefield, WhereObject where)
+        {
+            StringBuilder builder = new StringBuilder();
+            //string updatefieldformat = string.Empty;
+            string whereformat = string.Empty;
+            builder.AppendFormat("{0} {1} Set ",ResFactory.ResManager.SQLUpdate,tableNm);
+            if (updatefield == null) throw new LibExceptionBase("param updatefield is not null");
+            if (!string.IsNullOrEmpty(updatefield.UpdateFieldFormat))
+            {
+                where.AppendWhereFormat(" ", updatefield.UpdateFieldFormat, updatefield.Values);
+                updatefield.WhereFormat = where.GetUpdatefieldformat();
+                builder.Append(updatefield.UpdateFieldSQL);
+            }
+            whereformat = where.WhereFormat.Replace(updatefield .UpdateFieldSQL, "");
+            if (!string.IsNullOrEmpty(whereformat))
+            {
+                return string.Format("EXEC sp_executesql N'{0} where {1}',{2}", builder.ToString(), whereformat, where.ValueTostring);
+            }
+            else if (!string.IsNullOrEmpty(updatefield.UpdateFieldFormat))
+            {
+                return string.Format("EXEC sp_executesql N'{0}',{1}", builder.ToString(), where.ValueTostring);
+            }
+            return string.Format("EXEC sp_executesql N'{0}'", builder.ToString());
+        }
+
         public WhereObject Where(string format, params object[] values)
         {
             WhereObject wobj = new WhereObject();
             wobj.WhereFormat = format;
             wobj.Values = values;
             return wobj;
+        }
+
+        public UpdateObject UpdateField(string format, params object[] values)
+        {
+            UpdateObject updateobj = new UpdateObject();
+            updateobj.WhereFormat = format;
+            updateobj.Values = values;
+            return updateobj;
         }
 
         #region 私有函数
@@ -449,18 +482,19 @@ namespace SDPCRL.DAL.COM
 
         private void DoJoinOnCondition(string condition, WhereObject where)
         {
-            string[] array = condition.Split('=');
+            string[] array = condition.ToUpper().Split('=');
             string[] separator = { "(", ")", "AND", "OR" };
             string itemstr = string.Empty;
             StringBuilder condformat = new StringBuilder();
             object[] valus = { };
-            string pattern = "^[0-9]*$";
-            Regex regex = new Regex(pattern);
+            //string pattern = "^[0-9]*$";
+            //Regex regex = new Regex(pattern);
             if (array.Length > 0)
             {
                 condformat.Append(array[0]);
                 int index = -1;
                 int n = 0;
+                Int32 val = -1;
                 for (int i = 1; i < array.Length; i++)
                 {
                     foreach (string sep in separator)
@@ -469,15 +503,24 @@ namespace SDPCRL.DAL.COM
                         if (index == -1) continue;
                         break;
                     }
+                    val = -1;
                     if (index != -1)
                     {
-                        itemstr = array[i].Substring(0, index);
-                        if (itemstr.Contains("'") || regex.IsMatch(itemstr))
+                        itemstr = array[i].Substring(0, index).Trim ();
+                        if (itemstr.Contains("'") || LibSysUtils.IsNumberic(itemstr, out val))
                         {
                             condformat.AppendFormat("={0} ", array[i].Replace(itemstr, "{"+n+"} "));
                             n++;
                             Array.Resize(ref valus, valus.Length + 1);
-                            valus[valus.Length - 1] = itemstr.Trim();
+                            if (val == -1)
+                            {
+                                valus[valus.Length - 1] = itemstr.Trim();
+                            }
+                            else
+                            {
+                                valus[valus.Length - 1] = val;
+                            }
+                            //valus[valus.Length - 1] =(val == -1 ? itemstr.Trim() : val);
                         }
                         else
                         {
@@ -486,14 +529,14 @@ namespace SDPCRL.DAL.COM
                     }
                     else
                     {
-                        if (array[i].Contains("'") || regex.IsMatch(array[i]))
+                        if (array[i].Contains("'") ||LibSysUtils .IsNumberic(array[i],out val))
                         {
                             condformat.AppendFormat("={0} ", array[i].Replace(array[i], "{" + n + "} "));
                             n++;
                             Array.Resize(ref valus, valus.Length + 1);
-                            if (regex.IsMatch(array[i]))
+                            if (val==-1)
                             {
-                                valus[valus.Length - 1] = Convert.ToInt32(array[i]);
+                                valus[valus.Length - 1] = val;
                             }
                             else
                                 valus[valus.Length - 1] = array[i].Replace(SysConstManage.SingleQuotes, ' ').Trim();
@@ -509,9 +552,10 @@ namespace SDPCRL.DAL.COM
     }
     public class WhereObject
     {
-        private string _whereformat = string.Empty;
+        protected string _whereformat = string.Empty;
         private string[] _params;
-        string patter = @"{\w*}+";
+        protected string patter = @"{\w*}+";
+        private List<string> _appendwhereformats = null;
         #region 公开属性
         public string WhereFormat
         {
@@ -551,28 +595,46 @@ namespace SDPCRL.DAL.COM
                     StringBuilder partype = new StringBuilder();
                     StringBuilder val = new StringBuilder();
                     object o = null;
+                    Type t = null;
                     for (int n = 0; n < _params.Length; n++)
                     {
+                        if (_params[n] == null) continue;
                         if (partype.Length > 0)
                         {
                             partype.Append(",");
                             val.Append(",");
                         }
                         o = Values[Convert.ToInt32(_params[n].Substring(2))];
-                        switch (Values[n].GetType().Name)
+                        t = o.GetType();
+                        if (t == typeof(string))
                         {
-                            case "String":
-
-                                partype.AppendFormat("{0} nvarchar({1})", _params[n], o.ToString().Length == 0 ? 1 : o.ToString().Length);
-                                val.AppendFormat("{0}='{1}'", _params[n], o);
-                                break;
-                            case "Int32":
-                                partype.AppendFormat("{0} int ", _params[n]);
-                                val.AppendFormat("{0}={1}", _params[n], o);
-                                break;
-                            case "DateTime":
-                                break;
+                            partype.AppendFormat("{0} nvarchar({1})", _params[n], o.ToString().Length == 0 ? 1 : o.ToString().Length);
+                            val.AppendFormat("{0}='{1}'", _params[n], o);
                         }
+                        else if (t == typeof(int))
+                        {
+                            partype.AppendFormat("{0} int ", _params[n]);
+                            val.AppendFormat("{0}={1}", _params[n], o);
+                        }
+                        else if (t == typeof(bool))
+                        {
+                            partype.AppendFormat("{0} bit ", _params[n]);
+                            val.AppendFormat("{0}={1}", _params[n], o);
+                        }
+                        //switch (Values[n].GetType().Name)
+                        //{
+                        //    case "String":
+
+                        //        partype.AppendFormat("{0} nvarchar({1})", _params[n], o.ToString().Length == 0 ? 1 : o.ToString().Length);
+                        //        val.AppendFormat("{0}='{1}'", _params[n], o);
+                        //        break;
+                        //    case "Int32":
+                        //        partype.AppendFormat("{0} int ", _params[n]);
+                        //        val.AppendFormat("{0}={1}", _params[n], o);
+                        //        break;
+                        //    case "DateTime":
+                        //        break;
+                        //}
                     }
                     return string.Format("N'{0}',{1}", partype.ToString(), val.ToString());
                 }
@@ -598,10 +660,13 @@ namespace SDPCRL.DAL.COM
                     foreach (Match item in matchs)
                     {
                         index = Convert.ToInt32(item.Value.Replace("{", "").Replace("}", ""));
-                        whereformat= whereformat.Replace(item.Value, item.Value .Replace(index.ToString (), (oldcout + index).ToString ()));
+                        whereformat= whereformat.Replace(item.Value, item.Value .Replace(index.ToString (), string.Format("{0}*",(oldcout + index).ToString ())));
                     }
                 }
+                whereformat = whereformat.Replace("*", "");
                 this._whereformat = string.Format("{0} {1} {2}", this._whereformat, andor, whereformat);
+                if (_appendwhereformats == null) _appendwhereformats = new List<string>();
+                _appendwhereformats.Add(string.Format("{0}",whereformat));
             }
             if (values != null)
             {
@@ -612,8 +677,57 @@ namespace SDPCRL.DAL.COM
                 this.Values = vals.ToArray();
             }
         }
+
+        /// <summary>
+        /// 只用于生成Updatesql时，取Updatefield转为参数的语法。
+        /// </summary>
+        /// <returns></returns>
+        public string GetUpdatefieldformat()
+        {
+            StringBuilder result = new StringBuilder();
+            if (_appendwhereformats != null)
+            {
+                foreach (string item in _appendwhereformats)
+                {
+                    if (result.Length > 0)
+                    {
+                        result.Append(SysConstManage.Comma);
+                    }
+                    result.Append(item);
+                }
+            }
+            return result.ToString();
+        }
+        #endregion
+        #region 受保护的方法
+
         #endregion 
 
+    }
+    public class UpdateObject : WhereObject
+    {
+        public string UpdateFieldFormat
+        {
+            get
+            {
+                return _whereformat;
+            }
+        }
+
+        public string UpdateFieldSQL
+        {
+            get {
+                string result = _whereformat;
+                MatchCollection matchs = Regex.Matches(result, patter);
+                int index = 0;
+                for (int i = 0; i < matchs.Count; i++)
+                {
+                    index = Convert.ToInt32(matchs[i].Value.Replace("{", "").Replace("}", ""));
+                    result = result.Replace(matchs[i].Value, string.Format("@V{0}", index));
+                }
+                return result;
+            }
+        }
     }
 
 }

@@ -13,6 +13,15 @@ namespace SDPCRL.DAL.BUS
     {
         private IDataAccess _dataAccess;
         private List<LibMessage> MsgList = null;
+        private IDALBus _dalbus = null;
+        #region 私有属性
+        private IDALBus DalBus {
+            get {
+                if (_dalbus == null) _dalbus = new DALBus();
+                return _dalbus;
+            }
+        }
+        #endregion 
         #region 公开的属性
         public IDataAccess DataAccess
         {
@@ -36,6 +45,11 @@ namespace SDPCRL.DAL.BUS
         /// 数据集
         /// </summary>
         public LibTable[] LibTables { get; set; }
+
+        /// <summary>
+        /// 客户端语言
+        /// </summary>
+        public Language Language { get; set; }
         #endregion
 
         #region 构造函数
@@ -59,6 +73,15 @@ namespace SDPCRL.DAL.BUS
         protected T JsonToObj<T>(string objstr)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(objstr);
+        }
+
+        protected object ExecuteDalMethod(string funcId, string method, params object[] param)
+        {
+            return DalBus.ExecuteDalMethod(this.AccountID,(int)this.Language,funcId, method, param);
+        }
+        protected object ExecuteSysDalMethod(string funcId, string method, params object[] param)
+        {
+            return DalBus.ExecuteSysDalMethod((int)Language, funcId, method, param);
         }
         #endregion
 
@@ -365,7 +388,7 @@ namespace SDPCRL.DAL.BUS
             this.MsgList.Add(new LibMessage { Message = msg, MsgType = type });
         }
 
-        public List<LibMessage> GetErrorMessage()
+        public List<LibMessage> GetMessage()
         {
             return MsgList;
         }

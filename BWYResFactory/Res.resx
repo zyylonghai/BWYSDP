@@ -156,4 +156,7 @@
   <data name="SQLOr" xml:space="preserve">
     <value>Or</value>
   </data>
+  <data name="SQLUpdate" xml:space="preserve">
+    <value>Update</value>
+  </data>
 </root>

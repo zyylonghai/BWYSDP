@@ -171,7 +171,7 @@ namespace SDPCRL.COM
                             switch (f.FieldType)
                             {
                                 case LibFieldType.Byte:
-                                    col.DataType = typeof(byte);
+                                    col.DataType = typeof(bool);
                                     if (!f.AutoIncrement)
                                         col.DefaultValue = 0;
                                     break;

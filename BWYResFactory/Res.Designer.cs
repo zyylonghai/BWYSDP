@@ -160,6 +160,15 @@ namespace BWYResFactory {
         }
         
         /// <summary>
+        ///   查找类似 Update 的本地化字符串。
+        /// </summary>
+        internal static string SQLUpdate {
+            get {
+                return ResourceManager.GetString("SQLUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Where 的本地化字符串。
         /// </summary>
         internal static string SQLWhere {

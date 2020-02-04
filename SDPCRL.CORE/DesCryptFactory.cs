@@ -215,6 +215,11 @@ namespace SDPCRL.CORE
             return m_strDecrypt;
         }
 
+        public static string AESDecrypt(string decryptString, string DecryptKey)
+        {
+          return Encoding.Default.GetString(AESDecrypt(Convert.FromBase64String(decryptString), DecryptKey));
+        }
+
         private static byte[] StrinTobyte(string str)
         {
             byte[] bytearray = new byte[str.Length / 2];

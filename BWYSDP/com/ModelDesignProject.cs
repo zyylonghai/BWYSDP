@@ -236,7 +236,7 @@ namespace BWYSDP.com
                                     if (p.PropertyType.Equals(typeof(int)) || p.PropertyType.Equals(typeof(decimal)))
                                     {
                                         int valu;
-                                        if (LibSysUtils.isNumberic(ctrl.Text.Trim(), out valu))
+                                        if (LibSysUtils.IsNumberic(ctrl.Text.Trim(), out valu))
                                             p.SetValue(obj, valu, null);
                                         else
                                         {

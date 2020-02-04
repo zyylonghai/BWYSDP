@@ -464,6 +464,12 @@ namespace BWYSDP.Controls
                 {
                     libnode.ContextMenuStrip = this.contextMenuStrip4;
                 }
+                else if (libnode.NodeType == NodeType.BtnGroup_button || 
+                         libnode .NodeType==NodeType.FormGroup_Field || 
+                         libnode .NodeType==NodeType.GridGroup_Field)
+                {
+                    libnode.ContextMenuStrip = this.contextMenuStrip_btn;
+                }
                 this.treeView1.SelectedNode = libnode;
             }
             else
@@ -876,10 +882,11 @@ namespace BWYSDP.Controls
                     _fm.BtnGroups.Remove(currentlibbtngroup);
                     _fm.ModuleOrder.Remove("ID", currentlibbtngroup.BtnGroupID);
                     curentNode.Remove();
-                    UpdateTabPageText();
+                    //UpdateTabPageText();
                     break;
 
             }
+            UpdateTabPageText();
         }
 
         void Gridtree_AfterCheck(object sender, TreeViewEventArgs e)
@@ -923,6 +930,16 @@ namespace BWYSDP.Controls
             p.SetValue(entity, Node.Name, null);
             p = type.GetProperty(entiydisplaytext);
             p.SetValue(entity, Node.Text, null);
+            if (nodeType == NodeType.GridGroup)
+            {
+                string[] pnm = { "HasAddRowButton", "HasEditRowButton", "HasDeletRowButton" };
+                foreach (string nm in pnm)
+                {
+                    p = type.GetProperty(nm);
+                    if (p != null)
+                        p.SetValue(entity, true, null);
+                }
+            }
             libCollection.Add(entity);
 
             propertyT.SetPropertyValue(entity, Node);
@@ -930,5 +947,149 @@ namespace BWYSDP.Controls
                 _fm.ModuleOrder.Add(new ModuleOrder { moduleType = moduleType, ID = Node.NodeId });
         }
 
+        private void treeView1_DragDrop(object sender, DragEventArgs e)
+        {
+            // 定义一个中间变量
+            LibTreeNode treeNode;
+            //判断拖动的是否为TreeNode类型，不是的话不予处理
+            if (e.Data.GetDataPresent("BWYSDP.com.LibTreeNode", false))
+            {
+                // 拖放的目标节点
+                LibTreeNode targetTreeNode;
+                // 获取当前光标所处的坐标
+                // 定义一个位置点的变量，保存当前光标所处的坐标点
+                Point point = ((TreeView)sender).PointToClient(new Point(e.X, e.Y));
+                // 根据坐标点取得处于坐标点位置的节点
+                targetTreeNode = (LibTreeNode)((TreeView)sender).GetNodeAt(point);
+                // 获取被拖动的节点
+                treeNode = (LibTreeNode)e.Data.GetData("BWYSDP.com.LibTreeNode");
+                if (targetTreeNode == null) { MessageHandle.ShowMessage("无法拖曳至当前位置", true); return; }
+                if (targetTreeNode.Parent != treeNode.Parent)
+                {
+                    MessageHandle.ShowMessage("只能移动相同父节点下的节点", true);
+                    return;
+                }
+                int index = targetTreeNode.Parent.Nodes.IndexOf(targetTreeNode);
+                LibTreeNode newnode = treeNode.Copy();
+                targetTreeNode.Parent.Nodes.Insert(index, newnode);
+                // 将被拖动的节点移除
+                treeNode.Remove();
+                if (newnode.NodeType == NodeType.FormGroup_Field)
+                {
+                    #region
+                    LibFormGroup fmgp = _fm.FormGroups.FindFirst("FormGroupID", ((LibTreeNode)newnode.Parent).NodeId);
+                    if (fmgp != null)
+                    {
+                        LibFormGroupField f = fmgp.FmGroupFields.FindFirst("ID", newnode.NodeId);
+                        if (f != null)
+                        {
+                            LibFormGroupField newf = LibSysUtils.Copy(f);
+                            if (newf != null)
+                            {
+                                LibFormGroupField targfield = fmgp.FmGroupFields.FindFirst("ID", targetTreeNode.NodeId);
+                                if (targfield != null)
+                                {
+                                    int i = fmgp.FmGroupFields.IndexOf(targfield);
+                                    fmgp.FmGroupFields.Insert(i, newf);
+                                    fmgp.FmGroupFields.Remove(f);
+                                }
+
+                            }
+
+
+                        }
+                    }
+                    #endregion 
+                }
+                else if (newnode.NodeType == NodeType.GridGroup_Field)
+                {
+                    #region
+                    LibGridGroup gp = _fm.GridGroups.FindFirst("GridGroupID", ((LibTreeNode)newnode.Parent).NodeId);
+                    if (gp != null)
+                    {
+                        LibGridGroupField f = gp.GdGroupFields.FindFirst("ID", newnode.NodeId);
+                        if (f != null)
+                        {
+                            LibGridGroupField newf = LibSysUtils.Copy(f);
+                            if (newf != null)
+                            {
+                                LibGridGroupField targfield = gp.GdGroupFields.FindFirst("ID", targetTreeNode.NodeId);
+                                if (targfield != null)
+                                {
+                                    int i = gp.GdGroupFields.IndexOf(targfield);
+                                    gp.GdGroupFields.Insert(i, newf);
+                                    gp.GdGroupFields.Remove(f);
+                                }
+
+                            }
+
+
+                        }
+                    }
+                    #endregion 
+                }
+                else if (newnode.NodeType == NodeType.FormGroup || newnode.NodeType == NodeType.GridGroup || newnode.NodeType==NodeType.ButtonGroup)
+                {
+                    ModuleOrder dragobj = _fm.ModuleOrder.FindFirst("ID", newnode.NodeId);
+                    ModuleOrder targ= _fm.ModuleOrder.FindFirst("ID", targetTreeNode.NodeId);
+                    //LibFormGroup formGroup = _fm.FormGroups.FindFirst("FormGroupID", newnode.NodeId);
+                    //LibFormGroup targ = _fm.FormGroups.FindFirst("FormGroupID", targetTreeNode.NodeId);
+                    if (dragobj != null && targ!=null)
+                    {
+                        int i= _fm.ModuleOrder.IndexOf(targ);
+                        ModuleOrder module = LibSysUtils.Copy(dragobj);
+                        _fm.ModuleOrder.Insert(i, module);
+                        _fm.ModuleOrder.Remove(dragobj);
+
+                    }
+                }
+                UpdateTabPageText();
+                //}
+            }
+        }
+
+        private void treeView1_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void treeView1_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            this.DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+        /// <summary>
+        /// 按钮节点上的右键菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void contextMenuStrip_btn_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            switch (e.ClickedItem.Name)
+            {
+                case "deltelibbtn": //删除
+                    if (curentNode.NodeType == NodeType.BtnGroup_button)
+                    {
+                        LibButtonGroup currentlibbtngroup = _fm.BtnGroups.FindFirst("BtnGroupID", ((LibTreeNode)curentNode.Parent).NodeId);
+                        currentlibbtngroup.LibButtons.Remove("LibButtonID", curentNode.NodeId);
+                        curentNode.Remove();
+                    }
+                    else if (curentNode.NodeType == NodeType.FormGroup_Field)
+                    {
+                        LibFormGroup currlibfmgp = _fm.FormGroups.FindFirst("FormGroupID", ((LibTreeNode)curentNode.Parent).NodeId);
+                        currlibfmgp.FmGroupFields.Remove("ID", curentNode.NodeId);
+                    }
+                    else if (curentNode.NodeType == NodeType.GridGroup_Field)
+                    {
+                        LibGridGroup currgdp = _fm.GridGroups.FindFirst("GridGroupID", ((LibTreeNode)curentNode.Parent).NodeId);
+                        currgdp.GdGroupFields.Remove("ID", curentNode.NodeId);
+                    }
+                    //var btnprop= _btnlst.FirstOrDefault(i => i.Name == curentNode.NodeId);
+                    //_btnlst.Remove(btnprop);
+                    break;
+            }
+            curentNode.Remove();
+            UpdateTabPageText();
+        }
     }
 }

@@ -138,6 +138,15 @@ namespace SDPCRL.CORE
             }
             return list;
         }
+        public int IndexOf(T item)
+        {
+           return _entityArray.IndexOf(item);
+        }
+
+        public void Insert(int index, T item)
+        {
+            _entityArray.Insert(index, item);
+        }
 
         #region 私有函数
         private T[] DoFind(string propertyNm, object value)

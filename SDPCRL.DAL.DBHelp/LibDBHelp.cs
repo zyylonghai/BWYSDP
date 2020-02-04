@@ -10,6 +10,7 @@ using SDPCRL.DAL.IDBHelp;
 using SDPCRL.DAL.COM;
 using System.Data;
 using System.Collections;
+using SDPCRL.COM;
 
 namespace SDPCRL.DAL.DBHelp
 {
@@ -201,13 +202,26 @@ namespace SDPCRL.DAL.DBHelp
 
         object ILibDBHelp.ExecuteScalar(string commandText)
         {
-            return this.CurrentDBOpreate.ExecuteScalar(commandText);
+            object result= this.CurrentDBOpreate.ExecuteScalar(commandText);
+            if (result == null)
+            {
+                LibEventManager.TouchEvent(this, LibEventType.SqlException, this.CurrentDBOpreate.Exception);
+                LibEventManager.LogOutListener(this);
+            }
+            return result;
             //return DBOperate.ExecuteScalar(commandText);
         }
 
         DataRow ILibDBHelp.GetDataRow(string commandText)
         {
-            return this.CurrentDBOpreate.GetDataRow(commandText);
+            int flag = 0;
+            DataRow result= this.CurrentDBOpreate.GetDataRow(commandText, out flag);
+            if (flag == -1)
+            {
+                LibEventManager.TouchEvent(this, LibEventType.SqlException, this.CurrentDBOpreate.Exception);
+                LibEventManager.LogOutListener(this);
+            }
+            return result;
            //return DBOperate.GetDataRow(commandText);
         }
 
@@ -436,6 +450,7 @@ namespace SDPCRL.DAL.DBHelp
             }
             catch (Exception ex)
             {
+                this.Exception = ex;
                 return null;
             }
             finally
@@ -448,30 +463,73 @@ namespace SDPCRL.DAL.DBHelp
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public  DataRow GetDataRow(string commandText)
+        public  DataRow GetDataRow(string commandText,out int flag)
         {
             dbCommand.CommandText = commandText;
             DataRow row = null;
-            using (IDataReader reader = dbCommand.ExecuteReader())
+            try
             {
-                if (reader.Read())
+                using (IDataReader reader = dbCommand.ExecuteReader())
                 {
-                   DataTable dt= reader.GetSchemaTable();
-                   DataTable resuldt = new DataTable();
-                    foreach (DataRow dr in dt.Rows)
+                    if (reader.Read())
                     {
-                        resuldt.Columns.Add(dr[0].ToString ());
-                        //row[col] = reader[col .ColumnName];
-                    }
-                    row = resuldt.NewRow();
-                    foreach (DataRow dr in dt.Rows)
-                    {
-                        row[dr[0].ToString()] = reader[dr[0].ToString()];
+                        DataTable dt = reader.GetSchemaTable();
+                        DataTable resuldt = new DataTable();
+                        DataColumn colnm = dt.Columns["ColumnName"];
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            switch (dr["DataTypeName"].ToString())
+                            {
+                                //case "nvarchar":
+                                //case "ntext":
+                                //    resuldt.Columns.Add(new DataColumn(dr[colnm].ToString(), typeof(string)));
+                                //    break;
+                                case "bit":
+                                    resuldt.Columns.Add(new DataColumn(dr[colnm].ToString(), typeof(bool)));
+                                    break;
+                                case "int":
+                                    resuldt.Columns.Add(new DataColumn(dr[colnm].ToString(), typeof(int)));
+                                    break;
+                                case "date":
+                                    resuldt.Columns.Add(new DataColumn(dr[colnm].ToString(), typeof(Date)));
+                                    break;
+                                case "datetime":
+                                    resuldt.Columns.Add(new DataColumn(dr[colnm].ToString(), typeof(DateTime)));
+                                    break;
+                                case "image":
+                                    resuldt.Columns.Add(new DataColumn(dr[colnm].ToString(), typeof(byte[])));
+                                    break;
+                                case "decimal":
+                                    resuldt.Columns.Add(new DataColumn(dr[colnm].ToString(), typeof(decimal)));
+                                    break;
+                                default:
+                                    resuldt.Columns.Add(new DataColumn(dr[colnm].ToString(), typeof(string)));
+                                    break;
+                            }
+                            
+                            //resuldt.Columns.Add(dr[0].ToString());ColumnSize
+                            //row[col] = reader[col .ColumnName];
+                        }
+                        row = resuldt.NewRow();
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            row[dr[colnm].ToString()] = reader[dr[colnm].ToString()];
+                        }
                     }
                 }
+                flag = 1;
+                return row;
             }
-            CloseConnect();
-            return row;
+            catch (Exception ex)
+            {
+                flag = -1;
+                this.Exception = ex;
+                return null;
+            }
+            finally
+            {
+                CloseConnect();
+            }
         }
         public  DataTable GetDataTable(string commandText)
         {

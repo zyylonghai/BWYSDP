@@ -44,6 +44,8 @@
             this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addLibButton = new System.Windows.Forms.ToolStripMenuItem();
             this.deletelibbutton = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip_btn = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deltelibbtn = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -51,17 +53,22 @@
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip3.SuspendLayout();
             this.contextMenuStrip4.SuspendLayout();
+            this.contextMenuStrip_btn.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeView1
             // 
+            this.treeView1.AllowDrop = true;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(332, 504);
             this.treeView1.TabIndex = 0;
+            this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView1_ItemDrag);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
+            this.treeView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView1_DragDrop);
+            this.treeView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView1_DragEnter);
             // 
             // splitContainer1
             // 
@@ -111,6 +118,7 @@
             this.deletefmgroupfield});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
             this.contextMenuStrip2.Size = new System.Drawing.Size(125, 48);
+            this.contextMenuStrip2.Text = "信息组右键菜单";
             this.contextMenuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip2_ItemClicked);
             // 
             // addfmGroupFields
@@ -132,6 +140,7 @@
             this.deletegridfield});
             this.contextMenuStrip3.Name = "contextMenuStrip3";
             this.contextMenuStrip3.Size = new System.Drawing.Size(125, 48);
+            this.contextMenuStrip3.Text = "表格组右键菜单";
             this.contextMenuStrip3.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip3_ItemClicked);
             // 
             // addgridField
@@ -152,20 +161,36 @@
             this.addLibButton,
             this.deletelibbutton});
             this.contextMenuStrip4.Name = "contextMenuStrip4";
-            this.contextMenuStrip4.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip4.Size = new System.Drawing.Size(125, 48);
+            this.contextMenuStrip4.Text = "按钮组右键菜单";
             this.contextMenuStrip4.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip4_ItemClicked);
             // 
             // addLibButton
             // 
             this.addLibButton.Name = "addLibButton";
-            this.addLibButton.Size = new System.Drawing.Size(180, 22);
+            this.addLibButton.Size = new System.Drawing.Size(124, 22);
             this.addLibButton.Text = "添加按钮";
             // 
             // deletelibbutton
             // 
             this.deletelibbutton.Name = "deletelibbutton";
-            this.deletelibbutton.Size = new System.Drawing.Size(180, 22);
+            this.deletelibbutton.Size = new System.Drawing.Size(124, 22);
             this.deletelibbutton.Text = "删除";
+            // 
+            // contextMenuStrip_btn
+            // 
+            this.contextMenuStrip_btn.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deltelibbtn});
+            this.contextMenuStrip_btn.Name = "contextMenuStrip_btn";
+            this.contextMenuStrip_btn.Size = new System.Drawing.Size(181, 48);
+            this.contextMenuStrip_btn.Text = "按钮节点右键菜单";
+            this.contextMenuStrip_btn.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_btn_ItemClicked);
+            // 
+            // deltelibbtn
+            // 
+            this.deltelibbtn.Name = "deltelibbtn";
+            this.deltelibbtn.Size = new System.Drawing.Size(180, 22);
+            this.deltelibbtn.Text = "删除";
             // 
             // FormTemplate
             // 
@@ -182,6 +207,7 @@
             this.contextMenuStrip2.ResumeLayout(false);
             this.contextMenuStrip3.ResumeLayout(false);
             this.contextMenuStrip4.ResumeLayout(false);
+            this.contextMenuStrip_btn.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -203,5 +229,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip4;
         private System.Windows.Forms.ToolStripMenuItem addLibButton;
         private System.Windows.Forms.ToolStripMenuItem deletelibbutton;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_btn;
+        private System.Windows.Forms.ToolStripMenuItem deltelibbtn;
     }
 }

@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SDPCRL.COM\SDPCRL.COM.csproj">
+      <Project>{A6DD1483-D68F-401B-B7F8-F3B977AC7500}</Project>
+      <Name>SDPCRL.COM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDPCRL.DAL.IDBHelp\SDPCRL.DAL.IDBHelp.csproj">
       <Project>{2efd1e01-3058-4671-abdd-61fc1a440f91}</Project>
       <Name>SDPCRL.DAL.IDBHelp</Name>

@@ -36,14 +36,14 @@ namespace BWYSDP.BLL
 
         public Dictionary<string, string> GetAccount()
         {
-           return  (Dictionary <string ,string >) this.ExecuteSysDalMethod("TestFunc", "GetAccount");
+           return  (Dictionary <string ,string >) this.ExecuteSysDalMethod(1,"TestFunc", "GetAccount");
         }
         /// <summary>查询表是否已存在</summary>
         /// <param name="tableNm"></param>
         /// <returns></returns>
         public bool IsExistTable(string tableNm)
         {
-            return (bool)this.ExecuteDalMethod("TestFunc", "IsExistsTable",null , tableNm);   
+            return (bool)this.ExecuteDalMethod(1,"TestFunc", "IsExistsTable",null , tableNm);   
         }
 
         /// <summary>获取表所有列信息</summary>
@@ -51,20 +51,20 @@ namespace BWYSDP.BLL
         /// <returns></returns>
         public DataTable GetTableSchema(string tableNm)
         {
-            return (DataTable)((DalResult)this.ExecuteDalMethod("TestFunc", "GetTableSchema",null , tableNm)).Value;
+            return (DataTable)((DalResult)this.ExecuteDalMethod(1, "TestFunc", "GetTableSchema",null , tableNm)).Value;
         }
         public bool BuilderTableStruct(string sqlstr)
         {
-            return (bool)((DalResult)this.ExecuteDalMethod("TestFunc", "BuilderTableStruct",null , sqlstr)).Value;
+            return (bool)((DalResult)this.ExecuteDalMethod(1, "TestFunc", "BuilderTableStruct",null , sqlstr)).Value;
         }
 
         public DataTable Getlanguagebydsid(string dsid)
         {
-            return (DataTable)this.ExecuteSysDalMethod("TestFunc", "GetFieldDescByDSID", dsid);
+            return (DataTable)this.ExecuteSysDalMethod(1, "TestFunc", "GetFieldDescByDSID", dsid);
         }
         public void Updatelanguage(DataTable dt, string dsid)
         {
-            this.ExecuteSysDalMethod("TestFunc", "UpdateLanguage", dt, dsid);
+            this.ExecuteSysDalMethod(1, "TestFunc", "UpdateLanguage", dt, dsid);
         }
     }
 }

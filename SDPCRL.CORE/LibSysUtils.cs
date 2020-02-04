@@ -49,6 +49,11 @@ namespace SDPCRL.CORE
             }
         }
 
+        /// <summary>
+        /// 将文本“是”或“否” 转为bool
+        /// </summary>
+        /// <param name="value">“是”或“否”</param>
+        /// <returns></returns>
         public static bool ToBooLean(string value)
         {
             string trueValue = ReSourceManage.GetResource(BooleanValue.True);
@@ -59,6 +64,11 @@ namespace SDPCRL.CORE
             return false;
         }
 
+        /// <summary>
+        /// 将bool值 转为文本“是”或“否”
+        /// </summary>
+        /// <param name="value">true，false</param>
+        /// <returns></returns>
         public static string BooleanToText(bool value)
         {
             if (value)
@@ -79,7 +89,12 @@ namespace SDPCRL.CORE
                 return obj.ToString();
             }
         }
-
+        /// <summary>
+        /// 将枚举成员的字符串，转为对应枚举
+        /// </summary>
+        /// <typeparam name="T">枚举类型</typeparam>
+        /// <param name="enumNm">枚举成员的字符串</param>
+        /// <returns></returns>
         public static T ConvertToEnumType<T>(string enumNm)
         {
             foreach (T item in Enum.GetValues(typeof(T)))
@@ -92,14 +107,59 @@ namespace SDPCRL.CORE
             return default(T);
         }
 
-        public static bool isNumberic(string val, out int result)
+        /// <summary>
+        /// 是否数字型，转为并输出Int32的值
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="result">是数字则转为Int32，否则为-1</param>
+        /// <returns></returns>
+        public static bool IsNumberic(string val, out Int32 result)
         {
-            System.Text.RegularExpressions.Regex rex =
-            new System.Text.RegularExpressions.Regex(@"^\d+$");
+            //System.Text.RegularExpressions.Regex rex =
+            //new System.Text.RegularExpressions.Regex(@"^\d+$");
             result = -1;
-            if (rex.IsMatch(val))
+            //if (rex.IsMatch(val))
+            //{
+            //    result = Convert.ToInt32(val);
+            //    return true;
+            //}
+            //else
+            //    return false;
+            if (IsNumberic(val))
             {
                 result = Convert.ToInt32(val);
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// 是否数字型，转为并输出Int64的值
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="result">是数字则转为Int64，否则为-1</param>
+        /// <returns></returns>
+        public static bool IsNumberic(string val, out Int64 result)
+        {
+            result = -1;
+            if (IsNumberic(val))
+            {
+                result = Convert.ToInt64(val);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 判断参数val 是否为纯数字
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static bool IsNumberic(string val)
+        {
+            System.Text.RegularExpressions.Regex rex =
+           new System.Text.RegularExpressions.Regex(@"^\d+$");
+            if (rex.IsMatch(val))
+            {
                 return true;
             }
             else
@@ -170,6 +230,24 @@ namespace SDPCRL.CORE
             {
                 return string.Compare(a.ToString(), b.ToString(), ignore) == 0;
             }
+        }
+
+        public static T Copy<T>(T src)
+        {
+            if (src == null) return default(T);
+            T entity = Activator.CreateInstance<T>();
+            Type srctype = src.GetType();
+            PropertyInfo[] properties = entity.GetType().GetProperties();
+            PropertyInfo info = null;
+            foreach (PropertyInfo p in properties)
+            {
+                info = srctype.GetProperty(p.Name);
+                if (info.GetSetMethod() != null)
+                {
+                    p.SetValue(entity, info.GetValue(src, null), null);
+                }
+            }
+            return entity;
         }
 
         //public static object ConvertToEnumType(string enumNm,Type enumType)

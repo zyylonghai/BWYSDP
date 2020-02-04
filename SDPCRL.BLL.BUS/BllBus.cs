@@ -42,9 +42,9 @@ namespace SDPCRL.BLL.BUS
         #region 受保护函数
 
 
-        protected virtual object ExecuteDalMethod(string funcId, string method, LibTable[] libTables, params object[] param)
+        protected virtual object ExecuteDalMethod(int language, string funcId, string method, LibTable[] libTables, params object[] param)
         {
-           SDPCRL .COM.DalResult result= _dalBus.ExecuteDalMethod2(AccoutId, funcId, method,libTables , param);
+           SDPCRL .COM.DalResult result= _dalBus.ExecuteDalMethod2(AccoutId,language, funcId, method,libTables , param);
             if (result.ErrorMsglst != null && result.ErrorMsglst.Count > 0)
             {
                 throw new LibExceptionBase(result.ErrorMsglst[0].Message, result.ErrorMsglst[0].Stack);
@@ -54,14 +54,14 @@ namespace SDPCRL.BLL.BUS
             //return _dalBus.ExecuteDalMethod(AccoutId,funcId, method, param);
         }
 
-        protected object ExecuteSysDalMethod(string funcId, string method, params object[] param)
+        protected object ExecuteSysDalMethod(int language, string funcId, string method, params object[] param)
         {
-            return _dalBus.ExecuteSysDalMethod(funcId, method, param);
+            return _dalBus.ExecuteSysDalMethod(language , funcId, method, param);
         }
 
-        protected object ExecuteSaveMethod(string funcId, string method, LibTable[] param)
+        protected object ExecuteSaveMethod(int language, string funcId, string method, LibTable[] param)
         {
-            return _dalBus.ExecuteSaveMethod(AccoutId, funcId, method, param);
+            return _dalBus.ExecuteSaveMethod(AccoutId,language, funcId, method, param);
         }
 
         #endregion

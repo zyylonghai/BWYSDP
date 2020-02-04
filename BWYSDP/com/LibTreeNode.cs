@@ -36,6 +36,10 @@ namespace BWYSDP.com
         }
         #endregion
 
+        /// <summary>
+        /// 复制当前节点
+        /// </summary>
+        /// <param name="newNode"></param>
         public void CopyTo(LibTreeNode newNode)
         {
             if (newNode != null)
@@ -57,6 +61,26 @@ namespace BWYSDP.com
             {
                 throw new LibExceptionBase("参数newNode不允许为null");
             }
+        }
+        /// <summary>
+        /// 复制包括子节点
+        /// </summary>
+        /// <returns></returns>
+        public LibTreeNode Copy()
+        {
+            LibTreeNode result = new LibTreeNode();
+            LibTreeNode child = null;
+            CopyTo(result);
+            if (this.Nodes != null)
+            {
+                foreach (LibTreeNode item in this.Nodes)
+                {
+                    child = new LibTreeNode();
+                    item.CopyTo(child);
+                    result.Nodes.Add(child);
+                }
+            }
+            return result;
         }
 
      
