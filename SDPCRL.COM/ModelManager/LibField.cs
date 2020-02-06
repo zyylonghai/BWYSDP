@@ -124,8 +124,8 @@ namespace SDPCRL.COM.ModelManager
         ///<summary>字符型</summary>
         [LibReSource("字符串型-String")]
         String = 0,
-        ///<summary>小位数</summary>
-        [LibReSource("小位数-Byte")]
+        ///<summary>boolean</summary>
+        [LibReSource("boolean-bit")]
         Byte = 1,
         ///<summary>浮点型</summary>
         [LibReSource("浮点型-Decimal")]

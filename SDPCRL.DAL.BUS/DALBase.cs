@@ -123,7 +123,7 @@ namespace SDPCRL.DAL.BUS
                 fieldtypes.AppendFormat("date");
                 fieldvalue.Append(string.Format("@{0}", parmNm) + "='{" + index + "}'");
             }
-            else if (col.DataType == typeof(byte))
+            else if (col.DataType == typeof(bool))
             {
                 fieldtypes.AppendFormat("bit");
                 fieldvalue.Append(string.Format("@{0}", parmNm) + "={" + index + "}");

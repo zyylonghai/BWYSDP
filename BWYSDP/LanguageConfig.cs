@@ -87,28 +87,36 @@ namespace BWYSDP
                     if (dt != null)
                     {
                         AddDataGridRow(string.Empty, fm.FormId, fm.FormName);
-                        foreach (SDPCRL.COM.ModelManager.FormTemplate.LibFormGroup fg in fm.FormGroups)
+                        if (fm.FormGroups != null)
                         {
-                            AddDataGridRow(string.Empty, fg.FormGroupName, fg.FormGroupDisplayNm);
-                        }
-                        foreach (SDPCRL.COM.ModelManager.FormTemplate.LibGridGroup gg in fm.GridGroups)
-                        {
-                            AddDataGridRow(string.Empty, gg.GridGroupName, gg.GridGroupDisplayNm);
-                            foreach (LibGridButton item in gg.GdButtons)
+                            foreach (SDPCRL.COM.ModelManager.FormTemplate.LibFormGroup fg in fm.FormGroups)
                             {
-                                AddDataGridRow(string.Empty, item.GridButtonName, item.GridButtonDisplayNm);
+                                AddDataGridRow(string.Empty, fg.FormGroupName, fg.FormGroupDisplayNm);
+                            }
+                        }
+                        if (fm.GridGroups != null)
+                        {
+                            foreach (SDPCRL.COM.ModelManager.FormTemplate.LibGridGroup gg in fm.GridGroups)
+                            {
+                                AddDataGridRow(string.Empty, gg.GridGroupName, gg.GridGroupDisplayNm);
+                                if (gg.GdButtons == null) continue;
+                                foreach (LibGridButton item in gg.GdButtons)
+                                {
+                                    AddDataGridRow(string.Empty, item.GridButtonName, item.GridButtonDisplayNm);
+                                }
                             }
                         }
                         if (fm.BtnGroups != null)
                             foreach (LibButtonGroup btngroup in fm.BtnGroups)
                             {
-                                if(btngroup .LibButtons !=null )
+                                if (btngroup.LibButtons == null) continue;
+                                //if(btngroup .LibButtons !=null )
+                                //{
+                                foreach (LibButton btn in btngroup.LibButtons)
                                 {
-                                    foreach (LibButton btn in btngroup.LibButtons)
-                                    {
-                                        AddDataGridRow(string.Empty, btn.LibButtonName, btn.LibButtonDisplayNm);
-                                    }
+                                    AddDataGridRow(string.Empty, btn.LibButtonName, btn.LibButtonDisplayNm);
                                 }
+                                //}
                                 
                             }
                     }
