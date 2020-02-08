@@ -171,7 +171,7 @@ namespace SDPCRL.DAL.BUS
                     if (libtable.Tables == null) continue;
                     for (int n = 0; n < libtable.Tables.Length; n++)
                     {
-                        dt = libtable.Tables[n];
+                        dt = libtable.Tables[n].DataTable;
                         tbextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<TableExtendedProperties>(dt.ExtendedProperties[SysConstManage.ExtProp].ToString());
                         if (!tbextprop.Ignore) continue;
                         fields = new StringBuilder();

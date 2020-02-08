@@ -144,25 +144,33 @@ namespace SDPCRL.COM
         public  LibTable[] CreateTableSchema(LibDataSource data)
         {
             List<LibTable> dts = new List<LibTable>();
+            LibTable[] _dts=null;
             LibTable dftb = null;
             DataTable dt = null;
-            DataColumn col = null;
-            List<DataColumn> primarykey = null;
+            //DataColumn col = null;
+            //List<DataColumn> primarykey = null;
             int index = 0;
             if (data != null)
             {
                 if (data.DefTables == null) return null;
+                //CachHelp cach = new CachHelp();
+                // _dts = cach.GetCach(string.Format("{0}_{1}", data.DSID, SysConstManage.TBSchemasuffix)) as LibTable[];
+                //if (_dts != null)
+                //{
+
+                //    return _dts;
+                //}
                 foreach (LibDefineTable deftb in data.DefTables)
                 {
                     if (deftb.TableStruct == null) continue;
                     dftb = new LibTable(deftb.TableName);
-                    dftb.Tables = new DataTable[deftb.TableStruct.Count];
+                    dftb.Tables = new LibTableObj[deftb.TableStruct.Count];
                     index = 0;
                     foreach (LibDataTableStruct tb in deftb.TableStruct)
                     {
                         if (tb.Fields == null) continue;
                         dt = DoCreateTableShema(tb);
-                        dftb.Tables[index] = dt;
+                        dftb.Tables[index] = new LibTableObj(dt);
                         #region 旧代码
                         //dt = new DataTable(tb.Name);
                         //dftb.Tables[index] = dt;
@@ -317,8 +325,10 @@ namespace SDPCRL.COM
                     }
                     dts.Add(dftb);
                 }
+                _dts = dts.ToArray();
+                //cach.AddCachItem(string.Format("{0}_{1}", data.DSID, SysConstManage.TBSchemasuffix), _dts, DateTimeOffset.Now.AddMinutes(30));
             }
-            return dts.ToArray();
+            return _dts;
         }
         /// <summary>
         /// 
@@ -397,7 +407,8 @@ namespace SDPCRL.COM
                     MapPrimarykey = f.RelatePrimarykey,
                     DataTypeLen = f.FieldLength,
                     Decimalpoint = f.Decimalpoint,
-                    AliasName = f.AliasName
+                    AliasName = f.AliasName,
+                    ObjectNm=f.ObjFieldName 
                 });
                 dt.Columns.Add(col);
                 if (f.SourceField != null && f.SourceField.Count > 0)
@@ -515,7 +526,8 @@ namespace SDPCRL.COM
         /// <summary>
         /// 来源数据库表集
         /// </summary>
-        public DataTable[] Tables { get; set; }
+        //public DataTable[] Tables { get; set; }
+        public LibTableObj[] Tables { get; set; }
 
         public LibTable(string name)
         {
@@ -549,6 +561,11 @@ namespace SDPCRL.COM
         public int Decimalpoint { get; set; }
 
         public string AliasName { get; set; }
+
+        /// <summary>
+        /// 对应实体的字段名
+        /// </summary>
+        public string ObjectNm { get; set; }
 
         public override string ToString()
         {

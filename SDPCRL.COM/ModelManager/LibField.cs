@@ -43,6 +43,12 @@ namespace SDPCRL.COM.ModelManager
             get;
             set;
         }
+        /// <summary>实体字段名</summary>
+        [LibAttribute("fd_ObjFieldName", LibControlType.TextBox, "实体字段名")]
+        public string ObjFieldName
+        {
+            get;set;
+        }
 
         /// <summary> 原字段名</summary>
         [LibAttribute("fd_txtOrignNm", LibControlType.TextBox, "原字段名")]

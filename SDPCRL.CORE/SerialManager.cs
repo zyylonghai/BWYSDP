@@ -100,6 +100,7 @@ namespace SDPCRL.CORE
         public const string sdp_webdalbase = "webdaldatabase";
 
         #endregion
+        public const string TBSchemasuffix = "_dsschema";
     }
     /// <summary>编码管理类接口</summary>
     public interface ISerialManager

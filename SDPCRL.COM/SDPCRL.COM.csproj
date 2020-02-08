@@ -51,6 +51,7 @@
     <Compile Include="DMLOperation.cs" />
     <Compile Include="ErrorMessage.cs" />
     <Compile Include="LibClientInfo.cs" />
+    <Compile Include="LibDSContext.cs" />
     <Compile Include="LibLanguage.cs" />
     <Compile Include="LibSearchCondition.cs" />
     <Compile Include="LibTableObj.cs" />
@@ -77,6 +78,10 @@
     <Compile Include="SQLBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BWYResFactory\BWYResFactory.csproj">
+      <Project>{33CC4123-1946-498B-BB4F-986E5785C5C5}</Project>
+      <Name>BWYResFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDPCRL.CORE\SDPCRL.CORE.csproj">
       <Project>{6737331B-873F-432B-BF3B-97B64C8E0C5F}</Project>
       <Name>SDPCRL.CORE</Name>

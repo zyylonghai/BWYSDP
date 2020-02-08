@@ -1,54 +1,44 @@
-﻿using System;
+﻿using BWYResFactory;
+using SDPCRL.COM.ModelManager;
+using SDPCRL.COM.ModelManager.FormTemplate;
+using SDPCRL.CORE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using BWYResFactory;
-using SDPCRL.CORE;
-using System.Text.RegularExpressions;
-using SDPCRL.COM.ModelManager.FormTemplate;
-using SDPCRL.COM.ModelManager;
-using SDPCRL.COM;
 
-namespace SDPCRL.DAL.COM
+namespace SDPCRL.COM
 {
-    public class SQLBuilder
+    public class LibDSContext
     {
-        private string _id = string.Empty;
-        private bool _mark = true;
-        #region 构造函数
-        public SQLBuilder()
+        LibDataSource _ds = null;
+        public LibDSContext(string dsid)
         {
-
-        }
-        /// <summary> </summary>
-        /// <param name="id">ProgId或者DSID</param>
-        /// <param name="mark">是否为DSID，默认true</param>
-        public SQLBuilder(string id, bool mark = true)
-        {
-            this._id = id;
-            this._mark = mark;
-        }
-        #endregion 
-        public string GetSQL(string tableNm, string[] fields, string whereStr)
-        {
-            StringBuilder builder = new StringBuilder();
-            builder.Append(ResFactory.ResManager.SQLSelect);
-            foreach (string field in fields)
+             _ds = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(dsid);
+            if (_ds == null)
             {
-                if (builder.Length != ResFactory.ResManager.SQLSelect.Length)
-                {
-                    builder.Append(SysConstManage.Comma);
-                }
-                builder.AppendFormat(" {0}", field);
+                LibFormPage form = SDPCRL.COM.ModelManager.ModelManager.GetFormSource(dsid);
+                _ds = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(form.DSID);
             }
-
-            builder.AppendFormat(" {0}", ResFactory.ResManager.SQLFrom);
-            builder.AppendFormat(" {0}", tableNm);
-            builder.AppendFormat(" {0} {1}", ResFactory.ResManager.SQLWhere, whereStr);
-            return builder.ToString();
+            if (_ds == null) throw new LibExceptionBase(string.Format("DataSource:{0} not exist", dsid));
+            if (_ds.DefTables == null) throw new LibExceptionBase(string.Format("Do not LibDataTableStruct"));
         }
 
-
+        public LibTableObj GetTableObj(string tableNm)
+        {
+            LibTableObj tableObj = null;
+            foreach (LibDefineTable deftb in _ds.DefTables)
+            {
+                if (deftb.TableStruct == null) continue;
+                foreach (LibDataTableStruct tb in deftb.TableStruct)
+                {
+                    if (tb.Name.ToUpper() != tableNm.ToUpper()) continue;
+                    tableObj = new LibTableObj(new CreateTableSchemaHelp().DoCreateTableShema(tb));
+                    break;
+                }
+            }
+            return tableObj;
+        }
         public string GetSQL(string tableNm, string[] fields, WhereObject where, bool IsJoinRelateTable = true, bool IsJoinFromSourceField = true)
         {
             StringBuilder builder = new StringBuilder();
@@ -64,7 +54,7 @@ namespace SDPCRL.DAL.COM
                     builder.AppendFormat(" {0}", field);
                 }
             }
-            if (string.IsNullOrEmpty(this._id))
+            if (this._ds==null)
             {
                 if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
                 {
@@ -75,20 +65,20 @@ namespace SDPCRL.DAL.COM
             }
             else
             {
-                LibDataSource ds = null;
-                if (this._mark)
-                {
-                    ds = ModelManager.GetDataSource(this._id);
-                }
-                else
-                {
-                    LibFormPage form = ModelManager.GetFormSource(this._id);
-                    ds = ModelManager.GetDataSource(form.DSID);
-                }
-                if (ds != null)
-                {
-                    DoGetSQL(builder, tableNm, ds, where, false, IsJoinRelateTable, IsJoinFromSourceField);
-                }
+                //LibDataSource ds = null;
+                //if (this._mark)
+                //{
+                //    ds = ModelManager.GetDataSource(this._id);
+                //}
+                //else
+                //{
+                //    LibFormPage form = ModelManager.GetFormSource(this._id);
+                //    ds = ModelManager.GetDataSource(form.DSID);
+                //}
+                //if (this._ds != null)
+                //{
+                    DoGetSQL(builder, tableNm, this._ds, where, false, IsJoinRelateTable, IsJoinFromSourceField);
+                //}
             }
             if (!string.IsNullOrEmpty(where.WhereFormat))
             {
@@ -96,10 +86,6 @@ namespace SDPCRL.DAL.COM
             }
             return string.Format("EXEC sp_executesql N'{0}'", builder.ToString());
         }
-        //public string GetSQL(string tableNm, string[] fields, WhereObject where, bool IsContainRelateField = true)
-        //{
-
-        //}
         public string GetSQLByPage(string tableNm, string[] fields, WhereObject where, int pageindex, int pagesize, bool IsJoinRelateTable = true, bool IsJoinFromSourceField = true)
         {
             StringBuilder builder = new StringBuilder();
@@ -115,7 +101,7 @@ namespace SDPCRL.DAL.COM
                     builder.AppendFormat(" {0}", field);
                 }
             }
-            if (string.IsNullOrEmpty(this._id))
+            if (this._ds==null)
             {
                 if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
                 {
@@ -128,20 +114,20 @@ namespace SDPCRL.DAL.COM
             }
             else
             {
-                LibDataSource ds = null;
-                if (this._mark)
-                {
-                    ds = ModelManager.GetDataSource(this._id);
-                }
-                else
-                {
-                    LibFormPage form = ModelManager.GetFormSource(this._id);
-                    ds = ModelManager.GetDataSource(form.DSID);
-                }
-                if (ds != null)
-                {
-                    DoGetSQL(builder, tableNm, ds, where, true, IsJoinRelateTable, IsJoinFromSourceField);
-                }
+                //LibDataSource ds = null;
+                //if (this._mark)
+                //{
+                //    ds = ModelManager.GetDataSource(this._id);
+                //}
+                //else
+                //{
+                //    LibFormPage form = ModelManager.GetFormSource(this._id);
+                //    ds = ModelManager.GetDataSource(form.DSID);
+                //}
+                //if (ds != null)
+                //{
+                    DoGetSQL(builder, tableNm, this._ds, where, true, IsJoinRelateTable, IsJoinFromSourceField);
+                //}
             }
             if (!string.IsNullOrEmpty(where.WhereFormat))
             {
@@ -155,14 +141,14 @@ namespace SDPCRL.DAL.COM
         public string GetSQL(WhereObject where)
         {
             StringBuilder sql = new StringBuilder();
-            if (string.IsNullOrEmpty(this._id)) return string.Empty;
+            if (this._ds==null) return string.Empty;
             StringBuilder fields = null;
 
-            LibFormPage form = ModelManager.GetFormSource(this._id);
-            var datasourse = ModelManager.GetDataSource(form.DSID);
-            if (datasourse != null)
+            //LibFormPage form =SDPCRL.COM.ModelManager.ModelManager.GetFormSource(this._id);
+            //var datasourse = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(form.DSID);
+            if (this._ds != null)
             {
-                foreach (LibDefineTable deftb in datasourse.DefTables)
+                foreach (LibDefineTable deftb in this._ds.DefTables)
                 {
                     if (deftb.TableStruct == null) continue;
                     foreach (LibDataTableStruct tbstruct in deftb.TableStruct)
@@ -190,30 +176,6 @@ namespace SDPCRL.DAL.COM
             return sql.ToString();
         }
 
-        public string GetUpdateSQL(string tableNm, UpdateObject updatefield, WhereObject where)
-        {
-            StringBuilder builder = new StringBuilder();
-            //string updatefieldformat = string.Empty;
-            string whereformat = string.Empty;
-            builder.AppendFormat("{0} {1} Set ", ResFactory.ResManager.SQLUpdate, tableNm);
-            if (updatefield == null) throw new LibExceptionBase("param updatefield is not null");
-            if (!string.IsNullOrEmpty(updatefield.UpdateFieldFormat))
-            {
-                where.AppendWhereFormat(" ", updatefield.UpdateFieldFormat, updatefield.Values);
-                updatefield.WhereFormat = where.GetUpdatefieldformat();
-                builder.Append(updatefield.UpdateFieldSQL);
-            }
-            whereformat = where.WhereFormat.Replace(updatefield.UpdateFieldSQL, "");
-            if (!string.IsNullOrEmpty(whereformat))
-            {
-                return string.Format("EXEC sp_executesql N'{0} where {1}',{2}", builder.ToString(), whereformat, where.ValueTostring);
-            }
-            else if (!string.IsNullOrEmpty(updatefield.UpdateFieldFormat))
-            {
-                return string.Format("EXEC sp_executesql N'{0}',{1}", builder.ToString(), where.ValueTostring);
-            }
-            return string.Format("EXEC sp_executesql N'{0}'", builder.ToString());
-        }
 
         public WhereObject Where(string format, params object[] values)
         {
@@ -221,14 +183,6 @@ namespace SDPCRL.DAL.COM
             wobj.WhereFormat = format;
             wobj.Values = values;
             return wobj;
-        }
-
-        public UpdateObject UpdateField(string format, params object[] values)
-        {
-            UpdateObject updateobj = new UpdateObject();
-            updateobj.WhereFormat = format;
-            updateobj.Values = values;
-            return updateobj;
         }
 
         #region 私有函数
@@ -371,7 +325,7 @@ namespace SDPCRL.DAL.COM
                         if (IsJoinFromSourceField)
                         {
                             #region 取来源表所在数据源的 与来源表关联的表。
-                            LibDataSource fromSouceDS = ModelManager.GetDataSource(fromfield.FromDataSource);
+                            LibDataSource fromSouceDS = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(fromfield.FromDataSource);
                             if (fromSouceDS != null)
                             {
                                 List<LibDataTableStruct> list2 = new List<LibDataTableStruct>();
@@ -551,31 +505,4 @@ namespace SDPCRL.DAL.COM
         }
         #endregion
     }
-    public class UpdateObject : WhereObject
-    {
-        public string UpdateFieldFormat
-        {
-            get
-            {
-                return _whereformat;
-            }
-        }
-
-        public string UpdateFieldSQL
-        {
-            get
-            {
-                string result = _whereformat;
-                MatchCollection matchs = Regex.Matches(result, patter);
-                int index = 0;
-                for (int i = 0; i < matchs.Count; i++)
-                {
-                    index = Convert.ToInt32(matchs[i].Value.Replace("{", "").Replace("}", ""));
-                    result = result.Replace(matchs[i].Value, string.Format("@V{0}", index));
-                }
-                return result;
-            }
-        }
-    }
-
 }

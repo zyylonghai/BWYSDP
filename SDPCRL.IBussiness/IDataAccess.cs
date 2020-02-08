@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using SDPCRL.COM;
 
 namespace SDPCRL.IBussiness
 {
@@ -16,5 +17,8 @@ namespace SDPCRL.IBussiness
         DataRow GetDataRow(string commandText);
         DataTable GetDataTable(string commandText);
         void GetDatatTables(string commandText, ref DataTable[] dts);
+
+        void FillTableObj(LibTableObj tableObj);
+        void SaveChange(LibTableObj[] tableObjs);
     }
 }
