@@ -32,7 +32,7 @@ namespace SDPCRL.DAL.BUS
             object obj = reflect.InstanceTarget();
             DALBase dalBase = ((DALBase)obj);
             dalBase.AccountID = accountId;
-            dalBase.Language = (Language)language;
+            //dalBase.Language = (Language)language;
             Type t = obj.GetType();
             MethodInfo func = t.GetMethod(method);
             return func.Invoke(obj, param);
@@ -56,7 +56,7 @@ namespace SDPCRL.DAL.BUS
         }
 
 
-        DalResult IDALBus.ExecuteDalMethod2(string accountId, int language, string funcId, string method, LibTable[] libTables, params object[] param)
+        DalResult IDALBus.ExecuteDalMethod2(LibClientInfo clientInfo, string accountId, string funcId, string method, LibTable[] libTables, params object[] param)
         {
             DalResult result = new DalResult();
             try
@@ -67,7 +67,8 @@ namespace SDPCRL.DAL.BUS
                 dalBase.AccountID = accountId;
                 dalBase.ProgId = funcId;
                 dalBase.LibTables = libTables;
-                dalBase.Language = (Language)language;
+                dalBase.LibClient = clientInfo;
+                //dalBase.Language = clientInfo .Language;
                 Type t = obj.GetType();
                 MethodInfo func = t.GetMethod(method);
 
@@ -91,7 +92,7 @@ namespace SDPCRL.DAL.BUS
             return result;
         }
 
-        public object ExecuteSaveMethod(string accountId, int language, string funcId, string method, LibTable[] param)
+        public object ExecuteSaveMethod(LibClientInfo clientInfo, string accountId, string funcId, string method, LibTable[] param)
         {
             DalResult result = new DalResult();
             try
@@ -102,7 +103,8 @@ namespace SDPCRL.DAL.BUS
                 dalBase.AccountID = accountId;
                 dalBase.ProgId = funcId;
                 dalBase.LibTables = param;
-                dalBase.Language = (Language)language;
+                dalBase.LibClient = clientInfo;
+                //dalBase.Language = clientInfo .Language;
                 Type t = obj.GetType();
                 MethodInfo func = t.GetMethod(method);
 

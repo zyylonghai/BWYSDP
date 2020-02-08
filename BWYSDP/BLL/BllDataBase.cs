@@ -43,7 +43,8 @@ namespace BWYSDP.BLL
         /// <returns></returns>
         public bool IsExistTable(string tableNm)
         {
-            return (bool)this.ExecuteDalMethod(1,"TestFunc", "IsExistsTable",null , tableNm);   
+            LibClientInfo clientInfo = new LibClientInfo { Language = (Language)1 };
+            return (bool)this.ExecuteDalMethod(clientInfo,"TestFunc", "IsExistsTable",null , tableNm);   
         }
 
         /// <summary>获取表所有列信息</summary>
@@ -51,11 +52,13 @@ namespace BWYSDP.BLL
         /// <returns></returns>
         public DataTable GetTableSchema(string tableNm)
         {
-            return (DataTable)((DalResult)this.ExecuteDalMethod(1, "TestFunc", "GetTableSchema",null , tableNm)).Value;
+            LibClientInfo clientInfo= new LibClientInfo { Language = (Language)1 };
+            return (DataTable)((DalResult)this.ExecuteDalMethod(clientInfo, "TestFunc", "GetTableSchema",null , tableNm)).Value;
         }
         public bool BuilderTableStruct(string sqlstr)
         {
-            return (bool)((DalResult)this.ExecuteDalMethod(1, "TestFunc", "BuilderTableStruct",null , sqlstr)).Value;
+            LibClientInfo clientInfo = new LibClientInfo { Language = (Language)1 };
+            return (bool)((DalResult)this.ExecuteDalMethod(clientInfo, "TestFunc", "BuilderTableStruct",null , sqlstr)).Value;
         }
 
         public DataTable Getlanguagebydsid(string dsid)

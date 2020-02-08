@@ -49,7 +49,9 @@ namespace SDPCRL.DAL.BUS
         /// <summary>
         /// 客户端语言
         /// </summary>
-        public Language Language { get; set; }
+        public Language Language { get { return this.LibClient.Language; } }
+
+        public LibClientInfo LibClient { get; set; }
         #endregion
 
         #region 构造函数

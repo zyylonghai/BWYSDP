@@ -53,9 +53,11 @@
     <Compile Include="LibEventSource.cs" />
     <Compile Include="LibExceptionBase.cs" />
     <Compile Include="LibFormAcceptmsgEventArgs.cs" />
+    <Compile Include="LibLock.cs" />
     <Compile Include="LibSqlExceptionEventSource.cs" />
     <Compile Include="LibSysUtils.cs" />
     <Compile Include="LibXmlAttributeAttribute.cs" />
+    <Compile Include="LockHelp.cs" />
     <Compile Include="SerializerUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialManager.cs" />

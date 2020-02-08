@@ -50,8 +50,10 @@
     <Compile Include="DBModelOperation.cs" />
     <Compile Include="DMLOperation.cs" />
     <Compile Include="ErrorMessage.cs" />
+    <Compile Include="LibClientInfo.cs" />
     <Compile Include="LibLanguage.cs" />
     <Compile Include="LibSearchCondition.cs" />
+    <Compile Include="LibTableObj.cs" />
     <Compile Include="ModelManager\com\EnumOperation.cs" />
     <Compile Include="ModelManager\DataSource.cs" />
     <Compile Include="ModelManager\DBModel.cs" />

@@ -12,9 +12,9 @@ namespace SDPCRL.IBussiness
         object ExecuteDalMethod(string accountId, int language, string funcId, string method, params object[] param);
         object ExecuteMethod(string accountId, string method, params object[] param);
         object ExecuteSysDalMethod(int language, string funcId, string method, params object[] param);
-        DalResult ExecuteDalMethod2(string accountId, int language, string funcId, string method,LibTable[] libTables, params object[] param);
+        DalResult ExecuteDalMethod2(LibClientInfo clientInfo, string accountId, string funcId, string method,LibTable[] libTables, params object[] param);
 
-        object ExecuteSaveMethod(string accountId, int language, string funcId, string method, LibTable[] param);
+        object ExecuteSaveMethod(LibClientInfo clientInfo, string accountId, string funcId, string method, LibTable[] param);
         object ServerConnectTest();
     }
 }
