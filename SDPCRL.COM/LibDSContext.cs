@@ -3,6 +3,7 @@ using SDPCRL.COM.ModelManager;
 using SDPCRL.COM.ModelManager.FormTemplate;
 using SDPCRL.CORE;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,33 +13,90 @@ namespace SDPCRL.COM
     public class LibDSContext
     {
         LibDataSource _ds = null;
+        LibTableObj[] _tableObjs = null;
+        //Dictionary<string, Dictionary<string, object>> _allcols = null;
+
+        public LibTableObj this[int Tableindex]
+        { 
+            get {
+                if (_tableObjs == null) return null;
+                var o= _tableObjs.FirstOrDefault(i => i.TableIndex == Tableindex);
+                if (o != null) return o;
+                return null;
+            } 
+        }
+        public LibTableObj this[string TableNm]
+        {
+            get {
+                if (_tableObjs == null) return null;
+                var o = _tableObjs.FirstOrDefault(i => i.TableName == TableNm);
+                if (o != null) return o;
+                return null;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dsid">数据源id或progid</param>
         public LibDSContext(string dsid)
         {
-             _ds = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(dsid);
+            CachHelp cach = new CachHelp();
+            _ds = cach.GetCach(string.Format("{0}_{1}", dsid, SysConstManage.TBSchemasuffix)) as LibDataSource;
             if (_ds == null)
             {
-                LibFormPage form = SDPCRL.COM.ModelManager.ModelManager.GetFormSource(dsid);
-                _ds = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(form.DSID);
-            }
-            if (_ds == null) throw new LibExceptionBase(string.Format("DataSource:{0} not exist", dsid));
-            if (_ds.DefTables == null) throw new LibExceptionBase(string.Format("Do not LibDataTableStruct"));
-        }
-
-        public LibTableObj GetTableObj(string tableNm)
-        {
-            LibTableObj tableObj = null;
-            foreach (LibDefineTable deftb in _ds.DefTables)
-            {
-                if (deftb.TableStruct == null) continue;
-                foreach (LibDataTableStruct tb in deftb.TableStruct)
+                _ds = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(dsid);
+                if (_ds == null)
                 {
-                    if (tb.Name.ToUpper() != tableNm.ToUpper()) continue;
-                    tableObj = new LibTableObj(new CreateTableSchemaHelp().DoCreateTableShema(tb));
-                    break;
+                    LibFormPage form = SDPCRL.COM.ModelManager.ModelManager.GetFormSource(dsid);
+                    _ds = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(form.DSID);
+                }
+                if (_ds == null) throw new LibExceptionBase(string.Format("DataSource:{0} not exist", dsid));
+                if (_ds.DefTables == null) throw new LibExceptionBase(string.Format("Do not LibDataTableStruct"));
+                cach.AddCachItem(string.Format("{0}_{1}", dsid, SysConstManage.TBSchemasuffix), _ds, DateTimeOffset.Now.AddMinutes(30));
+            }
+            if (_tableObjs == null) _tableObjs =new LibTableObj[] { };
+            if (_ds.DefTables != null)
+            {
+                CreateTableSchemaHelp tableSchemaHelp = new CreateTableSchemaHelp();
+                foreach (LibDefineTable deftb in _ds.DefTables)
+                {
+                    if (deftb == null || deftb.TableStruct == null) continue;
+                    foreach (LibDataTableStruct tbstruct in deftb.TableStruct)
+                    {
+                        Array.Resize(ref _tableObjs, _tableObjs.Length + 1);
+                        this._tableObjs[_tableObjs.Length - 1] = new LibTableObj(tableSchemaHelp.DoCreateTableShema(tbstruct,true ,true));
+                        this._tableObjs[_tableObjs.Length - 1].FromDSID = _ds.DSID;
+                        //this._tableObjs.Add(new LibTableObj(tableSchemaHelp.DoCreateTableShema(tbstruct)));
+                    }
                 }
             }
-            return tableObj;
         }
+
+        //public LibTableObj GetTableObj(string tableNm)
+        //{
+        //    LibTableObj tableObj = null;
+        //    foreach (LibDefineTable deftb in _ds.DefTables)
+        //    {
+        //        if (deftb.TableStruct == null) continue;
+        //        foreach (LibDataTableStruct tb in deftb.TableStruct)
+        //        {
+        //            if (tb.Name.ToUpper() != tableNm.ToUpper()) continue;
+        //            tableObj = new LibTableObj(new CreateTableSchemaHelp().DoCreateTableShema(tb));
+        //            break;
+        //        }
+        //    }
+        //    return tableObj;
+        //}
+
+        /// <summary>
+        /// 取查询的sql语法
+        /// </summary>
+        /// <param name="tableNm"></param>
+        /// <param name="fields"></param>
+        /// <param name="where"></param>
+        /// <param name="IsJoinRelateTable"></param>
+        /// <param name="IsJoinFromSourceField"></param>
+        /// <returns></returns>
         public string GetSQL(string tableNm, string[] fields, WhereObject where, bool IsJoinRelateTable = true, bool IsJoinFromSourceField = true)
         {
             StringBuilder builder = new StringBuilder();
@@ -86,6 +144,17 @@ namespace SDPCRL.COM
             }
             return string.Format("EXEC sp_executesql N'{0}'", builder.ToString());
         }
+        /// <summary>
+        /// 取分页查询的sql语法
+        /// </summary>
+        /// <param name="tableNm"></param>
+        /// <param name="fields"></param>
+        /// <param name="where"></param>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="IsJoinRelateTable"></param>
+        /// <param name="IsJoinFromSourceField"></param>
+        /// <returns></returns>
         public string GetSQLByPage(string tableNm, string[] fields, WhereObject where, int pageindex, int pagesize, bool IsJoinRelateTable = true, bool IsJoinFromSourceField = true)
         {
             StringBuilder builder = new StringBuilder();
@@ -261,7 +330,7 @@ namespace SDPCRL.COM
                                 foreach (LibField f2 in jointb.Fields)
                                 {
                                     if (!f2.IsActive || jointb.JoinFields.Contains(f2.Name)) continue;
-                                    if (allfields.ToString().Contains(string.Format(".{0}", f2.Name)))
+                                    if (allfields.ToString().Contains(string.Format(".{0}", f2.Name))&&string.IsNullOrEmpty(f2.AliasName))
                                     {
                                         allfields.AppendFormat("{0}{1}.{2} as {3}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, string.Format("{0}{2}{1}", LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, SysConstManage.Underline));
                                     }

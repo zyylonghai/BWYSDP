@@ -83,7 +83,7 @@ namespace SDPCRL.DAL.BUS
 
         public void FillTableObj(LibTableObj tableObj)
         {
-            SQLBuilder sQLBuilder = new SQLBuilder();
+            SQLBuilder sQLBuilder = new SQLBuilder(tableObj.FromDSID);
             if (tableObj.WhereObject != null)
             {
                 DataTable dt = this.GetDataTable(sQLBuilder.GetSQL(tableObj .TableName ,null ,tableObj.WhereObject,false ,false ));

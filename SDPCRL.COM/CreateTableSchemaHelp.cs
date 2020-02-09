@@ -334,9 +334,10 @@ namespace SDPCRL.COM
         /// 
         /// </summary>
         /// <param name="tb"></param>
-        /// <param name="fromfield"></param>
+        /// <param name="fromfield">是否取来源字段关联出来的字段(只取属于关联表的字段)</param>
+        /// <param name="relatefield">是否取来源字段关联出来的字段</param>
         /// <returns></returns>
-        public DataTable DoCreateTableShema(LibDataTableStruct tb,bool fromfield=true)
+        public DataTable DoCreateTableShema(LibDataTableStruct tb,bool fromfield=true,bool relatefield=false)
         {
             DataTable dt = null;
             DataColumn col = null;
@@ -411,13 +412,13 @@ namespace SDPCRL.COM
                     ObjectNm=f.ObjFieldName 
                 });
                 dt.Columns.Add(col);
-                if (f.SourceField != null && f.SourceField.Count > 0)
+                if (fromfield && f.SourceField != null && f.SourceField.Count > 0)
                 {
                     foreach (LibFromSourceField item in f.SourceField)
                     {
                         foreach (var relatef in item.RelateFieldNm)
                         {
-                            if (relatef.FromTableIndex != item.FromTableIndex) continue;
+                            if (!relatefield&& relatef.FromTableIndex != item.FromTableIndex) continue;
                             col = new DataColumn(string.IsNullOrEmpty(relatef.AliasName) ? relatef.FieldNm : relatef.AliasName);
                             col.Caption = relatef.DisplayNm;
                             switch (relatef.FieldType)
@@ -458,6 +459,7 @@ namespace SDPCRL.COM
                                 MapPrimarykey = string.Empty,
                                 DataTypeLen = 0,
                                 Decimalpoint = 0,
+                                ObjectNm=relatef.ObjFieldName ,
                                 AliasName = relatef.AliasName
                             });
                             dt.Columns.Add(col);

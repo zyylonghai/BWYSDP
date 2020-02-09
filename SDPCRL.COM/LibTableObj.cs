@@ -26,8 +26,17 @@ namespace SDPCRL.COM
         public DataTable DataTable { get; set; }
         public dynamic Columns;
         public string TableName { get { return this.DataTable.TableName; } }
+        public int TableIndex
+        {
+            get
+            {
+                TableExtendedProperties tableExtended = this.DataTable.ExtendedProperties[SysConstManage.ExtProp] as TableExtendedProperties;
+                if (tableExtended == null) return -1;
+                return tableExtended.TableIndex;
+            }
+        }
         public WhereObject WhereObject { get { return this._whereObject; } }
-        public string FromDSID { get { return _dsid; } }
+        public string FromDSID { get { return _dsid; } set { if (string.IsNullOrEmpty(this._dsid)) _dsid = value; } }
         #endregion
 
         public LibTableObj(string dsid, string tablenm)

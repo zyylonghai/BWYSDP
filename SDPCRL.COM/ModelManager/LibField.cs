@@ -250,6 +250,8 @@ namespace SDPCRL.COM.ModelManager
 
         public LibFieldType FieldType { get; set; }
 
+        public string ObjFieldName { get; set; }
+
         public override string ToString()
         {
             if (!string.IsNullOrEmpty(AliasName))

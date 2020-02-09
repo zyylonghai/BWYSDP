@@ -90,7 +90,7 @@ namespace SDPCRL.DAL.COM
                     DoGetSQL(builder, tableNm, ds, where, false, IsJoinRelateTable, IsJoinFromSourceField);
                 }
             }
-            if (!string.IsNullOrEmpty(where.WhereFormat))
+            if (where !=null && !string.IsNullOrEmpty(where.WhereFormat))
             {
                 return string.Format("EXEC sp_executesql N'{0} where {1}',{2}", builder.ToString(), where.WhereFormat, where.ValueTostring);
             }
@@ -143,7 +143,7 @@ namespace SDPCRL.DAL.COM
                     DoGetSQL(builder, tableNm, ds, where, true, IsJoinRelateTable, IsJoinFromSourceField);
                 }
             }
-            if (!string.IsNullOrEmpty(where.WhereFormat))
+            if (where !=null && !string.IsNullOrEmpty(where.WhereFormat))
             {
                 return string.Format("EXEC sp_executesql N'select *from({0} where {1}) as temp where rownumber>={3} and rownumber<={4}',{2}", builder.ToString(), where.WhereFormat, where.ValueTostring, (pageindex - 1) * pagesize + 1, pageindex * pagesize);
             }
@@ -307,7 +307,7 @@ namespace SDPCRL.DAL.COM
                                 foreach (LibField f2 in jointb.Fields)
                                 {
                                     if (!f2.IsActive || jointb.JoinFields.Contains(f2.Name)) continue;
-                                    if (allfields.ToString().Contains(string.Format(".{0}", f2.Name)))
+                                    if (allfields.ToString().Contains(string.Format(".{0}", f2.Name))&& string.IsNullOrEmpty(f2.AliasName))
                                     {
                                         allfields.AppendFormat("{0}{1}.{2} as {3}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, string.Format("{0}{2}{1}", LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, SysConstManage.Underline));
                                     }
@@ -363,6 +363,7 @@ namespace SDPCRL.DAL.COM
                         #region 处理JoinOnCondition
                         if (!string.IsNullOrEmpty(fromfield.JoinOnCondition))
                         {
+                            if (where == null) where = new WhereObject();
                             DoJoinOnCondition(fromfield.JoinOnCondition, where);
                         }
                         #endregion 
