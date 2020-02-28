@@ -196,7 +196,8 @@ namespace SDPCRL.CORE
                     return string.IsNullOrEmpty(a.ToString());
                 }
                 else
-                    throw new LibExceptionBase("请确保比较的双方类型一致");
+                    //106 请确保比较的双方类型一致
+                    throw new LibExceptionBase(106);
             }
             if (atype.Equals(typeof(int)))
             {

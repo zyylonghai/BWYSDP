@@ -32,6 +32,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btntranslation = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.中文简体ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.中文繁体ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.英文ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -39,9 +42,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.中文简体ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.中文繁体ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.英文ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -50,6 +53,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.textBox2);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.btntranslation);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.comboBox1);
@@ -59,7 +65,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1231, 55);
+            this.panel1.Size = new System.Drawing.Size(1231, 91);
             this.panel1.TabIndex = 0;
             // 
             // btntranslation
@@ -81,6 +87,24 @@
             this.英文ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(149, 70);
+            // 
+            // 中文简体ToolStripMenuItem
+            // 
+            this.中文简体ToolStripMenuItem.Name = "中文简体ToolStripMenuItem";
+            this.中文简体ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.中文简体ToolStripMenuItem.Text = "中文（简体）";
+            // 
+            // 中文繁体ToolStripMenuItem
+            // 
+            this.中文繁体ToolStripMenuItem.Name = "中文繁体ToolStripMenuItem";
+            this.中文繁体ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.中文繁体ToolStripMenuItem.Text = "中文（繁体）";
+            // 
+            // 英文ToolStripMenuItem
+            // 
+            this.英文ToolStripMenuItem.Name = "英文ToolStripMenuItem";
+            this.英文ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.英文ToolStripMenuItem.Text = "英文";
             // 
             // button1
             // 
@@ -131,9 +155,9 @@
             // 
             this.panel2.Controls.Add(this.dataGridView1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 55);
+            this.panel2.Location = new System.Drawing.Point(0, 91);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1231, 450);
+            this.panel2.Size = new System.Drawing.Size(1231, 466);
             this.panel2.TabIndex = 1;
             // 
             // dataGridView1
@@ -143,32 +167,40 @@
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(1231, 450);
+            this.dataGridView1.Size = new System.Drawing.Size(1231, 466);
             this.dataGridView1.TabIndex = 0;
             // 
-            // 中文简体ToolStripMenuItem
+            // button2
             // 
-            this.中文简体ToolStripMenuItem.Name = "中文简体ToolStripMenuItem";
-            this.中文简体ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.中文简体ToolStripMenuItem.Text = "中文（简体）";
+            this.button2.Location = new System.Drawing.Point(376, 61);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "查询";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // 中文繁体ToolStripMenuItem
+            // label3
             // 
-            this.中文繁体ToolStripMenuItem.Name = "中文繁体ToolStripMenuItem";
-            this.中文繁体ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.中文繁体ToolStripMenuItem.Text = "中文（繁体）";
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 61);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "字段名：";
             // 
-            // 英文ToolStripMenuItem
+            // textBox2
             // 
-            this.英文ToolStripMenuItem.Name = "英文ToolStripMenuItem";
-            this.英文ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.英文ToolStripMenuItem.Text = "英文";
+            this.textBox2.Location = new System.Drawing.Point(71, 58);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(252, 21);
+            this.textBox2.TabIndex = 8;
             // 
             // LanguageConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1231, 505);
+            this.ClientSize = new System.Drawing.Size(1231, 557);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "LanguageConfig";
@@ -198,5 +230,8 @@
         private System.Windows.Forms.ToolStripMenuItem 中文简体ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 中文繁体ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 英文ToolStripMenuItem;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }

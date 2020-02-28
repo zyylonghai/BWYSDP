@@ -94,7 +94,8 @@ namespace BWYSDP.Controls
                 {
                     if (item.NodeId!=this.entity .ID && string.Compare(ctl.Text.Trim(), item.Name, true) == 0)
                     {
-                        throw new LibExceptionBase("不能有重复字段名");
+                        ExceptionManager.ThrowError("不能有重复字段名");
+                        //throw new LibExceptionBase("不能有重复字段名");
                     }
                 }
                 this._fieldNode.Name = string.Compare("fd_txtFieldName", ctl.Name) == 0 ? ctl.Text.Trim() : this._fieldNode.Name;

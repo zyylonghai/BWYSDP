@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BWYResFactory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace SDPCRL.CORE
     public class LibExceptionBase : Exception
     {
         private string _innerStackTrace = string.Empty;
+        private string _message = string.Empty;
         public LibExceptionBase()
             : base()
         {
@@ -17,12 +19,19 @@ namespace SDPCRL.CORE
         public LibExceptionBase(string message)
             : base(message)
         {
-           
+            this._message = message;
+        }
+        public LibExceptionBase(int msgcode,params object[] parms)
+            :base ()
+        {
+            ResFactory.ResManager.GetResByKey(msgcode.ToString());
+            this._message = ResFactory.ResManager.GetResByKey(msgcode.ToString());
         }
 
         public LibExceptionBase(string message, string innerStackTrace)
             : base(message)
         {
+            this._message = message;
             this._innerStackTrace = innerStackTrace;
         }
 
@@ -30,7 +39,7 @@ namespace SDPCRL.CORE
         {
             get
             {
-                return base.Message;
+                return this._message;
             }
         }
 
@@ -42,10 +51,10 @@ namespace SDPCRL.CORE
 
         #region 公开函数
 
-        public void AddErrorMessage(string msg)
-        {
+        //public void AddErrorMessage(string msg)
+        //{
 
-        }
+        //}
         #endregion
     }
 

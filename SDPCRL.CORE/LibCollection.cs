@@ -63,7 +63,8 @@ namespace SDPCRL.CORE
             PropertyInfo p = tp.GetProperty(propertyNm);
             if (p == null)
             {
-                throw new LibExceptionBase(string.Format("属性{0}不存在", propertyNm));
+                //105 属性{0}不存在
+                throw new LibExceptionBase(105, propertyNm);
             }
             foreach (T item in _entityArray)
             {
@@ -156,7 +157,8 @@ namespace SDPCRL.CORE
             PropertyInfo p = tp.GetProperty(propertyNm);
             if (p == null)
             {
-                throw new LibExceptionBase(string.Format("属性{0}不存在", propertyNm));
+                //105 属性{0}不存在
+                throw new LibExceptionBase(105, propertyNm);
             }
             if (_entityArray == null) return result;
             foreach (T item in _entityArray)

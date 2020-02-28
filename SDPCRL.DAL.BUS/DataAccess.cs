@@ -113,6 +113,11 @@ namespace SDPCRL.DAL.BUS
                 {
                     dt = tableObj.DataTable;
                     tbextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<TableExtendedProperties>(dt.ExtendedProperties[SysConstManage.ExtProp].ToString());
+                    if (tbextprop == null)
+                    {
+                        //520：系统无法识别的表对象，请使用模型实例化表对象。
+                        throw new LibExceptionBase(520);
+                    }
                     if (!tbextprop.Ignore) continue;
                     fields = new StringBuilder();
                     fieldtypes = new StringBuilder();

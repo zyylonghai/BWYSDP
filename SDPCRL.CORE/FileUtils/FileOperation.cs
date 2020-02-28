@@ -173,7 +173,8 @@ namespace SDPCRL.CORE.FileUtils
             {
                 if (ExistsFile())
                 {
-                    throw new LibExceptionBase("文件已经存在");
+                    //103 文件已经存在
+                    throw new LibExceptionBase(103);
                 }
                 else
                 {

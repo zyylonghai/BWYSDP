@@ -121,7 +121,8 @@ namespace SDPCRL.CORE.FileUtils
             {
                 throw ex;
             }
-            if(result ==null ) throw new LibExceptionBase("查找ModelTreeTemp文件的节点时出错：找不到节点");
+            //104 查找ModelTreeTemp文件的节点时出错：找不到节点
+            if (result ==null ) throw new LibExceptionBase(104);
             return result;
         }
         #endregion

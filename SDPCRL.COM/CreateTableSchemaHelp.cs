@@ -409,6 +409,7 @@ namespace SDPCRL.COM
                     DataTypeLen = f.FieldLength,
                     Decimalpoint = f.Decimalpoint,
                     AliasName = f.AliasName,
+                    FieldNm=f.Name ,
                     ObjectNm=f.ObjFieldName 
                 });
                 dt.Columns.Add(col);
@@ -459,9 +460,13 @@ namespace SDPCRL.COM
                                 MapPrimarykey = string.Empty,
                                 DataTypeLen = 0,
                                 Decimalpoint = 0,
-                                ObjectNm=relatef.ObjFieldName ,
+                                ObjectNm = relatef.ObjFieldName,
+                                FromDSID = item.FromDataSource,
+                                FromTableIndex=relatef.FromTableIndex,
+                                SourceFieldNm=f.Name,
+                                FieldNm=relatef.FieldNm,
                                 AliasName = relatef.AliasName
-                            });
+                            }) ;
                             dt.Columns.Add(col);
                         }
                     }
@@ -564,10 +569,20 @@ namespace SDPCRL.COM
 
         public string AliasName { get; set; }
 
+        public string FromDSID { get; set; }
+        public int FromTableIndex { get; set; }
+
+        /// <summary>如果是来源字段关联出来的，该值为来源字段名</summary>
+        public string SourceFieldNm { get; set; }
+
         /// <summary>
         /// 对应实体的字段名
         /// </summary>
         public string ObjectNm { get; set; }
+        /// <summary>
+        /// 真是的字段名
+        /// </summary>
+        public string FieldNm { get; set; }
 
         public override string ToString()
         {

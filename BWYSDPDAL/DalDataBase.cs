@@ -75,6 +75,14 @@ namespace BWYSDPDAL
             DataTable data = this.DataAccess.GetDataTable(sql);
             return data;
         }
+        public DataTable GetFieldDescByFieldNm(string dsid,string fieldid)
+        {
+            SQLBuilder build = new SQLBuilder();
+            string sql = build.GetSQL("Language_Field", new string[] { "FieldNm", "DSID", "LanguageId", "TableNm", "Vals" },
+                                     build.Where("DSID={0} And FieldNm={1}", dsid, fieldid));
+            DataTable data = this.DataAccess.GetDataTable(sql);
+            return data;
+        }
         public DataTable GetAllMsgDesc(int languageId)
         {
             SQLBuilder build = new SQLBuilder();

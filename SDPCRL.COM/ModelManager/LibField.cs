@@ -250,6 +250,7 @@ namespace SDPCRL.COM.ModelManager
 
         public LibFieldType FieldType { get; set; }
 
+        [LibAttribute("relate_ObjFieldName", LibControlType.TextBox, "实体字段名", true)]
         public string ObjFieldName { get; set; }
 
         public override string ToString()

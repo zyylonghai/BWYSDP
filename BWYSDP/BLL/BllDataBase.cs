@@ -57,6 +57,7 @@ namespace BWYSDP.BLL
         }
         public bool BuilderTableStruct(string sqlstr)
         {
+            if (string.IsNullOrEmpty(sqlstr)) return true;
             LibClientInfo clientInfo = new LibClientInfo { Language = (Language)1 };
             return (bool)((DalResult)this.ExecuteDalMethod(clientInfo, "TestFunc", "BuilderTableStruct",null , sqlstr)).Value;
         }
@@ -64,6 +65,10 @@ namespace BWYSDP.BLL
         public DataTable Getlanguagebydsid(string dsid)
         {
             return (DataTable)this.ExecuteSysDalMethod(1, "TestFunc", "GetFieldDescByDSID", dsid);
+        }
+        public DataTable Getlanguage(string dsid, string fieldnm)
+        {
+            return (DataTable)this.ExecuteSysDalMethod(1, "TestFunc", "GetFieldDescByFieldNm", dsid, fieldnm);
         }
         public void Updatelanguage(DataTable dt, string dsid)
         {

@@ -17,8 +17,10 @@ namespace SDPCRL.COM
     [Serializable]
     public class LibTableObj
     {
-        Dictionary<string, object> _cols = null;
+        Dictionary<string, LibFieldObj> _cols = null;
         string _dsid = string.Empty;
+        Dictionary<string, string> _tbaliasmdic = null;
+            
         WhereObject _whereObject = null;
         //LibDataSource _ds = null;
 
@@ -37,13 +39,30 @@ namespace SDPCRL.COM
         }
         public WhereObject WhereObject { get { return this._whereObject; } }
         public string FromDSID { get { return _dsid; } set { if (string.IsNullOrEmpty(this._dsid)) _dsid = value; } }
+
+        public List<dynamic> Rows { 
+            get {
+                if (this.DataTable != null && this.DataTable.Rows != null && this.DataTable.Rows.Count > 0)
+                {
+                    List<dynamic> _rows = new List<dynamic>();
+                    foreach (DataRow dr in this.DataTable.Rows)
+                    {
+                        _rows.Add(new DataRowObj(this._cols, dr,this));
+                    }
+                    return _rows;
+                }
+                return null;
+            } 
+        }
         #endregion
 
         public LibTableObj(string dsid, string tablenm)
         {
             LibDataSource _ds =SDPCRL.COM.ModelManager.ModelManager.GetDataSource(dsid);
-            if (_ds == null) throw new LibExceptionBase(string.Format("DataSource:{0} not exist", dsid));
-            if (_ds.DefTables == null) throw new LibExceptionBase(string.Format("Do not LibDataTableStruct"));
+            //101：数据原:{0} 不存在
+            if (_ds == null) throw new LibExceptionBase(101,dsid);
+            //100：没有表结构
+            if (_ds.DefTables == null) throw new LibExceptionBase(100);
             this._dsid = dsid;
             foreach (LibDefineTable deftb in _ds.DefTables)
             {
@@ -55,12 +74,16 @@ namespace SDPCRL.COM
                     break;
                 }
             }
-            if (DataTable == null) throw new LibExceptionBase(string.Format("DataTable Cant not null"));
+            if (DataTable == null) throw new LibExceptionBase(521);
             GetColumns();
         }
         public LibTableObj(DataTable table)
         {
-            if (table == null) throw new LibExceptionBase(string.Format("DataTable Cant not null"));
+            if (table == null)
+            {
+                //521：DataTable 不能为Null
+                throw new LibExceptionBase(521);
+            }
             this.DataTable = table;
             GetColumns();
 
@@ -69,7 +92,7 @@ namespace SDPCRL.COM
         {
             DataRow row = this.DataTable.NewRow();
             this.DataTable.Rows.Add(row);
-            return new DataRowObj(this._cols, row);
+            return new DataRowObj(this._cols, row,this);
         }
 
         /// <summary>
@@ -101,7 +124,7 @@ namespace SDPCRL.COM
                         }
                         if (isexist)
                         {
-                            rowobj = new DataRowObj(this._cols, row);
+                            rowobj = new DataRowObj(this._cols, row,this);
                             break;
                         }
                     }
@@ -129,8 +152,9 @@ namespace SDPCRL.COM
                     return null;
                 }
                 DataRow row = this.DataTable.Rows[index];
-                if (row.RowState == DataRowState.Deleted) { throw new LibExceptionBase(string.Format("the RowIndex:{0} has been Deleted",index)); }
-                return new DataRowObj(this._cols, this.DataTable.Rows[index]);
+                //102：the RowIndex:{0} has been Deleted
+                if (row.RowState == DataRowState.Deleted) { throw new LibExceptionBase(102,index); }
+                return new DataRowObj(this._cols, this.DataTable.Rows[index],this);
             }
             return null;
         }
@@ -187,22 +211,81 @@ namespace SDPCRL.COM
             }
             this.DataTable.AcceptChanges();
         }
+        public string GetTBAliasmn(string dsid, int tableindex, string sourcefield)
+        {
+            string key = string.Format("{0}{1}{2}", dsid, tableindex, sourcefield);
+            string result = string.Empty;
+            if (this._tbaliasmdic != null) this._tbaliasmdic.TryGetValue(key, out result);
+            return result;
+        }
         //public 
         #region 私有函数
         private void GetColumns()
         {
-            _cols = new Dictionary<string, object>();
+            _cols = new Dictionary<string, LibFieldObj>();
+            List<string> vals = new List<string>();
             ColExtendedProperties colExtended = null;
+            LibFieldObj fobj = null;
+            string ckey = string.Empty;
+            TableExtendedProperties tableExtended = DataTable.ExtendedProperties[SysConstManage.ExtProp] as TableExtendedProperties;
+            if (_tbaliasmdic == null) _tbaliasmdic = new Dictionary<string, string>();
             foreach (DataColumn c in DataTable.Columns)
             {
+                fobj = new LibFieldObj();
                 colExtended = c.ExtendedProperties[SysConstManage.ExtProp] as ColExtendedProperties;
                 if (colExtended != null)
                 {
-                    _cols.Add((string.IsNullOrEmpty(colExtended.ObjectNm) ? c.ColumnName : colExtended.ObjectNm), c.ColumnName);
+                    if (colExtended.IsRelate)
+                    {
+                        if (!string.IsNullOrEmpty(colExtended.AliasName))
+                        {
+                            ckey = colExtended.AliasName;
+                            //fobj.FieldNm = colExtended.AliasName;
+                        }
+                        else if (!string.IsNullOrEmpty(colExtended.ObjectNm))
+                        {
+                            ckey = colExtended.ObjectNm;
+                            //fobj.FieldNm = colExtended.ObjectNm;
+                        }
+                        else
+                        {
+                            ckey = c.ColumnName;
+                            //fobj.FieldNm = c.ColumnName;
+                        }
+                        string key= string.Format("{0}{1}{2}", colExtended.FromDSID, colExtended.FromTableIndex, colExtended.SourceFieldNm);
+                        if (!_tbaliasmdic.ContainsKey(key))
+                        {
+                            string v = string.Format("{0}{1}", LibSysUtils.ToCharByTableIndex(tableExtended.TableIndex), LibSysUtils.ToCharByTableIndex(colExtended.FromTableIndex));
+                            //int t = vals.Where(i => i == v).Count();
+                            int cout= vals.Where(i => i == v).Count();
+                            if (cout == 0)
+                            {
+                                _tbaliasmdic.Add(key, string.Format("{0}", v));
+                            }
+                            else
+                                _tbaliasmdic.Add(key, string.Format("{0}{1}", v, cout));
+                            vals.Add(v);
+                        }
+                        fobj.TBAliasNm = _tbaliasmdic[key];
+                        fobj.FieldNm = colExtended.FieldNm;
+                    }
+                    else
+                    {
+                        if (tableExtended != null)
+                        {
+                            fobj.TBAliasNm = LibSysUtils.ToCharByTableIndex(tableExtended.TableIndex).ToString ();
+                        }
+                        ckey = string.IsNullOrEmpty(colExtended.ObjectNm) ? c.ColumnName : colExtended.ObjectNm;
+                        fobj.FieldNm = c.ColumnName;
+                    }
+                    fobj.colNm = c.ColumnName;
+                    _cols.Add(ckey, fobj);
                 }
                 else
                 {
-                    _cols.Add(c.ColumnName, c.ColumnName);
+                    fobj.FieldNm = c.ColumnName;
+                    fobj.colNm = c.ColumnName;
+                    _cols.Add(fobj.FieldNm, fobj);
                 }
                 
             }
@@ -226,8 +309,8 @@ namespace SDPCRL.COM
     [Serializable]
     public class ColumnObj : DynamicObject
     {
-        Dictionary<string, object> _cols = null;
-        public ColumnObj(Dictionary<string, object> cols)
+        Dictionary<string, LibFieldObj> _cols = null;
+        public ColumnObj(Dictionary<string, LibFieldObj> cols)
         {
             this._cols = cols;
         }
@@ -238,24 +321,50 @@ namespace SDPCRL.COM
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            return _cols.TryGetValue(binder.Name, out result);
+            LibFieldObj fobj = null;
+            if (_cols.TryGetValue(binder.Name, out fobj))
+            {
+                if (string.IsNullOrEmpty(fobj.TBAliasNm))
+                {
+                    result = fobj.FieldNm;
+                }
+                else
+                    result = string.Format("{0}{1}{2}", fobj.TBAliasNm, SysConstManage.Point, fobj.FieldNm);
+                return true;
+            }
+            result = string.Empty;
+            return false;
+            //return _cols.TryGetValue(binder.Name, out result);
         }
     }
     [Serializable]
     public class DataRowObj : DynamicObject
     {
-        Dictionary<string, object> _cols = null;
+        Dictionary<string, LibFieldObj> _cols = null;
         DataRow _dataRow = null;
-        public DataRowObj(Dictionary<string, object> cols, DataRow row)
+        LibTableObj _tbobj = null;
+
+        #region 公开的属性
+        public DataRowState DataRowState
+        {
+            get {
+                return this._dataRow.RowState;
+            }
+        }
+        public DataRow Row { get { return _dataRow; } }
+        public LibTableObj TableObj { get { return _tbobj; } }
+        #endregion 
+        public DataRowObj(Dictionary<string, LibFieldObj> cols, DataRow row,LibTableObj tbobj)
         {
             this._cols = cols;
             this._dataRow = row;
+            this._tbobj = tbobj;
         }
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
             if (this._cols.ContainsKey(binder.Name))
             {
-                this._dataRow[_cols[binder.Name].ToString()] = value;
+                this._dataRow[_cols[binder.Name].colNm] = value;
                 //this._cols[binder.Name] = value;
                 return true;
             }
@@ -265,13 +374,29 @@ namespace SDPCRL.COM
         {
             if (this._cols.ContainsKey(binder.Name))
             {
-                result = this._dataRow[_cols[binder.Name].ToString()];
-                return true;
+                try
+                {
+                    string nm = _cols[binder.Name].colNm;
+                    result = this._dataRow[nm];
+                    return true;
+                }
+                catch 
+                {
+                    result = DBNull.Value; 
+                }
             }
             result = DBNull.Value;
             return false;
             //return _cols.TryGetValue(binder.Name, out result);
         }
+    }
+
+    [Serializable]
+    public class LibFieldObj
+    {
+        public string FieldNm { get; set; }
+        public string colNm { get; set; }
+        public string TBAliasNm { get; set; }
     }
     [Serializable]
     public class WhereObject

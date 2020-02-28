@@ -264,5 +264,41 @@ namespace BWYSDP
         {
             this.contextMenuStrip1.Show(this.btntranslation, 0 , this.btntranslation.Height);
         }
+
+        /// <summary>查询</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(this.textBox2.Text.Trim()))
+            {
+                languagedt = this.BllData.Getlanguagebydsid(this.textBox1.Text.Trim());
+            }
+            else
+                languagedt = this.BllData.Getlanguage(this.textBox1.Text.Trim(), this.textBox2.Text.Trim());
+
+            if (languagedt != null && languagedt.Rows != null)
+            {
+                DataTable dt = this.dataGridView1.DataSource as DataTable;
+                DataRow row = null;
+                dt.Rows.Clear();
+                languagedt.DefaultView.Sort = "FieldNm";
+                string prefieldnm = string.Empty;
+                foreach (DataRowView r in languagedt.DefaultView)
+                {
+                    //DataRow[] rws = dt.Select(string.Format("FieldNm='{0}'", r["FieldNm"]));
+                    if (r["FieldNm"].ToString() != prefieldnm)
+                    {
+                        row = dt.NewRow();
+                        row["TableNm"] = r["TableNm"];
+                        row["FieldNm"] = r["FieldNm"];
+                        dt.Rows.Add(row);
+                        prefieldnm = r["FieldNm"].ToString();
+                    }
+
+                    row[((Language)(Convert.ToInt32(r["LanguageId"]))).ToString()] = r["Vals"];
+                }
+            }
+        }
     }
 }

@@ -59,7 +59,8 @@ namespace BWYSDP.com
             }
             else
             {
-                throw new LibExceptionBase("参数newNode不允许为null");
+                ExceptionManager.ThrowError("参数newNode不允许为null");
+                //throw new LibExceptionBase("参数newNode不允许为null");
             }
         }
         /// <summary>

@@ -14,8 +14,20 @@ namespace SDPCRL.COM
     {
         LibDataSource _ds = null;
         LibTableObj[] _tableObjs = null;
+        string _dsid = string.Empty;
         //Dictionary<string, Dictionary<string, object>> _allcols = null;
-
+        LibDataSource DataSource { 
+            get {
+                if (_ds == null)
+                {
+                    _ds= SDPCRL.COM.ModelManager.ModelManager.GetDataSource(_dsid);
+                    CachHelp cach = new CachHelp();
+                    InitialContext();
+                    cach.AddCachItem(string.Format("{0}_{1}", _dsid, SysConstManage.TBSchemasuffix), _ds, DateTimeOffset.Now.AddMinutes(30));
+                }
+                return _ds;
+            } 
+        }
         public LibTableObj this[int Tableindex]
         { 
             get {
@@ -40,6 +52,7 @@ namespace SDPCRL.COM
         /// <param name="dsid">数据源id或progid</param>
         public LibDSContext(string dsid)
         {
+            this._dsid = dsid;
             CachHelp cach = new CachHelp();
             _ds = cach.GetCach(string.Format("{0}_{1}", dsid, SysConstManage.TBSchemasuffix)) as LibDataSource;
             if (_ds == null)
@@ -50,26 +63,13 @@ namespace SDPCRL.COM
                     LibFormPage form = SDPCRL.COM.ModelManager.ModelManager.GetFormSource(dsid);
                     _ds = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(form.DSID);
                 }
-                if (_ds == null) throw new LibExceptionBase(string.Format("DataSource:{0} not exist", dsid));
-                if (_ds.DefTables == null) throw new LibExceptionBase(string.Format("Do not LibDataTableStruct"));
+                //101：数据源:{0} 不存在
+                if (_ds == null) throw new LibExceptionBase(101, dsid);
+                //100：没有表结构
+                if (_ds.DefTables == null) throw new LibExceptionBase(100);
                 cach.AddCachItem(string.Format("{0}_{1}", dsid, SysConstManage.TBSchemasuffix), _ds, DateTimeOffset.Now.AddMinutes(30));
             }
-            if (_tableObjs == null) _tableObjs =new LibTableObj[] { };
-            if (_ds.DefTables != null)
-            {
-                CreateTableSchemaHelp tableSchemaHelp = new CreateTableSchemaHelp();
-                foreach (LibDefineTable deftb in _ds.DefTables)
-                {
-                    if (deftb == null || deftb.TableStruct == null) continue;
-                    foreach (LibDataTableStruct tbstruct in deftb.TableStruct)
-                    {
-                        Array.Resize(ref _tableObjs, _tableObjs.Length + 1);
-                        this._tableObjs[_tableObjs.Length - 1] = new LibTableObj(tableSchemaHelp.DoCreateTableShema(tbstruct,true ,true));
-                        this._tableObjs[_tableObjs.Length - 1].FromDSID = _ds.DSID;
-                        //this._tableObjs.Add(new LibTableObj(tableSchemaHelp.DoCreateTableShema(tbstruct)));
-                    }
-                }
-            }
+            InitialContext();
         }
 
         //public LibTableObj GetTableObj(string tableNm)
@@ -112,7 +112,7 @@ namespace SDPCRL.COM
                     builder.AppendFormat(" {0}", field);
                 }
             }
-            if (this._ds==null)
+            if (this.DataSource==null)
             {
                 if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
                 {
@@ -135,7 +135,7 @@ namespace SDPCRL.COM
                 //}
                 //if (this._ds != null)
                 //{
-                    DoGetSQL(builder, tableNm, this._ds, where, false, IsJoinRelateTable, IsJoinFromSourceField);
+                    DoGetSQL(builder, tableNm, this.DataSource, where, false, IsJoinRelateTable, IsJoinFromSourceField);
                 //}
             }
             if (!string.IsNullOrEmpty(where.WhereFormat))
@@ -170,7 +170,7 @@ namespace SDPCRL.COM
                     builder.AppendFormat(" {0}", field);
                 }
             }
-            if (this._ds==null)
+            if (this.DataSource==null)
             {
                 if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
                 {
@@ -195,7 +195,7 @@ namespace SDPCRL.COM
                 //}
                 //if (ds != null)
                 //{
-                    DoGetSQL(builder, tableNm, this._ds, where, true, IsJoinRelateTable, IsJoinFromSourceField);
+                    DoGetSQL(builder, tableNm, this.DataSource, where, true, IsJoinRelateTable, IsJoinFromSourceField);
                 //}
             }
             if (!string.IsNullOrEmpty(where.WhereFormat))
@@ -207,43 +207,43 @@ namespace SDPCRL.COM
         /// <summary>用于取整个数据源的查询语法</summary>
         /// <param name="where">指主表的条件</param>
         /// <returns></returns>
-        public string GetSQL(WhereObject where)
-        {
-            StringBuilder sql = new StringBuilder();
-            if (this._ds==null) return string.Empty;
-            StringBuilder fields = null;
+        //public string GetSQL(WhereObject where)
+        //{
+        //    StringBuilder sql = new StringBuilder();
+        //    if (this.DataSource==null) return string.Empty;
+        //    StringBuilder fields = null;
 
-            //LibFormPage form =SDPCRL.COM.ModelManager.ModelManager.GetFormSource(this._id);
-            //var datasourse = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(form.DSID);
-            if (this._ds != null)
-            {
-                foreach (LibDefineTable deftb in this._ds.DefTables)
-                {
-                    if (deftb.TableStruct == null) continue;
-                    foreach (LibDataTableStruct tbstruct in deftb.TableStruct)
-                    {
-                        if (!tbstruct.Ignore) continue;
-                        fields = new StringBuilder();
-                        char tbaliasnm = LibSysUtils.ToCharByTableIndex(tbstruct.TableIndex);
-                        foreach (LibField f in tbstruct.Fields)
-                        {
-                            if (fields.Length > 0)
-                                fields.Append(SysConstManage.Comma);
-                            fields.AppendFormat("{0}.{1}", tbaliasnm, string.IsNullOrEmpty(f.AliasName) ? f.Name : f.AliasName);
-                        }
-                        if (fields.Length > 0)
-                        {
-                            if (string.IsNullOrEmpty(where.WhereFormat))
-                                sql.AppendFormat("select {0} from {1} {2}", fields.ToString(), tbstruct.Name, tbaliasnm);
-                            else
-                                sql.AppendFormat("select {0} from {1} {2} where {3}", fields.ToString(), tbstruct.Name, tbaliasnm, where.WhereFormat);
-                            sql.AppendLine();
-                        }
-                    }
-                }
-            }
-            return sql.ToString();
-        }
+        //    //LibFormPage form =SDPCRL.COM.ModelManager.ModelManager.GetFormSource(this._id);
+        //    //var datasourse = SDPCRL.COM.ModelManager.ModelManager.GetDataSource(form.DSID);
+        //    if (this.DataSource != null)
+        //    {
+        //        foreach (LibDefineTable deftb in this.DataSource.DefTables)
+        //        {
+        //            if (deftb.TableStruct == null) continue;
+        //            foreach (LibDataTableStruct tbstruct in deftb.TableStruct)
+        //            {
+        //                if (!tbstruct.Ignore) continue;
+        //                fields = new StringBuilder();
+        //                char tbaliasnm = LibSysUtils.ToCharByTableIndex(tbstruct.TableIndex);
+        //                foreach (LibField f in tbstruct.Fields)
+        //                {
+        //                    if (fields.Length > 0)
+        //                        fields.Append(SysConstManage.Comma);
+        //                    fields.AppendFormat("{0}.{1}", tbaliasnm, string.IsNullOrEmpty(f.AliasName) ? f.Name : f.AliasName);
+        //                }
+        //                if (fields.Length > 0)
+        //                {
+        //                    if (string.IsNullOrEmpty(where.WhereFormat))
+        //                        sql.AppendFormat("select {0} from {1} {2}", fields.ToString(), tbstruct.Name, tbaliasnm);
+        //                    else
+        //                        sql.AppendFormat("select {0} from {1} {2} where {3}", fields.ToString(), tbstruct.Name, tbaliasnm, where.WhereFormat);
+        //                    sql.AppendLine();
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return sql.ToString();
+        //}
 
 
         public WhereObject Where(string format, params object[] values)
@@ -261,7 +261,7 @@ namespace SDPCRL.COM
             StringBuilder joinstr = new StringBuilder();
             StringBuilder joinfield = null;
             StringBuilder allfields = new StringBuilder();
-            Dictionary<string, int> tablealiasmdic = new Dictionary<string, int>();
+            //Dictionary<string, int> tablealiasmdic = new Dictionary<string, int>();
             foreach (LibDefineTable item in ds.DefTables)
             {
                 if (item.TableStruct == null) continue;
@@ -357,15 +357,16 @@ namespace SDPCRL.COM
                 {
                     foreach (LibFromSourceField fromfield in f.SourceField)
                     {
-                        string tbnm = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(fromfield.FromTableIndex));
-                        if (tablealiasmdic.ContainsKey(tbnm))
-                        {
-                            tbnm = string.Format("{0}{1}", tbnm, tablealiasmdic[tbnm]++);
-                        }
-                        else
-                        {
-                            tablealiasmdic.Add(tbnm, 0);
-                        }
+                        string tbnm = this[tableNm].GetTBAliasmn(fromfield.FromDataSource, fromfield.FromTableIndex, f.Name);
+                        //string tbnm = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(fromfield.FromTableIndex));
+                        //if (tablealiasmdic.ContainsKey(tbnm))
+                        //{
+                        //    tbnm = string.Format("{0}{1}", tbnm, tablealiasmdic[tbnm]++);
+                        //}
+                        //else
+                        //{
+                        //    tablealiasmdic.Add(tbnm, 0);
+                        //}
                         #region 组织joinstr语句
                         joinstr.AppendFormat(" {0} {1} {2} {3} ",
                                          ResFactory.ResManager.SQLLeftJoin,
@@ -411,15 +412,16 @@ namespace SDPCRL.COM
                                     foreach (var jointb in relatetbs)
                                     {
                                         tbindexs2.Add(jointb.TableIndex);
-                                        string tbnm2 = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(jointb.TableIndex));
-                                        if (tablealiasmdic.ContainsKey(tbnm2))
-                                        {
-                                            tbnm2 = string.Format("{0}{1}", tbnm2, tablealiasmdic[tbnm2]++);
-                                        }
-                                        else
-                                        {
-                                            tablealiasmdic.Add(tbnm2, 0);
-                                        }
+                                        string tbnm2 = this[tableNm].GetTBAliasmn(fromfield.FromDataSource, jointb.TableIndex, f.Name);
+                                        //string tbnm2 = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(jointb.TableIndex));
+                                        //if (tablealiasmdic.ContainsKey(tbnm2))
+                                        //{
+                                        //    tbnm2 = string.Format("{0}{1}", tbnm2, tablealiasmdic[tbnm2]++);
+                                        //}
+                                        //else
+                                        //{
+                                        //    tablealiasmdic.Add(tbnm2, 0);
+                                        //}
                                         joinstr.AppendFormat(" {0} {1} {2} {3} ",
                                          ResFactory.ResManager.SQLLeftJoin,
                                          jointb.Name,
@@ -456,11 +458,12 @@ namespace SDPCRL.COM
                                 foreach (LibRelateField relatef in fromfield.RelateFieldNm)
                                 {
                                     if (!IsJoinFromSourceField && relatef.FromTableIndex != fromfield.FromTableIndex) continue;
-                                    tbnm = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(relatef.FromTableIndex));
-                                    if (IsJoinFromSourceField && relatef.FromTableIndex != fromfield.FromTableIndex)
-                                    {
-                                        tbnm = tablealiasmdic[tbnm] == 0 ? tbnm : string.Format("{0}{1}", tbnm, tablealiasmdic[tbnm]);
-                                    }
+                                    tbnm = this[tableNm].GetTBAliasmn(fromfield.FromDataSource, relatef.FromTableIndex, f.Name);
+                                    //tbnm = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(relatef.FromTableIndex));
+                                    //if (IsJoinFromSourceField && relatef.FromTableIndex != fromfield.FromTableIndex)
+                                    //{
+                                    //    tbnm = tablealiasmdic[tbnm] == 0 ? tbnm : string.Format("{0}{1}", tbnm, tablealiasmdic[tbnm]);
+                                    //}
                                     if (!string.IsNullOrEmpty(relatef.AliasName))
                                     {
                                         allfields.AppendFormat("{0}{1}.{2} as {3}",
@@ -570,6 +573,27 @@ namespace SDPCRL.COM
                     }
                 }
                 where.AppendWhereFormat(ResFactory.ResManager.SQLAnd, string.Format("({0})", condformat), valus);
+            }
+        }
+
+        private void InitialContext()
+        {
+            if (_tableObjs == null) _tableObjs = new LibTableObj[] { };
+            Array.Clear(_tableObjs, 0, _tableObjs.Length);
+            if (_ds.DefTables != null)
+            {
+                CreateTableSchemaHelp tableSchemaHelp = new CreateTableSchemaHelp();
+                foreach (LibDefineTable deftb in _ds.DefTables)
+                {
+                    if (deftb == null || deftb.TableStruct == null) continue;
+                    foreach (LibDataTableStruct tbstruct in deftb.TableStruct)
+                    {
+                        Array.Resize(ref _tableObjs, _tableObjs.Length + 1);
+                        this._tableObjs[_tableObjs.Length - 1] = new LibTableObj(tableSchemaHelp.DoCreateTableShema(tbstruct, true, true));
+                        this._tableObjs[_tableObjs.Length - 1].FromDSID = _ds.DSID;
+                        //this._tableObjs.Add(new LibTableObj(tableSchemaHelp.DoCreateTableShema(tbstruct)));
+                    }
+                }
             }
         }
         #endregion

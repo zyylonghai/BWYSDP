@@ -159,4 +159,31 @@
   <data name="SQLUpdate" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="100" xml:space="preserve">
+    <value>没有表结构</value>
+  </data>
+  <data name="101" xml:space="preserve">
+    <value>数据源:{0} 不存在</value>
+  </data>
+  <data name="102" xml:space="preserve">
+    <value>the RowIndex:{0} has been Deleted</value>
+  </data>
+  <data name="520" xml:space="preserve">
+    <value>系统无法识别的表对象，请使用模型实例化表对象。</value>
+  </data>
+  <data name="521" xml:space="preserve">
+    <value>DataTable 不能为Null</value>
+  </data>
+  <data name="103" xml:space="preserve">
+    <value>文件已经存在</value>
+  </data>
+  <data name="104" xml:space="preserve">
+    <value>查找ModelTreeTemp文件的节点时出错：找不到节点</value>
+  </data>
+  <data name="105" xml:space="preserve">
+    <value>属性{0}不存在</value>
+  </data>
+  <data name="106" xml:space="preserve">
+    <value>请确保比较的双方类型一致</value>
+  </data>
 </root>

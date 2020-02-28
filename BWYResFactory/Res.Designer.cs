@@ -61,6 +61,87 @@ namespace BWYResFactory {
         }
         
         /// <summary>
+        ///   查找类似 没有表结构 的本地化字符串。
+        /// </summary>
+        internal static string _100 {
+            get {
+                return ResourceManager.GetString("100", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 数据源:{0} 不存在 的本地化字符串。
+        /// </summary>
+        internal static string _101 {
+            get {
+                return ResourceManager.GetString("101", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 the RowIndex:{0} has been Deleted 的本地化字符串。
+        /// </summary>
+        internal static string _102 {
+            get {
+                return ResourceManager.GetString("102", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 文件已经存在 的本地化字符串。
+        /// </summary>
+        internal static string _103 {
+            get {
+                return ResourceManager.GetString("103", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 查找ModelTreeTemp文件的节点时出错：找不到节点 的本地化字符串。
+        /// </summary>
+        internal static string _104 {
+            get {
+                return ResourceManager.GetString("104", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 属性{0}不存在 的本地化字符串。
+        /// </summary>
+        internal static string _105 {
+            get {
+                return ResourceManager.GetString("105", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 请确保比较的双方类型一致 的本地化字符串。
+        /// </summary>
+        internal static string _106 {
+            get {
+                return ResourceManager.GetString("106", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 系统无法识别的表对象，请使用模型实例化表对象。 的本地化字符串。
+        /// </summary>
+        internal static string _520 {
+            get {
+                return ResourceManager.GetString("520", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 DataTable 不能为Null 的本地化字符串。
+        /// </summary>
+        internal static string _521 {
+            get {
+                return ResourceManager.GetString("521", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 DALServer 的本地化字符串。
         /// </summary>
         internal static string DALServerName {

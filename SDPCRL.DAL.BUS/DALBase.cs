@@ -154,6 +154,7 @@ namespace SDPCRL.DAL.BUS
                 LibTable libtable = null;
                 DataTable dt = null;
                 StringBuilder fields = null;
+                StringBuilder cols = null;
                 StringBuilder fieldtypes = null;
                 StringBuilder fieldvalue = null;
 
@@ -173,8 +174,9 @@ namespace SDPCRL.DAL.BUS
                     {
                         dt = libtable.Tables[n].DataTable;
                         tbextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<TableExtendedProperties>(dt.ExtendedProperties[SysConstManage.ExtProp].ToString());
-                        if (!tbextprop.Ignore) continue;
+                        if (tbextprop ==null || !tbextprop.Ignore) continue;
                         fields = new StringBuilder();
+                        cols = new StringBuilder();
                         fieldtypes = new StringBuilder();
                         fieldvalue = new StringBuilder();
                         List<int> bytecols = new List<int>();
@@ -187,9 +189,11 @@ namespace SDPCRL.DAL.BUS
                                 fields.Append(",");
                                 fieldtypes.Append(",");
                                 fieldvalue.Append(",");
+                                cols.Append(",");
                             }
                             fields.AppendFormat("@{0}", col.ColumnName);
                             fieldtypes.AppendFormat("@{0} ", col.ColumnName);
+                            cols.AppendFormat("{0}", col.ColumnName);
                             if (col.DataType == typeof(byte[]))
                             {
                                 bytecols.Add(dt.Columns.IndexOf(col));
@@ -253,8 +257,8 @@ namespace SDPCRL.DAL.BUS
                                     }
                                     else
                                         vals = row.ItemArray;
-                                    sql = string.Format(string.Format("EXEC sp_executesql N'insert into {0} values({1}) ',N'{2}',{3}",
-                                                                      dt.TableName, fields.ToString(), fieldtypes.ToString(), fieldvalue.ToString()
+                                    sql = string.Format(string.Format("EXEC sp_executesql N'insert into {0}({1}) values({2}) ',N'{3}',{4}",
+                                                                      dt.TableName,cols .ToString (), fields.ToString(), fieldtypes.ToString(), fieldvalue.ToString()
                                                                       ),
                                                         vals);
                                     break;

@@ -238,7 +238,7 @@ namespace SDPCRL.DAL.COM
             StringBuilder joinstr = new StringBuilder();
             StringBuilder joinfield = null;
             StringBuilder allfields = new StringBuilder();
-            Dictionary<string, int> tablealiasmdic = new Dictionary<string, int>();
+            Dictionary<string, string> tablealiasmdic = new Dictionary<string, string>();
             foreach (LibDefineTable item in ds.DefTables)
             {
                 if (item.TableStruct == null) continue;
@@ -330,19 +330,35 @@ namespace SDPCRL.DAL.COM
                 }
                 #region 字段上的来源表。
                 var relatefields = tb.Fields.ToArray().Where(i => i.SourceField != null);
+                List<string> vals = new List<string>();
                 foreach (LibField f in relatefields)
                 {
                     foreach (LibFromSourceField fromfield in f.SourceField)
                     {
+                        string key = string.Format("{0}{1}{2}", f.Name, fromfield.FromDataSource, fromfield.FromTableIndex);
                         string tbnm = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(fromfield.FromTableIndex));
-                        if (tablealiasmdic.ContainsKey(tbnm))
+                        if (!tablealiasmdic.ContainsKey(key))
                         {
-                            tbnm = string.Format("{0}{1}", tbnm, tablealiasmdic[tbnm]++);
+                            //vals.Add(tbnm);
+                            int cout = vals.Where(i => i == tbnm).Count();
+                            if (cout > 0)
+                            {
+                                tbnm = string.Format("{0}{1}", tbnm, cout);
+                                //tablealiasmdic.Add(key, string.Format("{0}", tbnm));
+                            }
+                            vals.Add(tbnm);
+                            tablealiasmdic.Add(key, tbnm);
+                            //tablealiasmdic.Add(key,string.Format( tbnm);
+                            //tablealiasmdic[tbnm]++;
+                            //tbnm = string.Format("{0}{1}", tbnm, tablealiasmdic[tbnm]+1);
                         }
                         else
                         {
-                            tablealiasmdic.Add(tbnm, 0);
+                            ////int cout = vals.Where(i => i == tbnm).Count();
+                            tbnm = tablealiasmdic[key];
+                            //tablealiasmdic.Add(tbnm, 0);
                         }
+                       
                         #region 组织joinstr语句
                         joinstr.AppendFormat(" {0} {1} {2} {3} ",
                                          ResFactory.ResManager.SQLLeftJoin,
@@ -388,15 +404,27 @@ namespace SDPCRL.DAL.COM
                                     tbindexs2 = new List<int>();
                                     foreach (var jointb in relatetbs)
                                     {
+                                        string key2 = string.Format("{0}{1}{2}", f.Name, fromfield.FromDataSource, jointb.TableIndex);
                                         tbindexs2.Add(jointb.TableIndex);
                                         string tbnm2 = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(jointb.TableIndex));
-                                        if (tablealiasmdic.ContainsKey(tbnm2))
+                                        if (!tablealiasmdic.ContainsKey(key2))
                                         {
-                                            tbnm2 = string.Format("{0}{1}", tbnm2, tablealiasmdic[tbnm2]++);
+                                            //vals.Add(tbnm2);
+                                            int cout = vals.Where(i => i == tbnm2).Count();
+                                            if (cout > 0)
+                                            {
+                                                tbnm2 = string.Format("{0}{1}", tbnm2, cout);
+                                                //tablealiasmdic.Add(key, string.Format("{0}", tbnm));
+                                            }
+                                            tablealiasmdic.Add(key, tbnm2);
+                                            //tablealiasmdic.Add(key2, tbnm2);
+                                            //tablealiasmdic[tbnm2]++;
+                                            //tbnm2 = string.Format("{0}{1}", tbnm2, tablealiasmdic[tbnm2]+1);
                                         }
                                         else
                                         {
-                                            tablealiasmdic.Add(tbnm2, 0);
+                                            tbnm2 = tablealiasmdic[key2];
+                                            //tablealiasmdic.Add(tbnm2, 0);
                                         }
                                         joinstr.AppendFormat(" {0} {1} {2} {3} ",
                                          ResFactory.ResManager.SQLLeftJoin,
@@ -434,11 +462,12 @@ namespace SDPCRL.DAL.COM
                                 foreach (LibRelateField relatef in fromfield.RelateFieldNm)
                                 {
                                     if (!IsJoinFromSourceField && relatef.FromTableIndex != fromfield.FromTableIndex) continue;
-                                    tbnm = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(relatef.FromTableIndex));
-                                    if (IsJoinFromSourceField && relatef.FromTableIndex != fromfield.FromTableIndex)
-                                    {
-                                        tbnm = tablealiasmdic[tbnm] == 0 ? tbnm : string.Format("{0}{1}", tbnm, tablealiasmdic[tbnm]);
-                                    }
+                                    key= string.Format("{0}{1}{2}", f.Name, fromfield.FromDataSource, relatef.FromTableIndex );
+                                    //tbnm = string.Format("{0}{1}", tbaliasnm, LibSysUtils.ToCharByTableIndex(relatef.FromTableIndex));
+                                    //if (IsJoinFromSourceField && relatef.FromTableIndex != fromfield.FromTableIndex)
+                                    //{
+                                    tbnm = tablealiasmdic[key];
+                                    //}
                                     if (!string.IsNullOrEmpty(relatef.AliasName))
                                     {
                                         allfields.AppendFormat("{0}{1}.{2} as {3}",
