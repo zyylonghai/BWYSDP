@@ -124,6 +124,15 @@ namespace BWYResFactory {
         }
         
         /// <summary>
+        ///   查找类似 该行状态处于已被删除 的本地化字符串。
+        /// </summary>
+        internal static string _107 {
+            get {
+                return ResourceManager.GetString("107", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 系统无法识别的表对象，请使用模型实例化表对象。 的本地化字符串。
         /// </summary>
         internal static string _520 {

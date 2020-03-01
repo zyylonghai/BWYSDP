@@ -158,6 +158,22 @@ namespace SDPCRL.COM
             }
             return null;
         }
+        public dynamic FindRow(DataRow row)
+        {
+            if (this.DataTable != null && this.DataTable.Rows.Count > 0)
+            {
+                object[] valus = new object[this.DataTable.PrimaryKey.Length];
+                for (int i = 0; i < valus.Length; i++)
+                {
+                    valus[i] = row[this.DataTable.PrimaryKey[i]];
+                }
+                DataRow dr=this.DataTable.Rows.Find(valus);
+                //107 该行状态处于已被删除
+                if (dr.RowState == DataRowState.Deleted) { throw new LibExceptionBase(107); }
+                return new DataRowObj(this._cols, dr, this);
+            }
+            return null;
+        }
 
         /// <summary>
         /// 删除行

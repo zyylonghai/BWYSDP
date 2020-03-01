@@ -52,6 +52,10 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
+        /// <summary>是否单选</summary>
+        [LibAttribute("grid_SingleSelect", LibControlType.Combox, "是否单选")]
+        [XmlAttribute]
+        public bool SingleSelect { get; set; }
 
         /// <summary>是否有新增行按钮</summary>
         [LibAttribute("grid_HasAddRowButton", LibControlType.Combox, "新增按钮")]
