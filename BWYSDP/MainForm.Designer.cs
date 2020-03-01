@@ -60,13 +60,13 @@
             this.CreateTableStructBtn = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileupload_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ServerConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.多语言配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.fileupload_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -371,6 +371,13 @@
             this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.文件ToolStripMenuItem.Text = "文件";
             // 
+            // fileupload_ToolStripMenuItem
+            // 
+            this.fileupload_ToolStripMenuItem.Name = "fileupload_ToolStripMenuItem";
+            this.fileupload_ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fileupload_ToolStripMenuItem.Text = "模型文件上传";
+            this.fileupload_ToolStripMenuItem.Click += new System.EventHandler(this.fileupload_ToolStripMenuItem_Click);
+            // 
             // 配置ToolStripMenuItem
             // 
             this.配置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -383,14 +390,14 @@
             // ServerConfigToolStripMenuItem
             // 
             this.ServerConfigToolStripMenuItem.Name = "ServerConfigToolStripMenuItem";
-            this.ServerConfigToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.ServerConfigToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ServerConfigToolStripMenuItem.Text = "服务配置";
             this.ServerConfigToolStripMenuItem.Click += new System.EventHandler(this.ServerConfigToolStripMenuItem_Click);
             // 
             // 多语言配置ToolStripMenuItem
             // 
             this.多语言配置ToolStripMenuItem.Name = "多语言配置ToolStripMenuItem";
-            this.多语言配置ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.多语言配置ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.多语言配置ToolStripMenuItem.Text = "多语言配置";
             this.多语言配置ToolStripMenuItem.Click += new System.EventHandler(this.多语言配置ToolStripMenuItem_Click);
             // 
@@ -415,12 +422,6 @@
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(131, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
-            // 
-            // fileupload_ToolStripMenuItem
-            // 
-            this.fileupload_ToolStripMenuItem.Name = "fileupload_ToolStripMenuItem";
-            this.fileupload_ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fileupload_ToolStripMenuItem.Text = "模型文件上传";
             // 
             // MainForm
             // 

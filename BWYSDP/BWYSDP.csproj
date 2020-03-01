@@ -240,6 +240,12 @@
     <Compile Include="FieldCollectionForm.Designer.cs">
       <DependentUpon>FieldCollectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileUpload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FileUpload.Designer.cs">
+      <DependentUpon>FileUpload.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -335,6 +341,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FieldCollectionForm.resx">
       <DependentUpon>FieldCollectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FileUpload.resx">
+      <DependentUpon>FileUpload.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

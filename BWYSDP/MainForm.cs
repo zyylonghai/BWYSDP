@@ -344,12 +344,16 @@ namespace BWYSDP
             }
             WakeUpForm<LanguageConfig>("language", ds, fm, keyvaluecollection);
         }
-        //private LibTreeNode CreateNode(LibTreeNode nodeInfo, NodeType nodetype)
-        //{
-        //    LibTreeNode node = new LibTreeNode();
-        //    node.NodeType =
-        //    return node;
-        //}
+
+        /// <summary>
+        /// 模型文件上传
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void fileupload_ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WakeUpForm<FileUpload>("ftpupload");
+        }
 
     }
 }
