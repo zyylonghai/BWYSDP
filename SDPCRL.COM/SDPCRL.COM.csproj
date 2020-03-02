@@ -50,6 +50,7 @@
     <Compile Include="DBModelOperation.cs" />
     <Compile Include="DMLOperation.cs" />
     <Compile Include="ErrorMessage.cs" />
+    <Compile Include="FuncAssemblyInfo.cs" />
     <Compile Include="LibClientInfo.cs" />
     <Compile Include="LibDSContext.cs" />
     <Compile Include="LibLanguage.cs" />

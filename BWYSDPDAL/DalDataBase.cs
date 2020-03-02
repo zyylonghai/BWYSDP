@@ -6,6 +6,7 @@ using SDPCRL.DAL.BUS;
 using System.Data;
 using BWYResFactory;
 using SDPCRL.DAL.COM;
+using SDPCRL.COM;
 
 namespace BWYSDPDAL
 {
@@ -52,6 +53,11 @@ namespace BWYSDPDAL
         {
             int result = this.DataAccess.ExecuteNonQuery(sqlstr);
             return true;
+        }
+
+        public List<FuncAssemblyInfo> GetDalAssemblyInfos()
+        {
+            return DalAssemblyHelp.GetDalAssemblyInfos();
         }
 
         #region  多语言处理

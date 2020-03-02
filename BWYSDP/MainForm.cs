@@ -355,5 +355,9 @@ namespace BWYSDP
             WakeUpForm<FileUpload>("ftpupload");
         }
 
+        private void dal程序集加载ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WakeUpForm<DalAssembly>("dalassembly");
+        }
     }
 }

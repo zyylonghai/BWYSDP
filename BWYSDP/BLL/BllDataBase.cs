@@ -74,5 +74,12 @@ namespace BWYSDP.BLL
         {
             this.ExecuteSysDalMethod(1, "TestFunc", "UpdateLanguage", dt, dsid);
         }
+
+        #region dal程序集信息相关
+        public List<FuncAssemblyInfo> GetAssemblyinfos()
+        {
+            return (List<FuncAssemblyInfo>)this.ExecuteSysDalMethod(0, "TestFunc", "GetDalAssemblyInfos");
+        }
+        #endregion
     }
 }

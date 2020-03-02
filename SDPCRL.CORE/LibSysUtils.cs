@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Data;
 
 namespace SDPCRL.CORE
 {
@@ -249,6 +250,30 @@ namespace SDPCRL.CORE
                 }
             }
             return entity;
+        }
+
+        public static DataTable ToDataTable<T>(List<T> list)
+        {
+            Type typ = typeof(T);
+            DataTable result = new DataTable();
+            PropertyInfo[] ps = typ.GetProperties();
+            DataColumn col = null;
+            DataRow row = null;
+            foreach (PropertyInfo info in ps)
+            {
+                col = new DataColumn(info.Name);
+                result.Columns.Add(col);
+            }
+            foreach (T item in list)
+            {
+                row = result.NewRow();
+                foreach (PropertyInfo p in ps)
+                {
+                    row[p.Name] = p.GetValue(item, null);
+                }
+                result.Rows.Add(row);
+            }
+            return result;
         }
 
         //public static object ConvertToEnumType(string enumNm,Type enumType)

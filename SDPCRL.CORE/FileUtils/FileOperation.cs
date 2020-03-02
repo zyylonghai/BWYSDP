@@ -132,7 +132,10 @@ namespace SDPCRL.CORE.FileUtils
             }
             return null;
         }
-
+        /// <summary>
+        /// 获取当前目录及子目录下的所有文件（只查找二级目录）
+        /// </summary>
+        /// <returns></returns>
         public List<LibFileInfo> SearchAllFileInfo()
         {
             string filepath = string.Empty;
@@ -144,6 +147,21 @@ namespace SDPCRL.CORE.FileUtils
             {
                 string[] dirpath = Directory.GetDirectories(_filePath);
                 string[] folders = null;
+                if (dirpath == null || dirpath.Length == 0)
+                {
+                    directory = new DirectoryInfo(_filePath);
+                    files = directory.GetFiles();
+                    foreach (FileInfo info in files)
+                    {
+                        f = new LibFileInfo();
+                        f.FullFileName = info.Name;
+                        f.Path = info.FullName;
+                        f.FileName = info.Name.Replace(info.Extension, "");
+
+                        f.Folder = folders == null ? string.Empty : folders[folders.Length - 1];
+                        result.Add(f);
+                    }
+                }
                 foreach (string path in dirpath)
                 {
                     folders = path.Split('\\');

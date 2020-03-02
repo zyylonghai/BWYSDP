@@ -208,6 +208,12 @@
     <Compile Include="CreateFunc.Designer.cs">
       <DependentUpon>CreateFunc.cs</DependentUpon>
     </Compile>
+    <Compile Include="DalAssembly.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DalAssembly.Designer.cs">
+      <DependentUpon>DalAssembly.cs</DependentUpon>
+    </Compile>
     <Compile Include="DAL\DBHelp.cs" />
     <Compile Include="DAL\SQLite.cs" />
     <Compile Include="DialogForm.cs">
@@ -329,6 +335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CreateFunc.resx">
       <DependentUpon>CreateFunc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DalAssembly.resx">
+      <DependentUpon>DalAssembly.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DialogForm.resx">
       <DependentUpon>DialogForm.cs</DependentUpon>

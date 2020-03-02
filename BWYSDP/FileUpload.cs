@@ -79,6 +79,7 @@ namespace BWYSDP
                 {
                     node = new TreeNode(item.FileName);
                     node.Name = item.FileName;
+                    node.Tag = item;
                     pnode.Nodes[item.Folder].Nodes.Add(node);
                 }
                 else
@@ -89,9 +90,21 @@ namespace BWYSDP
 
                     node = new TreeNode(item.FileName);
                     node.Name = item.FileName;
+                    node.Tag = item;
                     pnode.Nodes[item.Folder].Nodes.Add(node);
                 }
             }
+        }
+        /// <summary>
+        /// >> 按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            TreeNode selectnode = this.treeView1.SelectedNode;
+            LibFileInfo fileInfo = (LibFileInfo)selectnode.Tag;
+            this.listBox1.Items.Add(fileInfo.Path);
         }
     }
 }
