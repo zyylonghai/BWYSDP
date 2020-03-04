@@ -66,6 +66,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(SolutionDir)\BWYSDPBaseDal\bin\Debug\BWYSDPBaseDal.dll" "D:\work\zyyinfo\BWYSDP(2)\BWYSDP\LibraryCode\InitialTool\bin\Debug\Runtime\DAL"</PostBuildEvent>
+    <PostBuildEvent>Copy "$(SolutionDir)\BWYSDPWebDAL\BWYSDPBaseDal\bin\Debug\BWYSDPBaseDal.dll" "$(SolutionDir)\InitialTool\bin\Debug\Runtime\DAL"</PostBuildEvent>
   </PropertyGroup>
 </Project>

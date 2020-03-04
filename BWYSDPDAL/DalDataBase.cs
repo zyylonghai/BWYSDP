@@ -57,7 +57,33 @@ namespace BWYSDPDAL
 
         public List<FuncAssemblyInfo> GetDalAssemblyInfos()
         {
-            return DalAssemblyHelp.GetDalAssemblyInfos();
+            List<FuncAssemblyInfo> result = DalAssemblyHelp.GetDalAssemblyInfos();
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                this.DataAccess.BeginTrans();
+                foreach (FuncAssemblyInfo item in result)
+                {
+                    sql.Clear();
+                    sql.Append(" begin ");
+                    sql.AppendLine();
+                    sql.AppendFormat("if exists(select FuncID from FuncAssemblyInfo where FuncID='{0}')",item.FuncID);
+                    sql.AppendFormat("update FuncAssemblyInfo set AssemblyName='{1}',TypeFullName='{2}' where FuncID='{0}'",item.FuncID ,item.AssemblyName ,item.TypeFullName);
+                    sql.AppendLine();
+                    sql.Append(" else ");
+                    sql.AppendLine();
+                    sql.AppendFormat("insert into FuncAssemblyInfo values('{0}','{1}','{2}')", item.FuncID, item.AssemblyName, item.TypeFullName);
+                    sql.Append(" end ");
+                    this.DataAccess.ExecuteNonQuery(sql.ToString());
+                }
+                this.DataAccess.CommitTrans();
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                this.DataAccess.RollbackTrans();
+            }
+            return result;
         }
 
         #region  多语言处理

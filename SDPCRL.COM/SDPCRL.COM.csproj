@@ -56,6 +56,7 @@
     <Compile Include="LibLanguage.cs" />
     <Compile Include="LibSearchCondition.cs" />
     <Compile Include="LibTableObj.cs" />
+    <Compile Include="LoginInfo.cs" />
     <Compile Include="ModelManager\com\EnumOperation.cs" />
     <Compile Include="ModelManager\DataSource.cs" />
     <Compile Include="ModelManager\DBModel.cs" />

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace AuthorityDal
 {
+    [LibProg("Account")]
     public class AccountDal:AuthorityDal
     {
         string _pwdkeyEncrykey = "bwyAccount";
@@ -37,13 +38,13 @@ namespace AuthorityDal
         /// <param name="userid"></param>
         /// <param name="password"></param>
         /// <returns>返回1表示登录成功，2表示已登录，3表示密码错误,0表示登录失败</returns>
-        public int Login(string userid,string password)
+        public LoginInfo Login(string userid,string password)
         {
             //SQLBuilder builder = new SQLBuilder("Account");
             //string sql = builder.GetSQL("Account", new string[] { "A.UserId,A.Password,A.PasswordKey,A.loginIP,A.LoginDT,A.IsLogin" }, builder.Where("A.UserId={0}", userid));
             //DataRow row = this.DataAccess.GetDataRow(sql);
             LibTableObj account = this.DSContext["Account"];
-            
+            LoginInfo lginfo = new LoginInfo();
             this.DataAccess.FillTableObj(account.Where(account.Columns.UserId + "={0}",  userid));
             dynamic row = account.FindRow(0);
             if (row != null)
@@ -52,9 +53,11 @@ namespace AuthorityDal
                 {
                     //this.AddMessage(string.Format(this.GetMessageDesc("msg000000001")), LibMessageType.Prompt);
                     //return 2;
+                    lginfo.loginResult = 2;
                 }
                 string pwd = row.Password;
                 string pwdkey = row.PasswordKey;
+                lginfo.UserNm = row.UserNm;
                 pwdkey = DesCryptFactory.AESDecrypt(pwdkey, _pwdkeyEncrykey);
                 pwd = DesCryptFactory.DecryptString(pwd, pwdkey);
                 //this.AddMessage("test", LibMessageType.Error);
@@ -63,12 +66,16 @@ namespace AuthorityDal
                     //sql = builder.GetUpdateSQL("Account", builder.UpdateField("IsLogin={0},loginIP={1}", true, "192.168.1.5"), builder.Where("UserId={0}", userid));
                     //int result = this.DataAccess.ExecuteNonQuery(sql);
                     //return result > 0 ? 1 : 0;
+                    lginfo.loginResult = 1;
+
                 }
                 else
-                    return 3;
+                    lginfo.loginResult = 3;
+                    //return 3;
                 //return pwd == password;
             }
-            return 1;
+            return lginfo;
+            //return 1;
         }
     }
 }

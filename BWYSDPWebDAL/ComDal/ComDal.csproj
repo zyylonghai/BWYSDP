@@ -60,8 +60,18 @@
     <Compile Include="MaterialsDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SDPCRL.DAL.COM\SDPCRL.DAL.COM.csproj">
+      <Project>{aad6a3ca-176e-46f6-a06b-3878e3434f23}</Project>
+      <Name>SDPCRL.DAL.COM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BWYSDPBaseDal\BWYSDPBaseDal.csproj">
+      <Project>{7b5b2245-b567-4121-b01b-aa46fade496c}</Project>
+      <Name>BWYSDPBaseDal</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(SolutionDir)\ComDal\bin\Debug\ComDal.dll" "D:\work\zyyinfo\BWYSDP(2)\BWYSDP\LibraryCode\InitialTool\bin\Debug\Runtime\DAL"</PostBuildEvent>
+    <PostBuildEvent>Copy "$(SolutionDir)\BWYSDPWebDAL\ComDal\bin\Debug\ComDal.dll" "$(SolutionDir)\InitialTool\bin\Debug\Runtime\DAL"</PostBuildEvent>
   </PropertyGroup>
 </Project>
