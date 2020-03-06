@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CachHelp.cs" />
     <Compile Include="DesCryptFactory.cs" />
+    <Compile Include="DM5Help.cs" />
     <Compile Include="ExceptionHelp.cs" />
     <Compile Include="FileUtils\FileOperation.cs" />
     <Compile Include="FileUtils\FTPHelp.cs" />
