@@ -76,9 +76,22 @@ namespace SDPCRL.COM
         /// </summary>
         /// <param name="srow"></param>
         /// <param name="trow"></param>
-        public static void CopyRow(DataRow srow, DataRow trow)
+        /// <param name="excludeprimary">是否排除对主键列赋值，默认true</param>
+        public static void CopyRow(DataRow srow, DataRow trow, bool excludeprimary = true)
         {
-
+            DataColumnCollection tcols = trow.Table.Columns;
+            DataColumnCollection scols = srow.Table.Columns;
+            DataColumn[] primarycols = trow.Table.PrimaryKey;
+            DataColumn col = null;
+            foreach (DataColumn c in tcols)
+            {
+                if (excludeprimary && primarycols.Contains(c)) continue;
+                col = scols[c.ColumnName];
+                if (col != null)
+                {
+                    SetColomnValue(trow, c, srow[col]);
+                }
+            }
         }
         /// <summary>
         /// 
@@ -88,9 +101,20 @@ namespace SDPCRL.COM
         /// <param name="val"></param>
         public static void SetColomnValue(DataRow row, string colnm, object val)
         {
-            if (row.Table.Columns[colnm].DataType.Equals(typeof(Date)))
+            //if (row.Table.Columns[colnm].DataType.Equals(typeof(Date)))
+            //{
+            //    row[colnm] = new Date { value = val.ToString () };
+            //}
+            //else
+            //    row[colnm] = val;
+            SetColomnValue(row, row.Table.Columns[colnm], val);
+        }
+
+        public static void SetColomnValue(DataRow row, DataColumn colnm, object val)
+        {
+            if (colnm.DataType.Equals(typeof(Date)))
             {
-                row[colnm] = new Date { value = val.ToString () };
+                row[colnm] = new Date { value = val.ToString() };
             }
             else
                 row[colnm] = val;

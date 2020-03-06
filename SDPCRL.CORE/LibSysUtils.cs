@@ -188,6 +188,10 @@ namespace SDPCRL.CORE
                 {
                     return ((byte[])a).Length == 0;
                 }
+                else if ((atype.Equals(typeof(System.DBNull)) && btype.Equals(typeof(DateTime)))|| (btype.Equals(typeof(System.DBNull)) && atype.Equals(typeof(DateTime))))
+                {
+                    return false;
+                }
                 if (atype.Equals(typeof(System.DBNull)) && btype.Equals(typeof(string)))
                 {
                     return string.IsNullOrEmpty(b.ToString());

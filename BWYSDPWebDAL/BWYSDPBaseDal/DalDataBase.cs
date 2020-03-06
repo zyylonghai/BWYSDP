@@ -187,18 +187,36 @@ namespace BWYSDPBaseDal
            
         }
 
+        ///// <summary>
+        ///// 根据账户id 获取账户下的角色及权限对象。
+        ///// </summary>
+        ///// <param name="userid"></param>
+        ///// <returns></returns>
+        //public DataTable GetAuthority(string userid)
+        //{
+        //    //SQLBuilder sQLBuilder = new SQLBuilder("Account");
+        //    LibDSContext dSContext = new LibDSContext("Account");
+        //    var userRole = dSContext["UserRole"];
+        //    string sql = dSContext.GetSQL("UserRole", null, dSContext.Where(userRole.Columns.UserId + "={0}", userid));
+        //    return this.DataAccess.GetDataTable(sql);
+        //}
+
         /// <summary>
         /// 根据账户id 获取账户下的角色及权限对象。
         /// </summary>
         /// <param name="userid"></param>
         /// <returns></returns>
-        public DataTable GetAuthority(string userid)
+        public LibTableObj GetAuthority(string userid)
         {
             //SQLBuilder sQLBuilder = new SQLBuilder("Account");
             LibDSContext dSContext = new LibDSContext("Account");
-            var userRole = dSContext["UserRole"];
-            string sql = dSContext.GetSQL("UserRole",null, dSContext.Where(userRole.Columns.UserId + "={0}", userid));
-            return this.DataAccess.GetDataTable(sql);
+            LibTableObj userRole = dSContext["UserRole"];
+            //this.DataAccess.FillTableObj(userRole.Where(userRole.Columns.UserId + "={0}", userid));
+            string sql = dSContext.GetSQL("UserRole", null, dSContext.Where(userRole.Columns.UserId + "={0}", userid));
+            DataTable dt= this.DataAccess.GetDataTable(sql);
+            userRole.DataTable.PrimaryKey = null;
+            userRole.FillData(dt);
+            return userRole;
         }
 
         #region 根据规则生成编码 相关函数

@@ -547,7 +547,7 @@ namespace SDPCRL.COM
         public int TableIndex { get; set; }
         public int RelateTableIndex { get; set; }
 
-        /// <summary>是否忽略创建表结构</summary>
+        /// <summary>创建表结构</summary>
         public bool Ignore { get; set; }
         public override string ToString()
         {

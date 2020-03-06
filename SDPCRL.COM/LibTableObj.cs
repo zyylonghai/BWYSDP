@@ -42,16 +42,16 @@ namespace SDPCRL.COM
 
         public List<dynamic> Rows { 
             get {
+                List<dynamic> _rows = new List<dynamic>();
                 if (this.DataTable != null && this.DataTable.Rows != null && this.DataTable.Rows.Count > 0)
                 {
-                    List<dynamic> _rows = new List<dynamic>();
                     foreach (DataRow dr in this.DataTable.Rows)
                     {
                         _rows.Add(new DataRowObj(this._cols, dr,this));
                     }
-                    return _rows;
+                    //return _rows;
                 }
-                return null;
+                return _rows;
             } 
         }
         #endregion
@@ -94,6 +94,34 @@ namespace SDPCRL.COM
             this.DataTable.Rows.Add(row);
             return new DataRowObj(this._cols, row,this);
         }
+        /// <summary>
+        /// 新增一行并将列名与参数的一样，则进行赋值。
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="excludeprimary">是否排除对主键列赋值，默认true</param>
+        public void AppendRow(DataRow row,bool excludeprimary=true)
+        {
+            DataRow newrow = this.DataTable.NewRow();
+            DataTableHelp.CopyRow(row, newrow,excludeprimary);
+            this.DataTable.Rows.Add(newrow);
+        }
+
+        /// <summary>
+        /// 根据参数DataTable的行，进行新增行项并赋值。(参数的行项状态为deleted，将忽略)
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="excludeprimary">是否排除对主键列赋值，默认true</param>
+        public void AppendDataTable(DataTable dt, bool excludeprimary = true)
+        {
+            if (dt != null&&dt.Rows .Count >0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    if (dr.RowState == DataRowState.Deleted) continue;
+                    AppendRow(dr,excludeprimary);
+                }
+            }
+        }
 
         /// <summary>
         /// 找出行，该行在表中必须是唯一的
@@ -115,11 +143,16 @@ namespace SDPCRL.COM
                     foreach (DataRow row in this.DataTable.Rows)
                     {
                         if (row.RowState == DataRowState.Deleted) continue;
-                        ConstantExpression arg = null;
+                        dynamic arg = null;
                         for (int i = 0; i < newexp.Members.Count; i++)
                         {
                             arg = newexp.Arguments[i] as ConstantExpression;
-                            isexist = row[_cols[newexp.Members[i].Name].ToString()] == arg.Value;
+                            if (arg == null)
+                            {
+                                arg = newexp.Arguments[i] as System.Linq.Expressions.Expression;
+                                arg = arg.Expression as ConstantExpression;
+                            }
+                            isexist = row[_cols[newexp.Members[i].Name].colNm] == arg.Value;
                             if (!isexist) break;
                         }
                         if (isexist)
@@ -165,7 +198,7 @@ namespace SDPCRL.COM
                 object[] valus = new object[this.DataTable.PrimaryKey.Length];
                 for (int i = 0; i < valus.Length; i++)
                 {
-                    valus[i] = row[this.DataTable.PrimaryKey[i]];
+                    valus[i] = row[this.DataTable.PrimaryKey[i].ColumnName];
                 }
                 DataRow dr=this.DataTable.Rows.Find(valus);
                 //107 该行状态处于已被删除
@@ -208,6 +241,7 @@ namespace SDPCRL.COM
         public void FillData(DataTable dt)
         {
             if (dt == null) return;
+            this.DataTable.Rows.Clear();
             DataColumnCollection srcols = dt.Columns;
             foreach (DataRow row in dt.Rows)
             {
@@ -220,6 +254,7 @@ namespace SDPCRL.COM
         public void FillData(DataRow[] rows)
         {
             if (rows == null ||rows .Length ==0 ) return;
+            this.DataTable.Rows.Clear();
             DataColumnCollection srcols = rows[0].Table .Columns;
             foreach (DataRow dr in rows)
             {
@@ -388,17 +423,51 @@ namespace SDPCRL.COM
         }
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
+            string nm = string.Empty;
             if (this._cols.ContainsKey(binder.Name))
+            {
+                //try
+                //{
+
+                    //if (binder.Name.Substring(0, 2).ToUpper() == "O_")
+                    //{
+                    //    nm = _cols[binder.Name.Substring(2)].colNm;
+                    //    result = this._dataRow[nm, DataRowVersion.Original];
+                    //}
+                    //else
+                    //{
+                        nm = _cols[binder.Name].colNm;
+                        result = this._dataRow[nm];
+                    //}
+                    return true;
+                //}
+                //catch
+                //{
+                //    result = DBNull.Value;
+                //}
+            }
+            else
             {
                 try
                 {
-                    string nm = _cols[binder.Name].colNm;
-                    result = this._dataRow[nm];
+                    //string nm = string.Empty;
+
+                    if (binder.Name.Substring(0, 2).ToUpper() == "O_")
+                    {
+                        nm = _cols[binder.Name.Substring(2)].colNm;
+                        result = this._dataRow[nm, DataRowVersion.Original];
+                    }
+                    else
+                    {
+                        nm = _cols[binder.Name].colNm;
+                        result = this._dataRow[nm];
+                    }
                     return true;
                 }
-                catch 
+                catch
                 {
-                    result = DBNull.Value; 
+                    result = DBNull.Value;
+                    return false;
                 }
             }
             result = DBNull.Value;
