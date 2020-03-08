@@ -269,6 +269,16 @@ namespace SDPCRL.COM
             if (this._tbaliasmdic != null) this._tbaliasmdic.TryGetValue(key, out result);
             return result;
         }
+
+        public string GetFieldNm(string fieldobjNm)
+        {
+            if (this._cols.ContainsKey(fieldobjNm))
+            {
+                return this._cols[fieldobjNm].FieldNm;
+            }
+            else
+                return string.Empty;
+        }
         //public 
         #region 私有函数
         private void GetColumns()

@@ -50,6 +50,7 @@
     <Compile Include="FileUtils\FileOperation.cs" />
     <Compile Include="FileUtils\FTPHelp.cs" />
     <Compile Include="FileUtils\XMLOperation.cs" />
+    <Compile Include="IdentityHelp.cs" />
     <Compile Include="LibCollection.cs" />
     <Compile Include="LibEventArgs.cs" />
     <Compile Include="LibEventSource.cs" />

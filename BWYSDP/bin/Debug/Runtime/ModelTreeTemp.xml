@@ -5,6 +5,7 @@
     <Func name="func2" package="com">功能2</Func>
     <Func package="com" name="5555">555555</Func>
     <Class name="新建分类1" />
+    <Class name="新建分类1" />
   </Class>
   <Func name="func3" package="com">功能3</Func>
   <Func name="func4" package="com">功能4</Func>
@@ -32,5 +33,27 @@
     <Func package="com" name="jkkjkj">测试3</Func>
     <Func package="OA" name="qjbill">请假单</Func>
     <Func package="com" name="CheckBill">检验单</Func>
+    <Func package="com" name="Materials">Materials</Func>
+    <Class name="权限配置">
+      <Func package="Authority" name="Jole">角色</Func>
+      <Func package="Authority" name="Account">账户信息</Func>
+    </Class>
+    <Class name="字典模型">
+      <KeyValues package="com" name="BillStatus">单据状态</KeyValues>
+      <KeyValues package="Authority" name="JoleStatus">角色状态</KeyValues>
+      <KeyValues package="com" name="IsOk">是否</KeyValues>
+      <KeyValues package="com" name="RuleStatus">编码规则状态</KeyValues>
+      <KeyValues package="com" name="RuleModule">编码规则模块</KeyValues>
+    </Class>
+    <Func package="com" name="WebTestFunc">测试功能</Func>
+    <Func package="com" name="testbill">测试单据</Func>
+    <Class name="编码规则">
+      <Func package="com" name="CodeRule">编码规则</Func>
+      <Func package="com" name="CodeRuleConfig">编码规则配置</Func>
+    </Class>
+    <Class name="系统设置">
+      <Func package="Home" name="UserMenu">用户菜单</Func>
+      <Func package="Server" name="ServerSetting">数据层服务配置</Func>
+    </Class>
   </Class>
 </Root>

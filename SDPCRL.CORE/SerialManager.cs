@@ -39,6 +39,7 @@ namespace SDPCRL.CORE
         public const char Asterisk = '*';
         public const char Point = '.';
         public const char SingleQuotes = '\'';
+        public const char DollarSign = '$';
 
         #endregion
 
@@ -98,6 +99,9 @@ namespace SDPCRL.CORE
 
         //dal最基类名称
         public const string sdp_webdalbase = "webdaldatabase";
+
+        public const string _pwdkeyEncrykey = "bwyAccount";
+        public const string sdp_IdentityTick = "tick";
 
         #endregion
         public const string TBSchemasuffix = "_dsschema";

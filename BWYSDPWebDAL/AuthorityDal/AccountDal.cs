@@ -13,7 +13,7 @@ namespace AuthorityDal
     [LibProg("Account")]
     public class AccountDal:AuthorityDal
     {
-        string _pwdkeyEncrykey = "bwyAccount";
+        //string _pwdkeyEncrykey = "bwyAccount";
         protected override void BeforeUpdate()
         {
             base.BeforeUpdate();
@@ -28,7 +28,7 @@ namespace AuthorityDal
             string pwdkey = DesCryptFactory.GenerateKey();
             pwd = DesCryptFactory.EncryptString(pwd, pwdkey);
             firstrow.Password = pwd;
-            firstrow.PasswordKey = DesCryptFactory.AESEncrypt(pwdkey, _pwdkeyEncrykey);
+            firstrow.PasswordKey = DesCryptFactory.AESEncrypt(pwdkey,SysConstManage._pwdkeyEncrykey);
             #endregion
         }
 
@@ -45,6 +45,7 @@ namespace AuthorityDal
             //DataRow row = this.DataAccess.GetDataRow(sql);
             LibTableObj account = this.DSContext["Account"];
             LoginInfo lginfo = new LoginInfo();
+            lginfo.HasAdminRole = false;
             this.DataAccess.FillTableObj(account.Where(account.Columns.UserId + "={0}",  userid));
             dynamic row = account.FindRow(0);
             if (row != null)
@@ -58,7 +59,7 @@ namespace AuthorityDal
                 string pwd = row.Password;
                 string pwdkey = row.PasswordKey;
                 lginfo.UserNm = row.UserNm;
-                pwdkey = DesCryptFactory.AESDecrypt(pwdkey, _pwdkeyEncrykey);
+                pwdkey = DesCryptFactory.AESDecrypt(pwdkey, SysConstManage._pwdkeyEncrykey);
                 pwd = DesCryptFactory.DecryptString(pwd, pwdkey);
                 //this.AddMessage("test", LibMessageType.Error);
                 if (pwd == password)
@@ -67,12 +68,22 @@ namespace AuthorityDal
                     //int result = this.DataAccess.ExecuteNonQuery(sql);
                     //return result > 0 ? 1 : 0;
                     lginfo.loginResult = 1;
+                    LibTableObj roletbobj = this.GetAuthority(userid);
+                    if (roletbobj != null)
+                    {
+                        var exist= roletbobj.Rows.FirstOrDefault(i => i.JoleId == "001");
+                        if (exist != null)
+                            lginfo.HasAdminRole = true;
+
+                    }
 
                 }
                 else
                     lginfo.loginResult = 3;
-                    //return 3;
-                //return pwd == password;
+            }
+            else
+            {
+                lginfo.loginResult = -1;
             }
             return lginfo;
             //return 1;

@@ -11,6 +11,7 @@ using SDPCRL.DAL.COM;
 using System.Data;
 using System.Collections;
 using SDPCRL.COM;
+using BWYResFactory;
 
 namespace SDPCRL.DAL.DBHelp
 {
@@ -605,8 +606,27 @@ namespace SDPCRL.DAL.DBHelp
 
         public bool SaveAccout(DBInfo info)
         {
-            string commandText = string.Format("Insert Into Accout(ID,AccoutNm,IPAddress,CreateTime,Creater,[Key]) values('{0}','{1}','{2}','{3}','{4}','{5}')",
-                                               info.Guid, info.DataBase, info.ServerAddr, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "admin", info.Key);
+            string commandText = string.Empty;
+            if (info.DataBase == ResFactory.ResManager.SysDBNm)
+            {
+                commandText = string.Format(" begin  if exists(select AccoutNm from Accout where AccoutNm='{0}')", info.DataBase);
+                commandText += string.Format(" update Accout set ID='{0}',AccoutNm='{1}',IPAddress='{2}',CreateTime='{3}',[Key]='{4}' where AccoutNm='{1}'",
+                                               info.Guid, info.DataBase, info.ServerAddr, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), info.Key); ;
+                commandText += " else ";
+                commandText += string.Format("Insert Into Accout(ID,AccoutNm,IPAddress,CreateTime,Creater,[Key]) values('{0}','{1}','{2}','{3}','{4}','{5}')",
+                                                   info.Guid, info.DataBase, info.ServerAddr, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "admin", info.Key);
+                commandText += " end ";
+            }
+            else
+            {
+                commandText = string.Format(" begin  if exists(select AccoutNm from Accout where AccoutNm='{0}' and IPAddress='{1}')", info.DataBase, info.ServerAddr);
+                commandText += string.Format(" update Accout set ID='{0}',AccoutNm='{1}',IPAddress='{2}',CreateTime='{3}',[Key]='{4}' where AccoutNm='{1}' and IPAddress='{2}'",
+                                               info.Guid, info.DataBase, info.ServerAddr, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), info.Key); ;
+                commandText += " else ";
+                commandText += string.Format("Insert Into Accout(ID,AccoutNm,IPAddress,CreateTime,Creater,[Key]) values('{0}','{1}','{2}','{3}','{4}','{5}')",
+                                                   info.Guid, info.DataBase, info.ServerAddr, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "admin", info.Key);
+                commandText += " end ";
+            }
             if (ExecuteNonQuery(commandText) != -1)
                 return true;
             return false;

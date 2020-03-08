@@ -189,4 +189,7 @@
   <data name="107" xml:space="preserve">
     <value>该行状态处于已被删除</value>
   </data>
+  <data name="522" xml:space="preserve">
+    <value>至少需要有一个数据层服务是当前连接。</value>
+  </data>
 </root>

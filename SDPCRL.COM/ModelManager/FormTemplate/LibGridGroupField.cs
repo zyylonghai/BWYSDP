@@ -88,6 +88,9 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         {
             get;set;
         }
+        /// <summary>格式化表达式(显示的值来源某个表的字段则表达式:实体表名.字段名,如果是脚本函数则表达式:$.函数名)</summary>
+        [LibAttribute("gridgfld_Formatter", LibControlType.TextBox, "格式化值")]
+        public string Formatter { get; set; }
         /// <summary>是否来源数据所关联出来的字段</summary>
         [LibAttribute("gridgfld_IsFromSourceField", LibControlType.Combox, "是否来源关联出来的字段",true ,true)]
         public bool IsFromSourceField

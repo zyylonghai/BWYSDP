@@ -151,6 +151,15 @@ namespace BWYResFactory {
         }
         
         /// <summary>
+        ///   查找类似 至少需要有一个数据层服务是当前连接。 的本地化字符串。
+        /// </summary>
+        internal static string _522 {
+            get {
+                return ResourceManager.GetString("522", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 DALServer 的本地化字符串。
         /// </summary>
         internal static string DALServerName {
