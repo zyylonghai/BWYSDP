@@ -9,9 +9,22 @@ namespace SDPCRL.CORE.FileUtils
 {
     public class FTPHelp
     {
-        private static string FTPCONSTR = "ftp://192.168.0.103:321/";//FTP的服务器地址，格式为ftp://192.168.1.234:8021/。ip地址和端口换成自己的，这些建议写在配置文件中，方便修改
-        private static string FTPUSERNAME = "ftpzyy";//FTP服务器的用户名
-        private static string FTPPASSWORD = "123456";//FTP服务器的密码
+        //private static string FTPCONSTR = "ftp://192.168.0.103:321/";//FTP的服务器地址，格式为ftp://192.168.1.234:8021/。ip地址和端口换成自己的，这些建议写在配置文件中，方便修改
+        //private static string FTPUSERNAME = "ftpzyy";//FTP服务器的用户名
+        //private static string FTPPASSWORD = "123456";//FTP服务器的密码
+        private string _host = string.Empty;
+        private string _UserNm = string.Empty;
+        private string _Pwd = string.Empty;
+
+        public List<string> ErrorMsg = null;
+
+        public FTPHelp(string host,string usernm,string pwd)
+        {
+            this._host = host;
+            this._UserNm = usernm;
+            this._Pwd = pwd;
+            ErrorMsg = new List<string>();
+        }
 
         /// <summary>
         /// 上传文件到远程ftp
@@ -20,20 +33,20 @@ namespace SDPCRL.CORE.FileUtils
         /// <param name="path">本地的文件目录</param>
         /// <param name="id">文件名</param>
         /// <returns></returns>
-        public static bool UploadFile(string ftpPath, string path, string id)
+        public bool UploadFile(string ftpPath, string localpath)
         {
-            string erroinfo = "";
-            FileInfo f = new FileInfo(path);
-            path = path.Replace("\\", "/");
-            bool b = MakeDir(ftpPath);
-            if (b == false)
+            //string erroinfo = "";
+            FileInfo f = new FileInfo(localpath);
+            localpath = localpath.Replace("\\", "/");
+            //bool b = MakeDir(ftpPath);
+            if (!MakeDir(ftpPath))
             {
                 return false;
             }
-            path = FTPCONSTR + ftpPath + id;
-            FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(path));
+            //localpath = FTPCONSTR + ftpPath;
+            FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(ftpPath+"/"+f.Name));
             reqFtp.UseBinary = true;
-            reqFtp.Credentials = new NetworkCredential(FTPUSERNAME, FTPPASSWORD);
+            reqFtp.Credentials = new NetworkCredential(this._UserNm, this._Pwd);
             reqFtp.KeepAlive = false;
             reqFtp.Method = WebRequestMethods.Ftp.UploadFile;
             reqFtp.ContentLength = f.Length;
@@ -52,13 +65,29 @@ namespace SDPCRL.CORE.FileUtils
                 }
                 strm.Close();
                 fs.Close();
-                erroinfo = "完成";
+                //this.ErrorMsg.Add("完成");
+                //error = "完成";
                 return true;
             }
             catch (Exception ex)
             {
-                erroinfo = string.Format("因{0},无法完成上传", ex.Message);
+                this.ErrorMsg.Add(string.Format("因{0},无法完成上传{1}", ex.Message));
+                //error = string.Format("因{0},无法完成上传", ex.Message);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 批量上传文件到远程ftp
+        /// </summary>
+        /// <param name="ftpPath"></param>
+        /// <param name="localPaths"></param>
+        /// <returns></returns>
+        public void UploadFileBatch(string ftpPath, List<string> localPaths)
+        {
+            foreach (string localpath in localPaths)
+            {
+                UploadFile(ftpPath, localpath);
             }
         }
 
@@ -67,7 +96,7 @@ namespace SDPCRL.CORE.FileUtils
         /// </summary>
         /// <param name="dirName">文件目录</param>
         /// <returns></returns>
-        public static bool MakeDir(string dirName)
+        public  bool MakeDir(string dirName)
         {
             try
             {
@@ -76,12 +105,12 @@ namespace SDPCRL.CORE.FileUtils
                 {
                     return true;
                 }
-                string url = FTPCONSTR + dirName;
+                string url = dirName;
                 FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));
                 reqFtp.UseBinary = true;
                 // reqFtp.KeepAlive = false;
                 reqFtp.Method = WebRequestMethods.Ftp.MakeDirectory;
-                reqFtp.Credentials = new NetworkCredential(FTPUSERNAME, FTPPASSWORD);
+                reqFtp.Credentials = new NetworkCredential(this._UserNm, this._Pwd);
                 FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse();
                 response.Close();
                 return true;
@@ -98,13 +127,13 @@ namespace SDPCRL.CORE.FileUtils
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool RemoteFtpDirExists(string path)
+        public  bool RemoteFtpDirExists(string path)
         {
 
-            path = FTPCONSTR + path;
+            //path = path;
             FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(path));
             reqFtp.UseBinary = true;
-            reqFtp.Credentials = new NetworkCredential(FTPUSERNAME, FTPPASSWORD);
+            reqFtp.Credentials = new NetworkCredential(this._UserNm, this._Pwd);
             reqFtp.Method = WebRequestMethods.Ftp.ListDirectory;
             FtpWebResponse resFtp = null;
             try
@@ -129,7 +158,7 @@ namespace SDPCRL.CORE.FileUtils
         /// </summary>
         /// <param name="url">FTP文件的完全路径</param>
         /// <returns></returns>
-        public static long GetFileSize(string url)
+        public long GetFileSize(string url)
         {
 
             long fileSize = 0;
@@ -137,7 +166,7 @@ namespace SDPCRL.CORE.FileUtils
             {
                 FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));
                 reqFtp.UseBinary = true;
-                reqFtp.Credentials = new NetworkCredential(FTPUSERNAME, FTPPASSWORD);
+                reqFtp.Credentials = new NetworkCredential(this._UserNm, this._Pwd);
                 reqFtp.Method = WebRequestMethods.Ftp.GetFileSize;
                 FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse();
                 fileSize = response.ContentLength;
@@ -156,16 +185,16 @@ namespace SDPCRL.CORE.FileUtils
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static bool DeleteFile(string fileName)
+        public bool DeleteFile(string fileName)
         {
             try
             {
-                string url = FTPCONSTR + fileName;
+                string url =this._host + fileName;
                 FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));
                 reqFtp.UseBinary = true;
                 reqFtp.KeepAlive = false;
                 reqFtp.Method = WebRequestMethods.Ftp.DeleteFile;
-                reqFtp.Credentials = new NetworkCredential(FTPUSERNAME, FTPPASSWORD);
+                reqFtp.Credentials = new NetworkCredential(this._UserNm, this._Pwd);
                 FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse();
                 response.Close();
                 return true;

@@ -29,14 +29,15 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button6 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtpwd = new System.Windows.Forms.TextBox();
+            this.txtusernm = new System.Windows.Forms.TextBox();
+            this.txtpoint = new System.Windows.Forms.TextBox();
+            this.txthost = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -48,7 +49,6 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.button6 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -62,16 +62,26 @@
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.textBox4);
-            this.panel1.Controls.Add(this.textBox3);
-            this.panel1.Controls.Add(this.textBox2);
-            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.txtpwd);
+            this.panel1.Controls.Add(this.txtusernm);
+            this.panel1.Controls.Add(this.txtpoint);
+            this.panel1.Controls.Add(this.txthost);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1368, 69);
             this.panel1.TabIndex = 0;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(1116, 19);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 6;
+            this.button6.Text = "上传";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button1
             // 
@@ -81,6 +91,7 @@
             this.button1.TabIndex = 5;
             this.button1.Text = "链接登录";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label4
             // 
@@ -109,33 +120,33 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "端口：";
             // 
-            // textBox4
+            // txtpwd
             // 
-            this.textBox4.Location = new System.Drawing.Point(749, 21);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(178, 21);
-            this.textBox4.TabIndex = 1;
+            this.txtpwd.Location = new System.Drawing.Point(753, 21);
+            this.txtpwd.Name = "txtpwd";
+            this.txtpwd.Size = new System.Drawing.Size(178, 21);
+            this.txtpwd.TabIndex = 1;
             // 
-            // textBox3
+            // txtusernm
             // 
-            this.textBox3.Location = new System.Drawing.Point(512, 21);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(178, 21);
-            this.textBox3.TabIndex = 1;
+            this.txtusernm.Location = new System.Drawing.Point(516, 21);
+            this.txtusernm.Name = "txtusernm";
+            this.txtusernm.Size = new System.Drawing.Size(178, 21);
+            this.txtusernm.TabIndex = 1;
             // 
-            // textBox2
+            // txtpoint
             // 
-            this.textBox2.Location = new System.Drawing.Point(386, 21);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(57, 21);
-            this.textBox2.TabIndex = 1;
+            this.txtpoint.Location = new System.Drawing.Point(392, 21);
+            this.txtpoint.Name = "txtpoint";
+            this.txtpoint.Size = new System.Drawing.Size(57, 21);
+            this.txtpoint.TabIndex = 1;
             // 
-            // textBox1
+            // txthost
             // 
-            this.textBox1.Location = new System.Drawing.Point(97, 21);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(248, 21);
-            this.textBox1.TabIndex = 1;
+            this.txthost.Location = new System.Drawing.Point(97, 21);
+            this.txthost.Name = "txthost";
+            this.txthost.Size = new System.Drawing.Size(248, 21);
+            this.txthost.TabIndex = 1;
             // 
             // label1
             // 
@@ -239,15 +250,6 @@
             this.panel5.Size = new System.Drawing.Size(1368, 100);
             this.panel5.TabIndex = 4;
             // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(1116, 19);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 6;
-            this.button6.Text = "上传";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
             // FileUpload
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -273,14 +275,14 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtpoint;
+        private System.Windows.Forms.TextBox txthost;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox txtpwd;
+        private System.Windows.Forms.TextBox txtusernm;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.Panel panel3;
