@@ -24,8 +24,12 @@ namespace SDPCRL.CORE
         public LibExceptionBase(int msgcode,params object[] parms)
             :base ()
         {
-            ResFactory.ResManager.GetResByKey(msgcode.ToString());
-            this._message = ResFactory.ResManager.GetResByKey(msgcode.ToString());
+            this._message= ResFactory.ResManager.GetResByKey(msgcode.ToString());
+            if (parms != null)
+            {
+                this._message = string.Format(this._message, parms);
+            }
+            //this._message = ResFactory.ResManager.GetResByKey(msgcode.ToString());
         }
 
         public LibExceptionBase(string message, string innerStackTrace)

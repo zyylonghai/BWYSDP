@@ -192,4 +192,10 @@
   <data name="522" xml:space="preserve">
     <value>至少需要有一个数据层服务是当前连接。</value>
   </data>
+  <data name="108" xml:space="preserve">
+    <value>用户{0}不存在</value>
+  </data>
+  <data name="109" xml:space="preserve">
+    <value>密码错误</value>
+  </data>
 </root>

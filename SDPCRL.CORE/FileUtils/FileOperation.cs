@@ -202,6 +202,14 @@ namespace SDPCRL.CORE.FileUtils
             if (stream != null)
                 stream.Close();
         }
+
+        public void DeleteFile()
+        {
+            if (ExistsFile())
+            {
+                File.Delete(_filePath); 
+            }
+        }
         //public string 
         #endregion
 

@@ -62,6 +62,7 @@
     <Compile Include="LibSysUtils.cs" />
     <Compile Include="LibXmlAttributeAttribute.cs" />
     <Compile Include="LockHelp.cs" />
+    <Compile Include="LogHelp.cs" />
     <Compile Include="RSAHelper.cs" />
     <Compile Include="SerializerUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

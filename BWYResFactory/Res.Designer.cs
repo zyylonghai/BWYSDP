@@ -133,6 +133,24 @@ namespace BWYResFactory {
         }
         
         /// <summary>
+        ///   查找类似 用户{0}不存在 的本地化字符串。
+        /// </summary>
+        internal static string _108 {
+            get {
+                return ResourceManager.GetString("108", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 密码错误 的本地化字符串。
+        /// </summary>
+        internal static string _109 {
+            get {
+                return ResourceManager.GetString("109", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 系统无法识别的表对象，请使用模型实例化表对象。 的本地化字符串。
         /// </summary>
         internal static string _520 {
