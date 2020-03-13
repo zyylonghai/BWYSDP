@@ -386,6 +386,17 @@ namespace BWYSDP.com
                         builder.AppendFormat("{0} ", field.AllowNull ? "NULL" : "NOT NULL");
                     }
                 }
+
+                #region 系统默认增加的 日志id列
+                if (builder.Length != initlen)
+                {
+                    builder.Append(", ");
+                }
+                builder.AppendFormat("[{0}] ", SysConstManage.Sdp_LogId);
+                builder.AppendFormat("[{0}]", "nvarchar");
+                builder.AppendFormat("({0}) ", 50);
+                builder.AppendFormat("{0} ", "NULL");
+                #endregion
                 //}
                 if (obj.PrimaryKey != null && obj.PrimaryKey.Count > 0)
                 {

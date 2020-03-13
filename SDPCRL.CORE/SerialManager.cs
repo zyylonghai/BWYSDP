@@ -105,6 +105,7 @@ namespace SDPCRL.CORE
 
         #endregion
         public const string TBSchemasuffix = "_dsschema";
+        public const string Sdp_LogId = "sdp_logid";
     }
     /// <summary>编码管理类接口</summary>
     public interface ISerialManager

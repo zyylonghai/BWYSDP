@@ -490,6 +490,14 @@ namespace SDPCRL.COM
             dt.Columns.Add(col);
             #endregion
 
+            #region 系统日志列
+            col = new DataColumn(SysConstManage.Sdp_LogId);
+            col.DataType = typeof(string);
+            col.DefaultValue = string .Empty;
+            col.ExtendedProperties.Add(SysConstManage.ExtProp, new ColExtendedProperties { IsActive = true, IsRelate = false,DataTypeLen=50 });
+            dt.Columns.Add(col);
+            #endregion 
+
             dt.PrimaryKey = primarykey.ToArray();
             dt.ExtendedProperties.Add(SysConstManage.ExtProp, new TableExtendedProperties
             {

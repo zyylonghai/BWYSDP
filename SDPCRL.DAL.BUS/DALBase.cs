@@ -174,7 +174,7 @@ namespace SDPCRL.DAL.BUS
                     {
                         dt = libtable.Tables[n].DataTable;
                         tbextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<TableExtendedProperties>(dt.ExtendedProperties[SysConstManage.ExtProp].ToString());
-                        if (tbextprop ==null || !tbextprop.Ignore) continue;
+                        if (tbextprop == null || !tbextprop.Ignore) continue;
                         fields = new StringBuilder();
                         cols = new StringBuilder();
                         fieldtypes = new StringBuilder();
@@ -198,7 +198,7 @@ namespace SDPCRL.DAL.BUS
                             {
                                 bytecols.Add(dt.Columns.IndexOf(col));
                             }
-                            SetColmnTypeAndValue(col,col.ColumnName, colextprop, fieldtypes, fieldvalue, dt.Columns.IndexOf(col));
+                            SetColmnTypeAndValue(col, col.ColumnName, colextprop, fieldtypes, fieldvalue, dt.Columns.IndexOf(col));
                             #region 旧代码
                             //if (col.DataType == typeof(string))
                             //{
@@ -250,15 +250,15 @@ namespace SDPCRL.DAL.BUS
                                     object[] vals = new object[row.ItemArray.Length];
                                     if (bytecols.Count > 0)
                                     {
-                                        for(int a=0;a<row .ItemArray .Length;a++)
+                                        for (int a = 0; a < row.ItemArray.Length; a++)
                                         {
-                                            vals[a] = bytecols.Contains(a)&&row .ItemArray[a]!=DBNull.Value? Convert .ToBase64String((byte[])row.ItemArray[a]) :row.ItemArray[a];
+                                            vals[a] = bytecols.Contains(a) && row.ItemArray[a] != DBNull.Value ? Convert.ToBase64String((byte[])row.ItemArray[a]) : row.ItemArray[a];
                                         }
                                     }
                                     else
                                         vals = row.ItemArray;
                                     sql = string.Format(string.Format("EXEC sp_executesql N'insert into {0}({1}) values({2}) ',N'{3}',{4}",
-                                                                      dt.TableName,cols .ToString (), fields.ToString(), fieldtypes.ToString(), fieldvalue.ToString()
+                                                                      dt.TableName, cols.ToString(), fields.ToString(), fieldtypes.ToString(), fieldvalue.ToString()
                                                                       ),
                                                         vals);
                                     break;
@@ -273,7 +273,7 @@ namespace SDPCRL.DAL.BUS
                                     {
                                         colextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<ColExtendedProperties>(c.ExtendedProperties[SysConstManage.ExtProp].ToString());
                                         if (!colextprop.IsActive) continue;
-                                        if (!LibSysUtils .Compare(row[c, DataRowVersion.Original],row[c, DataRowVersion.Current],false))
+                                        if (!LibSysUtils.Compare(row[c, DataRowVersion.Original], row[c, DataRowVersion.Current], false))
                                         {
                                             if (updateFields.Length > 0)
                                             {
@@ -289,7 +289,7 @@ namespace SDPCRL.DAL.BUS
                                             }
                                             updateFields.AppendFormat("{0}=@{0}", c.ColumnName);
                                             updatefldtypes.AppendFormat("@{0} ", c.ColumnName);
-                                            SetColmnTypeAndValue(c,c.ColumnName , colextprop, updatefldtypes, updatefldval, index);
+                                            SetColmnTypeAndValue(c, c.ColumnName, colextprop, updatefldtypes, updatefldval, index);
                                             index++;
                                             if (c.DataType.Equals(typeof(byte[])))
                                             {

@@ -258,6 +258,13 @@ namespace SDPCRL.DAL.COM
                     }
                     allfields.AppendFormat(" {0}.{1}", tbaliasnm, f.Name);
                 }
+                #region 日志列
+                if (allfields.Length > 0)
+                {
+                    allfields.Append(SysConstManage.Comma);
+                }
+                allfields.AppendFormat(" {0}.{1}", tbaliasnm, SysConstManage.Sdp_LogId);
+                #endregion 
             }
             #endregion
             if (tb != null)
