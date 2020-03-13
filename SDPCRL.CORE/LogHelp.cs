@@ -15,6 +15,9 @@ namespace SDPCRL.CORE
         string _configpath = string.Empty;
         LogConfig LogConfig = null;
         string msgflag = "Message:";
+        static string _currentlogid = string.Empty;
+        static int _currentlogidCount = 0;
+        static object _locker = new object();//定义对象
         #region
 
         #endregion
@@ -151,6 +154,23 @@ namespace SDPCRL.CORE
         private void DeletCallBackMethod(IAsyncResult ar)
         {
 
+        }
+
+        /// <summary>产生日志ID</summary>
+        /// <returns></returns>
+        public static string GenerateLogId()
+        {
+            string id = System.DateTime.Now.ToString("yyyyMMddHHmmssffffff");
+            lock (_locker)
+            {
+                if (id == _currentlogid)
+                {
+                    _currentlogidCount += 1;
+                    return string.Format("{0}{1}", id, _currentlogidCount);
+                }
+            }
+            _currentlogid = id;
+            return id;
         }
     }
 

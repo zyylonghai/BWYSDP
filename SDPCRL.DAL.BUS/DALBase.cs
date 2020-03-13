@@ -247,6 +247,7 @@ namespace SDPCRL.DAL.BUS
                             switch (row.RowState)
                             {
                                 case DataRowState.Added:
+                                    row[SysConstManage.Sdp_LogId] = LogHelp.GenerateLogId();
                                     object[] vals = new object[row.ItemArray.Length];
                                     if (bytecols.Count > 0)
                                     {
