@@ -19,6 +19,6 @@ namespace SDPCRL.IBussiness
         void GetDatatTables(string commandText, ref DataTable[] dts);
 
         void FillTableObj(LibTableObj tableObj);
-        void SaveChange(LibTableObj[] tableObjs);
+        void SaveChange(LibTableObj[] tableObjs, bool IsTrans = true);
     }
 }

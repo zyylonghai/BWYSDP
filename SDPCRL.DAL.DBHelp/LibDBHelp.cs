@@ -257,6 +257,11 @@ namespace SDPCRL.DAL.DBHelp
         {
             this.CurrentDBOpreate.GetDataTables(commandText,ref dts);
         }
+
+        public DataTable GetAccout()
+        {
+            return this.CurrentDBOpreate.GetAccout();
+        }
     }
     class DBOperate
     {
@@ -630,6 +635,11 @@ namespace SDPCRL.DAL.DBHelp
             if (ExecuteNonQuery(commandText) != -1)
                 return true;
             return false;
+        }
+
+        public DataTable GetAccout()
+        {
+            return GetDataTable("select [ID],[AccoutNm],[IPAddress],[key] from Accout");
         }
         #endregion
 

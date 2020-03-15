@@ -90,12 +90,13 @@ namespace SDPCRL.DAL.BUS
                 tableObj.FillData(dt);
             }
         }
-        public void SaveChange(LibTableObj[] tableObjs)
+        public void SaveChange(LibTableObj[] tableObjs,bool IsTrans=true)
         {
             if (tableObjs == null || tableObjs.Length == 0) return;
             try
             {
-                this.BeginTrans();
+                if (IsTrans)
+                    this.BeginTrans();
                 DataTable dt = null;
                 StringBuilder fields = null;
                 StringBuilder fieldtypes = null;
@@ -272,11 +273,13 @@ namespace SDPCRL.DAL.BUS
                         this.ExecuteNonQuery(sql);
                     }
                 }
-                this.CommitTrans();
+                if (IsTrans)
+                    this.CommitTrans();
             }
             catch (Exception ex)
             {
-                this.RollbackTrans();
+                if (IsTrans)
+                    this.RollbackTrans();
                 throw ex;
             }
 

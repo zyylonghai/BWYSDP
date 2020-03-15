@@ -13,6 +13,7 @@ using SDPCRL.CORE;
 using System.Configuration;
 using SDPCRL.DAL.IDBHelp;
 using SDPCRL.DAL.COM;
+using BWYResFactory;
 
 namespace InitialTool
 {
@@ -77,12 +78,12 @@ namespace InitialTool
         {
             DBInfoHelp help = new DBInfoHelp();
             DBInfo dbinfo = new DBInfo();
-            dbinfo.Guid = Guid.NewGuid().ToString ();
             dbinfo.Key = DesCryptFactory.GenerateKey();
             dbinfo.DataBase = this.txtDataBase.Text.Trim();
             dbinfo.ServerAddr = this.txtServerAddr.Text.Trim();
             dbinfo.UserId = this.txtUserId.Text.Trim();
             dbinfo.Password = this.txtpwd.Text.Trim();
+            dbinfo.Guid = dbinfo.DataBase == ResFactory.ResManager.LogDBNm ? dbinfo.DataBase : Guid.NewGuid().ToString();
             switch (this.combConType.SelectedText.Trim())
             {
                 case "TCP":
@@ -101,6 +102,7 @@ namespace InitialTool
                     dbinfo.ProviderType = LibProviderType.Oracle;
                     break;
             }
+
             help.BinaryWriteDBInfo(dbinfo);
             //MessageBox.Show(help.ExceptionMessage);
             ILibDBHelp dbhelp = new DBHelpFactory().GetDBHelp(dbinfo.ProviderType);
@@ -121,6 +123,91 @@ namespace InitialTool
             //file.FilePath = SysConstManage.DBFilePath;
             //string info= file.BinaryReadDBConnectStr();
             object obj= dbhelp.ExecuteScalar("select nickname from ACCOUNT");
+        }
+
+        private void DBConfig_Load(object sender, EventArgs e)
+        {
+            DataTable dt = new DataTable("DBServerInfo");
+            DataColumn col = null;
+            col = new DataColumn("Guid");
+            col.Caption = "账套Guid";
+            dt.Columns.Add(col);
+
+            col = new DataColumn("DataBase");
+            col.Caption = "账套";
+            dt.Columns.Add(col);
+
+            col = new DataColumn("ServerAddr");
+            col.Caption = "服务地址";
+            dt.Columns.Add(col);
+
+            col = new DataColumn("ConnectType");
+            col.Caption = "数据库链接方式";
+            dt.Columns.Add(col);
+
+            col = new DataColumn("ProviderType");
+            col.Caption = "数据库驱动类型";
+            dt.Columns.Add(col);
+
+            col = new DataColumn("UserId");
+            col.Caption = "用户名";
+            dt.Columns.Add(col);
+
+            this.dataGridView1.DataSource = dt;
+            foreach (DataGridViewColumn c in this.dataGridView1.Columns)
+            {
+                c.HeaderText = dt.Columns[c.Name].Caption;
+            }
+
+            DBInfoHelp help = new DBInfoHelp();
+            if (!string.IsNullOrEmpty(help.ReadSysDBConnect()))
+            {
+                List<DBInfo> dBInfos = help.GetAccoutSetting();
+
+                ILibDBHelp dbhelp = new DBHelpFactory().GetDBHelp();
+                DataTable accoutDT= dbhelp.GetAccout();
+                if (accoutDT != null && accoutDT.Rows != null)
+                {
+                    DataRow row = null;
+                    foreach (DBInfo info in dBInfos)
+                    {
+                        DataRow[] rows = accoutDT.Select(string.Format("ID='{0}'", info.Guid));
+                        if (rows == null || rows.Length == 0)
+                        {
+                            continue;
+                        }
+                        help.Guid = rows[0]["ID"].ToString();
+                        help.Key = rows[0]["key"].ToString();
+                        help.ReadDBConnect();
+                        row = dt.NewRow();
+                        row["Guid"] = rows[0]["ID"];
+                        row["DataBase"] = rows[0]["AccoutNm"];
+                        row["ServerAddr"] = rows[0]["IPAddress"];
+                        row["ProviderType"] = help.ProviderType;
+                        dt.Rows.Add(row);
+                    }
+                    //foreach (DataRow dr in accoutDT.Rows)
+                    //{
+                    //    if (dr["AccoutNm"].ToString() == ResFactory.ResManager.SysDBNm)
+                    //    {
+                    //        help.ReadSysDBConnect();
+                    //    }
+                    //    else
+                    //    {
+                    //        help.Guid = dr["ID"].ToString();
+                    //        help.Key = dr["key"].ToString();
+                    //        help.ReadDBConnect();
+                    //    }
+                    //    row = dt.NewRow();
+                    //    row["Guid"] = dr["ID"];
+                    //    row["DataBase"] = dr["AccoutNm"];
+                    //    row["ServerAddr"] = dr["IPAddress"];
+                    //    row["ProviderType"] = help.ProviderType;
+                    //    dt.Rows.Add(row);
+                    //}
+                }
+            }
+
         }
     }
 }

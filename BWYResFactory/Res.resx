@@ -198,4 +198,7 @@
   <data name="109" xml:space="preserve">
     <value>密码错误</value>
   </data>
+  <data name="LogDBNm" xml:space="preserve">
+    <value>BWYDB_Log</value>
+  </data>
 </root>

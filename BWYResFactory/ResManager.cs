@@ -56,6 +56,10 @@ namespace BWYResFactory
         {
             get { return Res.SQLUpdate; }
         }
+        public new string LogDBNm
+        {
+            get { return Res.LogDBNm; }
+        }
 
     }
 
@@ -71,6 +75,7 @@ namespace BWYResFactory
         string SQLOn { get; }
         string SQLOr { get; }
         string SQLUpdate { get; }
+        string LogDBNm { get; }
 
     }
 }

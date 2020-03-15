@@ -99,6 +99,7 @@ namespace SDPCRL.DAL.COM
                 info = new DBInfo();
                 info.Guid = item.Key;
                 //info.DataBase =
+                list.Add(info);
             }
             return list;
         }

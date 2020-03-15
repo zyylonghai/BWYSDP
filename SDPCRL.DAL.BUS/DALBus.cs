@@ -8,6 +8,7 @@ using System.Data;
 using System.Reflection;
 using SDPCRL.CORE;
 using SDPCRL.COM;
+using BWYResFactory;
 
 namespace SDPCRL.DAL.BUS
 {
@@ -54,7 +55,10 @@ namespace SDPCRL.DAL.BUS
         {
             return ExecuteDalMethod(null,language, funcId, method, param);
         }
-
+        public object ExecuteLogDalMethod(int language, string funcId, string method, params object[] param)
+        {
+            return ExecuteDalMethod(ResFactory.ResManager.LogDBNm, language, funcId, method, param);
+        }
 
         DalResult IDALBus.ExecuteDalMethod2(LibClientInfo clientInfo, string accountId, string funcId, string method, LibTable[] libTables, params object[] param)
         {

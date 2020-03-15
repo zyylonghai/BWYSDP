@@ -7,6 +7,7 @@ using System.Data;
 using BWYResFactory;
 using SDPCRL.DAL.COM;
 using SDPCRL.COM;
+using SDPCRL.CORE;
 
 namespace BWYSDPDAL
 {

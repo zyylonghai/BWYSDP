@@ -50,6 +50,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BWYResFactory\BWYResFactory.csproj">
+      <Project>{33CC4123-1946-498B-BB4F-986E5785C5C5}</Project>
+      <Name>BWYResFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDPCRL.COM\SDPCRL.COM.csproj">
       <Project>{A6DD1483-D68F-401B-B7F8-F3B977AC7500}</Project>
       <Name>SDPCRL.COM</Name>

@@ -54,6 +54,12 @@
     <Compile Include="DBConfig.Designer.cs">
       <DependentUpon>DBConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="DBServerInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DBServerInfo.Designer.cs">
+      <DependentUpon>DBServerInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExceptionManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="PromptForm.cs">
@@ -102,6 +108,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BWYResFactory\BWYResFactory.csproj">
+      <Project>{33CC4123-1946-498B-BB4F-986E5785C5C5}</Project>
+      <Name>BWYResFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDPCRL.DAL.IDBHelp\SDPCRL.DAL.IDBHelp.csproj">
       <Project>{2efd1e01-3058-4671-abdd-61fc1a440f91}</Project>
       <Name>SDPCRL.DAL.IDBHelp</Name>

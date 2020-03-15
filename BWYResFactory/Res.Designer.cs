@@ -187,6 +187,15 @@ namespace BWYResFactory {
         }
         
         /// <summary>
+        ///   查找类似 BWYDB_Log 的本地化字符串。
+        /// </summary>
+        internal static string LogDBNm {
+            get {
+                return ResourceManager.GetString("LogDBNm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Provider=OraOLEDB.Oracle.1;User ID={0};Password={1};Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = {2})(PORT = 1521))) (CONNECT_DATA = (SERVICE_NAME = {3}))) 的本地化字符串。
         /// </summary>
         internal static string ORACLECONN {
