@@ -262,6 +262,28 @@ namespace SDPCRL.DAL.DBHelp
         {
             return this.CurrentDBOpreate.GetAccout();
         }
+
+        public void StoredProcedureReturnValue(string storedprocedureNm, LibDbParameter[] parameters)
+        {
+            this.CurrentDBOpreate.StoredProcedureReturnValue(storedprocedureNm, parameters);
+        }
+        public DataTable ExecStoredProcedure(string storedprocedureNm, LibDbParameter[] parameters)
+        {
+            return this.CurrentDBOpreate.ExecStoredProcedure(storedprocedureNm, parameters);
+        }
+
+        public int ExecuteNonQuery(List<string> commandtextlist)
+        {
+            int result = this.CurrentDBOpreate.ExecuteNonQuery(commandtextlist);
+            if (result == -900)
+            {
+                LibEventManager.TouchEvent(this, LibEventType.SqlException, this.CurrentDBOpreate.Exception);
+                LibEventManager.LogOutListener(this);
+            }
+            //return this.CurrentDBOpreate.ExecuteNonQuery(commandText);
+            //return DBOperate.ExecuteNonQuery(commandText);
+            return result;
+        }
     }
     class DBOperate
     {
@@ -344,6 +366,7 @@ namespace SDPCRL.DAL.DBHelp
         {
             get { return  dbConnect.BeginTransaction();  }
         }
+        
         #endregion
 
         public Exception Exception { get; set; }
@@ -387,7 +410,14 @@ namespace SDPCRL.DAL.DBHelp
 
         public System.Data.ConnectionState ConnectState
         {
-            get { return this._dbConnect.State; }
+            get {
+                if (this._dbConnect == null)
+                {
+                    this._dbConnect= _dbProvierFactory.CreateConnection();
+                    this._dbConnect.ConnectionString = _dbConnectStr;
+                }
+                return this._dbConnect.State;
+            }
         }
 
         #region SQL命令执行相关函数
@@ -424,8 +454,37 @@ namespace SDPCRL.DAL.DBHelp
         {
             try
             {
+                dbCommand.CommandType = CommandType.Text;
                 dbCommand.CommandText = sql;
                 return dbCommand.ExecuteNonQuery();
+            }
+            catch (Exception excep)
+            {
+                //ex = excep.Message;
+                this.Exception = excep;
+                //if (this._transaction && dbCommand.Transaction != null)
+                //    RollbackTransation();
+                return -900;
+            }
+            finally
+            {
+                if (!this._transaction)
+                    CloseConnect();
+            }
+        }
+
+        public int ExecuteNonQuery(List<string> sqllist)
+        {
+            try
+            {
+                dbCommand.CommandType = CommandType.Text;
+                foreach (string sql in sqllist)
+                {
+                    if (string.IsNullOrEmpty(sql)) continue;
+                    dbCommand.CommandText = sql;
+                    dbCommand.ExecuteNonQuery();
+                }
+                return 1;
             }
             catch (Exception excep)
             {
@@ -451,6 +510,7 @@ namespace SDPCRL.DAL.DBHelp
         {
             try
             {
+                dbCommand.CommandType = CommandType.Text;
                 dbCommand.CommandText = commandText;
                 return dbCommand.ExecuteScalar();
             }
@@ -471,6 +531,7 @@ namespace SDPCRL.DAL.DBHelp
         /// <returns></returns>
         public  DataRow GetDataRow(string commandText,out int flag)
         {
+            dbCommand.CommandType = CommandType.Text;
             dbCommand.CommandText = commandText;
             DataRow row = null;
             try
@@ -542,6 +603,7 @@ namespace SDPCRL.DAL.DBHelp
             DataTable dt = new DataTable();
             try
             {
+                dbCommand.CommandType = CommandType.Text;
                 dbCommand.CommandText = commandText;
                 dbAdapter.SelectCommand = dbCommand;
                 dbAdapter.Fill(dt);
@@ -566,6 +628,7 @@ namespace SDPCRL.DAL.DBHelp
             //}
             try
             {
+                dbCommand.CommandType = CommandType.Text;
                 dbCommand.CommandText = commandText;
                 dbAdapter.SelectCommand = dbCommand;
                 dbAdapter.Fill(0, 0, dts);
@@ -641,6 +704,80 @@ namespace SDPCRL.DAL.DBHelp
         {
             return GetDataTable("select [ID],[AccoutNm],[IPAddress],[key] from Accout");
         }
+
+        /// <summary>执行存储过程返回结果集</summary>
+        /// <param name="storedprocedureNm"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public DataTable ExecStoredProcedure(string storedprocedureNm, LibDbParameter[] parameters)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                dbCommand.CommandText = storedprocedureNm;
+                dbCommand.CommandType = CommandType.StoredProcedure;
+                DbParameter parameter = null;
+                foreach (LibDbParameter item in parameters)
+                {
+                    parameter = dbCommand.CreateParameter();
+                    parameter.ParameterName = item.ParameterNm;
+                    parameter.DbType = item.DbType;
+                    parameter.Direction = item.Direction;
+                    parameter.Value = item.Value;
+                    dbCommand.Parameters.Add(parameter);
+                }
+                dbAdapter.SelectCommand = dbCommand;
+                dbAdapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                this.Exception = ex;
+                return null;
+            }
+            finally
+            {
+                CloseConnect();
+            }
+            return dt;
+        }
+
+        public void StoredProcedureReturnValue(string storedprocedureNm, LibDbParameter[] parameters)
+        {
+            try
+            {
+                dbCommand.CommandText = storedprocedureNm;
+                dbCommand.CommandType = CommandType.StoredProcedure;
+                DbParameter parameter = null;
+                dbCommand.Parameters.Clear();
+                foreach (LibDbParameter item in parameters)
+                {
+                    parameter = dbCommand.CreateParameter();
+                    parameter.ParameterName = item.ParameterNm;
+                    parameter.DbType = item.DbType;
+                    parameter.Direction = item.Direction;
+                    parameter.Value = item.Value;
+                    parameter.Size = item.Size;
+                    dbCommand.Parameters.Add(parameter);
+                }
+                dbCommand.ExecuteNonQuery();
+                foreach (LibDbParameter p in parameters)
+                {
+                    if (p.Direction == ParameterDirection.ReturnValue || p.Direction == ParameterDirection.Output)
+                    {
+                        p.Value = dbCommand.Parameters[p.ParameterNm].Value;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Exception = ex;
+                //return null;
+            }
+            finally
+            {
+                CloseConnect();
+            }
+        }
         #endregion
 
         #region 私有函数
@@ -664,6 +801,7 @@ namespace SDPCRL.DAL.DBHelp
     {
         static Hashtable connetTable = new Hashtable();
         static readonly object locker = new object();
+        //static readonly object locker2 = new object();
         DBOperate[] db;
         DBOperate _currentDBOperate;
         int _maxConnectAmount = 2;
@@ -714,7 +852,9 @@ namespace SDPCRL.DAL.DBHelp
         {
             get
             {
-                if (_currentDBOperate == null&&!string.IsNullOrEmpty (Guid))
+                //lock (locker2)
+                //{
+                if (_currentDBOperate == null && !string.IsNullOrEmpty(Guid))
                 {
                     db = (DBOperate[])connetTable[Guid];
                     foreach (DBOperate item in db)
@@ -726,8 +866,13 @@ namespace SDPCRL.DAL.DBHelp
                         }
 
                     }
+                    //if (_currentDBOperate == null)
+                    //{
+                    //    _currentDBOperate = db[0];
+                    //}
                 }
                 return _currentDBOperate;
+                //}
             }
             set { _currentDBOperate = value; }
         }

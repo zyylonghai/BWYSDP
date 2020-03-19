@@ -32,7 +32,7 @@ namespace SDPCRL.DAL.BUS
                     if (string.IsNullOrEmpty(AccountID))
                         _dataAccess = new DataAccess();
                     else
-                        _dataAccess = new DataAccess(AccountID);
+                        _dataAccess = new DataAccess(AccountID,this.LibClient);
                 }
                 return _dataAccess;
             }
@@ -397,7 +397,8 @@ namespace SDPCRL.DAL.BUS
                 else
                 {
                     this.DataAccess.CommitTrans();
-                    this.ExecuteLogDalMethod("DataLogFunc", "AddDataLogs");
+                    this.DataAccess.WriteDataLog(tableObjs.ToArray());
+                    //this.ExecuteLogDalMethod("DataLogFunc", "AddDataLogs");
                 }
             }
             catch (Exception ex)

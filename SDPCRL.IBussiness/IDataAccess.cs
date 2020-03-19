@@ -20,5 +20,6 @@ namespace SDPCRL.IBussiness
 
         void FillTableObj(LibTableObj tableObj);
         void SaveChange(LibTableObj[] tableObjs, bool IsTrans = true);
+        void WriteDataLog(LibTableObj[] tableObjs);
     }
 }

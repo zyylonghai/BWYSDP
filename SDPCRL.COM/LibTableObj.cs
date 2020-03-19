@@ -439,17 +439,21 @@ namespace SDPCRL.COM
                 //try
                 //{
 
-                    //if (binder.Name.Substring(0, 2).ToUpper() == "O_")
-                    //{
-                    //    nm = _cols[binder.Name.Substring(2)].colNm;
-                    //    result = this._dataRow[nm, DataRowVersion.Original];
-                    //}
-                    //else
-                    //{
-                        nm = _cols[binder.Name].colNm;
-                        result = this._dataRow[nm];
-                    //}
-                    return true;
+                //if (binder.Name.Substring(0, 2).ToUpper() == "O_")
+                //{
+                //    nm = _cols[binder.Name.Substring(2)].colNm;
+                //    result = this._dataRow[nm, DataRowVersion.Original];
+                //}
+                //else
+                //{
+                nm = _cols[binder.Name].colNm;
+                result = this._dataRow[nm];
+                if (this._dataRow.Table.Columns[nm].DataType == typeof(string) && result==DBNull .Value)
+                {
+                    result = string.Empty;
+                }
+                //}
+                return true;
                 //}
                 //catch
                 //{

@@ -11,6 +11,8 @@ namespace SDPCRL.COM
         //public string AccoutId { get; set; }
         public Language Language { get; set; }
         public string SessionId { get; set; }
+
+        public string UserId { get; set; }
         public string IP { get; set; }
         public string ClientNm { get; set; }
     }

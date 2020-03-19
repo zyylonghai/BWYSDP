@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="DalAssemblyHelp.cs" />
     <Compile Include="DBInfoHelp.cs" />
+    <Compile Include="LibDbParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLBuilder.cs" />
   </ItemGroup>

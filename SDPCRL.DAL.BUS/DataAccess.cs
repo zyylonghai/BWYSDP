@@ -9,14 +9,17 @@ using System.Data;
 using SDPCRL.CORE;
 using SDPCRL.COM;
 using SDPCRL.DAL.COM;
+using BWYResFactory;
 
 namespace SDPCRL.DAL.BUS
 {
     class DataAccess:IDataAccess,ILibEventListener, IDisposable,IlibException
     {
-       private  static DBHelpFactory  _dbFactory;
-       private ILibDBHelp  _dbHelp;
+        private  static DBHelpFactory  _dbFactory;
+        private ILibDBHelp  _dbHelp;
         private ExceptionHelp _ExceptionHelp;
+        private LibClientInfo _clientInfo;
+        delegate void WriteDataLogDelegate(LibTableObj[] tableObjs);
         private ExceptionHelp ExceptionHelp {
             get {
                 if (_ExceptionHelp == null)
@@ -32,9 +35,10 @@ namespace SDPCRL.DAL.BUS
             }
             _dbHelp = _dbFactory.GetDBHelp();
         }
-        public DataAccess(string guid)
+        public DataAccess(string guid,LibClientInfo clientInfo)
             :this()
         {
+            this._clientInfo = clientInfo;
             _dbHelp = _dbFactory.GetDBHelp(guid);
             LibEventManager.SubscribeEvent(new LibSqlExceptionEventSource(this, _dbHelp), LibEventType.SqlException);
         }
@@ -99,6 +103,7 @@ namespace SDPCRL.DAL.BUS
                     this.BeginTrans();
                 DataTable dt = null;
                 StringBuilder fields = null;
+                StringBuilder cols = null;
                 StringBuilder fieldtypes = null;
                 StringBuilder fieldvalue = null;
 
@@ -121,6 +126,7 @@ namespace SDPCRL.DAL.BUS
                     }
                     if (!tbextprop.Ignore) continue;
                     fields = new StringBuilder();
+                    cols = new StringBuilder();
                     fieldtypes = new StringBuilder();
                     fieldvalue = new StringBuilder();
                     List<int> bytecols = new List<int>();
@@ -133,9 +139,11 @@ namespace SDPCRL.DAL.BUS
                             fields.Append(",");
                             fieldtypes.Append(",");
                             fieldvalue.Append(",");
+                            cols.Append(",");
                         }
                         fields.AppendFormat("@{0}", col.ColumnName);
                         fieldtypes.AppendFormat("@{0} ", col.ColumnName);
+                        cols.AppendFormat("{0}", col.ColumnName);
                         if (col.DataType == typeof(byte[]))
                         {
                             bytecols.Add(dt.Columns.IndexOf(col));
@@ -147,6 +155,7 @@ namespace SDPCRL.DAL.BUS
                         switch (row.RowState)
                         {
                             case DataRowState.Added:
+                                row[SysConstManage.Sdp_LogId] = LogHelp.GenerateLogId();
                                 object[] vals = new object[row.ItemArray.Length];
                                 if (bytecols.Count > 0)
                                 {
@@ -157,8 +166,8 @@ namespace SDPCRL.DAL.BUS
                                 }
                                 else
                                     vals = row.ItemArray;
-                                sql = string.Format(string.Format("EXEC sp_executesql N'insert into {0} values({1}) ',N'{2}',{3}",
-                                                                  dt.TableName, fields.ToString(), fieldtypes.ToString(), fieldvalue.ToString()
+                                sql = string.Format(string.Format("EXEC sp_executesql N'insert into {0}({1}) values({2}) ',N'{3}',{4}",
+                                                                  dt.TableName, cols.ToString(), fields.ToString(), fieldtypes.ToString(), fieldvalue.ToString()
                                                                   ),
                                                     vals);
                                 break;
@@ -274,7 +283,10 @@ namespace SDPCRL.DAL.BUS
                     }
                 }
                 if (IsTrans)
+                {
                     this.CommitTrans();
+                    WriteDataLog(tableObjs);
+                }
             }
             catch (Exception ex)
             {
@@ -283,6 +295,120 @@ namespace SDPCRL.DAL.BUS
                 throw ex;
             }
 
+        }
+
+        public void WriteDataLog(LibTableObj[] tableObjs)
+        {
+            //DoWritDataLog(tableObjs);
+            WriteDataLogDelegate writedatalog = new WriteDataLogDelegate(DoWritDataLog);
+            AsyncCallback callback = new AsyncCallback(CallBackMethod);
+            IAsyncResult iar = writedatalog.BeginInvoke(tableObjs, callback, writedatalog);
+        }
+
+        private void DoWritDataLog(LibTableObj[] tableObjs)
+        {
+            try
+            {
+                if (tableObjs != null)
+                {
+                    DataTable dt = null;
+                    //string logid = null;
+                    string tablenm = null;
+                    string ID = string.Empty;
+                    string logtbnm = string.Empty;
+                    //LibDbParameter[] parameters = null;
+                    //List<string > sqlbuilder = new List<string>();
+                    StringBuilder sqlbuilder = new StringBuilder();
+                    //ColExtendedProperties colextprop = null;
+                    TableExtendedProperties tbextprop = null;
+                    ILibDBHelp dBHelp = new DBHelpFactory().GetDBHelp(ResFactory.ResManager.LogDBNm);
+                    foreach (LibTableObj tableObj in tableObjs)
+                    {
+                        dt = tableObj.DataTable;
+                        if (dt != null && dt.Rows != null)
+                        {
+                            tbextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<TableExtendedProperties>(dt.ExtendedProperties[SysConstManage.ExtProp].ToString());
+                            if (!tbextprop.Ignore) continue;
+                            foreach (DataRow dr in dt.Rows)
+                            {
+                                //logid = dr[SysConstManage.Sdp_LogId].ToString();
+                                tablenm = dt.TableName;
+                                switch (dr.RowState)
+                                {
+                                    case DataRowState.Added:
+                                        sqlbuilder.Append(DoGetLogSqlStr(dr, tablenm, 1, dBHelp));
+                                        break;
+                                    case DataRowState.Modified:
+                                        sqlbuilder.Append(DoGetLogSqlStr(dr, tablenm, 2, dBHelp));
+                                        break;
+                                }
+                            }
+                          
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(sqlbuilder.ToString()))
+                        dBHelp.ExecuteNonQuery(sqlbuilder.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ExceptionHelp.ThrowError(this, ex.Message, ex.StackTrace);
+            }
+
+        }
+        private void CallBackMethod(IAsyncResult ar)
+        {
+
+        }
+        private string DoGetLogSqlStr(DataRow dr,string tablenm, int action, ILibDBHelp dBHelp)
+        {
+            //List<string> sqllist = new List<string>();
+            StringBuilder sql = new StringBuilder();
+            try
+            {
+                string logid = dr[SysConstManage.Sdp_LogId].ToString();
+                LibDbParameter[] parameters = new LibDbParameter[4];
+                parameters[0] = new LibDbParameter { ParameterNm = "@logid", DbType = DbType.String, Value = logid };
+                parameters[1] = new LibDbParameter { ParameterNm = "@tablenm", DbType = DbType.String, Value = tablenm };
+                parameters[2] = new LibDbParameter { ParameterNm = "@ID", DbType = DbType.Int64, Direction = ParameterDirection.Output, Value = 0 };
+                parameters[3] = new LibDbParameter { ParameterNm = "@logtbnm", DbType = DbType.String, Size = 35, Direction = ParameterDirection.Output, Value = string.Empty };
+                dBHelp.StoredProcedureReturnValue(action == 1 ? "p_addlogM" : "p_GetlogM", parameters);
+                ColExtendedProperties colextprop = null;
+                object fieldvalue = null;
+                object oldfieldvalue = null;
+                if (!string.IsNullOrEmpty(parameters[3].Value.ToString()) && (Int64)parameters[2].Value != 0)
+                {
+                    foreach (DataColumn c in dr.Table.Columns)
+                    {
+                        colextprop = Newtonsoft.Json.JsonConvert.DeserializeObject<ColExtendedProperties>(c.ExtendedProperties[SysConstManage.ExtProp].ToString());
+                        if (!colextprop.IsActive) continue;
+                        if (action == 2 && LibSysUtils.Compare(dr[c, DataRowVersion.Original], dr[c, DataRowVersion.Current], false))
+                        {
+                            continue;
+                        }
+                        if (c.DataType == typeof(byte[]))
+                        {
+                            fieldvalue = Convert.ToBase64String((byte[])dr[c]);
+                            oldfieldvalue =action==1?string.Empty: Convert.ToBase64String((byte[])dr[c, DataRowVersion.Original]);
+                        }
+                        else
+                        {
+                            fieldvalue = dr[c];
+                            oldfieldvalue = action == 1 ? string.Empty : dr[c, DataRowVersion.Original];
+                        }
+                        sql.AppendFormat("  EXEC sp_executesql N'insert into {0}(ID,Action,UserId,IP,DT,FieldNm,FieldValue,OldFieldValue) values(@ID,@Action,@UserId,@IP,@DT,@FieldNm,@FieldValue,@OldFieldValue) '", parameters[3].Value.ToString());
+                        sql.Append(" ,N'@ID bigint,@Action char(1),@UserId nvarchar(30),@IP nvarchar(15),@DT datetime,@FieldNm nvarchar(30),@FieldValue ntext,@OldFieldValue ntext',");
+                        sql.AppendFormat("  @ID={0},@Action='{1}',@UserId='{2}',@IP='{3}',@DT='{4}',@FieldNm='{5}',@FieldValue='{6}',@OldFieldValue='{7}' ",
+                                              (Int64)parameters[2].Value, action, this._clientInfo.UserId, this._clientInfo.IP, DateTime.Now, c.ColumnName, fieldvalue, oldfieldvalue);
+                        //sqllist.Add(sql.ToString());
+                    }
+                }
+                //dBHelp.ExecuteNonQuery(sql.ToString());
+            }
+            catch (Exception ex) {
+
+            }
+            return sql.ToString ();
         }
 
         public void Dispose()
