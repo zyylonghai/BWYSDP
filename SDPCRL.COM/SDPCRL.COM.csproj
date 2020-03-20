@@ -52,6 +52,7 @@
     <Compile Include="ErrorMessage.cs" />
     <Compile Include="FuncAssemblyInfo.cs" />
     <Compile Include="LibClientInfo.cs" />
+    <Compile Include="LibDbParameter.cs" />
     <Compile Include="LibDSContext.cs" />
     <Compile Include="LibLanguage.cs" />
     <Compile Include="LibSearchCondition.cs" />

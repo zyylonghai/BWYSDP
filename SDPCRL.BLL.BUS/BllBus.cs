@@ -63,6 +63,10 @@ namespace SDPCRL.BLL.BUS
         {
             return _dalBus.ExecuteSaveMethod(clientInfo,AccoutId, funcId, method, param);
         }
+        protected object ExecuteLogDalMethod(int language, string funcId, string method, params object[] param)
+        {
+            return _dalBus.ExecuteLogDalMethod(language, funcId, method, param);
+        }
 
         #endregion
     }

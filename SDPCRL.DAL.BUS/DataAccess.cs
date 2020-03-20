@@ -84,6 +84,10 @@ namespace SDPCRL.DAL.BUS
         {
             return _dbHelp.ExecuteNonQuery(commandText);
         }
+        public DataTable ExecStoredProcedure(string storedprocedureNm, LibDbParameter[] parameters)
+        {
+            return _dbHelp.ExecStoredProcedure(storedprocedureNm, parameters);
+        }
 
         public void FillTableObj(LibTableObj tableObj)
         {
@@ -481,6 +485,7 @@ namespace SDPCRL.DAL.BUS
                 fieldvalue.Append(string.Format("@{0}", parmNm) + "='{" + index + "}'");
             }
         }
+
         #endregion
     }
 }

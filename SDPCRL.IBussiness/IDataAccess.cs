@@ -17,6 +17,7 @@ namespace SDPCRL.IBussiness
         DataRow GetDataRow(string commandText);
         DataTable GetDataTable(string commandText);
         void GetDatatTables(string commandText, ref DataTable[] dts);
+        DataTable ExecStoredProcedure(string storedprocedureNm, LibDbParameter[] parameters);
 
         void FillTableObj(LibTableObj tableObj);
         void SaveChange(LibTableObj[] tableObjs, bool IsTrans = true);

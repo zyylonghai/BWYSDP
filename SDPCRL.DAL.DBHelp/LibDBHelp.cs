@@ -717,6 +717,7 @@ namespace SDPCRL.DAL.DBHelp
                 dbCommand.CommandText = storedprocedureNm;
                 dbCommand.CommandType = CommandType.StoredProcedure;
                 DbParameter parameter = null;
+                dbCommand.Parameters.Clear();
                 foreach (LibDbParameter item in parameters)
                 {
                     parameter = dbCommand.CreateParameter();
