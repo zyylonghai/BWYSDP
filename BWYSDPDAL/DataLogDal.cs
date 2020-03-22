@@ -25,6 +25,7 @@ namespace BWYSDPDAL
             {
                 foreach (var item in tableAndlogids)
                 {
+                    if (item.Value == null || item.Value.Count == 0) continue;
                     foreach (string logid in item.Value)
                     {
                         LibDbParameter[] parameters = new LibDbParameter[2];

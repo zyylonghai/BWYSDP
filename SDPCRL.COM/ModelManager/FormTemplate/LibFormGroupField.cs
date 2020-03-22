@@ -94,6 +94,21 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
+        /// <summary>点击事件(值为脚本函数名例如(click()))</summary>
+        [LibAttribute("fmfld_Onclick", LibControlType.TextBox, "Onclick事件")]
+        public string Onclick { get; set; }
+
+        /// <summary>Change事件(值为脚本函数名例如(Change()))</summary>
+        [LibAttribute("fmfld_OnChange", LibControlType.TextBox, "Change事件")]
+        public string OnChange { get; set; }
+
+        /// <summary>blur事件(值为脚本函数名例如(blur()))</summary>
+        [LibAttribute("fmfld_Onblur", LibControlType.TextBox, "blur事件")]
+        public string Onblur { get; set; }
+        /// <summary>Keydown事件(值为脚本函数名例如(Keydown()))</summary>
+        [LibAttribute("fmfld_Keydown", LibControlType.TextBox, "Keydown事件")]
+        public string Keydown { get; set; }
+
 
     }
     public enum ElementType

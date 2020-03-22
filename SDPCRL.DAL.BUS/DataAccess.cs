@@ -392,8 +392,8 @@ namespace SDPCRL.DAL.BUS
                         }
                         if (c.DataType == typeof(byte[]))
                         {
-                            fieldvalue = Convert.ToBase64String((byte[])dr[c]);
-                            oldfieldvalue =action==1?string.Empty: Convert.ToBase64String((byte[])dr[c, DataRowVersion.Original]);
+                            fieldvalue =dr[c]==DBNull.Value?string.Empty : Convert.ToBase64String((byte[])dr[c]);
+                            oldfieldvalue =(action==1|| dr[c, DataRowVersion.Original] ==DBNull.Value )? string.Empty: Convert.ToBase64String((byte[])dr[c, DataRowVersion.Original]);
                         }
                         else
                         {

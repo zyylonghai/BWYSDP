@@ -88,6 +88,12 @@ namespace SDPCRL.COM.ModelManager
             get;
             set;
         }
+        /// <summary>有效性验证</summary>
+        [LibAttribute("fd_Validation", LibControlType.Combox, "值有效性")]
+        public LibFieldValidation Validation
+        {
+            get;set;
+        }
         /// <summary>是否自增长</summary>
         [LibAttribute("fd_combAutoIncrement", LibControlType.Combox, "自增长")]
         public bool AutoIncrement
@@ -328,6 +334,26 @@ namespace SDPCRL.COM.ModelManager
         {
             return string.Format("{0}:{1}", Name, DisplayName);
         }
+
+    }
+
+    [Serializable]
+    public enum LibFieldValidation
+    {
+        [LibReSource("")]
+        None =0,
+        ///<summary>大于0</summary>
+        [LibReSource("大于0")]
+        MorethanZero =1,
+        ///<summary>小于0</summary>
+        [LibReSource("小于0")]
+        LessthanZero =2,
+        ///<summary>大于等于0</summary>
+        [LibReSource("大于等于0")]
+        MorethanEqualZero =3,
+        ///<summary>小于等于0</summary>
+        [LibReSource("小于等于0")]
+        LessthanEqualZero =4
 
     }
 }

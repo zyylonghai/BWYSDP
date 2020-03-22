@@ -91,6 +91,7 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         /// <summary>格式化表达式(显示的值来源某个表的字段则表达式:实体表名.字段名,如果是脚本函数则表达式:$.函数名)</summary>
         [LibAttribute("gridgfld_Formatter", LibControlType.TextBox, "格式化值")]
         public string Formatter { get; set; }
+
         /// <summary>是否来源数据所关联出来的字段</summary>
         [LibAttribute("gridgfld_IsFromSourceField", LibControlType.Combox, "是否来源关联出来的字段",true ,true)]
         public bool IsFromSourceField
@@ -106,5 +107,20 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
             get;
             set;
         }
+
+        /// <summary>点击事件(值为脚本函数名例如(click()))</summary>
+        [LibAttribute("gridgfld_Onclick", LibControlType.TextBox, "Onclick事件")]
+        public string Onclick { get; set; }
+
+        /// <summary>Change事件(值为脚本函数名例如(Change()))</summary>
+        [LibAttribute("gridgfld_OnChange", LibControlType.TextBox, "Change事件")]
+        public string OnChange { get; set; }
+
+        /// <summary>blur事件(值为脚本函数名例如(blur()))</summary>
+        [LibAttribute("gridgfld_Onblur", LibControlType.TextBox, "blur事件")]
+        public string Onblur { get; set; }
+        /// <summary>Keydown事件(值为脚本函数名例如(Keydown()))</summary>
+        [LibAttribute("gridgfld_Keydown", LibControlType.TextBox, "Keydown事件")]
+        public string Keydown { get; set; }
     }
 }
