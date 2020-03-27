@@ -5,6 +5,7 @@ using System.Text;
 using SDPCRL.CORE;
 using SDPCRL.CORE.FileUtils;
 using SDPCRL.COM.ModelManager.FormTemplate;
+using SDPCRL.COM.ModelManager.Reports;
 
 namespace SDPCRL.COM.ModelManager
 {
@@ -57,6 +58,10 @@ namespace SDPCRL.COM.ModelManager
         public static LibPermissionSource GetLibPermission(string permissionid)
         {
             return (LibPermissionSource)InternalInstanceModelSource(SysConstManage.PermissionSourceNm, permissionid);
+        }
+        public static LibReportsSource GetLibReportSource(string reportid)
+        {
+            return (LibReportsSource)InternalInstanceModelSource(SysConstManage.ReportSourceNm, reportid);
         }
         public static LibKeyValueCollection GetKeyValues(string id)
         {
@@ -284,6 +289,13 @@ namespace SDPCRL.COM.ModelManager
                         return new LibKeyValueCollection { ID = modelSourceId };
                     }
                     return SerializerUtils.XMLDeSerialize<LibKeyValueCollection>(dsxml);
+                case SysConstManage.ReportSourceNm:
+                    if (string.IsNullOrEmpty(dsxml))
+                    {
+
+                        return new LibReportsSource { ReportId = modelSourceId };
+                    }
+                    return SerializerUtils.XMLDeSerialize<LibReportsSource>(dsxml);
                 default :
 
                     return null;

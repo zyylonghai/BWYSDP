@@ -47,7 +47,7 @@ namespace BWYSDP
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             LibTreeNode node = (LibTreeNode)e.Node;
-            if (node.NodeType != NodeType.Class && node.NodeType !=NodeType.Func)
+            if (node.NodeType != NodeType.Class && node.NodeType !=NodeType.Func && node.NodeType !=NodeType.ReportFunc)
             {
                 #region  创建Tabpage
                 string tabNm = string.Format("{0}{2}{1}", node.Name, node.NodeType.ToString(), SysConstManage.Underline);
@@ -87,6 +87,11 @@ namespace BWYSDP
                         KeyValuesControl keyvaluectrl = new KeyValuesControl(node);
                         keyvaluectrl.Dock = DockStyle.Fill;
                         page.Controls.Add(keyvaluectrl);
+                        break;
+                    case NodeType.ReportModel:
+                        ReportSourceControl reportSourceControl = new ReportSourceControl(node);
+                        reportSourceControl.Dock = DockStyle.Fill;
+                        page.Controls.Add(reportSourceControl);
                         break;
                 }
             }
@@ -240,6 +245,25 @@ namespace BWYSDP
                         case NodeType.SpectFunc:
                             break;
                         case NodeType.ReportFunc:
+                            #region 创建树形节点 
+                            LibTreeNode report = new LibTreeNode();
+                            funcNode.CopyTo(report);
+                            report.NodeType = NodeType.ReportModel;
+                            ModelDesignProject.CreatModelFile(report);
+
+                            funcNode.Nodes.Add(report);
+
+                            //权限模型节点
+                            LibTreeNode reportpermission = new LibTreeNode();
+                            funcNode.CopyTo(reportpermission);
+                            reportpermission.NodeType = NodeType.PermissionModel;
+                            ModelDesignProject.CreatModelFile(reportpermission);
+                            funcNode.Nodes.Add(reportpermission);
+
+                            this.treeView1.SelectedNode.Nodes.Add(funcNode);
+                            ModelDesignProject.AddXmlNode(funcNode);
+                            this.treeView1.SelectedNode = funcNode;
+                            #endregion
                             break;
                         case NodeType.DataModel:
                             break;

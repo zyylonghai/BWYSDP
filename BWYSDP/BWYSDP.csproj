@@ -196,6 +196,24 @@
     <Compile Include="Controls\RelateFieldProperty.Designer.cs">
       <DependentUpon>RelateFieldProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ReportGridProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportGridProperty.Designer.cs">
+      <DependentUpon>ReportGridProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReportSourceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportSourceControl.Designer.cs">
+      <DependentUpon>ReportSourceControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReportSourceProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportSourceProperty.Designer.cs">
+      <DependentUpon>ReportSourceProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TBStructProperty.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -329,6 +347,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\RelateFieldControl.resx">
       <DependentUpon>RelateFieldControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ReportSourceControl.resx">
+      <DependentUpon>ReportSourceControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TBStructProperty.resx">
       <DependentUpon>TBStructProperty.cs</DependentUpon>

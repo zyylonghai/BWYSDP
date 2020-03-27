@@ -1057,6 +1057,7 @@ namespace BWYSDP.Controls
         {
             this.DoDragDrop(e.Item, DragDropEffects.Move);
         }
+
         /// <summary>
         /// 按钮节点上的右键菜单
         /// </summary>

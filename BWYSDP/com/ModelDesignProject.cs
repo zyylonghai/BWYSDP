@@ -13,6 +13,7 @@ using System.Data;
 using SDPCRL.COM.ModelManager.FormTemplate;
 using BWYSDP.Controls;
 using static System.Windows.Forms.Control;
+using SDPCRL.COM.ModelManager.Reports;
 
 namespace BWYSDP.com
 {
@@ -23,6 +24,7 @@ namespace BWYSDP.com
         private static Hashtable _formSourceContain = new Hashtable();
         private static Hashtable _permissionSourceContain = new Hashtable();
         private static Hashtable _keyvaluesContain = new Hashtable();
+        private static Hashtable _rptSourceContain = new Hashtable();
         private static DSList _dsList = new DSList();
         private static bool initialvale = false;
 
@@ -649,6 +651,13 @@ namespace BWYSDP.com
                             node.Package = item.Attributions[SysConstManage.AtrrPackage];
                             needchild = false;
                         }
+                        else if (string.Compare(item.NodeName, SysConstManage.ReportFuncNodeNm) == 0)//报表节点
+                        {
+                            node.Text = item.InnerText;
+                            node.Name = item.Attributions[SysConstManage.AtrrName];
+                            node.NodeType = NodeType.ReportFunc;
+                            node.Package = item.Attributions[SysConstManage.AtrrPackage];
+                        }
                         node.OriginalName = node.Name;
                         if (needchild)
                         {
@@ -671,6 +680,11 @@ namespace BWYSDP.com
                     if (fileoperation.ExistsFile())
                     {
                         AddFuncNode(parent, NodeType.FormModel);
+                    }
+                    fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.ReportSourceNm, parent.Package, parent.Name);
+                    if (fileoperation.ExistsFile())
+                    {
+                        AddFuncNode(parent, NodeType.ReportModel);
                     }
                     fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.PermissionSourceNm, parent.Package, parent.Name);
                     if (fileoperation.ExistsFile())
@@ -720,6 +734,10 @@ namespace BWYSDP.com
                         break;
                     case NodeType.KeyValues:
                         nodeinfo.NodeName = SysConstManage.KeyValues;
+                        attributcollection.Add(SysConstManage.AtrrPackage, newNode.Package);
+                        break;
+                    case NodeType.ReportFunc:
+                        nodeinfo.NodeName = SysConstManage.ReportFuncNodeNm;
                         attributcollection.Add(SysConstManage.AtrrPackage, newNode.Package);
                         break;
                 }
@@ -828,6 +846,9 @@ namespace BWYSDP.com
                 case NodeType.KeyValues:
                     dir = SysConstManage.KeyValues;
                     break;
+                case NodeType.ReportModel:
+                    dir = SysConstManage.ReportSourceNm; 
+                    break;
             }
             fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, dir, treeNode.Package, treeNode.Name);
             fileoperation.CreateFile(true);
@@ -924,6 +945,20 @@ namespace BWYSDP.com
                 LibPermissionSource p = ModelManager.GetLibPermission(permissionid);
                 _permissionSourceContain.Add(permissionid, p);
                 return p;
+            }
+        }
+
+        public static LibReportsSource GetLibReportsSourceById(string reportid)
+        {
+            if (_rptSourceContain.ContainsKey(reportid))
+            {
+                return (LibReportsSource)_rptSourceContain[reportid];
+            }
+            else
+            {
+                LibReportsSource rpt = ModelManager.GetLibReportSource(reportid);
+                _rptSourceContain.Add(reportid, rpt);
+                return rpt;
             }
         }
 
@@ -1119,9 +1154,13 @@ namespace BWYSDP.com
         /// <summary>报表功能</summary>
         [LibReSource("报表功能节点")]
         ReportFunc = 6,
+        /// <summary>报表模型节点</summary>
+        [LibReSource("报表模型节点")]
+        ReportModel =61,
         /// <summary>字典模型</summary>
         [LibReSource("字典模型节点")]
         KeyValues =16,
+
 
 
         /// <summary>数据集</summary>
@@ -1157,7 +1196,10 @@ namespace BWYSDP.com
         ButtonGroup =17,
         /// <summary> 按钮</summary>
         [LibReSource("按钮")]
-        BtnGroup_button =18
+        BtnGroup_button =18,
+        /// <summary>报表页面容器</summary>
+        [LibReSource("报表容器")]
+        ReportPanel =19
 
     }
 }
