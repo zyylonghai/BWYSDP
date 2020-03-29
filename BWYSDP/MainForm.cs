@@ -306,6 +306,9 @@ namespace BWYSDP
                     case NodeType.KeyValues:
                         ((KeyValuesControl)page.Controls[0]).GetControlValueBindToKeyValue();
                         break;
+                    case NodeType.ReportModel:
+                        ((ReportSourceControl)page.Controls[0]).GetControlValueBindToRpt();
+                        break;
                 }
                 ModelDesignProject.SaveModel(nameAndtype[0], ntype);
                 page.Text = page.Text.Replace(SysConstManage.Asterisk.ToString (),"");

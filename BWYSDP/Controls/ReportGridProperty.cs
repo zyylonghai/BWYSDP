@@ -61,10 +61,42 @@ namespace BWYSDP.Controls
                 DialogResult dialog = fielsform.ShowDialog(this);
                 if (dialog == DialogResult.OK)
                 {
+                    if (listBox.SelectedItem == null) return;
                     if (this.Controls[ctrNm].Text.Trim() != listBox.SelectedItem.ToString())
                     {
                         this.Controls[ctrNm].Text = listBox.SelectedItem.ToString();
                         this.entity.DSID = listBox.SelectedItem.ToString();
+                    }
+                }
+            }
+            else if (string.Compare(ctrNm, "rptGrid_FromTable") == 0) //来源表
+            {
+                if (!string.IsNullOrEmpty(this.entity.DSID))
+                {
+                  LibDataSource ds= ModelDesignProject.GetDataSourceById(this.entity.DSID);
+                    if (ds != null && ds.DefTables != null)
+                    {
+                        foreach (LibDefineTable deftb in ds.DefTables)
+                        {
+                            if (deftb.TableStruct != null)
+                            {
+                                foreach (LibDataTableStruct tb in deftb.TableStruct)
+                                {
+                                    listBox.Items.Add(tb.Name);
+                                }
+                            }
+                        }
+                    }
+                }
+                FieldCollectionForm fielsform = new FieldCollectionForm(p);
+                DialogResult dialog = fielsform.ShowDialog(this);
+                if (dialog == DialogResult.OK)
+                {
+                    if (listBox.SelectedItem == null) return;
+                    if (this.Controls[ctrNm].Text.Trim() != listBox.SelectedItem.ToString())
+                    {
+                        this.Controls[ctrNm].Text = listBox.SelectedItem.ToString();
+                        this.entity.FromTable = listBox.SelectedItem.ToString();
                     }
                 }
             }

@@ -11,6 +11,7 @@ using BWYSDP.com;
 using SDPCRL.COM.ModelManager.Reports;
 using SDPCRL.CORE;
 using System.Reflection;
+using SDPCRL.COM.ModelManager;
 
 namespace BWYSDP.Controls
 {
@@ -19,6 +20,7 @@ namespace BWYSDP.Controls
         private LibTreeNode _funNode;
         private LibReportsSource _rpt = null;
         private List<ReportGridProperty> _gridgrouplst = null;
+        private List<ReportFieldProperty> _reportFieldlst = null;
         ReportSourceProperty _rptproperty = null;
         public ReportSourceControl()
         {
@@ -35,10 +37,24 @@ namespace BWYSDP.Controls
             this.splitContainer1.Panel2.Controls.Add(_rptproperty);
 
             _gridgrouplst = new List<ReportGridProperty>();
+            _reportFieldlst = new List<ReportFieldProperty>();
 
             this.treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
             this.treeView1.HideSelection = false;
             this.treeView1.DrawNode += new DrawTreeNodeEventHandler(treeView1_DrawNode);
+        }
+
+        public void GetControlValueBindToRpt()
+        {
+            _rptproperty.GetControlsValue();
+            foreach (ReportGridProperty reportGrid in _gridgrouplst)
+            {
+                reportGrid.GetControlsValue();
+            }
+            foreach (ReportFieldProperty field in _reportFieldlst)
+            {
+                field.GetControlsValue();
+            }
         }
 
         void treeView1_DrawNode(object sender, DrawTreeNodeEventArgs e)
@@ -55,7 +71,32 @@ namespace BWYSDP.Controls
             rptNode.Name = _funNode.Name;
             rptNode.Text = ReSourceManage.GetResource(NodeType.ReportPanel);
             rptNode.NodeType = NodeType.ReportPanel;
-
+            if (_rpt.GridGroups != null)
+            {
+                foreach (LibReportGrid grid in _rpt.GridGroups)
+                {
+                    #region 创建表格组节点
+                    LibTreeNode gdgroupNode = new LibTreeNode();
+                    gdgroupNode.NodeId = grid.GridGroupID;
+                    gdgroupNode.NodeType = NodeType.GridGroup;
+                    gdgroupNode.Name = grid.GridGroupName;
+                    gdgroupNode.Text = grid.GridGroupDisplayNm;
+                    rptNode.Nodes.Add(gdgroupNode);
+                    #endregion
+                    if (grid.ReportFields != null)
+                        foreach (LibReportField  fd in grid.ReportFields)
+                        {
+                            #region 创建表格组字段节点
+                            LibTreeNode gdgroupfield = new LibTreeNode();
+                            gdgroupfield.NodeType = NodeType.GridGroup_Field;
+                            gdgroupfield.NodeId = fd.ID;
+                            gdgroupfield.Name = fd.Name;
+                            gdgroupfield.Text = fd.Name;
+                            gdgroupNode.Nodes.Add(gdgroupfield);
+                            #endregion
+                        }
+                }
+            }
             this.treeView1.Nodes.Add(rptNode);
             this.treeView1.SelectedNode = rptNode;
         }
@@ -107,6 +148,31 @@ namespace BWYSDP.Controls
                         }
                     }
                     break;
+                case NodeType.GridGroup_Field:
+                    if (_reportFieldlst != null)
+                    {
+                        foreach (ReportFieldProperty item in _reportFieldlst)
+                        {
+                            if (string.Compare(item.Name, libnode.NodeId) == 0)
+                            {
+                                SetPanel2ControlsVisible(item);
+                                exists = true;
+                                break;
+                            }
+                        }
+                        if (!exists) //还未创建对应的控件
+                        {
+                            ReportFieldProperty gdgroupfdp = new ReportFieldProperty(libnode.NodeId);
+                            gdgroupfdp.Dock = DockStyle.Fill;
+                            this._reportFieldlst.Add(gdgroupfdp);
+                            this.splitContainer1.Panel2.Controls.Add(gdgroupfdp);
+                            LibReportGrid librptgd = _rpt .GridGroups.FindFirst("GridGroupID", ((LibTreeNode)libnode.Parent).NodeId);
+                            gdgroupfdp.SetPropertyValue(librptgd.ReportFields.FindFirst("ID", libnode.NodeId), libnode);
+
+                            SetPanel2ControlsVisible(gdgroupfdp);
+                        }
+                    }
+                    break;
             }
         }
 
@@ -154,9 +220,109 @@ namespace BWYSDP.Controls
         private void contextMenuStrip2_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            LibReportGrid currentlibrptgrid = _rpt.GridGroups.FindFirst("GridGroupID", curentNode.NodeId);
             switch (e.ClickedItem.Name)
             {
                 case "AddFromDSField": //添加数据源字段
+                    if (currentlibrptgrid.ReportFields == null) currentlibrptgrid.ReportFields = new LibCollection<LibReportField>();
+                    var existfields = currentlibrptgrid.ReportFields.Tolist();
+                    LibDataSource ds = ModelDesignProject.GetDataSourceById(currentlibrptgrid.DSID);
+                    Panel p = new Panel();
+                    p.Dock = DockStyle.Fill;
+                    p.Name = "pfieldcollection";
+                    p.AutoScroll = true;
+                    TreeView tree = new TreeView();
+                    tree.AfterCheck += new TreeViewEventHandler(Gridtree_AfterCheck);
+                    tree.CheckBoxes = true;
+                    tree.Dock = DockStyle.Fill;
+                    p.Controls.Add(tree);
+                    LibTreeNode _node;
+                    if (ds.DefTables != null)
+                    {
+                        #region 收集数据源字段
+                        foreach (LibDefineTable deftb in ds.DefTables)
+                        {
+                            LibTreeNode deftbnode = new LibTreeNode();
+                            deftbnode.Name = deftb.TableName;
+                            deftbnode.Text = string.Format("{0}({1})", deftb.DisplayName, deftb.TableName);
+                            tree.Nodes.Add(deftbnode);
+                            if (deftb.TableStruct != null)
+                            {
+                                foreach (LibDataTableStruct dtstruct in deftb.TableStruct)
+                                {
+                                    LibTreeNode dtstructnode = new LibTreeNode();
+                                    dtstructnode.Name = dtstruct.Name;
+                                    dtstructnode.Text = string.Format("{0}({1})", dtstruct.DisplayName, dtstruct.Name);
+                                    dtstructnode.NodeId = dtstruct.TableIndex.ToString ();
+                                    deftbnode.Nodes.Add(dtstructnode);
+                                    if (dtstruct.Fields != null)
+                                    {
+                                        foreach (LibField fld in dtstruct.Fields)
+                                        {
+                                            _node = new LibTreeNode();
+                                            _node.Name = fld.Name;
+                                            _node.Text = fld.DisplayName;
+
+                                            _node.Checked = existfields.FirstOrDefault(i => i.Name == fld.Name && i.FromTableNm == dtstruct.Name) != null;
+                                            dtstructnode.Nodes.Add(_node);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        #endregion
+                    }
+                    FieldCollectionForm fielsform = new FieldCollectionForm(p);
+                    DialogResult dialog = fielsform.ShowDialog(this);
+
+                    if (dialog == DialogResult.OK)
+                    {
+                        curentNode.Nodes.Clear();
+                        if (currentlibrptgrid.ReportFields != null && currentlibrptgrid.ReportFields.Count > 0)
+                            currentlibrptgrid.ReportFields.RemoveAll();
+                        foreach (LibTreeNode deftb in tree.Nodes)
+                        {
+                            foreach (LibTreeNode tbstruct in deftb.Nodes)
+                            {
+                                foreach (LibTreeNode f in tbstruct.Nodes)
+                                {
+
+                                    if (!f.Checked) continue;
+                                    #region 添加节点
+                                    //树节点
+
+                                    LibTreeNode fieldNode = new LibTreeNode();
+                                    fieldNode.NodeId = Guid.NewGuid().ToString();
+                                    fieldNode.NodeType = NodeType.GridGroup_Field;
+                                    fieldNode.Name = f.Name;
+                                    fieldNode.Text = fieldNode.Name;
+                                    curentNode.Nodes.Add(fieldNode);
+
+                                    //控件属性
+                                    ReportFieldProperty rptfieldProperty = new ReportFieldProperty(fieldNode.NodeId);
+                                    _reportFieldlst.Add(rptfieldProperty);
+                                    rptfieldProperty.Dock = DockStyle.Fill;
+                                    this.splitContainer1.Panel2.Controls.Add(rptfieldProperty);
+
+                                    //对应实体
+                                    LibReportField librptfield = new LibReportField();
+                                    librptfield.ID = fieldNode.NodeId;
+                                    librptfield.Name = f.Name;
+                                    librptfield.FromTableNm = tbstruct.Name;
+                                    librptfield.FromDefTableNm = deftb.Name;
+                                    librptfield.FromTableIndex = Convert.ToInt32(tbstruct.NodeId);
+                                    librptfield.DisplayName = f.Text;
+
+                                    currentlibrptgrid.ReportFields.Add(librptfield);
+
+                                    rptfieldProperty.SetPropertyValue(librptfield, fieldNode);
+
+                                    #endregion
+                                }
+                            }
+                        }
+                        UpdateTabPageText();
+                    }
                     break;
                 case "AddDefineField"://添加自定义字段
                     break;
@@ -206,5 +372,28 @@ namespace BWYSDP.Controls
             propertyT.SetPropertyValue(entity, Node);
         }
 
+        void Gridtree_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            LibTreeNode node = (LibTreeNode)e.Node;
+            if (node.Nodes.Count > 0)
+            {
+                foreach (LibTreeNode item in node.Nodes)
+                {
+                    item.Checked = node.Checked;
+
+                }
+            }
+        }
+        /// <summary>
+        /// 设置tabpage的标题后都一个*。表示已被修改
+        /// </summary>
+        private void UpdateTabPageText()
+        {
+            TabPage page = (TabPage)this.Parent;
+            if (!page.Text.Contains(SysConstManage.Asterisk))
+            {
+                page.Text += SysConstManage.Asterisk;
+            }
+        }
     }
 }

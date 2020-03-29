@@ -83,6 +83,10 @@ namespace SDPCRL.COM.ModelManager
             {
                 fileOperation.FilePath = string.Format(@"{0}\Models\{1}\{2}\{3}.xml", rootpath, SysConstManage.PermissionSourceNm, package, modelId);
             }
+            else if (typeof(T) == typeof(LibReportsSource))
+            {
+                fileOperation.FilePath = string.Format(@"{0}\Models\{1}\{2}\{3}.xml", rootpath, SysConstManage.ReportSourceNm, package, modelId);
+            }
             string xmlstr = fileOperation.ReadFile();
             if (!string.IsNullOrEmpty(xmlstr))
             {

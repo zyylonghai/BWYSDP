@@ -196,6 +196,12 @@
     <Compile Include="Controls\RelateFieldProperty.Designer.cs">
       <DependentUpon>RelateFieldProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ReportFieldProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportFieldProperty.Designer.cs">
+      <DependentUpon>ReportFieldProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ReportGridProperty.cs">
       <SubType>UserControl</SubType>
     </Compile>

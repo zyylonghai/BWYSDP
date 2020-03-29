@@ -1035,6 +1035,17 @@ namespace BWYSDP.com
                     }
                     else
                         return false;
+                case NodeType.ReportModel:
+                    if (_rptSourceContain.ContainsKey(modelNm))
+                    {
+                        LibReportsSource rpt = (LibReportsSource)_rptSourceContain[modelNm];
+                        path = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.ReportSourceNm, rpt.Package, rpt.ReportId);
+                        return InternalSaveModel(rpt, path);
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 default:
                     return false;
             }

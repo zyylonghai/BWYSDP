@@ -1,4 +1,5 @@
-﻿using SDPCRL.CORE;
+﻿using SDPCRL.COM.ModelManager.FormTemplate;
+using SDPCRL.CORE;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,5 +52,9 @@ namespace SDPCRL.COM.ModelManager.Reports
         }
         /// <summary>字段集合</summary>
         public LibCollection<LibReportField> ReportFields { get; set; }
+
+        /// <summary>自定义按钮</summary>
+        [LibAttribute("rptGrid_GdButtons", LibControlType.TextAndBotton, "自定义按钮")]
+        public LibCollection<LibGridButton> GdButtons { get; set; }
     }
 }
