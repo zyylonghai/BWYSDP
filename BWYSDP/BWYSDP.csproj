@@ -196,6 +196,24 @@
     <Compile Include="Controls\RelateFieldProperty.Designer.cs">
       <DependentUpon>RelateFieldProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ReportColumnProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportColumnProperty.Designer.cs">
+      <DependentUpon>ReportColumnProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReportContainerProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportContainerProperty.Designer.cs">
+      <DependentUpon>ReportContainerProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReportElementProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportElementProperty.Designer.cs">
+      <DependentUpon>ReportElementProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ReportFieldProperty.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -207,6 +225,12 @@
     </Compile>
     <Compile Include="Controls\ReportGridProperty.Designer.cs">
       <DependentUpon>ReportGridProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReportRowProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportRowProperty.Designer.cs">
+      <DependentUpon>ReportRowProperty.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ReportSourceControl.cs">
       <SubType>UserControl</SubType>

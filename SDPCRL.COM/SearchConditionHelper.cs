@@ -46,6 +46,14 @@ namespace SDPCRL.COM
                         whereformat.Append("" + item.FieldNm + "!={" + n + "}");
                         len = 1;
                         break;
+                    case SmodalSymbol.LessAndEqual:
+                        whereformat.Append("" + item.FieldNm + "<={" + n + "}");
+                        len = 1;
+                        break;
+                    case SmodalSymbol.MoreAndEqual:
+                        whereformat.Append("" + item.FieldNm + ">={" + n + "}");
+                        len = 1;
+                        break;
                 }
                 n++;
                 if (item.Values != null)

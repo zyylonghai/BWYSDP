@@ -87,7 +87,7 @@ namespace SDPCRL.DAL.COM
                 }
                 if (ds != null)
                 {
-                    DoGetSQL(builder, tableNm, ds, where, false, IsJoinRelateTable, IsJoinFromSourceField);
+                    DoGetSQL(builder, tableNm, ds, where,null , false, IsJoinRelateTable, IsJoinFromSourceField);
                 }
             }
             if (where !=null && !string.IsNullOrEmpty(where.WhereFormat))
@@ -140,10 +140,60 @@ namespace SDPCRL.DAL.COM
                 }
                 if (ds != null)
                 {
-                    DoGetSQL(builder, tableNm, ds, where, true, IsJoinRelateTable, IsJoinFromSourceField);
+                    DoGetSQL(builder, tableNm, ds, where,null , true, IsJoinRelateTable, IsJoinFromSourceField);
                 }
             }
             if (where !=null && !string.IsNullOrEmpty(where.WhereFormat))
+            {
+                return string.Format("EXEC sp_executesql N'select *from({0} where {1}) as temp where rownumber>={3} and rownumber<={4}',{2}", builder.ToString(), where.WhereFormat, where.ValueTostring, (pageindex - 1) * pagesize + 1, pageindex * pagesize);
+            }
+            return string.Format("EXEC sp_executesql N'select *from({0}) as temp where rownumber>={1} and rownumber<={2}'", builder.ToString(), (pageindex - 1) * pagesize + 1, pageindex * pagesize);
+        }
+
+        public string GetRptSQLByPage(string tableNm, string[] fields,string[] sumaryfields, WhereObject where, int pageindex, int pagesize)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(ResFactory.ResManager.SQLSelect);
+            if (fields != null)
+            {
+                foreach (string field in fields)
+                {
+                    if (builder.Length != ResFactory.ResManager.SQLSelect.Length)
+                    {
+                        builder.Append(SysConstManage.Comma);
+                    }
+                    builder.AppendFormat(" {0}", field);
+                }
+            }
+            if (string.IsNullOrEmpty(this._id))
+            {
+                if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
+                {
+                    builder.AppendFormat(" {0}", SysConstManage.Asterisk);
+                }
+
+                //builder.AppendFormat("{0}ROW_NUMBER()OVER(order by A.BillNo) as rownumber");
+                builder.AppendFormat(" {0}", ResFactory.ResManager.SQLFrom);
+                builder.AppendFormat(" {0}", tableNm);
+            }
+            else
+            {
+                LibDataSource ds = null;
+                if (this._mark)
+                {
+                    ds = ModelManager.GetDataSource(this._id);
+                }
+                else
+                {
+                    LibFormPage form = ModelManager.GetFormSource(this._id);
+                    ds = ModelManager.GetDataSource(form.DSID);
+                }
+                if (ds != null)
+                {
+                    DoGetSQL(builder, tableNm, ds, where, sumaryfields, true, true, false);
+                }
+            }
+            if (where != null && !string.IsNullOrEmpty(where.WhereFormat))
             {
                 return string.Format("EXEC sp_executesql N'select *from({0} where {1}) as temp where rownumber>={3} and rownumber<={4}',{2}", builder.ToString(), where.WhereFormat, where.ValueTostring, (pageindex - 1) * pagesize + 1, pageindex * pagesize);
             }
@@ -232,7 +282,7 @@ namespace SDPCRL.DAL.COM
         }
 
         #region 私有函数
-        private void DoGetSQL(StringBuilder builder, string tableNm, LibDataSource ds, WhereObject where, bool page = false, bool IsJoinRelateTable = true, bool IsJoinFromSourceField = true)
+        private void DoGetSQL(StringBuilder builder, string tableNm, LibDataSource ds, WhereObject where,string[] sumaryfields, bool page = false, bool IsJoinRelateTable = true, bool IsJoinFromSourceField = true)
         {
             List<LibDataTableStruct> list = new List<LibDataTableStruct>();
             StringBuilder joinstr = new StringBuilder();
@@ -511,6 +561,13 @@ namespace SDPCRL.DAL.COM
                         orderstr.AppendFormat("{0}.{1}", LibSysUtils.ToCharByTableIndex(tb.TableIndex), key);
                     }
                     builder.AppendFormat(",ROW_NUMBER()OVER(order by {0}) as rownumber ,COUNT(1)OVER() as {1} ", orderstr.ToString(), SysConstManage.sdp_total_row);
+                }
+                if (sumaryfields != null) //汇总字段
+                {
+                    foreach (string field in sumaryfields)
+                    {
+                        builder.AppendFormat(",SUM({0})OVER() as {1}{2}", field,SysConstManage.sdp_summaryprefix,field .Substring(field.IndexOf(".")+1));
+                    }
                 }
                 builder.AppendFormat(" {0}", ResFactory.ResManager.SQLFrom);
                 builder.AppendFormat(" {0} {1}", tableNm, tbaliasnm);

@@ -105,6 +105,8 @@ namespace SDPCRL.CORE
         public const string _pwdkeyEncrykey = "bwyAccount";
         public const string sdp_IdentityTick = "tick";
 
+        //gridview 报表
+        public const string sdp_summaryprefix = "sum_";
         #endregion
         public const string TBSchemasuffix = "_dsschema";
         public const string Sdp_LogId = "sdp_logid";

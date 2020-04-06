@@ -1210,7 +1210,20 @@ namespace BWYSDP.com
         BtnGroup_button =18,
         /// <summary>报表页面容器</summary>
         [LibReSource("报表容器")]
-        ReportPanel =19
+        ReportPanel =19,
+        /// <summary>报表栅格容器</summary>
+        [LibReSource("报表栅格容器")]
+        ReportContainer =20,
+        /// <summary>报表栅格行</summary>
+        [LibReSource("报表栅格行")]
+        ReportRow =21,
+        /// <summary>报表栅格列</summary>
+        [LibReSource("报表栅格列")]
+        ReportCol =22,
+        /// <summary>报表元素</summary>
+        [LibReSource("报表元素")]
+        ReportElement =23
+
 
     }
 }

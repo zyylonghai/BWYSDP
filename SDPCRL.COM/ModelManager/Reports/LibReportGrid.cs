@@ -50,6 +50,10 @@ namespace SDPCRL.COM.ModelManager.Reports
         {
             get;set;
         }
+        /// <summary>表格高度</summary>
+        [LibAttribute("rptGrid_TableHeight", LibControlType.TextBox, "表格高度")]
+        [XmlAttribute]
+        public int TableHeight { get; set; }
         /// <summary>字段集合</summary>
         public LibCollection<LibReportField> ReportFields { get; set; }
 

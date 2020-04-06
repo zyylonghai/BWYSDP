@@ -139,6 +139,9 @@ namespace SDPCRL.COM.ModelManager.FormTemplate
         FileUpload =7,
         ///<summary>密码控件</summary>
         [LibReSource("密码控件")]
-        Password =8
+        Password =8,
+        ///<summary>Label标签</summary>
+        [LibReSource("Label标签")]
+        Label =9
     }
 }

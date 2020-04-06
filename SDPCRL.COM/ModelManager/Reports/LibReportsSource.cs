@@ -47,6 +47,13 @@ namespace SDPCRL.COM.ModelManager.Reports
             set;
         }
 
+        /// <summary>
+        /// 布局模式（grid，自定义布局）
+        /// </summary>
+        [LibAttribute("rpt_Layoutmode", LibControlType.Combox, "布局模式")]
+        [XmlAttribute]
+        public LayoutMode Layoutmode { get; set; }
+
         /// <summary>所属包</summary>
         [LibAttribute("rpt_Package", LibControlType.TextBox, "所属包")]
         [XmlAttribute]
@@ -62,5 +69,24 @@ namespace SDPCRL.COM.ModelManager.Reports
             get;
             set;
         }
+
+        /// <summary>栅格容器集合</summary>
+        public LibCollection<LibReportContainer> Containers
+        {
+            get;
+            set;
+        }
+    }
+
+    [Serializable]
+    public enum LayoutMode
+    {
+        /// <summary> Gridview</summary>
+        [LibReSource("Gridview")]
+        Gridview =0,
+
+        /// <summary> 自定义布局</summary>
+        [LibReSource("Custom-自定义布局")]
+        Custom =1
     }
 }

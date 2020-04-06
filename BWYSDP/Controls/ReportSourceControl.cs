@@ -21,6 +21,11 @@ namespace BWYSDP.Controls
         private LibReportsSource _rpt = null;
         private List<ReportGridProperty> _gridgrouplst = null;
         private List<ReportFieldProperty> _reportFieldlst = null;
+
+        private List<ReportContainerProperty> _containerlst = null;
+        private List<ReportRowProperty> _rowlst = null;
+        private List<ReportColumnProperty> _collst = null;
+        private List<ReportElementProperty> _elemlst = null;
         ReportSourceProperty _rptproperty = null;
         public ReportSourceControl()
         {
@@ -39,6 +44,11 @@ namespace BWYSDP.Controls
             _gridgrouplst = new List<ReportGridProperty>();
             _reportFieldlst = new List<ReportFieldProperty>();
 
+            _containerlst = new List<ReportContainerProperty>();
+            _rowlst = new List<ReportRowProperty>();
+            _collst = new List<ReportColumnProperty>();
+            _elemlst = new List<ReportElementProperty>();
+
             this.treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
             this.treeView1.HideSelection = false;
             this.treeView1.DrawNode += new DrawTreeNodeEventHandler(treeView1_DrawNode);
@@ -54,6 +64,22 @@ namespace BWYSDP.Controls
             foreach (ReportFieldProperty field in _reportFieldlst)
             {
                 field.GetControlsValue();
+            }
+            foreach (ReportContainerProperty container in _containerlst)
+            {
+                container.GetControlsValue();
+            }
+            foreach (ReportRowProperty row in _rowlst)
+            {
+                row.GetControlsValue();
+            }
+            foreach (ReportColumnProperty col in _collst)
+            {
+                col.GetControlsValue();
+            }
+            foreach (ReportElementProperty ele in _elemlst)
+            {
+                ele.GetControlsValue();
             }
         }
 
@@ -95,6 +121,62 @@ namespace BWYSDP.Controls
                             gdgroupNode.Nodes.Add(gdgroupfield);
                             #endregion
                         }
+                }
+            }
+            if (_rpt.Containers != null)
+            {
+                foreach (LibReportContainer container in _rpt.Containers)
+                {
+                    #region 创建栅格容器节点
+                    LibTreeNode containerNode = new LibTreeNode();
+                    containerNode.NodeId = container.ContainerID;
+                    containerNode.NodeType = NodeType.ReportContainer;
+                    containerNode.Name = container.ContainerNm;
+                    containerNode.Text = container.ContainerNm;
+                    rptNode.Nodes.Add(containerNode);
+                    #endregion
+                    if (container.ReportRows != null)
+                    {
+                        foreach (LibReportRow row in container.ReportRows)
+                        {
+                            #region 栅格行节点
+                            LibTreeNode rowNode = new LibTreeNode();
+                            rowNode.NodeId = row .RowID;
+                            rowNode.NodeType = NodeType.ReportRow;
+                            rowNode.Name = row.RowNm;
+                            rowNode.Text = row.RowNm;
+                            containerNode.Nodes.Add(rowNode);
+                            #endregion
+                            if (row.ReportCols != null)
+                            {
+                                foreach (LibReportColumn col in row.ReportCols)
+                                {
+                                    #region 栅格列节点
+                                    LibTreeNode colNode = new LibTreeNode();
+                                    colNode.NodeId = col.ColumnID;
+                                    colNode.NodeType = NodeType.ReportCol;
+                                    colNode.Name = col.ColumnNm;
+                                    colNode.Text = col.ColumnNm;
+                                    rowNode.Nodes.Add(colNode);
+                                    #endregion
+                                    if (col.Elements != null)
+                                    {
+                                        foreach (LibReportElement ele in col.Elements)
+                                        {
+                                            #region 元素节点
+                                            LibTreeNode eleNode = new LibTreeNode();
+                                            eleNode.NodeId = ele.ElementID;
+                                            eleNode.NodeType = NodeType.ReportElement;
+                                            eleNode.Name = ele.ElementNm;
+                                            eleNode.Text = ele.ElementNm;
+                                            colNode.Nodes.Add(eleNode);
+                                            #endregion
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             this.treeView1.Nodes.Add(rptNode);
@@ -173,6 +255,109 @@ namespace BWYSDP.Controls
                         }
                     }
                     break;
+
+                case NodeType.ReportContainer:
+                    if (_containerlst != null)
+                    {
+                        foreach (ReportContainerProperty  item in _containerlst)
+                        {
+                            if (string.Compare(item.Name, libnode.NodeId) == 0)
+                            {
+                                SetPanel2ControlsVisible(item);
+                                exists = true;
+                                break;
+                            }
+                        }
+                        if (!exists) //还未创建对应的控件
+                        {
+                            ReportContainerProperty container = new ReportContainerProperty(libnode.NodeId);
+                            container.Dock = DockStyle.Fill;
+                            this._containerlst.Add(container);
+                            this.splitContainer1.Panel2.Controls.Add(container);
+                            container.SetPropertyValue(_rpt.Containers.FindFirst("ContainerID", libnode.NodeId), libnode);
+
+                            SetPanel2ControlsVisible(container);
+                        }
+                    }
+                    break;
+                case NodeType.ReportRow:
+                    if (_rowlst != null)
+                    {
+                        foreach (ReportRowProperty item in _rowlst)
+                        {
+                            if (string.Compare(item.Name, libnode.NodeId) == 0)
+                            {
+                                SetPanel2ControlsVisible(item);
+                                exists = true;
+                                break;
+                            }
+                        }
+                        if (!exists) //还未创建对应的控件
+                        {
+                            ReportRowProperty row = new ReportRowProperty(libnode.NodeId);
+                            row.Dock = DockStyle.Fill;
+                            this._rowlst.Add(row);
+                            this.splitContainer1.Panel2.Controls.Add(row);
+                            LibReportContainer container = _rpt.Containers.FindFirst("ContainerID", ((LibTreeNode)libnode.Parent).NodeId);
+                            row.SetPropertyValue(container.ReportRows.FindFirst("RowID", libnode.NodeId), libnode);
+
+                            SetPanel2ControlsVisible(row);
+                        }
+                    }
+                    break;
+                case NodeType.ReportCol:
+                    if (_collst != null)
+                    {
+                        foreach (ReportColumnProperty item in _collst)
+                        {
+                            if (string.Compare(item.Name, libnode.NodeId) == 0)
+                            {
+                                SetPanel2ControlsVisible(item);
+                                exists = true;
+                                break;
+                            }
+                        }
+                        if (!exists) //还未创建对应的控件
+                        {
+                            ReportColumnProperty col = new ReportColumnProperty(libnode.NodeId);
+                            col.Dock = DockStyle.Fill;
+                            this._collst.Add(col);
+                            this.splitContainer1.Panel2.Controls.Add(col);
+                            LibReportContainer container = _rpt.Containers.FindFirst("ContainerID", ((LibTreeNode)libnode.Parent.Parent).NodeId);
+                            LibReportRow reportRow = container.ReportRows.FindFirst("RowID", ((LibTreeNode)libnode.Parent).NodeId);
+                            col.SetPropertyValue(reportRow.ReportCols.FindFirst("ColumnID", libnode.NodeId), libnode);
+
+                            SetPanel2ControlsVisible(col);
+                        }
+                    }
+                    break;
+                case NodeType.ReportElement:
+                    if (_elemlst != null)
+                    {
+                        foreach (ReportElementProperty item in _elemlst)
+                        {
+                            if (string.Compare(item.Name, libnode.NodeId) == 0)
+                            {
+                                SetPanel2ControlsVisible(item);
+                                exists = true;
+                                break;
+                            }
+                        }
+                        if (!exists) //还未创建对应的控件
+                        {
+                            ReportElementProperty ele = new ReportElementProperty(libnode.NodeId);
+                            ele.Dock = DockStyle.Fill;
+                            this._elemlst.Add(ele);
+                            this.splitContainer1.Panel2.Controls.Add(ele);
+                            LibReportContainer container = _rpt.Containers.FindFirst("ContainerID", ((LibTreeNode)libnode.Parent.Parent.Parent).NodeId);
+                            LibReportRow reportRow = container.ReportRows.FindFirst("RowID", ((LibTreeNode)libnode.Parent.Parent).NodeId);
+                            LibReportColumn column = reportRow.ReportCols.FindFirst("ColumnID", ((LibTreeNode)libnode.Parent).NodeId);
+                            ele.SetPropertyValue(column.Elements.FindFirst("ElementID", libnode.NodeId), libnode);
+
+                            SetPanel2ControlsVisible(ele);
+                        }
+                    }
+                    break;
             }
         }
 
@@ -192,10 +377,60 @@ namespace BWYSDP.Controls
                 if (libnode.NodeType == NodeType.ReportPanel)
                 {
                     libnode.ContextMenuStrip = this.contextMenuStrip1;
+                    switch (_rpt.Layoutmode)
+                    {
+                        case LayoutMode.Gridview://表格组
+                            foreach (ToolStripItem item in this.contextMenuStrip1.Items)
+                            {
+                                if (item.Name == "AddGrid")
+                                {
+                                    item.Enabled = true;
+                                    continue;
+                                    //item.Visible = true;
+                                }
+                                item.Enabled = false;
+                                //item.Visible = false;
+                            }
+                            
+                            break;
+                        case LayoutMode.Custom:
+                            foreach (ToolStripItem item in this.contextMenuStrip1.Items)
+                            {
+                                if (item.Name == "addcontainer")
+                                {
+                                    item.Enabled = true;
+                                    continue;
+                                }
+                                item.Enabled = false ;
+                            }
+                            break;
+                    }
+                    
                 }
                 if (libnode.NodeType == NodeType.GridGroup)
                 {
                     libnode.ContextMenuStrip = this.contextMenuStrip2;
+                    
+                    foreach (ToolStripItem item in this.contextMenuStrip2.Items)
+                    {
+                        item.Enabled = _rpt.Layoutmode == LayoutMode.Gridview;
+                    }
+                }
+                if (libnode.NodeType == NodeType.ReportContainer)
+                {
+                    libnode.ContextMenuStrip = this.contextMenuStrip3;
+                }
+                if (libnode.NodeType == NodeType.ReportRow)
+                {
+                    libnode.ContextMenuStrip = this.contextMenuStrip4;
+                }
+                if (libnode.NodeType == NodeType.ReportCol)
+                {
+                    libnode.ContextMenuStrip = this.contextMenuStrip5;
+                }
+                if (libnode.NodeType == NodeType.ReportElement)
+                {
+                    libnode.ContextMenuStrip = this.contextMenuStrip6;
                 }
                 this.treeView1.SelectedNode = libnode;
             }
@@ -214,7 +449,12 @@ namespace BWYSDP.Controls
                     if (_rpt.GridGroups == null) _rpt.GridGroups = new LibCollection<LibReportGrid>();
                     AddNodeBindEntityToCtr<LibReportGrid,ReportGridProperty>(_gridgrouplst, _rpt.GridGroups, "GridGroupID", "GridGroupName", "GridGroupDisplayNm", "GridGroup", curentNode, NodeType.GridGroup);
                     break;
+                case "addcontainer"://添加栅格容器
+                    if (_rpt.Containers == null) _rpt.Containers = new LibCollection<LibReportContainer>();
+                    AddNodeBindEntityToCtr<LibReportContainer, ReportContainerProperty>(_containerlst, _rpt.Containers, "ContainerID", "ContainerNm", "ContainerNm", "Container", curentNode, NodeType.ReportContainer);
+                    break;
             }
+            UpdateTabPageText();
         }
 
         private void contextMenuStrip2_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -329,6 +569,70 @@ namespace BWYSDP.Controls
             }
         }
 
+        private void contextMenuStrip3_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            LibReportContainer currentcontainer = _rpt.Containers.FindFirst("ContainerID", curentNode.NodeId);
+            switch (e.ClickedItem.Name)
+            {
+                case "addrow": //添加栅格行
+                    if (currentcontainer.ReportRows == null) currentcontainer.ReportRows = new LibCollection<LibReportRow>();
+                    AddNodeBindEntityToCtr<LibReportRow, ReportRowProperty>(_rowlst, currentcontainer.ReportRows, "RowID", "RowNm", "RowNm", "Row", curentNode, NodeType.ReportRow);
+                    break;
+                case "DeleteContainer": //删除栅格容器
+
+                    break;
+            }
+            UpdateTabPageText();
+        }
+
+        private void contextMenuStrip4_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            LibReportContainer currentcontainer = _rpt.Containers.FindFirst("ContainerID", ((LibTreeNode)curentNode.Parent).NodeId);
+            LibReportRow reportRow = currentcontainer.ReportRows.FindFirst("RowID", curentNode.NodeId);
+            switch (e.ClickedItem.Name)
+            {
+                case "AddCol": //添加栅格列
+                    if (reportRow.ReportCols == null) reportRow.ReportCols = new LibCollection<LibReportColumn>();
+                    AddNodeBindEntityToCtr<LibReportColumn, ReportColumnProperty>(_collst, reportRow.ReportCols, "ColumnID", "ColumnNm", "ColumnNm", "Column", curentNode, NodeType.ReportCol);
+                    reportRow.ReportCols[reportRow.ReportCols.Count - 1].Width = 1;
+                    break;
+                case "DeleteRow"://删除栅格行
+                    break;
+            }
+            UpdateTabPageText();
+        }
+
+        private void contextMenuStrip5_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            LibReportContainer currentcontainer = _rpt.Containers.FindFirst("ContainerID", ((LibTreeNode)curentNode.Parent.Parent).NodeId);
+            LibReportRow reportRow = currentcontainer.ReportRows.FindFirst("RowID", ((LibTreeNode)curentNode.Parent).NodeId);
+            LibReportColumn column = reportRow.ReportCols.FindFirst("ColumnID", curentNode.NodeId);
+            switch (e.ClickedItem.Name)
+            {
+                case "AddElement": //添加元素
+                    if (column.Elements == null) column.Elements = new LibCollection<LibReportElement>();
+                    AddNodeBindEntityToCtr<LibReportElement,ReportElementProperty>(_elemlst, column.Elements, "ElementID", "ElementNm", "ElementNm", "Element", curentNode, NodeType.ReportElement);
+                    column.Elements[column.Elements.Count - 1].FontSize = 14;
+                    break;
+                case "DeleteCol": //删除栅格列
+                    break;
+            }
+            UpdateTabPageText();
+        }
+        private void contextMenuStrip6_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            LibTreeNode curentNode = (LibTreeNode)this.treeView1.SelectedNode;
+            switch (e.ClickedItem.Name)
+            {
+                case "DeleteElem": //删除元素
+                    break;
+            }
+            UpdateTabPageText();
+        }
+
         private void AddNodeBindEntityToCtr<T, PropertyT>(List<PropertyT> propertylst, LibCollection<T> libCollection, string entiyid, string entiynm, string entiydisplaytext, string name, LibTreeNode curentNode, NodeType nodeType)
             where PropertyT : BaseUserControl<T>
         {
@@ -357,16 +661,6 @@ namespace BWYSDP.Controls
             p.SetValue(entity, Node.Name, null);
             p = type.GetProperty(entiydisplaytext);
             p.SetValue(entity, Node.Text, null);
-            //if (nodeType == NodeType.GridGroup)
-            //{
-            //    string[] pnm = { "HasAddRowButton", "HasEditRowButton", "HasDeletRowButton" };
-            //    foreach (string nm in pnm)
-            //    {
-            //        p = type.GetProperty(nm);
-            //        if (p != null)
-            //            p.SetValue(entity, true, null);
-            //    }
-            //}
             libCollection.Add(entity);
 
             propertyT.SetPropertyValue(entity, Node);

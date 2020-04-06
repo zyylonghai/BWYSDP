@@ -33,14 +33,30 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AddGrid = new System.Windows.Forms.ToolStripMenuItem();
+            this.addcontainer = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AddFromDSField = new System.Windows.Forms.ToolStripMenuItem();
             this.AddDefineField = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addrow = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.AddCol = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip5 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.AddElement = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteContainer = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteRow = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteCol = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip6 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.DeleteElem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
+            this.contextMenuStrip3.SuspendLayout();
+            this.contextMenuStrip4.SuspendLayout();
+            this.contextMenuStrip5.SuspendLayout();
+            this.contextMenuStrip6.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -70,16 +86,23 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AddGrid});
+            this.AddGrid,
+            this.addcontainer});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(137, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 48);
             this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
             // 
             // AddGrid
             // 
             this.AddGrid.Name = "AddGrid";
-            this.AddGrid.Size = new System.Drawing.Size(136, 22);
+            this.AddGrid.Size = new System.Drawing.Size(148, 22);
             this.AddGrid.Text = "添加表格组";
+            // 
+            // addcontainer
+            // 
+            this.addcontainer.Name = "addcontainer";
+            this.addcontainer.Size = new System.Drawing.Size(148, 22);
+            this.addcontainer.Text = "添加局部容器";
             // 
             // contextMenuStrip2
             // 
@@ -87,20 +110,97 @@
             this.AddFromDSField,
             this.AddDefineField});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(161, 48);
             this.contextMenuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip2_ItemClicked);
             // 
             // AddFromDSField
             // 
             this.AddFromDSField.Name = "AddFromDSField";
-            this.AddFromDSField.Size = new System.Drawing.Size(180, 22);
+            this.AddFromDSField.Size = new System.Drawing.Size(160, 22);
             this.AddFromDSField.Text = "添加数据源字段";
             // 
             // AddDefineField
             // 
             this.AddDefineField.Name = "AddDefineField";
-            this.AddDefineField.Size = new System.Drawing.Size(180, 22);
+            this.AddDefineField.Size = new System.Drawing.Size(160, 22);
             this.AddDefineField.Text = "添加自定义字段";
+            // 
+            // contextMenuStrip3
+            // 
+            this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addrow,
+            this.DeleteContainer});
+            this.contextMenuStrip3.Name = "contextMenuStrip3";
+            this.contextMenuStrip3.Size = new System.Drawing.Size(137, 48);
+            this.contextMenuStrip3.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip3_ItemClicked);
+            // 
+            // addrow
+            // 
+            this.addrow.Name = "addrow";
+            this.addrow.Size = new System.Drawing.Size(136, 22);
+            this.addrow.Text = "添加栅格行";
+            // 
+            // contextMenuStrip4
+            // 
+            this.contextMenuStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddCol,
+            this.DeleteRow});
+            this.contextMenuStrip4.Name = "contextMenuStrip4";
+            this.contextMenuStrip4.Size = new System.Drawing.Size(137, 48);
+            this.contextMenuStrip4.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip4_ItemClicked);
+            // 
+            // AddCol
+            // 
+            this.AddCol.Name = "AddCol";
+            this.AddCol.Size = new System.Drawing.Size(136, 22);
+            this.AddCol.Text = "添加栅格列";
+            // 
+            // contextMenuStrip5
+            // 
+            this.contextMenuStrip5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddElement,
+            this.DeleteCol});
+            this.contextMenuStrip5.Name = "contextMenuStrip5";
+            this.contextMenuStrip5.Size = new System.Drawing.Size(125, 48);
+            this.contextMenuStrip5.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip5_ItemClicked);
+            // 
+            // AddElement
+            // 
+            this.AddElement.Name = "AddElement";
+            this.AddElement.Size = new System.Drawing.Size(124, 22);
+            this.AddElement.Text = "添加元素";
+            // 
+            // DeleteContainer
+            // 
+            this.DeleteContainer.Name = "DeleteContainer";
+            this.DeleteContainer.Size = new System.Drawing.Size(136, 22);
+            this.DeleteContainer.Text = "删除";
+            // 
+            // DeleteRow
+            // 
+            this.DeleteRow.Name = "DeleteRow";
+            this.DeleteRow.Size = new System.Drawing.Size(136, 22);
+            this.DeleteRow.Text = "删除";
+            // 
+            // DeleteCol
+            // 
+            this.DeleteCol.Name = "DeleteCol";
+            this.DeleteCol.Size = new System.Drawing.Size(124, 22);
+            this.DeleteCol.Text = "删除";
+            // 
+            // contextMenuStrip6
+            // 
+            this.contextMenuStrip6.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DeleteElem});
+            this.contextMenuStrip6.Name = "contextMenuStrip6";
+            this.contextMenuStrip6.Size = new System.Drawing.Size(181, 48);
+            this.contextMenuStrip6.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip6_ItemClicked);
+            // 
+            // DeleteElem
+            // 
+            this.DeleteElem.Name = "DeleteElem";
+            this.DeleteElem.Size = new System.Drawing.Size(180, 22);
+            this.DeleteElem.Text = "删除";
             // 
             // ReportSourceControl
             // 
@@ -115,6 +215,10 @@
             this.splitContainer1.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
+            this.contextMenuStrip3.ResumeLayout(false);
+            this.contextMenuStrip4.ResumeLayout(false);
+            this.contextMenuStrip5.ResumeLayout(false);
+            this.contextMenuStrip6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -127,5 +231,17 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem AddFromDSField;
         private System.Windows.Forms.ToolStripMenuItem AddDefineField;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip3;
+        private System.Windows.Forms.ToolStripMenuItem addrow;
+        private System.Windows.Forms.ToolStripMenuItem addcontainer;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip4;
+        private System.Windows.Forms.ToolStripMenuItem AddCol;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip5;
+        private System.Windows.Forms.ToolStripMenuItem AddElement;
+        private System.Windows.Forms.ToolStripMenuItem DeleteContainer;
+        private System.Windows.Forms.ToolStripMenuItem DeleteRow;
+        private System.Windows.Forms.ToolStripMenuItem DeleteCol;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip6;
+        private System.Windows.Forms.ToolStripMenuItem DeleteElem;
     }
 }
