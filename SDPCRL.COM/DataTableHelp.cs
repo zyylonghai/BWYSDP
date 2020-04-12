@@ -79,13 +79,41 @@ namespace SDPCRL.COM
         /// <param name="excludeprimary">是否排除对主键列赋值，默认true</param>
         public static void CopyRow(DataRow srow, DataRow trow, bool excludeprimary = true)
         {
+            //DataColumnCollection tcols = trow.Table.Columns;
+            //DataColumnCollection scols = srow.Table.Columns;
+            //DataColumn[] primarycols = trow.Table.PrimaryKey;
+            //DataColumn col = null;
+            //foreach (DataColumn c in tcols)
+            //{
+            //    if (excludeprimary && primarycols.Contains(c)) continue;
+            //    col = scols[c.ColumnName];
+            //    if (col != null)
+            //    {
+            //        SetColomnValue(trow, c, srow[col]);
+            //    }
+            //}
+            DoCopyRow(srow, trow, null, excludeprimary);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="srow"></param>
+        /// <param name="trow"></param>
+        /// <param name="excludeCols">排除的列名</param>
+        /// <param name="excludeprimary">是否排除对主键列赋值，默认true</param>
+        public static void CopyRow(DataRow srow, DataRow trow, string[] excludeCols, bool excludeprimary = true)
+        {
+            DoCopyRow(srow, trow, excludeCols, excludeprimary);
+        }
+        private static void DoCopyRow(DataRow srow, DataRow trow, string[] excludeCols, bool excludeprimary = true)
+        {
             DataColumnCollection tcols = trow.Table.Columns;
             DataColumnCollection scols = srow.Table.Columns;
             DataColumn[] primarycols = trow.Table.PrimaryKey;
             DataColumn col = null;
             foreach (DataColumn c in tcols)
             {
-                if (excludeprimary && primarycols.Contains(c)) continue;
+                if ((excludeprimary && primarycols.Contains(c))||(excludeCols!=null && excludeCols.Contains(c.ColumnName))) continue;
                 col = scols[c.ColumnName];
                 if (col != null)
                 {

@@ -157,6 +157,7 @@ namespace SDPCRL.CORE
         /// <returns></returns>
         public static bool IsNumberic(string val)
         {
+            if (string.IsNullOrEmpty(val)) return false;
             System.Text.RegularExpressions.Regex rex =
            new System.Text.RegularExpressions.Regex(@"^\d+$");
             if (rex.IsMatch(val))

@@ -167,6 +167,23 @@ namespace BWYSDPBaseDal
             string sql = sQLBuilder.GetRptSQLByPage(tbnm, fields, sumaryFields, new WhereObject { WhereFormat = whereformat.ToString(), Values = values }, pageindex, pagesize);
             return this.DataAccess.GetDataTable(sql);
         }
+        public DataTable RptSearch(string dsid, string tbnm, string[] fields, string[] sumaryFields, List<LibSearchCondition> conds)
+        {
+            object[] values = { };
+            StringBuilder whereformat = new StringBuilder();
+            AnalyzeSearchCondition(conds, whereformat, ref values);
+            SDPCRL.DAL.COM.SQLBuilder sQLBuilder = null;
+            if (string.IsNullOrEmpty(dsid))
+            {
+                sQLBuilder = new SDPCRL.DAL.COM.SQLBuilder();
+            }
+            else
+            {
+                sQLBuilder = new SDPCRL.DAL.COM.SQLBuilder(dsid);
+            }
+            string sql = sQLBuilder.GetRptSQL(tbnm, fields, sumaryFields, new WhereObject { WhereFormat = whereformat.ToString(), Values = values });
+            return this.DataAccess.GetDataTable(sql);
+        }
 
         public DataTable[] InternalFillData(List<string> whereformat,object[] valus )
         {
