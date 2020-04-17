@@ -410,7 +410,7 @@ namespace BWYSDP.Controls
 
                     //fieldP.SetPropertyValue(field, fieldNode);
 
-                    string fieldnm= string.Format("{0}_Field{1}", currentTBStruct.Name, currentTBStruct.Fields.Count + 1);
+                    string fieldnm= string.Format("Field{0}", currentTBStruct.Fields.Count + 1);
                     DoCreateField(fieldnm, fieldnm,null , curentNode, currentTBStruct);
                     UpdateTabPageText();
                     break;
@@ -573,10 +573,15 @@ namespace BWYSDP.Controls
             field.ID = fieldNode.NodeId;
             field.Name = fieldNode.Name;
             field.DisplayName = fieldNode.Text;
-            if (sysfd!=null)
+            if (sysfd != null)
             {
                 field.FieldType = sysfd.FieldType;
                 field.FieldLength = sysfd.FieldLength;
+            }
+            else
+            {
+                field.FieldType = LibFieldType.String;
+                field.FieldLength = 50;
             }
             field.IsActive = true;
             field.AllowNull = true;

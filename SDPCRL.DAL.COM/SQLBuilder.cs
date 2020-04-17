@@ -103,7 +103,7 @@ namespace SDPCRL.DAL.COM
         public string GetSQLByPage(string tableNm, string[] fields, WhereObject where, int pageindex, int pagesize, bool IsJoinRelateTable = true, bool IsJoinFromSourceField = true)
         {
             StringBuilder builder = new StringBuilder();
-            InternalGetSQL(builder, tableNm, fields, null, where, true, IsJoinRelateTable, IsJoinFromSourceField);
+            InternalGetSQL(builder, tableNm, fields, null, where, true, IsJoinRelateTable, IsJoinFromSourceField,false);
             #region 旧代码
             //builder.Append(ResFactory.ResManager.SQLSelect);
             //if (fields != null)
@@ -156,7 +156,7 @@ namespace SDPCRL.DAL.COM
         public string GetRptSQLByPage(string tableNm, string[] fields,string[] sumaryfields, WhereObject where, int pageindex, int pagesize)
         {
             StringBuilder builder = new StringBuilder();
-            InternalGetSQL(builder, tableNm, fields, sumaryfields, where, true,true , false);
+            InternalGetSQL(builder, tableNm, fields, sumaryfields, where, true,true , false,true);
             #region 旧代码
             //builder.Append(ResFactory.ResManager.SQLSelect);
             //if (fields != null)
@@ -208,7 +208,7 @@ namespace SDPCRL.DAL.COM
         public string GetRptSQL(string tableNm, string[] fields, string[] sumaryfields, WhereObject where)
         {
             StringBuilder builder = new StringBuilder();
-            InternalGetSQL(builder, tableNm, fields, sumaryfields, where, false, true, false);
+            InternalGetSQL(builder, tableNm, fields, sumaryfields, where, false, true, false ,true);
             if (where != null && !string.IsNullOrEmpty(where.WhereFormat))
             {
                 return string.Format("EXEC sp_executesql N'{0} where {1}',{2}", builder.ToString(), where.WhereFormat, where.ValueTostring);
@@ -298,7 +298,7 @@ namespace SDPCRL.DAL.COM
         }
 
         #region 私有函数
-        private void DoGetSQL(StringBuilder builder, string tableNm, LibDataSource ds, WhereObject where,string[] sumaryfields, bool page = false, bool IsJoinRelateTable = true, bool IsJoinFromSourceField = true)
+        private void DoGetSQL(StringBuilder builder, string tableNm, LibDataSource ds, WhereObject where,string[] sumaryfields, bool page = false, bool IsJoinRelateTable = true, bool IsJoinFromSourceField = true,bool IsRpt=false)
         {
             List<LibDataTableStruct> list = new List<LibDataTableStruct>();
             StringBuilder joinstr = new StringBuilder();
@@ -528,7 +528,7 @@ namespace SDPCRL.DAL.COM
                             }
                             #endregion
                         }
-                        if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
+                        if (builder.Length == ResFactory.ResManager.SQLSelect.Length || IsRpt)
                         {
                             if (fromfield.RelateFieldNm != null)
                             {
@@ -541,17 +541,22 @@ namespace SDPCRL.DAL.COM
                                     //{
                                     tbnm = tablealiasmdic[key];
                                     //}
+                                    if (allfields.Length > 0)
+                                    {
+                                        allfields.Append(SysConstManage.Comma);
+                                    }
                                     if (!string.IsNullOrEmpty(relatef.AliasName))
                                     {
-                                        allfields.AppendFormat("{0}{1}.{2} as {3}",
-                                            SysConstManage.Comma,
+
+                                        allfields.AppendFormat("{0}.{1} as {2}",
+                                            //SysConstManage.Comma,
                                             tbnm,
                                             relatef.FieldNm,
                                             relatef.AliasName);
                                     }
                                     else
-                                        allfields.AppendFormat("{0}{1}.{2}",
-                                            SysConstManage.Comma,
+                                        allfields.AppendFormat("{0}.{1}",
+                                            //SysConstManage.Comma,
                                             tbnm,
                                             relatef.FieldNm);
                                 }
@@ -561,8 +566,10 @@ namespace SDPCRL.DAL.COM
                     }
                 }
                 #endregion
-                if (builder.Length == ResFactory.ResManager.SQLSelect.Length)
+                if (builder.Length == ResFactory.ResManager.SQLSelect.Length ||IsRpt)
                 {
+                    if (builder.Length != ResFactory.ResManager.SQLSelect.Length)
+                        builder.Append(SysConstManage.Comma);
                     builder.Append(allfields.ToString());
                 }
                 if (page) //分页
@@ -591,7 +598,7 @@ namespace SDPCRL.DAL.COM
             }
         }
 
-        private void InternalGetSQL(StringBuilder builder, string tableNm, string[] fields, string[] sumaryfields, WhereObject where,bool ispage, bool IsJoinRelateTable, bool IsJoinFromSourceField)
+        private void InternalGetSQL(StringBuilder builder, string tableNm, string[] fields, string[] sumaryfields, WhereObject where,bool ispage, bool IsJoinRelateTable, bool IsJoinFromSourceField,bool IsRpt)
         {
             builder.Append(ResFactory.ResManager.SQLSelect);
             if (fields != null)
@@ -630,7 +637,7 @@ namespace SDPCRL.DAL.COM
                 }
                 if (ds != null)
                 {
-                    DoGetSQL(builder, tableNm, ds, where, sumaryfields, ispage, IsJoinRelateTable, IsJoinFromSourceField);
+                    DoGetSQL(builder, tableNm, ds, where, sumaryfields, ispage, IsJoinRelateTable, IsJoinFromSourceField,IsRpt);
                 }
             }
         }

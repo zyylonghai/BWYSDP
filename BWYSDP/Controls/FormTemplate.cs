@@ -844,6 +844,7 @@ namespace BWYSDP.Controls
                                     libgdfield.FromTableNm = tbstruct.Name;
                                     libgdfield.FromDefTableNm = deftb.Name;
                                     libgdfield.DisplayName = f.Text;
+                                    libgdfield.Width = 2;
                                     libgdfield.IsFromSourceField = (f.Tag!=null &&Convert .ToInt32(f.Tag) == 1);
                                     currentlibgridgroup.GdGroupFields.Add(libgdfield);
 

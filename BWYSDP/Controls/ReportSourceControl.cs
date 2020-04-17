@@ -499,12 +499,34 @@ namespace BWYSDP.Controls
                                     {
                                         foreach (LibField fld in dtstruct.Fields)
                                         {
+                                            if (!fld.IsActive) continue;
                                             _node = new LibTreeNode();
                                             _node.Name = fld.Name;
                                             _node.Text = fld.DisplayName;
-
+                                            _node.Tag = true;
                                             _node.Checked = existfields.FirstOrDefault(i => i.Name == fld.Name && i.FromTableNm == dtstruct.Name) != null;
                                             dtstructnode.Nodes.Add(_node);
+                                            if (fld.SourceField != null && fld.SourceField.Count > 0)
+                                            {
+                                                foreach (LibFromSourceField fromfld in fld.SourceField)
+                                                {
+                                                    if (fromfld.RelateFieldNm != null && fromfld.RelateFieldNm.Count > 0)
+                                                    {
+                                                        foreach (LibRelateField relateField in fromfld.RelateFieldNm)
+                                                        {
+                                                            if (relateField != null)
+                                                            {
+                                                                _node = new LibTreeNode();
+                                                                _node.Name =string.IsNullOrEmpty(relateField .AliasName)? relateField.FieldNm :relateField.AliasName;
+                                                                _node.Text = relateField.DisplayNm;
+                                                                _node.Tag = false;
+                                                                _node.Checked = existfields.FirstOrDefault(i => i.Name == _node.Name && i.FromTableNm == dtstruct.Name) != null;
+                                                                dtstructnode.Nodes.Add(_node);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -548,10 +570,11 @@ namespace BWYSDP.Controls
                                     LibReportField librptfield = new LibReportField();
                                     librptfield.ID = fieldNode.NodeId;
                                     librptfield.Name = f.Name;
-                                    librptfield.FromTableNm = tbstruct.Name;
-                                    librptfield.FromDefTableNm = deftb.Name;
+                                    librptfield.FromTableNm =(bool)f.Tag? tbstruct.Name:string.Empty;
+                                    librptfield.FromDefTableNm = (bool)f.Tag ? deftb.Name:string.Empty;
                                     librptfield.FromTableIndex = Convert.ToInt32(tbstruct.NodeId);
                                     librptfield.DisplayName = f.Text;
+                                    librptfield.Isdefine = !(bool)f.Tag;
 
                                     currentlibrptgrid.ReportFields.Add(librptfield);
 

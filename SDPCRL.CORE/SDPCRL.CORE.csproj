@@ -33,9 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=5.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.5.1.0\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +53,7 @@
     <Compile Include="CachHelp.cs" />
     <Compile Include="DesCryptFactory.cs" />
     <Compile Include="DM5Help.cs" />
+    <Compile Include="ExcelsOperateHelp.cs" />
     <Compile Include="ExceptionHelp.cs" />
     <Compile Include="FileUtils\FileOperation.cs" />
     <Compile Include="FileUtils\FTPHelp.cs" />

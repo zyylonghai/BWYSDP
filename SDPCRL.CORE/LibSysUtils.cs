@@ -175,6 +175,10 @@ namespace SDPCRL.CORE
         {
             return (char)(val + 65);
         }
+        public static int ToTableIndexByChar(char c)
+        {
+            return ((int)c) - 65;
+        }
 
         public static bool Compare(object a, object b, bool ignore = false)
         {

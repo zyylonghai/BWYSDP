@@ -359,6 +359,9 @@
     <EmbeddedResource Include="Controls\DropDownList.resx">
       <DependentUpon>DropDownList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FormGroupFieldProperty.resx">
+      <DependentUpon>FormGroupFieldProperty.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\FormGroupProperty.resx">
       <DependentUpon>FormGroupProperty.cs</DependentUpon>
     </EmbeddedResource>
@@ -377,6 +380,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\RelateFieldControl.resx">
       <DependentUpon>RelateFieldControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RelateFieldProperty.resx">
+      <DependentUpon>RelateFieldProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ReportFieldProperty.resx">
+      <DependentUpon>ReportFieldProperty.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ReportSourceControl.resx">
       <DependentUpon>ReportSourceControl.cs</DependentUpon>
