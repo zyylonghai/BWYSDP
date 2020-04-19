@@ -88,6 +88,10 @@ namespace SDPCRL.DAL.BUS
         {
             return _dbHelp.ExecStoredProcedure(storedprocedureNm, parameters);
         }
+        public DataSet GetDataTables(string commandText)
+        {
+            return _dbHelp.GetDataTables(commandText);
+        }
 
         public void FillTableObj(LibTableObj tableObj)
         {

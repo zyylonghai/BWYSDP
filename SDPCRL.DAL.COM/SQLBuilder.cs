@@ -146,11 +146,18 @@ namespace SDPCRL.DAL.COM
             //    }
             //}
             #endregion 
+
+            string coutstr = builder.ToString();
+            int beginindex = coutstr.IndexOf(ResFactory.ResManager.SQLSelect)+ ResFactory.ResManager.SQLSelect.Length;
+            int endindex = coutstr.IndexOf(ResFactory.ResManager.SQLFrom);
+            string ss = coutstr.Replace(coutstr.Substring(beginindex, endindex - beginindex), string.Format(" COUNT(1) as {0} ",SysConstManage.sdp_total_row)).ToString();
+
             if (where !=null && !string.IsNullOrEmpty(where.WhereFormat))
             {
-                return string.Format("EXEC sp_executesql N'select *from({0} where {1}) as temp where rownumber>={3} and rownumber<={4}',{2}", builder.ToString(), where.WhereFormat, where.ValueTostring, (pageindex - 1) * pagesize + 1, pageindex * pagesize);
+                return string.Format("EXEC sp_executesql N'select *from({0} where {1}) as temp where rownumber>={3} and rownumber<={4} {5} where {1}',{2}", 
+                                      builder.ToString(), where.WhereFormat, where.ValueTostring, (pageindex - 1) * pagesize + 1, pageindex * pagesize,ss);
             }
-            return string.Format("EXEC sp_executesql N'select *from({0}) as temp where rownumber>={1} and rownumber<={2}'", builder.ToString(), (pageindex - 1) * pagesize + 1, pageindex * pagesize);
+            return string.Format("EXEC sp_executesql N'select *from({0}) as temp where rownumber>={1} and rownumber<={2} {3}'", builder.ToString(), (pageindex - 1) * pagesize + 1, pageindex * pagesize,ss);
         }
 
         public string GetRptSQLByPage(string tableNm, string[] fields,string[] sumaryfields, WhereObject where, int pageindex, int pagesize)
@@ -199,11 +206,25 @@ namespace SDPCRL.DAL.COM
             //    }
             //}
             #endregion 
+            string coutstr = builder.ToString();
+            int beginindex = coutstr.IndexOf(ResFactory.ResManager.SQLSelect) + ResFactory.ResManager.SQLSelect.Length;
+            int endindex = coutstr.IndexOf(ResFactory.ResManager.SQLFrom);
+            StringBuilder summarybuilder = new StringBuilder();
+            if (sumaryfields != null) //汇总字段
+            {
+                foreach (string field in sumaryfields)
+                {
+                    summarybuilder.AppendFormat(",SUM({0}) as {1}{2}", field, SysConstManage.sdp_summaryprefix, field.Substring(field.IndexOf(".") + 1));
+                }
+            }
+            string ss = coutstr.Replace(coutstr.Substring(beginindex, endindex - beginindex), string.Format(" COUNT(1) as {0} {1} ", SysConstManage.sdp_total_row,summarybuilder.ToString ())).ToString();
+
             if (where != null && !string.IsNullOrEmpty(where.WhereFormat))
             {
-                return string.Format("EXEC sp_executesql N'select *from({0} where {1}) as temp where rownumber>={3} and rownumber<={4}',{2}", builder.ToString(), where.WhereFormat, where.ValueTostring, (pageindex - 1) * pagesize + 1, pageindex * pagesize);
+                return string.Format("EXEC sp_executesql N'select *from({0} where {1}) as temp where rownumber>={3} and rownumber<={4} {5} where {1}',{2}", 
+                             builder.ToString(), where.WhereFormat, where.ValueTostring, (pageindex - 1) * pagesize + 1, pageindex * pagesize,ss);
             }
-            return string.Format("EXEC sp_executesql N'select *from({0}) as temp where rownumber>={1} and rownumber<={2}'", builder.ToString(), (pageindex - 1) * pagesize + 1, pageindex * pagesize);
+            return string.Format("EXEC sp_executesql N'select *from({0}) as temp where rownumber>={1} and rownumber<={2} {3}'", builder.ToString(), (pageindex - 1) * pagesize + 1, pageindex * pagesize,ss);
         }
         public string GetRptSQL(string tableNm, string[] fields, string[] sumaryfields, WhereObject where)
         {
@@ -583,15 +604,15 @@ namespace SDPCRL.DAL.COM
                         }
                         orderstr.AppendFormat("{0}.{1}", LibSysUtils.ToCharByTableIndex(tb.TableIndex), key);
                     }
-                    builder.AppendFormat(",ROW_NUMBER()OVER(order by {0}) as rownumber ,COUNT(1)OVER() as {1} ", orderstr.ToString(), SysConstManage.sdp_total_row);
+                    builder.AppendFormat(",ROW_NUMBER()OVER(order by {0}) as rownumber ", orderstr.ToString());
                 }
-                if (sumaryfields != null) //汇总字段
-                {
-                    foreach (string field in sumaryfields)
-                    {
-                        builder.AppendFormat(",SUM({0})OVER() as {1}{2}", field,SysConstManage.sdp_summaryprefix,field .Substring(field.IndexOf(".")+1));
-                    }
-                }
+                //if (sumaryfields != null) //汇总字段
+                //{
+                //    foreach (string field in sumaryfields)
+                //    {
+                //        builder.AppendFormat(",SUM({0})OVER() as {1}{2}", field,SysConstManage.sdp_summaryprefix,field .Substring(field.IndexOf(".")+1));
+                //    }
+                //}
                 builder.AppendFormat(" {0}", ResFactory.ResManager.SQLFrom);
                 builder.AppendFormat(" {0} {1}", tableNm, tbaliasnm);
                 builder.Append(joinstr.ToString());

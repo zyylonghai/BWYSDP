@@ -284,6 +284,11 @@ namespace SDPCRL.DAL.DBHelp
             //return DBOperate.ExecuteNonQuery(commandText);
             return result;
         }
+
+        public DataSet GetDataTables(string commandText)
+        {
+            return this.CurrentDBOpreate.GetDataTables(commandText);
+        }
     }
     class DBOperate
     {
@@ -643,6 +648,28 @@ namespace SDPCRL.DAL.DBHelp
                 CloseConnect();
             }
             //return dts;
+        }
+
+        public DataSet GetDataTables(string commandText)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                dbCommand.CommandType = CommandType.Text;
+                dbCommand.CommandText = commandText;
+                dbAdapter.SelectCommand = dbCommand;
+                dbAdapter.Fill(ds);
+            }
+            catch (Exception ex)
+            {
+                this.Exception = ex;
+                return null;
+            }
+            finally
+            {
+                CloseConnect();
+            }
+            return ds;
         }
 
         //public object DoExecuteProcedure(string procedure)

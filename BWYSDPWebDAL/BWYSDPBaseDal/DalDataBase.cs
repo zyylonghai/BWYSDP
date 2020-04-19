@@ -128,7 +128,7 @@ namespace BWYSDPBaseDal
             return this.DataAccess.GetDataTable(sql);
             //return null;
         }
-        public DataTable InternalSearchByPage(string dsid,string tbnm, string[] fields, List<LibSearchCondition> conds, int pageindex, int pagesize)
+        public DataTable[] InternalSearchByPage(string dsid,string tbnm, string[] fields, List<LibSearchCondition> conds, int pageindex, int pagesize)
         {
             object[] values = { };
             StringBuilder whereformat = new StringBuilder();
@@ -145,7 +145,16 @@ namespace BWYSDPBaseDal
             //LibDSContext dSContext = new LibDSContext(dsid);
             //string sql = dSContext.GetSQLByPage(tbnm, fields, new WhereObject { WhereFormat = whereformat.ToString(), Values = values }, pageindex, pagesize, true, false);
             string sql = sQLBuilder.GetSQLByPage(tbnm, fields, new WhereObject { WhereFormat = whereformat.ToString(), Values = values }, pageindex, pagesize, true, false);
-            return this.DataAccess.GetDataTable(sql);
+            DataTable[] outtables = { };
+            DataSet dataSet= this.DataAccess.GetDataTables(sql);
+            foreach (DataTable dt in dataSet.Tables)
+            {
+                Array.Resize(ref outtables, outtables.Length + 1);
+                outtables[outtables.Length - 1] = dt;
+            }
+            //this.DataAccess.GetDatatTables(sql);
+            //return this.DataAccess.GetDataTable(sql);
+            return outtables;
         }
 
         public DataTable RptSearchByPage(string dsid, string tbnm, string[] fields, string[] sumaryFields, List<LibSearchCondition> conds, int pageindex, int pagesize)
@@ -165,7 +174,20 @@ namespace BWYSDPBaseDal
             //LibDSContext dSContext = new LibDSContext(dsid);
             //string sql = dSContext.GetSQLByPage(tbnm, fields, new WhereObject { WhereFormat = whereformat.ToString(), Values = values }, pageindex, pagesize, true, false);
             string sql = sQLBuilder.GetRptSQLByPage(tbnm, fields, sumaryFields, new WhereObject { WhereFormat = whereformat.ToString(), Values = values }, pageindex, pagesize);
-            return this.DataAccess.GetDataTable(sql);
+            DataTable outtable = null;
+            DataSet dataSet = this.DataAccess.GetDataTables(sql);
+            outtable = dataSet.Tables[0];
+            foreach (DataColumn col in dataSet.Tables[1].Columns)
+            {
+                outtable.Columns.Add(col.ColumnName, col.DataType);
+                if (outtable != null && outtable.Rows.Count > 0)
+                {
+                    outtable.Rows[0][col.ColumnName] = dataSet.Tables[1].Rows[0][col];
+                }
+            }
+            //DataTable dataTable = dataSet.Tables[1];
+
+            return outtable;
         }
         public DataTable RptSearch(string dsid, string tbnm, string[] fields, string[] sumaryFields, List<LibSearchCondition> conds)
         {

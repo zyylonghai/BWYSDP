@@ -44,6 +44,7 @@ namespace SDPCRL.DAL.IDBHelp
         /// <param name="commandText"></param>
         /// <returns></returns>
         void GetDataTables(string commandText,ref DataTable[] dts);
+        DataSet GetDataTables(string commandText);
         void StoredProcedureReturnValue(string storedprocedureNm, LibDbParameter[] parameters);
         DataTable ExecStoredProcedure(string storedprocedureNm, LibDbParameter[] parameters);
         //object ExecuteProcedure(string procedureNm,
