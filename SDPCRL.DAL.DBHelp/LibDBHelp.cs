@@ -287,7 +287,13 @@ namespace SDPCRL.DAL.DBHelp
 
         public DataSet GetDataTables(string commandText)
         {
-            return this.CurrentDBOpreate.GetDataTables(commandText);
+            DataSet result = this.CurrentDBOpreate.GetDataTables(commandText);
+            if (result == null)
+            {
+                LibEventManager.TouchEvent(this, LibEventType.SqlException, this.CurrentDBOpreate.Exception);
+                LibEventManager.LogOutListener(this);
+            }
+            return result;
         }
     }
     class DBOperate

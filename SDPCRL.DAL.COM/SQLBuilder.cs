@@ -160,10 +160,10 @@ namespace SDPCRL.DAL.COM
             return string.Format("EXEC sp_executesql N'select *from({0}) as temp where rownumber>={1} and rownumber<={2} {3}'", builder.ToString(), (pageindex - 1) * pagesize + 1, pageindex * pagesize,ss);
         }
 
-        public string GetRptSQLByPage(string tableNm, string[] fields,string[] sumaryfields, WhereObject where, int pageindex, int pagesize)
+        public string GetRptSQLByPage(string tableNm, string[] fields,string[] sumaryfields,string groupfieldstr, WhereObject where, int pageindex, int pagesize)
         {
             StringBuilder builder = new StringBuilder();
-            InternalGetSQL(builder, tableNm, fields, sumaryfields, where, true,true , false,true);
+            InternalGetSQL(builder, tableNm,string.IsNullOrEmpty(groupfieldstr) ? fields: groupfieldstr.Split(SysConstManage .Comma), sumaryfields, where, true,true , false,true);
             #region 旧代码
             //builder.Append(ResFactory.ResManager.SQLSelect);
             //if (fields != null)
@@ -210,21 +210,62 @@ namespace SDPCRL.DAL.COM
             int beginindex = coutstr.IndexOf(ResFactory.ResManager.SQLSelect) + ResFactory.ResManager.SQLSelect.Length;
             int endindex = coutstr.IndexOf(ResFactory.ResManager.SQLFrom);
             StringBuilder summarybuilder = new StringBuilder();
+            StringBuilder summarybuilder2 = new StringBuilder();
+            //StringBuilder groupbuilder = new StringBuilder("Group by ");
             if (sumaryfields != null) //汇总字段
             {
                 foreach (string field in sumaryfields)
                 {
                     summarybuilder.AppendFormat(",SUM({0}) as {1}{2}", field, SysConstManage.sdp_summaryprefix, field.Substring(field.IndexOf(".") + 1));
+                    summarybuilder2.AppendFormat(",0 as {0}{1}", SysConstManage.sdp_summaryprefix, field.Substring(field.IndexOf(".") + 1));
                 }
             }
-            string ss = coutstr.Replace(coutstr.Substring(beginindex, endindex - beginindex), string.Format(" COUNT(1) as {0} {1} ", SysConstManage.sdp_total_row,summarybuilder.ToString ())).ToString();
+            string ss = coutstr.Replace(
+                                  coutstr.Substring(beginindex, endindex - beginindex),
+                                  string.IsNullOrEmpty(groupfieldstr)? string.Format(" COUNT(1) as {0} {1} ", SysConstManage.sdp_total_row,summarybuilder.ToString ()):string.Format(" {0} ", groupfieldstr)).ToString();
 
             if (where != null && !string.IsNullOrEmpty(where.WhereFormat))
             {
-                return string.Format("EXEC sp_executesql N'select *from({0} where {1}) as temp where rownumber>={3} and rownumber<={4} {5} where {1}',{2}", 
-                             builder.ToString(), where.WhereFormat, where.ValueTostring, (pageindex - 1) * pagesize + 1, pageindex * pagesize,ss);
+                if (!string.IsNullOrEmpty(groupfieldstr))
+                {
+                    string s1 = "ROW_NUMBER()OVER";
+                    endindex = builder.ToString().IndexOf(s1);
+                    string orderbystr = builder.ToString().Substring(endindex + s1.Length);
+                    string[] orders = orderbystr.Split('(', ')');
+                    if (orders != null && orders.Length > 1)
+                    {
+                        orderbystr = orders[1];
+                        if (!groupfieldstr.Contains(orderbystr))
+                        {
+                            builder.Replace(builder.ToString().Substring(endindex + s1.Length, orderbystr.Length + orders[0].Length + 1), string.Format("(order by {0} ", groupfieldstr));
+                        }
+                    }
+                    builder.Replace(builder.ToString().Substring(beginindex, endindex - beginindex), string.Format(" {0},", groupfieldstr));
+                    return string.Format("EXEC sp_executesql N'select *from({0} where {1} Group by {6}) as temp where rownumber>={3} and rownumber<={4} SELECT COUNT(1) as {7} {8} from ({5} where {1} group by {6}) as temp2',{2}",
+                        builder.ToString(), where.WhereFormat, where.ValueTostring, (pageindex - 1) * pagesize + 1, pageindex * pagesize, ss,groupfieldstr, SysConstManage.sdp_total_row, summarybuilder2.ToString ());
+                }
+                return string.Format("EXEC sp_executesql N'select *from({0} where {1}) as temp where rownumber>={3} and rownumber<={4} {5} where {1}',{2}",
+                         builder.ToString(), where.WhereFormat, where.ValueTostring, (pageindex - 1) * pagesize + 1, pageindex * pagesize, ss);
             }
-            return string.Format("EXEC sp_executesql N'select *from({0}) as temp where rownumber>={1} and rownumber<={2} {3}'", builder.ToString(), (pageindex - 1) * pagesize + 1, pageindex * pagesize,ss);
+            if (!string.IsNullOrEmpty(groupfieldstr))
+            {
+                string s1 = "ROW_NUMBER()OVER";
+                endindex = builder.ToString().IndexOf(s1);
+                string orderbystr = builder.ToString().Substring(endindex + s1.Length);
+                string[] orders= orderbystr.Split('(', ')');
+                if (orders != null && orders.Length > 1)
+                {
+                    orderbystr = orders[1];
+                    if (!groupfieldstr.Contains(orderbystr))
+                    {
+                        builder.Replace(builder.ToString().Substring(endindex + s1.Length, orderbystr.Length+orders[0].Length+1), string.Format("(order by {0} ",groupfieldstr));
+                    }
+                }
+                builder.Replace(builder.ToString().Substring(beginindex, endindex - beginindex),string.Format(" {0},", groupfieldstr));
+                return string.Format("EXEC sp_executesql N'select *from({0} Group by {4}) as temp where rownumber>={1} and rownumber<={2} SELECT COUNT(1) as {5} {6} from ({3} group by {4}) as temp2'", 
+                    builder.ToString(), (pageindex - 1) * pagesize + 1, pageindex * pagesize, ss,groupfieldstr,SysConstManage.sdp_total_row,summarybuilder2 .ToString ());
+            }
+            return string.Format("EXEC sp_executesql N'select *from({0}) as temp where rownumber>={1} and rownumber<={2} {3}'", builder.ToString(), (pageindex - 1) * pagesize + 1, pageindex * pagesize, ss);
         }
         public string GetRptSQL(string tableNm, string[] fields, string[] sumaryfields, WhereObject where)
         {

@@ -157,7 +157,7 @@ namespace BWYSDPBaseDal
             return outtables;
         }
 
-        public DataTable RptSearchByPage(string dsid, string tbnm, string[] fields, string[] sumaryFields, List<LibSearchCondition> conds, int pageindex, int pagesize)
+        public DataTable RptSearchByPage(string dsid, string tbnm, string[] fields, string[] sumaryFields,string groupfields, List<LibSearchCondition> conds, int pageindex, int pagesize)
         {
             object[] values = { };
             StringBuilder whereformat = new StringBuilder();
@@ -173,7 +173,7 @@ namespace BWYSDPBaseDal
             }
             //LibDSContext dSContext = new LibDSContext(dsid);
             //string sql = dSContext.GetSQLByPage(tbnm, fields, new WhereObject { WhereFormat = whereformat.ToString(), Values = values }, pageindex, pagesize, true, false);
-            string sql = sQLBuilder.GetRptSQLByPage(tbnm, fields, sumaryFields, new WhereObject { WhereFormat = whereformat.ToString(), Values = values }, pageindex, pagesize);
+            string sql = sQLBuilder.GetRptSQLByPage(tbnm, fields, sumaryFields,groupfields, new WhereObject { WhereFormat = whereformat.ToString(), Values = values }, pageindex, pagesize);
             DataTable outtable = null;
             DataSet dataSet = this.DataAccess.GetDataTables(sql);
             outtable = dataSet.Tables[0];
