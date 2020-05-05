@@ -6,6 +6,7 @@ using SDPCRL.CORE;
 using SDPCRL.CORE.FileUtils;
 using SDPCRL.COM.ModelManager.FormTemplate;
 using SDPCRL.COM.ModelManager.Reports;
+using SDPCRL.COM.ModelManager.Trans;
 
 namespace SDPCRL.COM.ModelManager
 {
@@ -62,6 +63,10 @@ namespace SDPCRL.COM.ModelManager
         public static LibReportsSource GetLibReportSource(string reportid)
         {
             return (LibReportsSource)InternalInstanceModelSource(SysConstManage.ReportSourceNm, reportid);
+        }
+        public static LibTransSource GetTransSource(string transid)
+        {
+            return (LibTransSource)InternalInstanceModelSource(SysConstManage.TransSourceNm, transid);
         }
         public static LibKeyValueCollection GetKeyValues(string id)
         {
@@ -127,6 +132,11 @@ namespace SDPCRL.COM.ModelManager
             return InternalSearchAllModel(path, SysConstManage.DataSourceNm);
         }
 
+        public static string[] GetAllProgId(string path)
+        {
+            return InternalSearchAllModel(path, SysConstManage.FormSourceNm);
+        }
+
         public static string[] GetAllKeyValuesNm(string path)
         {
             return InternalSearchAllModel(path, SysConstManage.KeyValues);
@@ -140,8 +150,8 @@ namespace SDPCRL.COM.ModelManager
                 result.Add(new LibSysField { Name = SysConstManage.sysfld_lastmodifier, DisplayName = "最后修改者", FieldType = LibFieldType.String, FieldLength = 30 });
                 result.Add(new LibSysField { Name = SysConstManage.sysfld_lastmodifyDT, DisplayName = "最后修改日期", FieldType = LibFieldType.DateTime, FieldLength = 0 });
                 //Addsysfield(SysConstManage.sysfld_creater, "创建者", result);
-                //Addsysfield(SysConstManage .sysfld_createDT, "创建时间", result);
-                //Addsysfield(SysConstManage .sysfld_lastmodifier, "最后修改者", result);
+                //Addsysfield(SysConstManage.sysfld_createDT, "创建时间", result);
+                //Addsysfield(SysConstManage.sysfld_lastmodifier, "最后修改者", result);
                 //Addsysfield(SysConstManage.sysfld_lastmodifyDT, "最后修改日期", result);
                 return result;
             }
@@ -300,6 +310,13 @@ namespace SDPCRL.COM.ModelManager
                         return new LibReportsSource { ReportId = modelSourceId };
                     }
                     return SerializerUtils.XMLDeSerialize<LibReportsSource>(dsxml);
+                case SysConstManage.TransSourceNm:
+                    if (string.IsNullOrEmpty(dsxml))
+                    {
+
+                        return new LibTransSource { TransId = modelSourceId };
+                    }
+                    return SerializerUtils.XMLDeSerialize<LibTransSource>(dsxml);
                 default :
 
                     return null;

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using BWYSDP.com;
 using SDPCRL.CORE;
 using BWYSDP.Controls;
+using SDPCRL.COM.ModelManager.Trans;
 
 namespace BWYSDP
 {
@@ -92,6 +93,11 @@ namespace BWYSDP
                         ReportSourceControl reportSourceControl = new ReportSourceControl(node);
                         reportSourceControl.Dock = DockStyle.Fill;
                         page.Controls.Add(reportSourceControl);
+                        break;
+                    case NodeType.TransBillModel:
+                        TransSourceControl tranSourceControl = new TransSourceControl(node);
+                        tranSourceControl.Dock = DockStyle.Fill;
+                        page.Controls.Add(tranSourceControl);
                         break;
                 }
             }
@@ -277,6 +283,17 @@ namespace BWYSDP
                             ModelDesignProject.AddXmlNode(funcNode);
                             this.treeView1.SelectedNode = funcNode;
                             break;
+                        case NodeType.TransBillModel:
+                            #region 创建树形节点
+                            LibTreeNode trans = new LibTreeNode();
+                            funcNode.CopyTo(trans);
+                            trans.NodeType = NodeType.TransBillModel;
+                            ModelDesignProject.CreatModelFile(trans);
+
+                            this.treeView1.SelectedNode.Nodes.Add(trans);
+                            ModelDesignProject.AddXmlNode(trans);
+                            #endregion
+                            break;
                     }
                 }
             }
@@ -308,6 +325,9 @@ namespace BWYSDP
                         break;
                     case NodeType.ReportModel:
                         ((ReportSourceControl)page.Controls[0]).GetControlValueBindToRpt();
+                        break;
+                    case NodeType.TransBillModel:
+                        ((TransSourceControl)page.Controls[0]).GetControlValueBindToRpt();
                         break;
                 }
                 ModelDesignProject.SaveModel(nameAndtype[0], ntype);

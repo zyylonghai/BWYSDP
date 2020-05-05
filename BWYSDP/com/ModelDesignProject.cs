@@ -14,6 +14,7 @@ using SDPCRL.COM.ModelManager.FormTemplate;
 using BWYSDP.Controls;
 using static System.Windows.Forms.Control;
 using SDPCRL.COM.ModelManager.Reports;
+using SDPCRL.COM.ModelManager.Trans;
 
 namespace BWYSDP.com
 {
@@ -25,6 +26,7 @@ namespace BWYSDP.com
         private static Hashtable _permissionSourceContain = new Hashtable();
         private static Hashtable _keyvaluesContain = new Hashtable();
         private static Hashtable _rptSourceContain = new Hashtable();
+        private static Hashtable _tranSourceContain = new Hashtable();
         private static DSList _dsList = new DSList();
         private static bool initialvale = false;
 
@@ -658,6 +660,14 @@ namespace BWYSDP.com
                             node.NodeType = NodeType.ReportFunc;
                             node.Package = item.Attributions[SysConstManage.AtrrPackage];
                         }
+                        else if (string.Compare(item.NodeName, SysConstManage.TransModelNm) == 0)//转单节点
+                        {
+                            node.Text = item.InnerText;
+                            node.Name = item.Attributions[SysConstManage.AtrrName];
+                            node.NodeType = NodeType.TransBillModel;
+                            node.Package = item.Attributions[SysConstManage.AtrrPackage];
+                            needchild = false;
+                        }
                         node.OriginalName = node.Name;
                         if (needchild)
                         {
@@ -738,6 +748,10 @@ namespace BWYSDP.com
                         break;
                     case NodeType.ReportFunc:
                         nodeinfo.NodeName = SysConstManage.ReportFuncNodeNm;
+                        attributcollection.Add(SysConstManage.AtrrPackage, newNode.Package);
+                        break;
+                    case NodeType.TransBillModel:
+                        nodeinfo.NodeName = SysConstManage.TransModelNm;
                         attributcollection.Add(SysConstManage.AtrrPackage, newNode.Package);
                         break;
                 }
@@ -848,6 +862,9 @@ namespace BWYSDP.com
                     break;
                 case NodeType.ReportModel:
                     dir = SysConstManage.ReportSourceNm; 
+                    break;
+                case NodeType.TransBillModel:
+                    dir = SysConstManage.TransSourceNm;
                     break;
             }
             fileoperation.FilePath = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, dir, treeNode.Package, treeNode.Name);
@@ -962,6 +979,20 @@ namespace BWYSDP.com
             }
         }
 
+        public static LibTransSource GetLibTransSourceById(string transid)
+        {
+            if (_tranSourceContain.ContainsKey(transid))
+            {
+                return (LibTransSource)_tranSourceContain[transid];
+            }
+            else
+            {
+                LibTransSource trans = ModelManager.GetTransSource(transid);
+                _tranSourceContain.Add(transid, trans);
+                return trans;
+            }
+        }
+
         public static LibKeyValueCollection GetKeyvaluesByid(string id)
         {
             if (_keyvaluesContain.ContainsKey(id))
@@ -1041,6 +1072,17 @@ namespace BWYSDP.com
                         LibReportsSource rpt = (LibReportsSource)_rptSourceContain[modelNm];
                         path = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.ReportSourceNm, rpt.Package, rpt.ReportId);
                         return InternalSaveModel(rpt, path);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                case NodeType.TransBillModel:
+                    if (_tranSourceContain.ContainsKey(modelNm))
+                    {
+                        LibTransSource trans = (LibTransSource)_tranSourceContain[modelNm];
+                        path = string.Format(@"{0}\{1}\{2}\{3}.xml", SysConstManage.ModelPath, SysConstManage.TransSourceNm, trans.Package, trans.TransId);
+                        return InternalSaveModel(trans, path);
                     }
                     else
                     {
@@ -1171,6 +1213,9 @@ namespace BWYSDP.com
         /// <summary>字典模型</summary>
         [LibReSource("字典模型节点")]
         KeyValues =16,
+        /// <summary>转单模型</summary>
+        [LibReSource("转单模型节点")]
+        TransBillModel =25,
 
 
 
@@ -1222,7 +1267,13 @@ namespace BWYSDP.com
         ReportCol =22,
         /// <summary>报表元素</summary>
         [LibReSource("报表元素")]
-        ReportElement =23
+        ReportElement =23,
+        /// <summary>转单配置</summary>
+        [LibReSource("转单配置")]
+        TransSetting =26,
+        /// <summary>转单字段</summary>
+        [LibReSource("转单字段")]
+        TransField =27
 
 
     }

@@ -76,7 +76,7 @@ namespace BWYSDP.Controls
             foreach (LibField f in this.entity.Fields)
             {
                 chkb = new CheckBox();
-                chkb.Checked = target.Contains(f.Name);
+                chkb.Checked =target ==null ?false : target.Contains(f.Name);
                 chkb.Name = f.Name;
                 chkb.Size = new System.Drawing.Size(100, 21); ;
                 chkb.Text = string.Format("{0}({1})", f.Name, f.DisplayName);
@@ -90,6 +90,7 @@ namespace BWYSDP.Controls
             if (dialog == DialogResult.OK)
             {
                 StringBuilder val = new StringBuilder();
+                if (target == null) target = new List<string>();
                 target.Clear();
                 foreach (CheckBox item in p.Controls)
                 {

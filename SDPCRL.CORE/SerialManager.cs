@@ -53,6 +53,7 @@ namespace SDPCRL.CORE
         public const string AtrrName = "name";
         public const string AtrrPackage = "package";
         public const string ReportFuncNodeNm = "ReportFunc";
+        public const string TransModelNm = "Trans";
         #endregion
 
         #region 模型存储 所在路径的 文件夹名
@@ -61,6 +62,7 @@ namespace SDPCRL.CORE
         public const string PermissionSourceNm = "PermissionSource";
         public const string KeyValues = "KeyValues";
         public const string ReportSourceNm = "ReportSource";
+        public const string TransSourceNm = "TransSource";
         #endregion
 
         public const string BtnCtrlNmPrefix = "btn_";

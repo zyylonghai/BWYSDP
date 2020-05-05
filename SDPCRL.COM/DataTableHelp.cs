@@ -144,6 +144,18 @@ namespace SDPCRL.COM
             {
                 row[colnm] = new Date { value = val.ToString() };
             }
+            else if (colnm.DataType.Equals(typeof(bool)) && val .GetType()!=typeof(bool))
+            {
+                Type t = val.GetType();
+                if (t == typeof(string))
+                {
+                    row[colnm] = Convert.ToBoolean(Convert.ToInt32(val));
+                }
+                else if (t == typeof(int) || t == typeof(long))
+                {
+                    row[colnm] = Convert.ToBoolean(val);
+                }
+            }
             else
                 row[colnm] = val;
         }

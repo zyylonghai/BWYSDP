@@ -15,6 +15,11 @@ namespace SDPCRL.CORE
         private ArrayList _entityArray;
         #endregion
 
+        public LibCollection()
+        {
+            _entityArray = new ArrayList();
+        }
+
         #region 公开属性
         public T this[int index]
         {

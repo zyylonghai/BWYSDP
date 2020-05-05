@@ -36,7 +36,7 @@ namespace SDPCRL.COM.ModelManager.Reports
             get;
             set;
         }
-        /// <summary>来源表索引（源结构表）</summary>
+        /// <summary>来源表索引（源结构表索引）</summary>
         [LibAttribute("rptgridfld_FromTableIndex", LibControlType.TextBox, "源表索引", true)]
         public int FromTableIndex
         {

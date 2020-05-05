@@ -157,7 +157,7 @@ namespace BWYSDPBaseDal
             return outtables;
         }
 
-        public DataTable RptSearchByPage(string dsid, string tbnm, string[] fields, string[] sumaryFields,string groupfields, List<LibSearchCondition> conds, int pageindex, int pagesize)
+        public virtual DataTable RptSearchByPage(string dsid, string tbnm, string[] fields, string[] sumaryFields,string groupfields, List<LibSearchCondition> conds, int pageindex, int pagesize)
         {
             object[] values = { };
             StringBuilder whereformat = new StringBuilder();
@@ -189,7 +189,7 @@ namespace BWYSDPBaseDal
 
             return outtable;
         }
-        public DataTable RptSearch(string dsid, string tbnm, string[] fields, string[] sumaryFields, List<LibSearchCondition> conds)
+        public virtual DataTable RptSearch(string dsid, string tbnm, string[] fields, string[] sumaryFields, List<LibSearchCondition> conds)
         {
             object[] values = { };
             StringBuilder whereformat = new StringBuilder();

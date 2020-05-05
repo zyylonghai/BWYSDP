@@ -83,6 +83,8 @@
     <Compile Include="ModelManager\Reports\LibReportGrid.cs" />
     <Compile Include="ModelManager\Reports\LibReportRow.cs" />
     <Compile Include="ModelManager\Reports\LibReportsSource.cs" />
+    <Compile Include="ModelManager\Trans\LibTransFieldMap.cs" />
+    <Compile Include="ModelManager\Trans\LibTransSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchConditionHelper.cs" />
     <Compile Include="SQLBuilder.cs" />
