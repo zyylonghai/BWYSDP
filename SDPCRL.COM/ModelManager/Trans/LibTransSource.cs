@@ -36,6 +36,11 @@ namespace SDPCRL.COM.ModelManager.Trans
         [XmlAttribute]
         public string TargetProgId { get; set; }
 
+        /// <summary>目的单ProgId</summary>
+        [LibAttribute("tran_TargetPackage", LibControlType.TextBox, "目标所属包",true)]
+        [XmlAttribute]
+        public string TargetPackage { get; set; }
+
         /// <summary>所属包</summary>
         [LibAttribute("tran_Package", LibControlType.TextBox, "所属包")]
         [XmlAttribute]

@@ -47,7 +47,7 @@ namespace SDPCRL.CORE
         public const string OracleConnect = "ORACLECONN";
         public const string SaveStr = "SaveStr";
 
-        #region xml操作常量
+        #region xml操作常量 ModelTreeTemp.xml的节点名或属性
         public const string ClassNodeNm = "Class";
         public const string FuncNodeNm = "Func";
         public const string AtrrName = "name";

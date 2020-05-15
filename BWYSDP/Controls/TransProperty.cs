@@ -66,8 +66,16 @@ namespace BWYSDP.Controls
                         this.Controls[ctrNm].Text = listBox.SelectedItem.ToString();
                         if (ctrNm == "tran_SrcProgId")
                             this.entity.SrcProgId = listBox.SelectedItem.ToString();
-                        else 
-                            this.entity .TargetProgId = listBox.SelectedItem.ToString();
+                        else
+                        {
+                            this.entity.TargetProgId = listBox.SelectedItem.ToString();
+                            var formsource= ModelManager.GetFormSource(this.entity.TargetProgId);
+                            if (formsource != null)
+                            {
+                                this.entity.TargetPackage = formsource.Package;
+                                this.Controls["tran_TargetPackage"].Text = formsource.Package;
+                            }
+                        }
                     }
                 }
             }

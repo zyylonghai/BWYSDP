@@ -325,6 +325,7 @@ namespace BWYSDP.Controls
                 curentNode.Nodes.Add(defTBNode);
 
                 DefTBProperty deftbp = new DefTBProperty(defTBNode.NodeId);
+                    deftbp.Dock = DockStyle.Fill;
                 this._defTBPropertylst.Add(deftbp);
                 this.splitContainer1 .Panel2 .Controls .Add (deftbp);
 
@@ -360,6 +361,7 @@ namespace BWYSDP.Controls
                 curentNode.Nodes.Add(tablestruc);
 
                 TBStructProperty tbstructP = new TBStructProperty(tablestruc.NodeId);
+                tbstructP.Dock = DockStyle.Fill;
                 this._tbStructPropertylst.Add(tbstructP);
                 this.splitContainer1.Panel2.Controls.Add(tbstructP);
 
