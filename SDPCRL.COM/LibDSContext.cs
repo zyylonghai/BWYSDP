@@ -337,7 +337,7 @@ namespace SDPCRL.COM
                                 foreach (LibField f2 in jointb.Fields)
                                 {
                                     if (!f2.IsActive || jointb.JoinFields.Contains(f2.Name)) continue;
-                                    if (allfields.ToString().Contains(string.Format(".{0}", f2.Name))&&string.IsNullOrEmpty(f2.AliasName))
+                                    if (allfields.ToString().ToUpper().Contains(string.Format(".{0}", f2.Name.ToUpper()))&&string.IsNullOrEmpty(f2.AliasName))
                                     {
                                         allfields.AppendFormat("{0}{1}.{2} as {3}", SysConstManage.Comma, LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, string.Format("{0}{2}{1}", LibSysUtils.ToCharByTableIndex(jointb.TableIndex), f2.Name, SysConstManage.Underline));
                                     }

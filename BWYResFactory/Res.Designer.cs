@@ -223,7 +223,7 @@ namespace BWYResFactory {
         }
         
         /// <summary>
-        ///   查找类似 From 的本地化字符串。
+        ///   查找类似  From  的本地化字符串。
         /// </summary>
         internal static string SQLFrom {
             get {

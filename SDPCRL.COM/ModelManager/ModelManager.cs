@@ -118,9 +118,17 @@ namespace SDPCRL.COM.ModelManager
             {
                 fileOperation.FilePath = string.Format(@"{0}\{1}", rootpath, SysConstManage.FormSourceNm);
             }
-            else
+            else if (typeof(T).Equals(typeof(LibPermissionSource)))
             {
                 fileOperation.FilePath = string.Format(@"{0}\{1}", rootpath, SysConstManage.PermissionSourceNm);
+            }
+            else if (typeof(T).Equals(typeof(LibReportsSource)))
+            {
+                fileOperation.FilePath = string.Format(@"{0}\{1}", rootpath, SysConstManage.ReportSourceNm);
+            }
+            else if (typeof(T).Equals(typeof(LibTransSource)))
+            {
+                fileOperation.FilePath = string.Format(@"{0}\{1}", rootpath, SysConstManage.TransSourceNm);
             }
             string dsxml = fileOperation.SearchAndRead(string.Format("{0}.xml", modelId));
             if (string.IsNullOrEmpty(dsxml))

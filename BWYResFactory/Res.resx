@@ -133,7 +133,7 @@
     <value>And</value>
   </data>
   <data name="SQLFrom" xml:space="preserve">
-    <value>From</value>
+    <value> From </value>
   </data>
   <data name="SQLGroup" xml:space="preserve">
     <value>Group By</value>
