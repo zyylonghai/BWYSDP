@@ -353,7 +353,15 @@ namespace SDPCRL.COM.ModelManager
         MorethanEqualZero =3,
         ///<summary>小于等于0</summary>
         [LibReSource("小于等于0")]
-        LessthanEqualZero =4
-
+        LessthanEqualZero =4,
+        ///<summary>自定义表达式</summary>
+        [LibReSource("自定义表达式")]
+        DefExpress =5
+    }
+    [Serializable]
+    public class LibFieldValidatExpress
+    {
+        public string Express { get; set; }
+        
     }
 }

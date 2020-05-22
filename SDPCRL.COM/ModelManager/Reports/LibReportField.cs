@@ -99,7 +99,7 @@ namespace SDPCRL.COM.ModelManager.Reports
         {
             get; set;
         }
-        /// <summary>格式化表达式(显示的值来源某个表的字段则表达式:实体表名.字段名,如果是脚本函数则表达式:$.函数名)</summary>
+        /// <summary>格式化表达式(显示的值来源某个表的字段则表达式:字段名,如果是脚本函数则表达式:$.函数名)</summary>
         [LibAttribute("rptgridfld_Formatter", LibControlType.TextBox, "格式化值")]
         public string Formatter { get; set; }
         /// <summary>是否自定义字段</summary>

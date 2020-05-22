@@ -139,7 +139,7 @@ namespace BWYSDP.Controls
                     {
                         FromSourceProperty prop = c as FromSourceProperty;
                         prop.GetControlsValue();
-                        
+
                     }
                     ListBox box = ctr.Panel1.Controls["listBox1"] as ListBox;
                     foreach (LibFromSourceField sfield in box.Items)
@@ -170,7 +170,7 @@ namespace BWYSDP.Controls
                 addbtn.Name = "_addkeyvalu";
                 addbtn.Width = 70;
                 addbtn.Height = 25;
-                addbtn .Location= new System.Drawing.Point(20, 15);
+                addbtn.Location = new System.Drawing.Point(20, 15);
                 addbtn.Text = "添加项";
                 addbtn.Click += Addbtn_Click;
                 p2.Controls.Add(addbtn);
@@ -235,7 +235,7 @@ namespace BWYSDP.Controls
                     {
                         //if (this.entity.Items.FindFirst("Key", item.Key) == null)
                         //{
-                            this.entity.Items.Add(item);
+                        this.entity.Items.Add(item);
                         //}
                     }
                     #region 控件赋值
@@ -246,11 +246,15 @@ namespace BWYSDP.Controls
                         {
                             this.Controls[ctrNm].Text += ";";
                         }
-                        this.Controls[ctrNm].Text +=keyval.ToString();
+                        this.Controls[ctrNm].Text += keyval.ToString();
                     }
 
                     #endregion
                 }
+            }
+            else if (string.Compare(ctrNm, "fd_Validation") == 0)//有效性验证
+            {
+                
             }
         }
 

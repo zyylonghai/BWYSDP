@@ -110,6 +110,12 @@
     <Compile Include="Controls\DropDownList.Designer.cs">
       <DependentUpon>DropDownList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FieldValidationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FieldValidationControl.Designer.cs">
+      <DependentUpon>FieldValidationControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FormGroupFieldProperty.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -377,6 +383,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\DropDownList.resx">
       <DependentUpon>DropDownList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FieldValidationControl.resx">
+      <DependentUpon>FieldValidationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\FormGroupFieldProperty.resx">
       <DependentUpon>FormGroupFieldProperty.cs</DependentUpon>
