@@ -88,12 +88,18 @@ namespace SDPCRL.COM.ModelManager
             get;
             set;
         }
+        ///// <summary>有效性验证</summary>
+        //[LibAttribute("fd_Validation", LibControlType.Combox, "值有效性")]
+        //public LibFieldValidation Validation
+        //{
+        //    get;set;
+        //}
+
         /// <summary>有效性验证</summary>
-        [LibAttribute("fd_Validation", LibControlType.Combox, "值有效性")]
-        public LibFieldValidation Validation
-        {
-            get;set;
-        }
+        [LibAttribute("fd_ValidateExpression", LibControlType.TextAndBotton, "值有效性")]
+        public string ValidateExpression { get; set; }
+
+
         /// <summary>是否自增长</summary>
         [LibAttribute("fd_combAutoIncrement", LibControlType.Combox, "自增长")]
         public bool AutoIncrement

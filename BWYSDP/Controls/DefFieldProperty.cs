@@ -252,9 +252,25 @@ namespace BWYSDP.Controls
                     #endregion
                 }
             }
-            else if (string.Compare(ctrNm, "fd_Validation") == 0)//有效性验证
+            else if (string.Compare(ctrNm, "fd_ValidateExpression") == 0)//有效性验证
             {
-                
+                FieldValidationControl fieldValidation = new FieldValidationControl();
+                fieldValidation.Dock = DockStyle.Fill;
+                p.Controls.Add(fieldValidation);
+
+                fieldValidation.SetExpressValue(this.entity.ValidateExpression);
+
+                DialogForm dialogForm = new DialogForm(p);
+                dialogForm.Size = new Size(700, 488);
+
+                DialogResult dialog = dialogForm.ShowDialog(this);
+                if (dialog == DialogResult.OK)
+                {
+                    this.entity.ValidateExpression = fieldValidation.GetExpressValue();
+                    #region 控件赋值
+                    this.Controls[ctrNm].Text = this.entity.ValidateExpression;
+                    #endregion
+                }
             }
         }
 
