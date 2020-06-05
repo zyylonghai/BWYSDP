@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace BWYSDP.com
+namespace SDPCRL.COM
 {
+    /// <summary>
+    /// 自定义系统函数
+    /// </summary>
     public class LibdefFunc
     {
         public string FuncNm { get; set; }

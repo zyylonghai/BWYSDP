@@ -56,7 +56,6 @@
     <Compile Include="BLL\DataSourceInfoBLL.cs" />
     <Compile Include="com\DSUtiles.cs" />
     <Compile Include="com\ExceptionManager.cs" />
-    <Compile Include="com\LibdefFunc.cs" />
     <Compile Include="com\LibItem.cs" />
     <Compile Include="com\LibTreeNode.cs" />
     <Compile Include="com\ModelDesignProject.cs" />

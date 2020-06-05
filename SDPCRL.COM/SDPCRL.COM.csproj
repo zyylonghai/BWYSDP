@@ -53,6 +53,7 @@
     <Compile Include="FuncAssemblyInfo.cs" />
     <Compile Include="LibClientInfo.cs" />
     <Compile Include="LibDbParameter.cs" />
+    <Compile Include="LibdefFunc.cs" />
     <Compile Include="LibDSContext.cs" />
     <Compile Include="LibLanguage.cs" />
     <Compile Include="LibSearchCondition.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchConditionHelper.cs" />
     <Compile Include="SQLBuilder.cs" />
+    <Compile Include="ValidationExpressHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BWYResFactory\BWYResFactory.csproj">

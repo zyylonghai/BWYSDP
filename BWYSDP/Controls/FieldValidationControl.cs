@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BWYSDP.com;
+using SDPCRL.COM;
 
 namespace BWYSDP.Controls
 {
@@ -22,8 +23,10 @@ namespace BWYSDP.Controls
         {
             #region
             this.LstbFuncs.Items.Clear();
-            this.LstbFuncs.Items.Add(new LibdefFunc { FuncNm = "Sum", FuncDesc = "求和" });
-            this.LstbFuncs.Items.Add(new LibdefFunc { FuncNm="Avg",FuncDesc="求平均值"});
+            List<LibdefFunc> funcs = ValidateExpressHelper.GetLibdefFuncs();
+            this.LstbFuncs.Items.AddRange(funcs.ToArray());
+            //this.LstbFuncs.Items.Add(new LibdefFunc { FuncNm = "Sum", FuncDesc = "求和" });
+            //this.LstbFuncs.Items.Add(new LibdefFunc { FuncNm="Avg",FuncDesc="求平均值"});
             #endregion 
         }
 

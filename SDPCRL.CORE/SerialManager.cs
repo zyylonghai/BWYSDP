@@ -73,6 +73,7 @@ namespace SDPCRL.CORE
         public const string PageinfoCookieNm = "PageInfo";
         public const string ProgidCookieKey = "Progid";
         public const string PackageCookieKey = "Package";
+        public const string sdp_fx = "f(x)";
 
         public const string OperateAction = "Action";
         //用于创建表结构时，设置表和列的自定义属性关键字

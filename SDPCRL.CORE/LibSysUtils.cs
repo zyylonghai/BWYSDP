@@ -167,6 +167,21 @@ namespace SDPCRL.CORE
             else
                 return false;
         }
+        /// <summary>是否数字(包括小数点，和有符号(正负)的数字)</summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static bool IsDigit(string val)
+        {
+            if (string.IsNullOrEmpty(val)) return false;
+            System.Text.RegularExpressions.Regex rex =
+           new System.Text.RegularExpressions.Regex(@"^[+-]?\d*[.]?\d*$");
+            if (rex.IsMatch(val))
+            {
+                return true;
+            }
+            else
+                return false;
+        }
 
         /// <summary>特殊函数，只针对表索引转为对应字符</summary>
         /// <param name="val"></param>

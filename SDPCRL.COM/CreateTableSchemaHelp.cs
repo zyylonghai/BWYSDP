@@ -410,7 +410,8 @@ namespace SDPCRL.COM
                     Decimalpoint = f.Decimalpoint,
                     AliasName = f.AliasName,
                     FieldNm=f.Name ,
-                    ObjectNm=f.ObjFieldName 
+                    ObjectNm=f.ObjFieldName,
+                    ValidateExpression =f.ValidateExpression 
                 });
                 dt.Columns.Add(col);
                 if (fromfield && f.SourceField != null && f.SourceField.Count > 0)
@@ -592,9 +593,12 @@ namespace SDPCRL.COM
         /// </summary>
         public string FieldNm { get; set; }
 
+        /// <summary>值有效性验证表达式</summary>
+        public string ValidateExpression { get; set; }
+
         public override string ToString()
         {
-            string s= string.Format("\"IsActive\":\"{0}\",\"IsRelate\":\"{1}\",\"MapPrimarykey\":\"{2}\",\"DataTypeLen\":\"{3}\",\"Decimalpoint\":\"{4}\",\"AliasName\":\"{5}\"", IsActive, IsRelate, MapPrimarykey, DataTypeLen, Decimalpoint,AliasName);
+            string s= string.Format("\"IsActive\":\"{0}\",\"IsRelate\":\"{1}\",\"MapPrimarykey\":\"{2}\",\"DataTypeLen\":\"{3}\",\"Decimalpoint\":\"{4}\",\"AliasName\":\"{5}\",\"ValidateExpression\":\"{6}\"", IsActive, IsRelate, MapPrimarykey, DataTypeLen, Decimalpoint,AliasName,ValidateExpression);
             return "{" + s + "}";
         }
     }
