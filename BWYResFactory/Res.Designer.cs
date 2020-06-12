@@ -151,6 +151,15 @@ namespace BWYResFactory {
         }
         
         /// <summary>
+        ///   查找类似 表{0},字段{1},值有效性验证不通过，表达式{2} 的本地化字符串。
+        /// </summary>
+        internal static string _110 {
+            get {
+                return ResourceManager.GetString("110", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 系统无法识别的表对象，请使用模型实例化表对象。 的本地化字符串。
         /// </summary>
         internal static string _520 {

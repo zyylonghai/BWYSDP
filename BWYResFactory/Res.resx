@@ -201,4 +201,7 @@
   <data name="LogDBNm" xml:space="preserve">
     <value>BWYDB_Log</value>
   </data>
+  <data name="110" xml:space="preserve">
+    <value>表{0},字段{1},值有效性验证不通过，表达式{2}</value>
+  </data>
 </root>
