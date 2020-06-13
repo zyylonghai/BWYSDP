@@ -52,13 +52,9 @@ namespace SDPCRL.COM
                                 if (string.IsNullOrEmpty(s)){ continue; }
                                 if (funcs.FirstOrDefault(i => i.FuncNm.ToUpper() == s) != null)
                                 {
-                                    ComputeBracketsContent(ref expressions, s, libTables);
-                                    //switch (s)
-                                    //{
-                                    //    case "SUM":
-
-                                    //        break;
-                                    //}
+                                    if (ComputeBracketsContent(ref expressions, s, libTables, colExtended))
+                                        result = false;
+                                    continue;
                                 }
                                 else
                                 {
@@ -106,13 +102,14 @@ namespace SDPCRL.COM
             return null;
         }
 
-        private bool ComputeBracketsContent(ref string express,string funcnm, LibTable[] libTables)
+        private bool ComputeBracketsContent(ref string express,string funcnm, LibTable[] libTables, ColExtendedProperties colExtended)
         {
             int index = express.IndexOf(funcnm) + funcnm .Length;
             int accout = 1;
             int index1 = -1;
             int leng = 0;
-            string s2 = string.Empty;
+            string s2 = string.Empty;//最终为函数括号中的表达式
+            #region 取函数括号中的表达式
             for (int i = 0; i != accout;)
             {
                 s2 = express.Substring(i == 0 ? index : (leng + index + i));
@@ -123,6 +120,7 @@ namespace SDPCRL.COM
                 i++;
                 leng += index1;
             }
+            #endregion
             leng = s2.Length+funcnm .Length;
             char[] separator = { '+', '-', '*', '/', '(', ')', '<', '>', '='};
             string[] splitarry = s2.Split(separator );
@@ -138,6 +136,8 @@ namespace SDPCRL.COM
                     if (vs.Length < 1) { continue; }
                     if (tbalisnm != '*' && tbalisnm != vs[0][0])
                     {
+                        //111 表达式{0},中的函数{1},括号中的字段必须是属相同表。
+                        this.MsgList.Add(new LibMessage { Message = string.Format(BWYResFactory.ResFactory.ResManager.GetResByKey("111"), colExtended.ValidateExpression.Replace("<", "'<'"), funcnm), MsgType = LibMessageType.Error });
                         return false;
                     }
                     tbalisnm = vs[0][0];
@@ -154,6 +154,7 @@ namespace SDPCRL.COM
                 if (dt == null || tbalisnm == '*') return false;
                 object result=string.Empty;
                 s2 = s2.Substring(1);
+                #region 函数的计算求值
                 if (string.Compare(funcnm, "sum", true) == 0)
                 {
                     decimal sum = 0;
@@ -169,6 +170,11 @@ namespace SDPCRL.COM
                     }
                     result = sum;
                 }
+                else if (string.Compare(funcnm, "Avg", true) == 0)
+                {
+                    
+                }
+                #endregion 
                 express = express.Remove(index - funcnm.Length, leng + 1);
                 express = express.Insert(index - funcnm.Length, result.ToString ());
                 return true;

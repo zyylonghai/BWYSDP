@@ -160,6 +160,15 @@ namespace BWYResFactory {
         }
         
         /// <summary>
+        ///   查找类似 表达式{0},中的函数{1},括号中的字段必须是属相同表。 的本地化字符串。
+        /// </summary>
+        internal static string _111 {
+            get {
+                return ResourceManager.GetString("111", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 系统无法识别的表对象，请使用模型实例化表对象。 的本地化字符串。
         /// </summary>
         internal static string _520 {

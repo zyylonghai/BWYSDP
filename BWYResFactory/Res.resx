@@ -204,4 +204,7 @@
   <data name="110" xml:space="preserve">
     <value>表{0},字段{1},值有效性验证不通过，表达式{2}</value>
   </data>
+  <data name="111" xml:space="preserve">
+    <value>表达式{0},中的函数{1},括号中的字段必须是属相同表。</value>
+  </data>
 </root>
