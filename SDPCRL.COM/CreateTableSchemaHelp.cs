@@ -594,11 +594,13 @@ namespace SDPCRL.COM
         public string FieldNm { get; set; }
 
         /// <summary>值有效性验证表达式</summary>
-        public string ValidateExpression { get; set; }
+        public LibFieldValidatExpress  ValidateExpression { get; set; }
 
         public override string ToString()
         {
-            string s= string.Format("\"IsActive\":\"{0}\",\"IsRelate\":\"{1}\",\"MapPrimarykey\":\"{2}\",\"DataTypeLen\":\"{3}\",\"Decimalpoint\":\"{4}\",\"AliasName\":\"{5}\",\"ValidateExpression\":\"{6}\"", IsActive, IsRelate, MapPrimarykey, DataTypeLen, Decimalpoint,AliasName,ValidateExpression);
+            string expressjson = string.Format("\"Express\":\"{0}\",\"MsgCode\":\"{1}\"", ValidateExpression?.Express, ValidateExpression?.MsgCode);
+            expressjson = "{" + expressjson + "}";
+            string s= string.Format("\"IsActive\":\"{0}\",\"IsRelate\":\"{1}\",\"MapPrimarykey\":\"{2}\",\"DataTypeLen\":\"{3}\",\"Decimalpoint\":\"{4}\",\"AliasName\":\"{5}\",\"ValidateExpression\":{6}", IsActive, IsRelate, MapPrimarykey, DataTypeLen, Decimalpoint,AliasName,expressjson);
             return "{" + s + "}";
         }
     }

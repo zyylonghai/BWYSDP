@@ -13,9 +13,11 @@ namespace SDPCRL.COM
         /// 错误，警告等信息集
         /// </summary>
         public List<LibMessage> MsgList { get; set; }
+        public List<string> MsgcodeList { get; set; }
         public ValidateExpressHelper()
         {
             this.MsgList = new List<LibMessage>();
+            MsgcodeList = new List<string>();
         }
 
 
@@ -36,15 +38,15 @@ namespace SDPCRL.COM
                     foreach (DataColumn c in tbobj.DataTable.Columns)
                     {
                         colExtended = c.ExtendedProperties[SysConstManage.ExtProp] as ColExtendedProperties;
-                        if (string.IsNullOrEmpty(colExtended.ValidateExpression)) continue;
-                        if (!colExtended.ValidateExpression.ToUpper().Contains(SysConstManage.sdp_fx.ToUpper()))
+                        if (colExtended.ValidateExpression==null || string.IsNullOrEmpty(colExtended.ValidateExpression.Express)) continue;
+                        if (!colExtended.ValidateExpression.Express.ToUpper().Contains(SysConstManage.sdp_fx.ToUpper()))
                         {
 
                             continue;
                         }
                         foreach (DataRow dr in tbobj.DataTable.Rows)
                         {
-                            expressions = colExtended.ValidateExpression.ToUpper().Replace(SysConstManage.sdp_fx.ToUpper(), "SDP_FX");
+                            expressions = colExtended.ValidateExpression.Express.ToUpper().Replace(SysConstManage.sdp_fx.ToUpper(), "SDP_FX");
                             expressions = expressions.Replace(" AND ", ";").Replace(" OR ", ":");
                             splitarry = expressions.Split(separator);
                             foreach (string s in splitarry)
@@ -75,8 +77,19 @@ namespace SDPCRL.COM
                             if (!right)
                             {
                                 result = false;
-                                //表{0},字段{1},值有效性验证不通过，表达式{2}
-                                this.MsgList.Add(new LibMessage { Message =string.Format(BWYResFactory.ResFactory .ResManager.GetResByKey("110"), tbobj.TableName,c.ColumnName, colExtended.ValidateExpression.Replace("<","'<'")), MsgType = LibMessageType.Error });
+                                if (string.IsNullOrEmpty(colExtended.ValidateExpression.MsgCode))
+                                {
+                                    //表{0},字段{1},值有效性验证不通过，表达式{2}
+                                    this.MsgList.Add(new LibMessage { Message = string.Format(BWYResFactory.ResFactory.ResManager.GetResByKey("110"), tbobj.TableName, c.ColumnName, colExtended.ValidateExpression.Express.Replace("<", "'<'")), MsgType = LibMessageType.Error });
+                                }
+                                else
+                                {
+                                    this.MsgcodeList.Add(colExtended.ValidateExpression.MsgCode);
+                                    if (!string.IsNullOrEmpty(colExtended.ValidateExpression.MsgParams))
+                                    {
+                                        
+                                    }
+                                }
                             }
                         }
                     }
@@ -137,7 +150,7 @@ namespace SDPCRL.COM
                     if (tbalisnm != '*' && tbalisnm != vs[0][0])
                     {
                         //111 表达式{0},中的函数{1},括号中的字段必须是属相同表。
-                        this.MsgList.Add(new LibMessage { Message = string.Format(BWYResFactory.ResFactory.ResManager.GetResByKey("111"), colExtended.ValidateExpression.Replace("<", "'<'"), funcnm), MsgType = LibMessageType.Error });
+                        this.MsgList.Add(new LibMessage { Message = string.Format(BWYResFactory.ResFactory.ResManager.GetResByKey("111"), colExtended.ValidateExpression.Express.Replace("<", "'<'"), funcnm), MsgType = LibMessageType.Error });
                         return false;
                     }
                     tbalisnm = vs[0][0];
@@ -161,6 +174,7 @@ namespace SDPCRL.COM
                     string s3 = string.Empty;
                     foreach (DataRow dr in dt.Rows)
                     {
+                        if (dr.RowState == DataRowState.Deleted) continue;
                         s3 = s2;
                         for (int i = 0; i < cols.Count; i++)
                         {
@@ -172,7 +186,19 @@ namespace SDPCRL.COM
                 }
                 else if (string.Compare(funcnm, "Avg", true) == 0)
                 {
-                    
+                    decimal sum = 0;
+                    string s3 = string.Empty;
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        if (dr.RowState == DataRowState.Deleted) continue;
+                        s3 = s2;
+                        for (int i = 0; i < cols.Count; i++)
+                        {
+                            s3 = s3.Replace(string.Format("sdp_col{0}", i + 1), dr[cols[i]].ToString());
+                        }
+                        sum += Convert.ToDecimal(dt.Compute(s3, ""));
+                    }
+                    result = sum/dt.Rows .Count;
                 }
                 #endregion 
                 express = express.Remove(index - funcnm.Length, leng + 1);
@@ -194,5 +220,14 @@ namespace SDPCRL.COM
             result.Add(new LibdefFunc { FuncNm = "Avg", FuncDesc = "求平均值" });
             return result;
         }
+    }
+
+    /// <summary>
+    /// 验证失败信息
+    /// </summary>
+    public class ValidateMessage
+    {
+        public string MsgCode { get; set; }
+        public string MsgParams { get; set; }
     }
 }

@@ -97,7 +97,7 @@ namespace SDPCRL.COM.ModelManager
 
         /// <summary>有效性验证</summary>
         [LibAttribute("fd_ValidateExpression", LibControlType.TextAndBotton, "值有效性")]
-        public string ValidateExpression { get; set; }
+        public LibFieldValidatExpress ValidateExpression { get; set; }
 
 
         /// <summary>是否自增长</summary>
@@ -367,7 +367,21 @@ namespace SDPCRL.COM.ModelManager
     [Serializable]
     public class LibFieldValidatExpress
     {
+        /// <summary>表达式</summary>
+        [LibAttribute("valideexpressfd_Express", LibControlType.TextBox, "表达式")]
         public string Express { get; set; }
-        
+
+        /// <summary>信息代码</summary>
+        [LibAttribute("valideexpressfd_MsgCode", LibControlType.TextBox, "信息代码")]
+        public string MsgCode { get; set; }
+
+        /// <summary>信息参数</summary>
+        [LibAttribute("valideexpressfd_MsgParams", LibControlType.TextBox, "信息参数")]
+        public string MsgParams { get; set; }
+
+        public override string ToString()
+        {
+            return this.Express;
+        }
     }
 }

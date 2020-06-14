@@ -254,11 +254,11 @@ namespace BWYSDP.Controls
             }
             else if (string.Compare(ctrNm, "fd_ValidateExpression") == 0)//有效性验证
             {
-                FieldValidationControl fieldValidation = new FieldValidationControl();
+                FieldValidationControl fieldValidation = new FieldValidationControl(this.entity .ValidateExpression);
                 fieldValidation.Dock = DockStyle.Fill;
                 p.Controls.Add(fieldValidation);
 
-                fieldValidation.SetExpressValue(this.entity.ValidateExpression);
+                fieldValidation.SetExpressValue();
 
                 DialogForm dialogForm = new DialogForm(p);
                 dialogForm.Size = new Size(700, 488);
@@ -266,9 +266,11 @@ namespace BWYSDP.Controls
                 DialogResult dialog = dialogForm.ShowDialog(this);
                 if (dialog == DialogResult.OK)
                 {
-                    this.entity.ValidateExpression = fieldValidation.GetExpressValue();
+                    //this.entity.ValidateExpression.Express = fieldValidation.GetExpressValue();
+                    //this.entity.ValidateExpression.MsgCode = fieldValidation.GetExpressValue();
+                    fieldValidation.GetExpressValue();
                     #region 控件赋值
-                    this.Controls[ctrNm].Text = this.entity.ValidateExpression;
+                    this.Controls[ctrNm].Text = this.entity.ValidateExpression.Express;
                     #endregion
                 }
             }

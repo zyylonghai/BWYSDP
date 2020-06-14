@@ -9,14 +9,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BWYSDP.com;
 using SDPCRL.COM;
+using SDPCRL.COM.ModelManager;
 
 namespace BWYSDP.Controls
 {
     public partial class FieldValidationControl : UserControl
     {
+        LibFieldValidatExpress _entity;
         public FieldValidationControl()
         {
             InitializeComponent();
+        }
+        public FieldValidationControl(LibFieldValidatExpress entity)
+            :this()
+        {
+            this._entity = entity;
         }
 
         private void FieldValidationControl_Load(object sender, EventArgs e)
@@ -30,14 +37,24 @@ namespace BWYSDP.Controls
             #endregion 
         }
 
-        public string GetExpressValue()
+        public void GetExpressValue()
         {
-            return this.RtxbExpress.Text;
+            if (this._entity == null) this._entity = new LibFieldValidatExpress();
+            this._entity.Express = this.RtxbExpress.Text;
+            this._entity.MsgCode = this.txtmsgcode.Text.Trim();
+            this._entity.MsgParams = this.RtxbMsgParams.Text.Trim();
+            //return this.RtxbExpress.Text;
         }
 
-        public void SetExpressValue(string express)
+        public void SetExpressValue()
         {
-            this.RtxbExpress.Text = express;
+            if (this._entity != null)
+            {
+                this.RtxbExpress.Text = _entity.Express;
+                this.txtmsgcode.Text = _entity.MsgCode;
+                this.RtxbMsgParams.Text = _entity.MsgParams;
+            }
+
         }
 
         private void LstbFuncs_DoubleClick(object sender, EventArgs e)
