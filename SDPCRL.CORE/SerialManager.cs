@@ -95,6 +95,7 @@ namespace SDPCRL.CORE
         public const string sdp_Schcond = "sdp_searchcond";
         public const string sdp_language = "sdp_language";
         public const string sdp_userinfo = "sdp_userinfo";
+        public const string sdp_desc = "SDP_Desc";
 
         //系统字段 创建者，创建日期，最后修改者，最后修改日期
         public const string sysfld_creater = "Creater";

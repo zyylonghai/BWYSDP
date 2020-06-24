@@ -169,6 +169,15 @@ namespace BWYResFactory {
         }
         
         /// <summary>
+        ///   查找类似 信息参数{0},无法解析。 的本地化字符串。
+        /// </summary>
+        internal static string _112 {
+            get {
+                return ResourceManager.GetString("112", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 系统无法识别的表对象，请使用模型实例化表对象。 的本地化字符串。
         /// </summary>
         internal static string _520 {
